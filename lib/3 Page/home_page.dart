@@ -14,8 +14,11 @@ class HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text('Firebase Test'),
       ),
-      body: const Center(
-        child: Text('Firebase Test'),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {},
+          child: const Text('Add Data to Firestore'),
+        ),
       ),
     );
   }
