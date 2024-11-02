@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "38141671085",
+    "project_id": "blackboxdb-ec2f1",
+    "storage_bucket": "blackboxdb-ec2f1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:38141671085:android:fe4e727fc907b06e567824",
+        "android_client_info": {
+          "package_name": "app.blacboxDB"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDu8-dEBECf8DXOJL2oUIXeUXXw00H66Z4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

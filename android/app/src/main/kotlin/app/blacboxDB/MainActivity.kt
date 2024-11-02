@@ -1,4 +1,4 @@
-package com.example.blackbox_db
+package app.blacboxDB
 
 import io.flutter.embedding.android.FlutterActivity
 
