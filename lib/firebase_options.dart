@@ -40,48 +40,49 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDl6RTXg-KnyORK51Rult69lFzU9qY6y4Q',
-    appId: '1:38141671085:web:e40387d5c64ac4ea567824',
-    messagingSenderId: '38141671085',
-    projectId: 'blackboxdb-ec2f1',
-    authDomain: 'blackboxdb-ec2f1.firebaseapp.com',
-    storageBucket: 'blackboxdb-ec2f1.firebasestorage.app',
-    measurementId: 'G-XCV5FVW7RN',
+    apiKey: 'AIzaSyCodQE06pMmTAoL-Cuw7ksrlq52mYYA5kU',
+    appId: '1:852342726064:web:d86f594248c0f4becf8a75',
+    messagingSenderId: '852342726064',
+    projectId: 'blackboxdb-d5e63',
+    authDomain: 'blackboxdb-d5e63.firebaseapp.com',
+    storageBucket: 'blackboxdb-d5e63.firebasestorage.app',
+    measurementId: 'G-CCG3FWXL6J',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDu8-dEBECf8DXOJL2oUIXeUXXw00H66Z4',
-    appId: '1:38141671085:android:fe4e727fc907b06e567824',
-    messagingSenderId: '38141671085',
-    projectId: 'blackboxdb-ec2f1',
-    storageBucket: 'blackboxdb-ec2f1.firebasestorage.app',
+    apiKey: 'AIzaSyB5lSvv8BiVJ4qE06dIdMRTbh_5ruHWZrU',
+    appId: '1:852342726064:android:2d5ebb91c9d2e930cf8a75',
+    messagingSenderId: '852342726064',
+    projectId: 'blackboxdb-d5e63',
+    storageBucket: 'blackboxdb-d5e63.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAuYQ0fbelj2QnUq0tRNRmkMp2sMwYV2U4',
-    appId: '1:38141671085:ios:c7eb4eb8f424622f567824',
-    messagingSenderId: '38141671085',
-    projectId: 'blackboxdb-ec2f1',
-    storageBucket: 'blackboxdb-ec2f1.firebasestorage.app',
-    iosBundleId: 'com.example.blackboxDb',
+    apiKey: 'AIzaSyBimsRgfvkUdwpv6eInmK8Qky2t2c8CwZo',
+    appId: '1:852342726064:ios:81357b9393e54840cf8a75',
+    messagingSenderId: '852342726064',
+    projectId: 'blackboxdb-d5e63',
+    storageBucket: 'blackboxdb-d5e63.firebasestorage.app',
+    iosBundleId: 'app.blacboxDB',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyAuYQ0fbelj2QnUq0tRNRmkMp2sMwYV2U4',
-    appId: '1:38141671085:ios:c7eb4eb8f424622f567824',
-    messagingSenderId: '38141671085',
-    projectId: 'blackboxdb-ec2f1',
-    storageBucket: 'blackboxdb-ec2f1.firebasestorage.app',
+    apiKey: 'AIzaSyBimsRgfvkUdwpv6eInmK8Qky2t2c8CwZo',
+    appId: '1:852342726064:ios:27bf9bb82f206253cf8a75',
+    messagingSenderId: '852342726064',
+    projectId: 'blackboxdb-d5e63',
+    storageBucket: 'blackboxdb-d5e63.firebasestorage.app',
     iosBundleId: 'com.example.blackboxDb',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyDl6RTXg-KnyORK51Rult69lFzU9qY6y4Q',
-    appId: '1:38141671085:web:aca31e1e00364a9c567824',
-    messagingSenderId: '38141671085',
-    projectId: 'blackboxdb-ec2f1',
-    authDomain: 'blackboxdb-ec2f1.firebaseapp.com',
-    storageBucket: 'blackboxdb-ec2f1.firebasestorage.app',
-    measurementId: 'G-H8VZ5YXZ1E',
+    apiKey: 'AIzaSyCodQE06pMmTAoL-Cuw7ksrlq52mYYA5kU',
+    appId: '1:852342726064:web:3ad4255c4f067d6dcf8a75',
+    messagingSenderId: '852342726064',
+    projectId: 'blackboxdb-d5e63',
+    authDomain: 'blackboxdb-d5e63.firebaseapp.com',
+    storageBucket: 'blackboxdb-d5e63.firebasestorage.app',
+    measurementId: 'G-QPN6EBCNEG',
   );
+
 }
