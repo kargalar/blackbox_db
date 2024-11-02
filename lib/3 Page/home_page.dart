@@ -10,6 +10,13 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Firebase Test'),
+      ),
+      body: const Center(
+        child: Text('Firebase Test'),
+      ),
+    );
   }
 }

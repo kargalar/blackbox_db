@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:38141671085:android:fe4e727fc907b06e567824",
         "android_client_info": {
-          "package_name": "app.blacboxDB"
+          "package_name": "com.example.blackbox_db"
         }
       },
       "oauth_client": [],
