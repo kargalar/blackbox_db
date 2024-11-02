@@ -58,6 +58,9 @@ dependencies:
   # Auto Size Text
   auto_size_text: ^3.0.0
 
+  # Firebase
+  firebase_core: ^3.6.0
+
 
 dev_dependencies:
   flutter_test:

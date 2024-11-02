@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:blackbox_db/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:blackbox_db/1%20Core/helper.dart';
@@ -6,6 +8,11 @@ import 'package:blackbox_db/2%20General/app_colors.dart';
 
 Future<void> initApp() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   // Lock Orientation to Portrait
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
