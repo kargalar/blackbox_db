@@ -4,7 +4,6 @@ import 'package:blackbox_db/3%20Page/Home/home_page.dart';
 import 'package:blackbox_db/3%20Page/Profile/profile_page.dart';
 import 'package:blackbox_db/3%20Page/Search/search_page.dart';
 import 'package:blackbox_db/6%20Provider/appbar_provider.dart';
-import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,10 +18,7 @@ class AppbarManagerState extends State<AppbarManager> {
   final List<Widget> _pages = const [
     HomePage(),
     SearchPage(),
-    // TODO: buraya 3 tane koymak yerine bir tane koyup yönlendirirken yapılandırmayı dene
-    ExplorePage(contentType: ContentTypeEnum.MOVIE),
-    ExplorePage(contentType: ContentTypeEnum.GAME),
-    ExplorePage(contentType: ContentTypeEnum.BOOK),
+    ExplorePage(),
     ProfilePage(),
   ];
 

@@ -1,4 +1,6 @@
+import 'package:blackbox_db/6%20Provider/appbar_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -8,10 +10,12 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  late final appbarProvider = context.watch<AppbarProvider>();
+
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text("Profile"),
+    return Center(
+      child: Text("Profile :: ${appbarProvider.currentUserID}"),
     );
   }
 }

@@ -14,10 +14,10 @@ class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       leadingWidth: 170,
-      leading: const AppLogo(),
+      leading: const AppbarLogo(),
       title: const AppbarSearch(),
       actions: const [
-        AppbarExploreButton(),
+        AppbarExploreButtons(),
         SizedBox(width: 10),
         AppbarProfile(),
         SizedBox(width: 10),

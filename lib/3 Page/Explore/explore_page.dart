@@ -1,20 +1,21 @@
-import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
+import 'package:blackbox_db/6%20Provider/appbar_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ExplorePage extends StatefulWidget {
-  const ExplorePage({super.key, required this.contentType});
-
-  final ContentTypeEnum contentType;
+  const ExplorePage({super.key});
 
   @override
   State<ExplorePage> createState() => _ExplorePageState();
 }
 
 class _ExplorePageState extends State<ExplorePage> {
+  late final appbarProvider = context.watch<AppbarProvider>();
+
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text("EXPLORE    :::  ${widget.contentType}"),
+      child: Text("EXPLORE    :::  ${appbarProvider.exploreContentType}"),
     );
   }
 }
