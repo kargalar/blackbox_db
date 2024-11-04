@@ -15,15 +15,25 @@ class HoverMenuFilterItem extends StatefulWidget {
 }
 
 class _HoverMenuFilterItemState extends State<HoverMenuFilterItem> {
+  late bool showContent;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.contentType == ContentTypeEnum.MOVIE) {
+      showContent = showMovie;
+    } else if (widget.contentType == ContentTypeEnum.BOOK) {
+      showContent = showBook;
+    } else if (widget.contentType == ContentTypeEnum.GAME) {
+      showContent = showGame;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        if (filteredContentType.contains(widget.contentType)) {
-          filteredContentType.remove(widget.contentType);
-        } else {
-          filteredContentType.add(widget.contentType);
-        }
+        _filterContent();
 
         setState(() {});
       },
@@ -31,11 +41,23 @@ class _HoverMenuFilterItemState extends State<HoverMenuFilterItem> {
         padding: const EdgeInsets.all(8.0),
         child: Row(
           children: [
-            filteredContentType.contains(widget.contentType) ? const Icon(Icons.check_box) : const Icon(Icons.check_box_outline_blank),
+            showContent ? const Icon(Icons.check_box) : const Icon(Icons.check_box_outline_blank),
             Text(widget.contentType.toString().split('.').last),
           ],
         ),
       ),
     );
+  }
+
+  void _filterContent() {
+    showContent = !showContent;
+
+    if (widget.contentType == ContentTypeEnum.MOVIE) {
+      showMovie = !showMovie;
+    } else if (widget.contentType == ContentTypeEnum.BOOK) {
+      showBook = !showBook;
+    } else if (widget.contentType == ContentTypeEnum.GAME) {
+      showGame = !showGame;
+    }
   }
 }
