@@ -11,13 +11,8 @@ void main() async {
   await initApp();
 
   runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => AppbarProvider()),
-      ],
-      child: const Main(),
-    ),
-  );
+    const Main(),
+  );sghgh
 }
 
 class Main extends StatelessWidget {
