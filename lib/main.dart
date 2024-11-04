@@ -11,8 +11,13 @@ void main() async {
   await initApp();
 
   runApp(
-    const Main(),
-  );sghgh
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => AppbarProvider()),
+      ],
+      child: const Main(),
+    ),
+  );
 }
 
 class Main extends StatelessWidget {
