@@ -61,9 +61,9 @@ class AppColors {
   static Color hover = const Color.fromARGB(48, 73, 73, 73);
 
   // Theme Colors
-  static Color main = const Color.fromARGB(255, 255, 105, 0);
-  static Color lightMain = const Color.fromARGB(255, 255, 184, 134);
-  static Color deepMain = const Color.fromARGB(255, 194, 81, 0);
+  static Color main = const Color.fromARGB(255, 13, 96, 190);
+  static Color lightMain = const Color.fromARGB(255, 49, 135, 233);
+  static Color deepMain = const Color.fromARGB(255, 10, 64, 126);
 
   // TODO: boxShadows için de yap
   // Shadows
@@ -103,6 +103,14 @@ class AppColors {
   static Color get panelBackground {
     if (isDark) {
       return const Color.fromARGB(255, 31, 31, 31);
+    } else {
+      return const Color.fromARGB(255, 247, 247, 247);
+    }
+  }
+
+  static Color get panelBackground2 {
+    if (isDark) {
+      return const Color.fromARGB(255, 54, 54, 54);
     } else {
       return const Color.fromARGB(255, 247, 247, 247);
     }
@@ -150,7 +158,7 @@ class AppColors {
     // Bottom Navigation Bar
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       type: BottomNavigationBarType.fixed,
-      backgroundColor: main,
+      backgroundColor: panelBackground,
       elevation: 0,
       unselectedIconTheme: IconThemeData(
         color: white.withOpacity(0.7),
@@ -172,6 +180,7 @@ class AppColors {
     ),
     // AppBar
     appBarTheme: AppBarTheme(
+      // toolbarHeight: 40,
       backgroundColor: appbar,
       surfaceTintColor: appbar,
       iconTheme: IconThemeData(
@@ -179,7 +188,7 @@ class AppColors {
       ),
       titleTextStyle: TextStyle(
         color: text,
-        fontSize: 25,
+        fontSize: 22,
         fontWeight: FontWeight.bold,
       ),
       actionsIconTheme: IconThemeData(
@@ -265,9 +274,9 @@ class AppColors {
         ),
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: borderRadiusAll,
+        borderRadius: borderRadiusAll * 1.5,
         borderSide: BorderSide(
-          color: main,
+          color: onBackground,
           width: 2,
         ),
       ),
@@ -336,7 +345,7 @@ class AppColors {
       ),
       cancelButtonStyle: ButtonStyle(
         overlayColor: WidgetStateProperty.all<Color>(hover),
-        foregroundColor: WidgetStateProperty.all<Color>(background),
+        foregroundColor: WidgetStateProperty.all<Color>(text),
       ),
     ),
 
@@ -466,14 +475,23 @@ class AppColors {
     // Color Scheme
     colorScheme: ColorScheme(
       brightness: Brightness.dark,
+      // primary: main,
+      // onPrimary: lightMain,
+      // secondary: const Color.fromARGB(255, 0, 255, 213),
+      // onSecondary: const Color.fromARGB(255, 0, 255, 0),
+      // error: Colors.red,
+      // onError: const Color.fromARGB(255, 255, 0, 13),
+      // surface: onBackground,
+      // onSurface: background,
+
       primary: main,
-      onPrimary: lightMain,
-      secondary: const Color.fromARGB(255, 0, 255, 213),
-      onSecondary: const Color.fromARGB(255, 0, 255, 0),
+      onPrimary: background,
+      secondary: lightMain,
+      onSecondary: const Color.fromARGB(157, 0, 241, 0),
       error: Colors.red,
       onError: const Color.fromARGB(255, 255, 0, 13),
-      surface: onBackground,
-      onSurface: background,
+      surface: panelBackground2,
+      onSurface: text,
 
       // TODO: düzenlenecek. gerekli değilse kaldır
       // errorContainer: const Color(0xFF93000A),
