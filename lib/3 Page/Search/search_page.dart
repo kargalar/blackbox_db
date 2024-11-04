@@ -1,4 +1,6 @@
+import 'package:blackbox_db/6%20Provider/appbar_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -8,10 +10,12 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  late final appbarProvider = context.watch<AppbarProvider>();
+
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text("Search"),
+    return Center(
+      child: Text(appbarProvider.searchText),
     );
   }
 }

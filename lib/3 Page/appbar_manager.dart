@@ -19,6 +19,7 @@ class AppbarManagerState extends State<AppbarManager> {
   final List<Widget> _pages = const [
     HomePage(),
     SearchPage(),
+    // TODO: buraya 3 tane koymak yerine bir tane koyup yönlendirirken yapılandırmayı dene
     ExplorePage(contentType: ContentTypeEnum.MOVIE),
     ExplorePage(contentType: ContentTypeEnum.GAME),
     ExplorePage(contentType: ContentTypeEnum.BOOK),

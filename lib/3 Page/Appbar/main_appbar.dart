@@ -1,7 +1,7 @@
 import 'package:blackbox_db/3%20Page/Appbar/Widget/appbar_explore_button.dart';
 import 'package:blackbox_db/3%20Page/Appbar/Widget/appbar_logo.dart';
 import 'package:blackbox_db/3%20Page/Appbar/Widget/appbar_profile.dart';
-import 'package:blackbox_db/3%20Page/Appbar/Widget/search_bar.dart';
+import 'package:blackbox_db/3%20Page/Appbar/Widget/appbar_search.dart';
 import 'package:flutter/material.dart';
 
 class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
