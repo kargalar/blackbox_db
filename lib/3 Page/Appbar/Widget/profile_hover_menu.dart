@@ -15,9 +15,9 @@ class ProfileHoverMenu extends StatelessWidget {
           width: 160,
           child: Column(
             children: [
-              HoverMenuItem(),
-              HoverMenuItem(),
-              HoverMenuItem(),
+              HoverMenuFilterItem(),
+              HoverMenuFilterItem(),
+              HoverMenuFilterItem(),
             ],
           ),
         ),

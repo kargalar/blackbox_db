@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class HoverMenuItem extends StatelessWidget {
-  const HoverMenuItem({
+class HoverMenuFilterItem extends StatelessWidget {
+  const HoverMenuFilterItem({
     super.key,
   });
 
@@ -9,13 +9,13 @@ class HoverMenuItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        print("profile");
+        print("sadece Movies");
       },
       child: const Padding(
         padding: EdgeInsets.all(8.0),
         child: Row(
           children: [
-            Text("filter movie"),
+            Text("Filter Movies"),
           ],
         ),
       ),
