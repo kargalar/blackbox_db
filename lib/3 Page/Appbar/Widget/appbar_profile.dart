@@ -1,4 +1,4 @@
-import 'package:blackbox_db/2%20General/app_colors.dart';
+import 'package:blackbox_db/2%20General/Widget/profile_picture.dart';
 import 'package:blackbox_db/3%20Page/Appbar/Widget/profile_hover_menu.dart';
 import 'package:blackbox_db/6%20Provider/appbar_provider.dart';
 import 'package:flutter/material.dart';
@@ -23,28 +23,8 @@ class _AppbarProfileState extends State<AppbarProfile> {
     return MouseRegion(
       onEnter: (event) => _hoverCheck(true),
       onExit: (event) => _hoverCheck(false),
-      child: Center(
-        child: InkWell(
-          borderRadius: AppColors.borderRadiusCircular,
-          onTap: () {
-            // TODO: burada kullanıcının kendi id si verilecek
-            appbarProvider.profile("aq6tj5sxc");
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(3),
-            child: ClipRRect(
-              borderRadius: AppColors.borderRadiusCircular,
-              child: SizedBox(
-                width: 45,
-                height: 45,
-                child: Image.network(
-                  fit: BoxFit.cover,
-                  "https://images.pexels.com/photos/29191749/pexels-photo-29191749/free-photo-of-traditional-farmer-in-rural-vietnamese-setting.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-                ),
-              ),
-            ),
-          ),
-        ),
+      child: const ProfileImage.appBar(
+        imageUrl: "https://images.pexels.com/photos/29191749/pexels-photo-29191749/free-photo-of-traditional-farmer-in-rural-vietnamese-setting.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       ),
     );
   }

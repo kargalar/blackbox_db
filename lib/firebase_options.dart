@@ -72,7 +72,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '852342726064',
     projectId: 'blackboxdb-d5e63',
     storageBucket: 'blackboxdb-d5e63.firebasestorage.app',
-    iosBundleId: 'com.example.blackboxDb',
+    iosBundleId: 'app.blacboxDB',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
@@ -84,5 +84,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'blackboxdb-d5e63.firebasestorage.app',
     measurementId: 'G-QPN6EBCNEG',
   );
-
 }

@@ -74,6 +74,13 @@ class AppColors {
       blurRadius: 2,
     ),
   ];
+  static const List<BoxShadow> bottomShadow = [
+    BoxShadow(
+      spreadRadius: 0,
+      blurRadius: 5,
+      offset: Offset(0, 2),
+    ),
+  ];
 
   //////////////////////////////////////////////////////////////////////////
   static Color get background {
