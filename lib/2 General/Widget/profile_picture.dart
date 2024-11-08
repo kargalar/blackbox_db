@@ -41,12 +41,16 @@ class ProfileImage extends StatelessWidget {
         // TODO: burada kullanıcının kendi id si verilecek
         appbarProvider.profile("aq6tj5sxc");
       },
-      child: ClipOval(
-        child: Image.network(
-          imageUrl,
-          width: size,
-          height: size,
-          fit: BoxFit.cover,
+      child: Container(
+        color: AppColors.transparent,
+        padding: const EdgeInsets.all(2),
+        child: ClipOval(
+          child: Image.network(
+            imageUrl,
+            width: size,
+            height: size,
+            fit: BoxFit.cover,
+          ),
         ),
       ),
     );

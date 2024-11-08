@@ -43,7 +43,7 @@ class _AppbarProfileState extends State<AppbarProfile> {
     _overlayEntry = OverlayEntry(
       builder: (context) => Positioned(
         right: 0,
-        top: 55,
+        top: 49,
         child: MouseRegion(
           onEnter: (event) => _hoverCheck(true),
           onExit: (event) => _hoverCheck(false),
