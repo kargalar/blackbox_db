@@ -22,9 +22,10 @@ class ContentModel {
     required this.listCount,
     required this.reviewCount,
     required this.ratingDistribution,
-    required this.isWatched,
+    required this.isWatch,
     required this.rating,
-    required this.isFavorited,
+    required this.isFavorite,
+    required this.isWatchLater,
   });
 
   final int id;
@@ -46,7 +47,8 @@ class ContentModel {
   int reviewCount;
   List<int> ratingDistribution;
 
-  bool isWatched;
   double rating;
-  bool isFavorited;
+  bool isWatch;
+  bool isFavorite;
+  bool isWatchLater;
 }

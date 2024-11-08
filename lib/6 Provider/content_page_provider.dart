@@ -24,13 +24,32 @@ class ContentPageProvider with ChangeNotifier {
     listCount: 50,
     reviewCount: 10,
     ratingDistribution: [5, 2, 8, 22, 3],
-    isWatched: false,
+    isWatch: false,
     rating: 3.5,
-    isFavorited: false,
+    isFavorite: false,
+    isWatchLater: false,
   );
 
-  void watchContent() {
-    contentModel.isWatched = !contentModel.isWatched;
+  void watch() {
+    contentModel.isWatch = !contentModel.isWatch;
+
+    notifyListeners();
+  }
+
+  void favorite() {
+    contentModel.isFavorite = !contentModel.isFavorite;
+
+    notifyListeners();
+  }
+
+  void watchLater() {
+    contentModel.isWatchLater = !contentModel.isWatchLater;
+
+    notifyListeners();
+  }
+
+  void rate(double rating) {
+    contentModel.rating = rating;
 
     notifyListeners();
   }

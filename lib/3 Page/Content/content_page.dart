@@ -15,11 +15,11 @@ class ContentPage extends StatefulWidget {
 }
 
 class _ContentPageState extends State<ContentPage> {
-  @override
-  void initState() {
-    super.initState();
-    // TODO: istek atıalcak loading olacak şimdilik el ile  context.read<PageProvider>().contentID;
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   // TODO: istek atıalcak loading olacak şimdilik el ile  context.read<PageProvider>().contentID;
+  // }
 
   @override
   Widget build(BuildContext context) {
