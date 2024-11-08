@@ -74,7 +74,7 @@ class _ContentItemState extends State<ContentItem> {
                 if (widget.showcaseContentModel.showcaseType == ShowcaseTypeEnum.TREND) const ContentTrend(),
               ],
             ),
-            if (widget.showcaseContentModel.showcaseType == ShowcaseTypeEnum.LIST) const ContentList(),
+            if (widget.showcaseContentModel.showcaseType == ShowcaseTypeEnum.EXPLORE) const ContentList(),
           ],
         ),
       ),
