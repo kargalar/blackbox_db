@@ -22,6 +22,9 @@ class ContentModel {
     required this.listCount,
     required this.reviewCount,
     required this.ratingDistribution,
+    required this.isWatched,
+    required this.rating,
+    required this.isFavorited,
   });
 
   final int id;
@@ -37,9 +40,13 @@ class ContentModel {
   final List<PlatformModel>? platformList;
   final List<CastModel>? cast;
 
-  final int watchCount;
-  final int favoriCount;
-  final int listCount;
-  final int reviewCount;
-  final List<int> ratingDistribution;
+  int watchCount;
+  int favoriCount;
+  int listCount;
+  int reviewCount;
+  List<int> ratingDistribution;
+
+  bool isWatched;
+  double rating;
+  bool isFavorited;
 }
