@@ -1,6 +1,6 @@
 import 'package:blackbox_db/2%20General/Widget/profile_picture.dart';
 import 'package:blackbox_db/3%20Page/Appbar/Widget/profile_hover_menu.dart';
-import 'package:blackbox_db/6%20Provider/appbar_provider.dart';
+import 'package:blackbox_db/6%20Provider/page_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +14,7 @@ class AppbarProfile extends StatefulWidget {
 }
 
 class _AppbarProfileState extends State<AppbarProfile> {
-  late final appbarProvider = context.read<AppbarProvider>();
+  late final appbarProvider = context.read<PageProvider>();
 
   OverlayEntry? _overlayEntry;
 

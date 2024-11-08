@@ -1,20 +1,16 @@
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:flutter/material.dart';
 
-class AppbarProvider with ChangeNotifier {
+class PageProvider with ChangeNotifier {
   int currentIndex = 0;
   String searchText = '';
   ContentTypeEnum exploreContentType = ContentTypeEnum.MOVIE;
   String currentUserID = "";
+  int contentID = 0;
+  ContentTypeEnum contentPageContentTpye = ContentTypeEnum.MOVIE;
 
   void home() {
     currentIndex = 0;
-    notifyListeners();
-  }
-
-  void profile(String userID) {
-    currentUserID = userID;
-    currentIndex = 3;
     notifyListeners();
   }
 
@@ -27,6 +23,19 @@ class AppbarProvider with ChangeNotifier {
   void explore(ContentTypeEnum contentType) {
     exploreContentType = contentType;
     currentIndex = 2;
+    notifyListeners();
+  }
+
+  void profile(String userID) {
+    currentUserID = userID;
+    currentIndex = 3;
+    notifyListeners();
+  }
+
+  void content(int contentID, ContentTypeEnum contentType) {
+    this.contentID = contentID;
+    contentPageContentTpye = contentType;
+    currentIndex = 4;
     notifyListeners();
   }
 }

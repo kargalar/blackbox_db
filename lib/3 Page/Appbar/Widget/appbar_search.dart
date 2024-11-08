@@ -1,5 +1,5 @@
 import 'package:blackbox_db/2%20General/app_colors.dart';
-import 'package:blackbox_db/6%20Provider/appbar_provider.dart';
+import 'package:blackbox_db/6%20Provider/page_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,7 +13,7 @@ class AppbarSearch extends StatefulWidget {
 }
 
 class _AppbarSearchState extends State<AppbarSearch> {
-  late final appbarProvider = context.read<AppbarProvider>();
+  late final appbarProvider = context.read<PageProvider>();
 
   TextEditingController controller = TextEditingController();
 
