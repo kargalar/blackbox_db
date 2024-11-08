@@ -1,22 +1,19 @@
-import 'package:blackbox_db/2%20General/Widget/Content%20Widget/content_activity.dart';
 import 'package:blackbox_db/2%20General/Widget/Content%20Widget/content_hover.dart';
+import 'package:blackbox_db/2%20General/Widget/Content%20Widget/content_list.dart';
 import 'package:blackbox_db/2%20General/Widget/Content%20Widget/content_trend.dart';
 import 'package:blackbox_db/2%20General/app_colors.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:blackbox_db/7%20Enum/showcase_type_enum.dart';
+import 'package:blackbox_db/8%20Model/showcase_content_model.dart';
 import 'package:flutter/material.dart';
 
 class ContentItem extends StatefulWidget {
   const ContentItem({
     super.key,
-    required this.contentType,
-    required this.showcaseType,
-    required this.coverURL,
+    required this.showcaseContentModel,
   });
 
-  final ContentTypeEnum contentType;
-  final ShowcaseTypeEnum showcaseType;
-  final String coverURL;
+  final ShowcaseContentModel showcaseContentModel;
 
   @override
   State<ContentItem> createState() => _ContentItemState();
@@ -55,48 +52,29 @@ class _ContentItemState extends State<ContentItem> {
                   child: ClipRRect(
                     borderRadius: AppColors.borderRadiusAll / 2,
                     child: Image.network(
-                      widget.coverURL,
+                      //TODO: cover id ye göre gelecek
+                      widget.showcaseContentModel.contentType == ContentTypeEnum.MOVIE
+                          ? "https://assets.mubicdn.net/images/notebook/post_images/22267/images-w1400.jpg?1474980339"
+                          : widget.showcaseContentModel.contentType == ContentTypeEnum.BOOK
+                              ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCqYZBEzzpdbFogx5zqxp_cOtdRQw5oL3lyg&s"
+                              : "https://images.igdb.com/igdb/image/upload/t_cover_big/co5xex.jpg",
+
                       fit: BoxFit.cover,
                     ),
                   ),
                 ),
-                if (widget.showcaseType == ShowcaseTypeEnum.ACTIVITY) const ContentActivity(),
-                if (onHover) const ContentHover(),
-                if (widget.showcaseType == ShowcaseTypeEnum.TREND) const ContentTrend(),
+                // TODO: activity için farklı model oluşturulduktan sonra devam edilecek. contentActivity yorum satırına alındı
+                // if (!onHover && widget.showcaseType == ShowcaseTypeEnum.ACTIVITY) const ContentActivity(),
+                if (onHover)
+                  ContentHover(
+                    isFavori: widget.showcaseContentModel.isFavori,
+                    isWatched: widget.showcaseContentModel.isWatched,
+                    isWatchlist: widget.showcaseContentModel.isWatchlist,
+                  ),
+                if (widget.showcaseContentModel.showcaseType == ShowcaseTypeEnum.TREND) const ContentTrend(),
               ],
             ),
-            if (widget.showcaseType == ShowcaseTypeEnum.LIST)
-              Padding(
-                padding: const EdgeInsets.only(top: 5),
-                child: SizedBox(
-                  width: 150,
-                  child: Row(
-                    children: [
-                      const SizedBox(width: 5),
-                      ...List.generate(
-                        5,
-                        (index) => const Icon(
-                          Icons.star,
-                          size: 15,
-                        ),
-                      ),
-                      const Spacer(),
-                      const Icon(
-                        Icons.favorite,
-                        color: AppColors.white,
-                        size: 15,
-                      ),
-                      const SizedBox(width: 5),
-                      const Icon(
-                        Icons.comment,
-                        color: AppColors.white,
-                        size: 15,
-                      ),
-                      const SizedBox(width: 5),
-                    ],
-                  ),
-                ),
-              ),
+            if (widget.showcaseContentModel.showcaseType == ShowcaseTypeEnum.LIST) const ContentList(),
           ],
         ),
       ),
