@@ -1,3 +1,4 @@
+import 'package:blackbox_db/7%20Enum/content_status_enum.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:blackbox_db/8%20Model/cast_model.dart';
 import 'package:blackbox_db/8%20Model/creator_model.dart';
@@ -22,10 +23,10 @@ class ContentModel {
     required this.listCount,
     required this.reviewCount,
     required this.ratingDistribution,
-    required this.isWatch,
+    required this.contentStatus,
     required this.rating,
     required this.isFavorite,
-    required this.isWatchLater,
+    required this.isConsumeLater,
   });
 
   final int id;
@@ -48,7 +49,7 @@ class ContentModel {
   List<int> ratingDistribution;
 
   double rating;
-  bool isWatch;
+  ContentStatusEnum? contentStatus;
   bool isFavorite;
-  bool isWatchLater;
+  bool isConsumeLater;
 }

@@ -1,5 +1,6 @@
 import 'package:blackbox_db/2%20General/app_colors.dart';
 import 'package:blackbox_db/6%20Provider/content_page_provider.dart';
+import 'package:blackbox_db/7%20Enum/content_status_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
@@ -25,21 +26,24 @@ class ContentUserAction extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            RatingBar.builder(
-              initialRating: contentPageProvider.contentModel.rating,
-              minRating: 0.5,
-              direction: Axis.horizontal,
-              glow: false,
-              allowHalfRating: true,
-              itemCount: 5,
-              itemSize: 35,
-              itemBuilder: (context, _) => Icon(
-                Icons.star,
-                color: AppColors.main,
+            MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: RatingBar.builder(
+                initialRating: contentPageProvider.contentModel.rating,
+                minRating: 0.5,
+                direction: Axis.horizontal,
+                glow: false,
+                allowHalfRating: true,
+                itemCount: 5,
+                itemSize: 35,
+                itemBuilder: (context, _) => Icon(
+                  Icons.star,
+                  color: AppColors.main,
+                ),
+                onRatingUpdate: (rating) {
+                  contentPageProvider.rate(rating);
+                },
               ),
-              onRatingUpdate: (rating) {
-                contentPageProvider.rate(rating);
-              },
             ),
 
             // actions
@@ -48,13 +52,13 @@ class ContentUserAction extends StatelessWidget {
                 // watch
                 InkWell(
                   onTap: () {
-                    contentPageProvider.watch();
+                    contentPageProvider.consume();
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(5),
                     child: Icon(
                       Icons.remove_red_eye,
-                      color: contentPageProvider.contentModel.isWatch ? AppColors.main : null,
+                      color: contentPageProvider.contentModel.contentStatus == ContentStatusEnum.CONSUMED ? AppColors.main : null,
                       size: 30,
                     ),
                   ),
@@ -77,13 +81,13 @@ class ContentUserAction extends StatelessWidget {
                 // wathlater
                 InkWell(
                   onTap: () {
-                    contentPageProvider.watchLater();
+                    contentPageProvider.consumeLater();
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(5),
                     child: Icon(
                       Icons.watch_later,
-                      color: contentPageProvider.contentModel.isWatchLater ? AppColors.main : null,
+                      color: contentPageProvider.contentModel.isConsumeLater ? AppColors.main : null,
                       size: 30,
                     ),
                   ),

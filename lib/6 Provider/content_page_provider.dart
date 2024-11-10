@@ -1,3 +1,4 @@
+import 'package:blackbox_db/7%20Enum/content_status_enum.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:blackbox_db/8%20Model/cast_model.dart';
 import 'package:blackbox_db/8%20Model/content_model.dart';
@@ -24,14 +25,18 @@ class ContentPageProvider with ChangeNotifier {
     listCount: 50,
     reviewCount: 10,
     ratingDistribution: [5, 2, 8, 22, 3],
-    isWatch: false,
+    contentStatus: ContentStatusEnum.CONSUMED,
     rating: 3.5,
     isFavorite: false,
-    isWatchLater: false,
+    isConsumeLater: false,
   );
 
-  void watch() {
-    contentModel.isWatch = !contentModel.isWatch;
+  void consume() {
+    if (contentModel.contentStatus == ContentStatusEnum.CONSUMED) {
+      contentModel.contentStatus = null;
+    } else {
+      contentModel.contentStatus = ContentStatusEnum.CONSUMED;
+    }
 
     notifyListeners();
   }
@@ -42,13 +47,14 @@ class ContentPageProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void watchLater() {
-    contentModel.isWatchLater = !contentModel.isWatchLater;
+  void consumeLater() {
+    contentModel.isConsumeLater = !contentModel.isConsumeLater;
 
     notifyListeners();
   }
 
   void rate(double rating) {
+    // kaydırırken her sefeirnde kaydetmemek için kullanıcı kaydırmayı bitirdiği zaman göderilsin.
     contentModel.rating = rating;
 
     notifyListeners();

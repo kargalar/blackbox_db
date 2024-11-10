@@ -72,6 +72,12 @@ class ContentInformation extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 20),
+          if (contentModel.cast != null) ...[
+            Text(
+              "Cast: ${contentModel.cast!.map((e) => e.name).join(", ")}",
+              style: const TextStyle(fontSize: 16),
+            ),
+          ],
         ],
       ),
     );

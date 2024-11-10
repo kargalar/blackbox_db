@@ -81,12 +81,22 @@ class ContentCover extends StatelessWidget {
                     Column(
                       children: [
                         Text(
-                          contentModel.ratingDistribution[i].toString(),
+                          "${contentModel.ratingDistribution[i]} ",
                           style: const TextStyle(fontSize: 18),
                         ),
                         Text("${i + 1}"),
                       ],
                     ),
+                  const SizedBox(width: 20),
+                  Column(
+                    children: [
+                      Text(
+                        contentModel.rating.toString(),
+                        style: const TextStyle(fontSize: 18),
+                      ),
+                      const Text("Rating"),
+                    ],
+                  ),
                 ],
               ),
             ],
