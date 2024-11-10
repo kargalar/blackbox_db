@@ -7,14 +7,14 @@ class ShowcaseContentModel {
     required this.contentType,
     required this.showcaseType,
     required this.isFavori,
-    required this.isWatched,
-    required this.isWatchlist,
+    required this.isConsumed,
+    required this.isConsumeLater,
   });
 
   final int id;
   final ContentTypeEnum contentType;
   final ShowcaseTypeEnum showcaseType;
   final bool isFavori;
-  final bool isWatched;
-  final bool isWatchlist;
+  final bool isConsumed;
+  final bool isConsumeLater;
 }

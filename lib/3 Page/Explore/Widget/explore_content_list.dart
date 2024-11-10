@@ -34,8 +34,8 @@ class ExploreContentList extends StatelessWidget {
                   contentType: contentType,
                   showcaseType: ShowcaseTypeEnum.EXPLORE,
                   isFavori: false,
-                  isWatched: false,
-                  isWatchlist: false,
+                  isConsumed: false,
+                  isConsumeLater: false,
                 ),
               );
             },

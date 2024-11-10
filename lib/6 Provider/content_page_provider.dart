@@ -20,7 +20,7 @@ class ContentPageProvider with ChangeNotifier {
     lenght: 138,
     platformList: [PlatformModel(id: 0, title: "Netflix")],
     cast: [CastModel(id: 0, name: "John David Washington"), CastModel(id: 1, name: "Robert Pattinson"), CastModel(id: 2, name: "Elizabeth Debicki")],
-    watchCount: 1000,
+    consumeCount: 1000,
     favoriCount: 100,
     listCount: 50,
     reviewCount: 10,

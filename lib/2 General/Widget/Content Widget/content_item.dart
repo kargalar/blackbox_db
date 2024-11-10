@@ -77,8 +77,8 @@ class _ContentItemState extends State<ContentItem> {
                   if (onHover)
                     ContentHover(
                       isFavori: widget.showcaseContentModel.isFavori,
-                      isWatched: widget.showcaseContentModel.isWatched,
-                      isWatchlist: widget.showcaseContentModel.isWatchlist,
+                      isConsumed: widget.showcaseContentModel.isConsumed,
+                      isConsumeLater: widget.showcaseContentModel.isConsumeLater,
                     ),
                   if (widget.showcaseContentModel.showcaseType == ShowcaseTypeEnum.TREND) const ContentTrend(),
                 ],

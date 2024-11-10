@@ -18,7 +18,7 @@ class ContentModel {
     required this.lenght,
     required this.platformList,
     required this.cast,
-    required this.watchCount,
+    required this.consumeCount,
     required this.favoriCount,
     required this.listCount,
     required this.reviewCount,
@@ -42,7 +42,7 @@ class ContentModel {
   final List<PlatformModel>? platformList;
   final List<CastModel>? cast;
 
-  int watchCount;
+  int consumeCount;
   int favoriCount;
   int listCount;
   int reviewCount;

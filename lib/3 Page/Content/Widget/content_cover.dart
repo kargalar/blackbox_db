@@ -36,7 +36,7 @@ class ContentCover extends StatelessWidget {
                   Column(
                     children: [
                       Text(
-                        contentModel.watchCount.toString(),
+                        contentModel.consumeCount.toString(),
                         style: const TextStyle(fontSize: 18),
                       ),
                       const Text("Watch"),

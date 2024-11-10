@@ -6,13 +6,13 @@ class ContentHover extends StatelessWidget {
   const ContentHover({
     super.key,
     required this.isFavori,
-    required this.isWatched,
-    required this.isWatchlist,
+    required this.isConsumed,
+    required this.isConsumeLater,
   });
 
   final bool isFavori;
-  final bool isWatched;
-  final bool isWatchlist;
+  final bool isConsumed;
+  final bool isConsumeLater;
 
   @override
   Widget build(BuildContext context) {
@@ -35,14 +35,14 @@ class ContentHover extends StatelessWidget {
                 ),
                 ContentItemButton(
                   icon: Icons.remove_red_eye,
-                  color: isWatched ? AppColors.red : AppColors.white,
+                  color: isConsumed ? AppColors.red : AppColors.white,
                   onTap: () {
                     // TODO: add to watched
                   },
                 ),
                 ContentItemButton(
                   icon: Icons.watch_later,
-                  color: isWatchlist ? AppColors.red : AppColors.white,
+                  color: isConsumeLater ? AppColors.red : AppColors.white,
                   onTap: () {
                     // TODO: add to watchlist
                   },

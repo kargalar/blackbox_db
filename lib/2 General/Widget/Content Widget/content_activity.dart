@@ -12,7 +12,7 @@
 //     // TODO: galiba burası için log model gibi birşey olacak
 //     // activity type logdan alınacak şimdilik böyle
 //     // bool isReview = true;
-//     bool isWatched = true;
+//     bool isConsumed = true;
 //     bool isRated = true;
 //     bool isAddWatchlist = true;
 //     // bool isAddList;
@@ -83,7 +83,7 @@
 //                     ),
 
 //                   // if isWatch watch (if notRated)
-//                   if (!isRated && isWatched)
+//                   if (!isRated && isConsumed)
 //                     const Icon(
 //                       Icons.remove_red_eye,
 //                       color: AppColors.white,
