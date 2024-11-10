@@ -20,19 +20,18 @@ Table user {
   username varchar [unique]
   email varchar [unique]
   password_hash varchar
-  picture_path varchar
   bio text
   personality_analyze text
   created_at timestamp
-  last_login timestamp
 }
 
 Table user_follow {
+  id integer [pk]
   follower_id integer [ref: > user.id]
   following_id integer [ref: > user.id]
   created_at timestamp
   indexes {
-    (follower_id, following_id) [pk]
+    (follower_id, following_id) [unique]
   }
 }
 
@@ -40,7 +39,6 @@ Table user_follow {
 Table content {
   id integer [pk]
   title varchar
-  cover_path varchar
   content_type_id integer [ref: > content_type_enum.id]
   release_date timestamp
   description text
@@ -49,7 +47,6 @@ Table content {
   favori_count integer
   list_count integer
   review_count integer
-  average_rating decimal
   rating_distribution json
   content_status_id integer [ref: > content_status_enum.id]
   created_at timestamp
@@ -72,41 +69,46 @@ Table country {
 }
 
 Table content_theme {
+  id integer [pk]
   content_id integer [ref: > content.id]
   theme_id integer [ref: > theme.id]
   indexes {
-    (content_id, theme_id) [pk]
+    (content_id, theme_id) [unique]
   }
 }
 
 Table content_language {
+  id integer [pk]
   content_id integer [ref: > content.id]
   language_id integer [ref: > language.id]
   indexes {
-    (content_id, language_id) [pk]
+    (content_id, language_id) [unique]
   }
 }
 
 Table content_country {
+  id integer [pk]
   content_id integer [ref: > content.id]
   country_id integer [ref: > country.id]
   indexes {
-    (content_id, country_id) [pk]
+    (content_id, country_id) [unique]
   }
 }
 
 // Var olan tablolar güncellendi
-Table user_content_interaction {
+Table user_content_log {
+  id integer [pk]
   user_id integer [ref: > user.id]
   content_id integer [ref: > content.id]
-  consumed_at timestamp
+  content_type_id integer [ref: > content_type_enum.id]
+  content_status_id integer [ref: > content_status_enum.id]
+  date timestamp
   rating decimal
   is_favorite boolean [default: false]
   is_consume_later boolean [default: false]
-  created_at timestamp
-  updated_at timestamp
+  review text
   indexes {
-    (user_id, content_id) [pk]
+    (user_id, content_id) [unique]
   }
 }
 
@@ -124,11 +126,12 @@ Table review {
 }
 
 Table review_like {
+  id integer [pk]
   user_id integer [ref: > user.id]
   review_id integer [ref: > review.id]
   created_at timestamp
   indexes {
-    (user_id, review_id) [pk]
+    (user_id, review_id) [unique]
   }
 }
 
@@ -152,11 +155,12 @@ Table user_list {
 }
 
 Table list_content {
+  id integer [pk]
   list_id integer [ref: > user_list.id]
   content_id integer [ref: > content.id]
   added_at timestamp
   indexes {
-    (list_id, content_id) [pk]
+    (list_id, content_id) [unique]
   }
 }
 
@@ -179,11 +183,12 @@ Table creator {
 }
 
 Table content_creator {
+  id integer [pk]
   content_id integer [ref: > content.id]
   creator_id integer [ref: > creator.id]
   role_type varchar
   indexes {
-    (content_id, creator_id) [pk]
+    (content_id, creator_id) [unique]
   }
 }
 
@@ -193,10 +198,11 @@ Table genre {
 }
 
 Table content_genre {
+  id integer [pk]
   content_id integer [ref: > content.id]
   genre_id integer [ref: > genre.id]
   indexes {
-    (content_id, genre_id) [pk]
+    (content_id, genre_id) [unique]
   }
 }
 
@@ -207,10 +213,11 @@ Table platform {
 }
 
 Table content_platform {
+  id integer [pk]
   content_id integer [ref: > content.id]
   platform_id integer [ref: > platform.id]
   indexes {
-    (content_id, platform_id) [pk]
+    (content_id, platform_id) [unique]
   }
 }
 
@@ -221,10 +228,11 @@ Table cast {
 }
 
 Table content_cast {
+  id integer [pk]
   content_id integer [ref: > content.id]
   cast_id integer [ref: > cast.id]
   character_name varchar
   indexes {
-    (content_id, cast_id) [pk]
+    (content_id, cast_id) [unique]
   }
 }
