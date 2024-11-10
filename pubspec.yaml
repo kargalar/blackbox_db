@@ -61,6 +61,9 @@ dependencies:
   # Rating
   flutter_rating_bar: ^4.0.1
 
+  # Http
+  http: ^1.2.2
+
 
 dev_dependencies:
   flutter_test:
