@@ -28,7 +28,7 @@ class ProfileImage extends StatelessWidget {
   }) : this(
           key: key,
           imageUrl: imageUrl,
-          size: 40,
+          size: 30,
         );
 
   @override

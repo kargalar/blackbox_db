@@ -1,3 +1,4 @@
+import 'package:blackbox_db/2%20General/Widget/Content%20Widget/content_activity.dart';
 import 'package:blackbox_db/2%20General/Widget/Content%20Widget/content_hover.dart';
 import 'package:blackbox_db/2%20General/Widget/Content%20Widget/content_list.dart';
 import 'package:blackbox_db/2%20General/Widget/Content%20Widget/content_trend.dart';
@@ -73,7 +74,7 @@ class _ContentItemState extends State<ContentItem> {
                     ),
                   ),
                   // TODO: activity için farklı model oluşturulduktan sonra devam edilecek. contentActivity yorum satırına alındı
-                  // if (!onHover && widget.showcaseType == ShowcaseTypeEnum.ACTIVITY) const ContentActivity(),
+                  if (!onHover && widget.showcaseContentModel.showcaseType == ShowcaseTypeEnum.ACTIVITY) const ContentActivity(),
                   if (onHover)
                     ContentHover(
                       isFavori: widget.showcaseContentModel.isFavori,
