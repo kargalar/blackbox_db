@@ -1,10 +1,4 @@
-// Enum Tabloları
 Table content_type_enum {
-  id integer [pk]
-  name varchar
-}
-
-Table showcase_type_enum {
   id integer [pk]
   name varchar
 }
@@ -14,7 +8,6 @@ Table content_status_enum {
   name varchar
 }
 
-// Kullanıcı ve Sosyal Özellikler
 Table user {
   id integer [pk]
   username varchar [unique]
@@ -35,7 +28,6 @@ Table user_follow {
   }
 }
 
-// Ana İçerik Tabloları
 Table content {
   id integer [pk]
   title varchar
@@ -48,11 +40,9 @@ Table content {
   list_count integer
   review_count integer
   rating_distribution json
-  content_status_id integer [ref: > content_status_enum.id]
   created_at timestamp
 }
 
-// Kategorilendirme Tabloları
 Table theme {
   id integer [pk]
   name varchar
@@ -95,12 +85,10 @@ Table content_country {
   }
 }
 
-// Var olan tablolar güncellendi
 Table user_content_log {
   id integer [pk]
   user_id integer [ref: > user.id]
   content_id integer [ref: > content.id]
-  content_type_id integer [ref: > content_type_enum.id]
   content_status_id integer [ref: > content_status_enum.id]
   date timestamp
   rating decimal
@@ -112,7 +100,6 @@ Table user_content_log {
   }
 }
 
-// Review Sistemi
 Table review {
   id integer [pk]
   user_id integer [ref: > user.id]
@@ -143,7 +130,6 @@ Table review_comment {
   created_at timestamp
 }
 
-// Liste Sistemi
 Table user_list {
   id integer [pk]
   user_id integer [ref: > user.id]
@@ -164,18 +150,6 @@ Table list_content {
   }
 }
 
-// Vitrin Sistemi
-Table showcase_content {
-  id integer [pk]
-  content_id integer [ref: > content.id]
-  content_type_id integer [ref: > content_type_enum.id]
-  showcase_type_id integer [ref: > showcase_type_enum.id]
-  order_index integer
-  start_date timestamp
-  end_date timestamp
-}
-
-// Diğer İlişki Tabloları (önceden var olanlar)
 Table creator {
   id integer [pk]
   name varchar
