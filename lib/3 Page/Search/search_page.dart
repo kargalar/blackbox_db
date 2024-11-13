@@ -1,4 +1,4 @@
-import 'package:blackbox_db/6%20Provider/appbar_provider.dart';
+import 'package:blackbox_db/6%20Provider/page_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -10,7 +10,7 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  late final appbarProvider = context.watch<AppbarProvider>();
+  late final appbarProvider = context.watch<PageProvider>();
 
   @override
   Widget build(BuildContext context) {
