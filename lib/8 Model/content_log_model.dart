@@ -7,7 +7,6 @@ class ContentLogModel {
     required this.date,
     required this.contentID,
     required this.contentTitle,
-    required this.contentCoverPath,
     required this.contentType,
     this.contentStatus,
     this.rating,
@@ -21,7 +20,6 @@ class ContentLogModel {
   final int contentID;
   final ContentTypeEnum contentType;
   final String contentTitle;
-  final String contentCoverPath;
 
   double? rating;
   ContentStatusEnum? contentStatus;

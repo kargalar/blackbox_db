@@ -9,7 +9,6 @@ class ContentModel {
   ContentModel({
     required this.id,
     required this.title,
-    required this.coverPath,
     required this.contentType,
     required this.year,
     required this.creatorList,
@@ -32,7 +31,6 @@ class ContentModel {
   final int id;
   final ContentTypeEnum contentType;
   final String title;
-  final String coverPath;
   final String description;
   final DateTime year;
   final List<CreatorModel> creatorList;
@@ -52,4 +50,32 @@ class ContentModel {
   ContentStatusEnum? contentStatus;
   bool isFavorite;
   bool isConsumeLater;
+
+  factory ContentModel.fromJson(Map<String, dynamic> json) {
+    return ContentModel(
+      id: json['id'],
+      title: json['title'],
+      contentType: ContentTypeEnum.values[json['content_type_id']],
+      year: DateTime.parse(json['release_date']),
+      creatorList: (json['creator_list'] as List).map((i) => CreatorModel.fromJson(i)).toList(),
+      description: json['description'],
+      genreList: (json['genre_list'] as List).map((i) => GenreModel.fromJson(i)).toList(),
+      lenght: json['length'],
+      platformList: (json['platform_list'] as List).map((i) => PlatformModel.fromJson(i)).toList(),
+      cast: (json['cast_list'] as List).map((i) => CastModel.fromJson(i)).toList(),
+      consumeCount: json['consume_count'],
+      favoriCount: json['favori_count'],
+      listCount: json['list_count'],
+      reviewCount: json['review_count'],
+      ratingDistribution: (json['rating_distribution'] as List).map((i) => i as int).toList(),
+      contentStatus: json['content_status_id'] != null ? ContentStatusEnum.values[json['content_status_id']] : null,
+      rating: json['rating'],
+      isFavorite: json['is_favorite'],
+      isConsumeLater: json['is_consume_later'],
+    );
+  }
+
+  static List<ContentModel> fromJsonList(List<dynamic> jsonList) {
+    return jsonList.map((i) => ContentModel.fromJson(i)).toList();
+  }
 }

@@ -20,7 +20,7 @@ class ContentCover extends StatelessWidget {
           height: 300,
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: NetworkImage(contentModel.coverPath),
+              image: NetworkImage("asd/cover/${contentModel.id}"),
               fit: BoxFit.cover,
             ),
           ),

@@ -3,6 +3,7 @@ import 'package:blackbox_db/3%20Page/Appbar/Widget/appbar_logo.dart';
 import 'package:blackbox_db/3%20Page/Appbar/Widget/appbar_profile.dart';
 import 'package:blackbox_db/3%20Page/Appbar/Widget/appbar_search.dart';
 import 'package:blackbox_db/5%20Service/server_manager.dart';
+import 'package:blackbox_db/8%20Model/content_model.dart';
 import 'package:flutter/material.dart';
 
 class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
@@ -50,12 +51,14 @@ class _TestButtonState extends State<TestButton> {
         ? ElevatedButton(
             onPressed: () async {
               try {
-                // get genres
-                var asdasd = await serverManager.getGenres();
-                setState(() {
-                  genres = asdasd;
-                  isLoading = false;
-                });
+                // // get genres
+                // var asdasd = await serverManager.getGenres();
+                List<ContentModel> contentList = await serverManager.getContentList();
+                debugPrint(contentList.toString());
+                // setState(() {
+                //   genres = asdasd;
+                //   isLoading = false;
+                // });
               } catch (e) {
                 debugPrint(e.toString());
               }

@@ -6,4 +6,11 @@ class CastModel {
 
   int id;
   String name;
+
+  factory CastModel.fromJson(Map<String, dynamic> json) {
+    return CastModel(
+      id: json['id'],
+      name: json['name'],
+    );
+  }
 }

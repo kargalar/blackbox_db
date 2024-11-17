@@ -129,7 +129,6 @@ class ContentUserAction extends StatelessWidget {
                   contentID: contentPageProvider.contentModel.id,
                   contentType: contentPageProvider.contentModel.contentType,
                   contentTitle: contentPageProvider.contentModel.title,
-                  contentCoverPath: contentPageProvider.contentModel.coverPath,
                   contentStatus: contentPageProvider.contentModel.contentStatus,
                   rating: contentPageProvider.contentModel.rating,
                   isFavorite: contentPageProvider.contentModel.isFavorite,

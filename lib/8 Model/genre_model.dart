@@ -6,4 +6,11 @@ class GenreModel {
 
   int id;
   String title;
+
+  factory GenreModel.fromJson(Map<String, dynamic> json) {
+    return GenreModel(
+      id: json['id'],
+      title: json['title'],
+    );
+  }
 }

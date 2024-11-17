@@ -18,7 +18,6 @@ class ContentActivity extends StatelessWidget {
       date: DateTime.now(),
       contentID: 1,
       contentTitle: "Hit the Road ",
-      contentCoverPath: "https://image.tmdb.org/t/p/original/s2VAydm53Odgafoto5NPLUeQgkX.jpg",
       contentType: ContentTypeEnum.MOVIE,
       contentStatus: ContentStatusEnum.CONSUMED,
       rating: 3.5,
@@ -55,7 +54,7 @@ class ContentActivity extends StatelessWidget {
                 children: [
                   // profile picture
                   ProfileImage.content(
-                    imageUrl: userLog.contentCoverPath,
+                    imageUrl: "asd/cover/${userLog.contentID}",
                   ),
                   const SizedBox(
                     width: 5,

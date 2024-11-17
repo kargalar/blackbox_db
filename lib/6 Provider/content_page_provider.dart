@@ -11,7 +11,6 @@ class ContentPageProvider with ChangeNotifier {
   ContentModel contentModel = ContentModel(
     id: 1,
     title: "Hit the Road ",
-    coverPath: "https://image.tmdb.org/t/p/original/s2VAydm53Odgafoto5NPLUeQgkX.jpg",
     contentType: ContentTypeEnum.MOVIE,
     year: DateTime(2024),
     creatorList: [CreatorModel(id: 0, name: "Panah Panhani")],
