@@ -6,19 +6,21 @@ import 'package:blackbox_db/8%20Model/showcase_content_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ExploreContentList extends StatefulWidget {
-  const ExploreContentList({
+class ContentList extends StatefulWidget {
+  const ContentList({
     super.key,
-    required this.contentType,
+    this.contentType,
+    required this.showcaseType,
   });
 
-  final ContentTypeEnum contentType;
+  final ContentTypeEnum? contentType;
+  final ShowcaseTypeEnum showcaseType;
 
   @override
-  State<ExploreContentList> createState() => _ExploreContentListState();
+  State<ContentList> createState() => _ContentListState();
 }
 
-class _ExploreContentListState extends State<ExploreContentList> {
+class _ContentListState extends State<ContentList> {
   List<ShowcaseContentModel> contentList = [];
 
   bool isLoading = true;
@@ -55,7 +57,7 @@ class _ExploreContentListState extends State<ExploreContentList> {
                         isReviewed: contentList[index].isReviewed,
                         isConsumeLater: contentList[index].isConsumeLater,
                       ),
-                      showcaseType: ShowcaseTypeEnum.EXPLORE,
+                      showcaseType: widget.showcaseType,
                     );
                   },
                 ),
@@ -66,6 +68,10 @@ class _ExploreContentListState extends State<ExploreContentList> {
 
   void getShowcaseContent() async {
     try {
+      // TODO: widget.showcaseType a göre farklı endpointlere istek atacak
+      // TODO: mesela trend ise sadece 5 tane getirecek. actviity ise contentlogmodel için de veri getirecek...
+      // TODO: contentType null ise farklı istek atacak
+
       contentList = await ServerManager().getExploreContent(
         contentType: widget.contentType,
         // TODO: userId

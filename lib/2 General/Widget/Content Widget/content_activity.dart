@@ -13,9 +13,10 @@ class ContentActivity extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: backendden gelecek
     final ContentLogModel userLog = ContentLogModel(
       id: 1,
-      userID: "1",
+      userID: 1,
       date: DateTime.now(),
       contentID: 1,
       contentType: ContentTypeEnum.MOVIE,
@@ -23,6 +24,7 @@ class ContentActivity extends StatelessWidget {
       rating: 3.5,
       isFavorite: false,
       isConsumeLater: false,
+      contentTitle: "The Road",
       review: "A chaotic family is on a road trip across a rugged landscape. In the back seat, Dad has a broken leg, Mom tries to laugh when she’s not holding back tears, and the youngest keeps",
     );
 

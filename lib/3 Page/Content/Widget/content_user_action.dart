@@ -125,13 +125,14 @@ class ContentUserAction extends StatelessWidget {
               onTap: () {
                 final log = ContentLogModel(
                   id: 0,
+                  userID: 1,
                   date: DateTime.now(),
                   contentID: contentPageProvider.contentModel.id,
                   contentType: contentPageProvider.contentModel.contentType,
-                  contentTitle: contentPageProvider.contentModel.title,
                   contentStatus: contentPageProvider.contentModel.contentStatus,
                   rating: contentPageProvider.contentModel.rating,
                   isFavorite: contentPageProvider.contentModel.isFavorite,
+                  contentTitle: contentPageProvider.contentModel.title,
                   isConsumeLater: contentPageProvider.contentModel.isConsumeLater,
                 );
                 // add log

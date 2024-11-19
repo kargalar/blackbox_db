@@ -41,6 +41,7 @@ class ContentModel {
   final List<PlatformModel>? platformList;
   final List<CastModel>? cast;
 
+  // TODO: filmin bilgileri, istatistikleri ve kullanıcı logu ayrı modelde mi tutulsa
   int consumeCount;
   int favoriCount;
   int listCount;

@@ -43,7 +43,7 @@ class _ContentItemState extends State<ContentItem> {
             onHover = false;
           });
         },
-        child: InkWell(
+        child: GestureDetector(
           onTap: () {
             context.read<PageProvider>().content(
                   widget.showcaseContentModel.contentId,

@@ -1,4 +1,5 @@
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
+import 'package:blackbox_db/8%20Model/content_log_model.dart';
 
 class ShowcaseContentModel {
   ShowcaseContentModel({
@@ -9,6 +10,7 @@ class ShowcaseContentModel {
     required this.isConsumeLater,
     required this.rating,
     required this.isReviewed,
+    this.contentLog,
   });
 
   final int contentId;
@@ -16,8 +18,15 @@ class ShowcaseContentModel {
   final bool isFavorite;
   final bool isConsumed;
   final bool isConsumeLater;
+
+  // TODO: yukarıdakielr her zaman alınacak ama biris list ise biris activity ise alınacak. bunun için türüne göre farklı istek mı olsa. yani hepsini explore da yapmak yerine activity, list, explore gibi
+  //
+  // final bool isFavorite;
   final double? rating;
   final bool isReviewed;
+  // TODO: yukarıdaki üçünü kapsayan bir model yapısı contentLog gibi
+  //
+  final ContentLogModel? contentLog;
 
   factory ShowcaseContentModel.fromJson(Map<String, dynamic> json) {
     return ShowcaseContentModel(
@@ -28,22 +37,11 @@ class ShowcaseContentModel {
       rating: double.parse(json['rating']),
       isReviewed: json['is_reviewed'],
       isConsumeLater: json['is_consume_later'],
+      contentLog: json['content_log'] != null ? ContentLogModel.fromJson(json['content_log']) : null,
     );
   }
 
   static List<ShowcaseContentModel> fromJsonList(List<dynamic> jsonList) {
     return jsonList.map((e) => ShowcaseContentModel.fromJson(e)).toList();
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': contentId,
-      'content_type_id': contentType.index,
-      'is_favori': isFavorite,
-      'is_consumed': isConsumed,
-      'rating': rating,
-      'is_reviewed': isReviewed,
-      'is_consume_later': isConsumeLater,
-    };
   }
 }

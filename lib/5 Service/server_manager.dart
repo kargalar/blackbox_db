@@ -62,11 +62,11 @@ class ServerManager {
 
   // get all content fow showcase with user id
   Future<List<ShowcaseContentModel>> getExploreContent({
-    required ContentTypeEnum contentType,
+    required ContentTypeEnum? contentType,
     required String userId,
   }) async {
     var response = await dio.request(
-      "$_baseUrl/explore?user_id=$userId&content_type_id=${contentType.index + 1}",
+      "$_baseUrl/explore?user_id=$userId${contentType != null ? "&content_type_id=${contentType.index + 1}" : ""}",
       options: Options(
         method: 'GET',
       ),
