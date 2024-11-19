@@ -13,4 +13,19 @@ class PlatformModel {
       title: json['name'],
     );
   }
+
+  static List<PlatformModel> fromJsonList(List<dynamic> jsonList) {
+    List<PlatformModel> list = [];
+    for (var json in jsonList) {
+      list.add(PlatformModel.fromJson(json));
+    }
+    return list;
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': title,
+    };
+  }
 }

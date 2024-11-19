@@ -4,17 +4,18 @@ import 'package:blackbox_db/8%20Model/cast_model.dart';
 import 'package:blackbox_db/8%20Model/creator_model.dart';
 import 'package:blackbox_db/8%20Model/genre_model.dart';
 import 'package:blackbox_db/8%20Model/platform_model.dart';
+import 'package:intl/intl.dart';
 
 class ContentModel {
   ContentModel({
     required this.id,
     required this.title,
     required this.contentType,
-    required this.year,
+    required this.releaseDate,
     required this.creatorList,
     required this.description,
     required this.genreList,
-    required this.lenght,
+    required this.length,
     required this.platformList,
     required this.cast,
     required this.consumeCount,
@@ -32,11 +33,11 @@ class ContentModel {
   final ContentTypeEnum contentType;
   final String title;
   final String description;
-  final DateTime year;
+  final DateTime releaseDate;
   final List<CreatorModel> creatorList;
 
   final List<GenreModel> genreList;
-  final int lenght;
+  final int length;
   final List<PlatformModel>? platformList;
   final List<CastModel>? cast;
 
@@ -56,11 +57,11 @@ class ContentModel {
       id: json['id'],
       title: json['title'],
       contentType: ContentTypeEnum.values[json['content_type_id']],
-      year: DateTime.parse(json['release_date']),
+      releaseDate: DateTime.parse(json['release_date']),
       creatorList: (json['creator_list'] as List).map((i) => CreatorModel.fromJson(i)).toList(),
       description: json['description'],
       genreList: (json['genre_list'] as List).map((i) => GenreModel.fromJson(i)).toList(),
-      lenght: json['length'],
+      length: json['length'],
       platformList: (json['platform_list'] as List).map((i) => PlatformModel.fromJson(i)).toList(),
       cast: (json['cast_list'] as List).map((i) => CastModel.fromJson(i)).toList(),
       consumeCount: json['consume_count'],
@@ -77,5 +78,29 @@ class ContentModel {
 
   static List<ContentModel> fromJsonList(List<dynamic> jsonList) {
     return jsonList.map((i) => ContentModel.fromJson(i)).toList();
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'content_type_id': contentType.index,
+      'release_date': DateFormat('yyyy-MM-dd').format(releaseDate),
+      'creator_list': creatorList.map((i) => i.toJson()).toList(),
+      'description': description,
+      'genre_list': genreList.map((i) => i.toJson()).toList(),
+      'length': length,
+      'platform_list': platformList!.map((i) => i.toJson()).toList(),
+      'cast_list': cast!.map((i) => i.toJson()).toList(),
+      'consume_count': consumeCount,
+      'favori_count': favoriCount,
+      'list_count': listCount,
+      'review_count': reviewCount,
+      'rating_distribution': ratingDistribution,
+      'content_status_id': contentStatus!.index,
+      'rating': rating,
+      'is_favorite': isFavorite,
+      'is_consume_later': isConsumeLater,
+    };
   }
 }

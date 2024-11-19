@@ -13,4 +13,19 @@ class CreatorModel {
       name: json['name'],
     );
   }
+
+  static List<CreatorModel> fromJsonList(List<dynamic> jsonList) {
+    List<CreatorModel> list = [];
+    for (var json in jsonList) {
+      list.add(CreatorModel.fromJson(json));
+    }
+    return list;
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+    };
+  }
 }

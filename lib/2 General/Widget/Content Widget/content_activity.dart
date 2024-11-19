@@ -53,8 +53,10 @@ class ContentActivity extends StatelessWidget {
               Row(
                 children: [
                   // profile picture
-                  ProfileImage.content(
-                    imageUrl: "asd/cover/${userLog.contentID}",
+                  const ProfileImage.content(
+                    // TODO:
+                    // imageUrl: "asd/cover/${userLog.contentID}",
+                    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/220px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg",
                   ),
                   const SizedBox(
                     width: 5,
