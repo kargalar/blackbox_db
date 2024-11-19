@@ -15,9 +15,9 @@ class ContentActivity extends StatelessWidget {
   Widget build(BuildContext context) {
     final ContentLogModel userLog = ContentLogModel(
       id: 1,
+      userID: "1",
       date: DateTime.now(),
       contentID: 1,
-      contentTitle: "Hit the Road ",
       contentType: ContentTypeEnum.MOVIE,
       contentStatus: ContentStatusEnum.CONSUMED,
       rating: 3.5,

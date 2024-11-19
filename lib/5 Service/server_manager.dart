@@ -1,5 +1,7 @@
+import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:blackbox_db/8%20Model/content_model.dart';
 import 'package:blackbox_db/8%20Model/genre_model.dart';
+import 'package:blackbox_db/8%20Model/showcase_content_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
@@ -45,7 +47,7 @@ class ServerManager {
   }
 
   // get all content
-  Future<List<ContentModel>> getContentList() async {
+  Future<List<ContentModel>> getAllContent() async {
     var response = await dio.request(
       "$_baseUrl/content",
       options: Options(
@@ -56,6 +58,23 @@ class ServerManager {
     checkRequest(response);
 
     return (response.data as List).map((e) => ContentModel.fromJson(e)).toList();
+  }
+
+  // get all content fow showcase with user id
+  Future<List<ShowcaseContentModel>> getExploreContent({
+    required ContentTypeEnum contentType,
+    required String userId,
+  }) async {
+    var response = await dio.request(
+      "$_baseUrl/explore?user_id=$userId&content_type_id=${contentType.index + 1}",
+      options: Options(
+        method: 'GET',
+      ),
+    );
+
+    checkRequest(response);
+
+    return (response.data as List).map((e) => ShowcaseContentModel.fromJson(e)).toList();
   }
 
   // add genre
