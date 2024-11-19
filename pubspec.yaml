@@ -62,7 +62,6 @@ dependencies:
   flutter_rating_bar: ^4.0.1
 
   # Http
-  http: ^1.2.2
   dio: ^5.7.0
 
 

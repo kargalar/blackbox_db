@@ -2,7 +2,6 @@ import 'package:blackbox_db/8%20Model/content_model.dart';
 import 'package:blackbox_db/8%20Model/genre_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class ServerManager {
@@ -18,6 +17,8 @@ class ServerManager {
 
   var dio = Dio();
 
+  // --------------------------------------------
+
   // check request
   void checkRequest(Response response) {
     if (response.statusCode == 200) {
@@ -27,9 +28,7 @@ class ServerManager {
     }
   }
 
-  void getUser() {
-    http.get(Uri.parse('$_baseUrl/user'));
-  }
+  // ********************************************
 
   // get all genres
   Future<List<GenreModel>> getGenres() async {
