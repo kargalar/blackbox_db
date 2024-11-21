@@ -29,7 +29,7 @@ class ContentInformation extends StatelessWidget {
               ),
               const SizedBox(width: 10),
               Text(
-                contentModel.year.toString(),
+                contentModel.releaseDate.toString(),
                 style: const TextStyle(
                   fontSize: 18,
                 ),
@@ -59,7 +59,7 @@ class ContentInformation extends StatelessWidget {
               ),
               const SizedBox(width: 10),
               Text(
-                "${contentModel.lenght} min",
+                "${contentModel.length} min",
                 style: const TextStyle(fontSize: 16),
               ),
               const SizedBox(width: 10),

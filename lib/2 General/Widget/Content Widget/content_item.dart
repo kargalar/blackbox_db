@@ -14,9 +14,11 @@ class ContentItem extends StatefulWidget {
   const ContentItem({
     super.key,
     required this.showcaseContentModel,
+    required this.showcaseType,
   });
 
   final ShowcaseContentModel showcaseContentModel;
+  final ShowcaseTypeEnum showcaseType;
 
   @override
   State<ContentItem> createState() => _ContentItemState();
@@ -41,10 +43,10 @@ class _ContentItemState extends State<ContentItem> {
             onHover = false;
           });
         },
-        child: InkWell(
+        child: GestureDetector(
           onTap: () {
             context.read<PageProvider>().content(
-                  1,
+                  widget.showcaseContentModel.contentId,
                   widget.showcaseContentModel.contentType,
                 );
           },
@@ -74,17 +76,23 @@ class _ContentItemState extends State<ContentItem> {
                     ),
                   ),
                   // TODO: activity için farklı model oluşturulduktan sonra devam edilecek. contentActivity yorum satırına alındı
-                  if (!onHover && widget.showcaseContentModel.showcaseType == ShowcaseTypeEnum.ACTIVITY) const ContentActivity(),
+                  if (!onHover && widget.showcaseType == ShowcaseTypeEnum.ACTIVITY) const ContentActivity(),
                   if (onHover)
                     ContentHover(
-                      isFavori: widget.showcaseContentModel.isFavori,
+                      isFavori: widget.showcaseContentModel.isFavorite,
                       isConsumed: widget.showcaseContentModel.isConsumed,
                       isConsumeLater: widget.showcaseContentModel.isConsumeLater,
                     ),
-                  if (widget.showcaseContentModel.showcaseType == ShowcaseTypeEnum.TREND) const ContentTrend(),
+                  if (widget.showcaseType == ShowcaseTypeEnum.TREND) const ContentTrend(),
                 ],
               ),
-              if (widget.showcaseContentModel.showcaseType == ShowcaseTypeEnum.EXPLORE) const ContentList(),
+              if (widget.showcaseType == ShowcaseTypeEnum.EXPLORE)
+                ContentList(
+                  // TODO: normalde burası giriş yapan kullanıcıya göre değil profili gezilen kullanıcını veya giriş yapan kullanıcıya göre olacak
+                  rating: widget.showcaseContentModel.rating,
+                  isFavorite: widget.showcaseContentModel.isFavorite,
+                  isReviewed: widget.showcaseContentModel.isReviewed,
+                ),
             ],
           ),
         ),

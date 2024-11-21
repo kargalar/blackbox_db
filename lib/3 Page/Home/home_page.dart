@@ -1,4 +1,5 @@
 import 'package:blackbox_db/2%20General/Widget/Content%20Widget/content_item.dart';
+import 'package:blackbox_db/3%20Page/Explore/Widget/content_list.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:blackbox_db/7%20Enum/showcase_type_enum.dart';
 import 'package:blackbox_db/8%20Model/showcase_content_model.dart';
@@ -14,76 +15,123 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return SingleChildScrollView(
       child: Column(
         children: [
+          const ContentList(
+            contentType: ContentTypeEnum.BOOK,
+            showcaseType: ShowcaseTypeEnum.EXPLORE,
+          ),
+          const ContentList(
+            showcaseType: ShowcaseTypeEnum.EXPLORE,
+          ),
+          const ContentList(
+            contentType: ContentTypeEnum.BOOK,
+            showcaseType: ShowcaseTypeEnum.ACTIVITY,
+          ),
+          const ContentList(
+            contentType: ContentTypeEnum.BOOK,
+            showcaseType: ShowcaseTypeEnum.TREND,
+          ),
+          const ContentList(
+            contentType: ContentTypeEnum.BOOK,
+            showcaseType: ShowcaseTypeEnum.LIST,
+          ),
+          const ContentList(
+            contentType: ContentTypeEnum.BOOK,
+            showcaseType: ShowcaseTypeEnum.CONTIUNE,
+          ),
+          const ContentList(
+            contentType: ContentTypeEnum.BOOK,
+            showcaseType: ShowcaseTypeEnum.FLAT,
+          ),
+
+          // TEST TEST TEST TEST TEST TEST TEST TEST
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // activity
               ContentItem(
                 showcaseContentModel: ShowcaseContentModel(
-                  id: 0,
+                  contentId: 0,
                   contentType: ContentTypeEnum.MOVIE,
-                  showcaseType: ShowcaseTypeEnum.ACTIVITY,
-                  isFavori: false,
+                  isFavorite: false,
                   isConsumed: true,
+                  rating: null,
+                  isReviewed: false,
                   isConsumeLater: false,
                 ),
+                showcaseType: ShowcaseTypeEnum.ACTIVITY,
               ),
+              // explore
               ContentItem(
                 showcaseContentModel: ShowcaseContentModel(
-                  id: 1,
+                  contentId: 1,
                   contentType: ContentTypeEnum.BOOK,
-                  showcaseType: ShowcaseTypeEnum.EXPLORE,
-                  isFavori: true,
+                  isFavorite: true,
                   isConsumed: true,
+                  rating: null,
+                  isReviewed: false,
                   isConsumeLater: false,
                 ),
+                showcaseType: ShowcaseTypeEnum.EXPLORE,
               ),
+              // continue
               ContentItem(
                 showcaseContentModel: ShowcaseContentModel(
-                  id: 2,
+                  contentId: 2,
                   contentType: ContentTypeEnum.GAME,
-                  showcaseType: ShowcaseTypeEnum.CONTIUNE,
-                  isFavori: false,
+                  isFavorite: false,
                   isConsumed: false,
+                  rating: null,
+                  isReviewed: false,
                   isConsumeLater: true,
                 ),
+                showcaseType: ShowcaseTypeEnum.CONTIUNE,
               ),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // list
               ContentItem(
                 showcaseContentModel: ShowcaseContentModel(
-                  id: 3,
+                  contentId: 3,
                   contentType: ContentTypeEnum.MOVIE,
-                  showcaseType: ShowcaseTypeEnum.LIST,
-                  isFavori: false,
+                  isFavorite: false,
                   isConsumed: false,
+                  rating: null,
+                  isReviewed: false,
                   isConsumeLater: false,
                 ),
+                showcaseType: ShowcaseTypeEnum.LIST,
               ),
+              // trend
               ContentItem(
                 showcaseContentModel: ShowcaseContentModel(
-                  id: 4,
+                  contentId: 4,
                   contentType: ContentTypeEnum.BOOK,
-                  showcaseType: ShowcaseTypeEnum.TREND,
-                  isFavori: false,
+                  isFavorite: false,
                   isConsumed: false,
+                  rating: null,
+                  isReviewed: false,
                   isConsumeLater: true,
                 ),
+                showcaseType: ShowcaseTypeEnum.TREND,
               ),
+              // flat
               ContentItem(
                 showcaseContentModel: ShowcaseContentModel(
-                  id: 5,
+                  contentId: 5,
                   contentType: ContentTypeEnum.GAME,
-                  showcaseType: ShowcaseTypeEnum.FLAT,
-                  isFavori: false,
+                  isFavorite: false,
                   isConsumed: false,
+                  rating: null,
+                  isReviewed: false,
                   isConsumeLater: false,
                 ),
+                showcaseType: ShowcaseTypeEnum.FLAT,
               ),
             ],
           ),

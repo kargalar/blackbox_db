@@ -13,17 +13,18 @@ class ContentActivity extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: backendden gelecek
     final ContentLogModel userLog = ContentLogModel(
       id: 1,
+      userID: 1,
       date: DateTime.now(),
       contentID: 1,
-      contentTitle: "Hit the Road ",
-      contentCoverPath: "https://image.tmdb.org/t/p/original/s2VAydm53Odgafoto5NPLUeQgkX.jpg",
       contentType: ContentTypeEnum.MOVIE,
       contentStatus: ContentStatusEnum.CONSUMED,
       rating: 3.5,
       isFavorite: false,
       isConsumeLater: false,
+      contentTitle: "The Road",
       review: "A chaotic family is on a road trip across a rugged landscape. In the back seat, Dad has a broken leg, Mom tries to laugh when she’s not holding back tears, and the youngest keeps",
     );
 
@@ -54,8 +55,10 @@ class ContentActivity extends StatelessWidget {
               Row(
                 children: [
                   // profile picture
-                  ProfileImage.content(
-                    imageUrl: userLog.contentCoverPath,
+                  const ProfileImage.content(
+                    // TODO:
+                    // imageUrl: "asd/cover/${userLog.contentID}",
+                    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/220px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg",
                   ),
                   const SizedBox(
                     width: 5,

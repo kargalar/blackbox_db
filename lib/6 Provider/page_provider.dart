@@ -21,6 +21,7 @@ class PageProvider with ChangeNotifier {
   }
 
   void explore(ContentTypeEnum contentType) {
+    // TODO: movie, book veya game e her tıkladığında tekrar yüklesin
     exploreContentType = contentType;
     currentIndex = 2;
     notifyListeners();

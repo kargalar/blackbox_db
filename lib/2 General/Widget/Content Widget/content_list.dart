@@ -1,10 +1,18 @@
 import 'package:blackbox_db/2%20General/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class ContentList extends StatelessWidget {
   const ContentList({
     super.key,
+    required this.rating,
+    required this.isFavorite,
+    required this.isReviewed,
   });
+
+  final double? rating;
+  final bool isFavorite;
+  final bool isReviewed;
 
   @override
   Widget build(BuildContext context) {
@@ -14,26 +22,30 @@ class ContentList extends StatelessWidget {
         width: 150,
         child: Row(
           children: [
-            const SizedBox(width: 5),
-            ...List.generate(
-              5,
-              (index) => const Icon(
+            RatingBarIndicator(
+              rating: rating ?? 0,
+              itemSize: 15,
+              itemCount: 5,
+              unratedColor: AppColors.transparent,
+              itemBuilder: (context, _) => Icon(
                 Icons.star,
-                size: 15,
+                color: AppColors.main,
               ),
             ),
             const Spacer(),
-            const Icon(
-              Icons.favorite,
-              color: AppColors.white,
-              size: 15,
-            ),
+            if (isFavorite)
+              const Icon(
+                Icons.favorite,
+                color: AppColors.white,
+                size: 15,
+              ),
             const SizedBox(width: 5),
-            const Icon(
-              Icons.comment,
-              color: AppColors.white,
-              size: 15,
-            ),
+            if (isReviewed)
+              const Icon(
+                Icons.comment,
+                color: AppColors.white,
+                size: 15,
+              ),
             const SizedBox(width: 5),
           ],
         ),
