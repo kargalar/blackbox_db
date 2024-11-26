@@ -24,7 +24,7 @@ class _SearchPageState extends State<SearchPage> {
   void initState() {
     super.initState();
 
-    getData();
+    search();
   }
 
   @override
@@ -74,7 +74,7 @@ class _SearchPageState extends State<SearchPage> {
               );
   }
 
-  Future<void> getData() async {
+  Future<void> search() async {
     try {
       contentList = await TMDBService().search(context.read<PageProvider>().searchText);
 

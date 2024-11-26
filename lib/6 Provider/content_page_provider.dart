@@ -8,7 +8,7 @@ import 'package:blackbox_db/8%20Model/platform_model.dart';
 import 'package:flutter/material.dart';
 
 class ContentPageProvider with ChangeNotifier {
-  ContentModel contentModel = ContentModel(
+  ContentModel? contentModel = ContentModel(
     id: 1,
     posterPath: "https://image.tmdb.org/t/p/original/vNrbrsHOpXS3whk9DLuBNcjJy1s.jpg",
     title: "Hit the Road ",
@@ -32,30 +32,30 @@ class ContentPageProvider with ChangeNotifier {
   );
 
   void consume() {
-    if (contentModel.contentStatus == ContentStatusEnum.CONSUMED) {
-      contentModel.contentStatus = null;
+    if (contentModel!.contentStatus == ContentStatusEnum.CONSUMED) {
+      contentModel!.contentStatus = null;
     } else {
-      contentModel.contentStatus = ContentStatusEnum.CONSUMED;
+      contentModel!.contentStatus = ContentStatusEnum.CONSUMED;
     }
 
     notifyListeners();
   }
 
   void favorite() {
-    contentModel.isFavorite = !contentModel.isFavorite;
+    contentModel!.isFavorite = !contentModel!.isFavorite;
 
     notifyListeners();
   }
 
   void consumeLater() {
-    contentModel.isConsumeLater = !contentModel.isConsumeLater;
+    contentModel!.isConsumeLater = !contentModel!.isConsumeLater;
 
     notifyListeners();
   }
 
   void rate(double rating) {
     // kaydırırken her sefeirnde kaydetmemek için kullanıcı kaydırmayı bitirdiği zaman göderilsin.
-    contentModel.rating = rating;
+    contentModel!.rating = rating;
 
     notifyListeners();
   }

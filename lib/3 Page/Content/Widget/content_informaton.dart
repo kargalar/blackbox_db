@@ -21,7 +21,7 @@ class ContentInformation extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                contentModel.title,
+                contentModel!.title,
                 style: const TextStyle(
                   fontSize: 26,
                   fontWeight: FontWeight.bold,

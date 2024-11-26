@@ -108,4 +108,30 @@ class ContentModel {
       'is_consume_later': isConsumeLater,
     };
   }
+
+  // TMDB
+  factory ContentModel.fromJsonTMDB(Map<String, dynamic> json) {
+    return ContentModel(
+      id: json['id'],
+      posterPath: json['poster_path'],
+      title: json['title'],
+      contentType: ContentTypeEnum.MOVIE,
+      releaseDate: DateTime.parse(json['release_date']),
+      creatorList: [], // TMDB'den bu bilgi gelmez, varsayılan olarak boş liste
+      description: json['overview'],
+      genreList: (json['genres'] as List<dynamic>).map((e) => GenreModel(id: e['id'], title: e['name'])).toList(),
+      length: json['runtime'],
+      platformList: [], // TMDB'den bu bilgi gelmez, varsayılan olarak boş liste
+      cast: [], // TMDB'den bu bilgi gelmez, varsayılan olarak boş liste
+      consumeCount: 0, // TMDB'den bu bilgi gelmez, varsayılan olarak 0
+      favoriCount: 0, // TMDB'den bu bilgi gelmez, varsayılan olarak 0
+      listCount: 0, // TMDB'den bu bilgi gelmez, varsayılan olarak 0
+      reviewCount: 0, // TMDB'den bu bilgi gelmez, varsayılan olarak 0
+      ratingDistribution: [], // TMDB'den bu bilgi gelmez, varsayılan olarak boş liste
+      contentStatus: null,
+      rating: 0,
+      isFavorite: false,
+      isConsumeLater: false,
+    );
+  }
 }

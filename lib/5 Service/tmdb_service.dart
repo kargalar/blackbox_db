@@ -1,3 +1,4 @@
+import 'package:blackbox_db/8%20Model/content_model.dart';
 import 'package:blackbox_db/8%20Model/search_content_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -40,5 +41,21 @@ class TMDBService {
     checkRequest(response);
 
     return SearchContentModel.fromJsonTMDBList(response.data);
+  }
+
+  // get detail
+  Future<ContentModel> getDetail(int id) async {
+    final url = 'https://api.themoviedb.org/3/movie/$id?language=en-US';
+
+    final response = await Dio().get(
+      url,
+      options: Options(
+        headers: headers,
+      ),
+    );
+
+    checkRequest(response);
+
+    return ContentModel.fromJsonTMDB(response.data);
   }
 }

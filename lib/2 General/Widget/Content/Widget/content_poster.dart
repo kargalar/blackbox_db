@@ -1,16 +1,33 @@
 import 'package:blackbox_db/2%20General/app_colors.dart';
-import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:flutter/material.dart';
 
 class ContentPoster extends StatelessWidget {
   const ContentPoster({
     super.key,
-    required this.contentType,
     required this.posterPath,
+    this.size = 150,
   });
 
-  final ContentTypeEnum contentType;
   final String? posterPath;
+  final double size;
+
+  const ContentPoster.showcase({
+    Key? key,
+    required String? posterPath,
+  }) : this(
+          key: key,
+          posterPath: posterPath,
+          size: 150,
+        );
+
+  const ContentPoster.contentPage({
+    Key? key,
+    required String? posterPath,
+  }) : this(
+          key: key,
+          posterPath: posterPath,
+          size: 200,
+        );
 
   @override
   Widget build(BuildContext context) {
@@ -19,13 +36,12 @@ class ContentPoster extends StatelessWidget {
         borderRadius: AppColors.borderRadiusAll / 2,
         boxShadow: AppColors.bottomShadow,
       ),
-      width: 150,
-      height: 220,
+      width: size,
+      height: size * 1.5,
       child: ClipRRect(
         borderRadius: AppColors.borderRadiusAll / 2,
         child: posterPath != null
             ? Image.network(
-                //TODO: cover backendden poster_path olacak hepsinde
                 "https://image.tmdb.org/t/p/original$posterPath",
                 fit: BoxFit.cover,
               )
