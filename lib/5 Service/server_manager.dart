@@ -4,7 +4,6 @@ import 'package:blackbox_db/8%20Model/genre_model.dart';
 import 'package:blackbox_db/8%20Model/showcase_content_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
 
 class ServerManager {
   ServerManager._privateConstructor();
@@ -24,7 +23,7 @@ class ServerManager {
   // check request
   void checkRequest(Response response) {
     if (response.statusCode == 200) {
-      debugPrint(json.encode(response.data));
+      // debugPrint(json.encode(response.data));
     } else {
       debugPrint(response.statusMessage);
     }

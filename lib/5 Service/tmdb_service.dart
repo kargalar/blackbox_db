@@ -1,6 +1,4 @@
-import 'dart:convert';
-
-import 'package:blackbox_db/8%20Model/showcase_content_model.dart';
+import 'package:blackbox_db/8%20Model/search_content_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
@@ -22,14 +20,14 @@ class TMDBService {
   // check request
   void checkRequest(Response response) {
     if (response.statusCode == 200) {
-      debugPrint(json.encode(response.data));
+      // debugPrint(json.encode(response.data));
     } else {
       debugPrint(response.statusMessage);
     }
   }
 
   // get all genres
-  Future<List<ShowcaseContentModel>> search(searchText) async {
+  Future<List<SearchContentModel>> search(searchText) async {
     final url = 'https://api.themoviedb.org/3/search/movie?query=$searchText&include_adult=false&language=en-US&page=1';
 
     final response = await Dio().get(
@@ -41,6 +39,6 @@ class TMDBService {
 
     checkRequest(response);
 
-    return ShowcaseContentModel.fromJsonTMDBList(response.data);
+    return SearchContentModel.fromJsonTMDBList(response.data);
   }
 }

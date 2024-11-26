@@ -1,8 +1,7 @@
-import 'package:blackbox_db/2%20General/Widget/Content/content_item.dart';
+import 'package:blackbox_db/3%20Page/Search/search_item.dart';
 import 'package:blackbox_db/5%20Service/tmdb_service.dart';
 import 'package:blackbox_db/6%20Provider/page_provider.dart';
-import 'package:blackbox_db/7%20Enum/showcase_type_enum.dart';
-import 'package:blackbox_db/8%20Model/showcase_content_model.dart';
+import 'package:blackbox_db/8%20Model/search_content_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +18,7 @@ class _SearchPageState extends State<SearchPage> {
 
   bool isLoading = true;
 
-  late List<ShowcaseContentModel> contentList;
+  late List<SearchContentModel> contentList;
 
   @override
   void initState() {
@@ -47,17 +46,13 @@ class _SearchPageState extends State<SearchPage> {
                 child: Padding(
                   padding: const EdgeInsets.all(20),
                   child: SizedBox(
-                    width: 0.5.sw,
-                    child: GridView.builder(
-                      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                        maxCrossAxisExtent: 160,
-                        mainAxisExtent: 260,
-                      ),
+                    width: 0.4.sw,
+                    child: ListView.builder(
                       shrinkWrap: true,
                       itemCount: contentList.length,
                       itemBuilder: (context, index) {
-                        return ContentItem(
-                          showcaseContentModel: ShowcaseContentModel(
+                        return SearchItem(
+                          searchContentModel: SearchContentModel(
                             contentId: contentList[index].contentId,
                             contentPosterPath: contentList[index].contentPosterPath,
                             contentType: contentList[index].contentType,
@@ -66,9 +61,11 @@ class _SearchPageState extends State<SearchPage> {
                             rating: contentList[index].rating,
                             isReviewed: contentList[index].isReviewed,
                             isConsumeLater: contentList[index].isConsumeLater,
-                            trendIndex: index,
+                            title: contentList[index].title,
+                            description: contentList[index].description,
+                            year: contentList[index].year,
+                            originalTitle: contentList[index].originalTitle,
                           ),
-                          showcaseType: ShowcaseTypeEnum.FLAT,
                         );
                       },
                     ),

@@ -1,3 +1,4 @@
+import 'package:blackbox_db/2%20General/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class ContentItemButton extends StatelessWidget {
@@ -15,7 +16,7 @@ class ContentItemButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      borderRadius: BorderRadius.circular(10),
+      borderRadius: AppColors.borderRadiusAll,
       onTap: onTap,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4),
