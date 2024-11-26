@@ -94,10 +94,10 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  assets:
-    - assets/test/Movie/
-    - assets/test/Book/
-    - assets/test/Game/
+  # assets:
+  #   - assets/test/Movie/
+  #   - assets/test/Book/
+  #   - assets/test/Game/
   
   
   # fonts:

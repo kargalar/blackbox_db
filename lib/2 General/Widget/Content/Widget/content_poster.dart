@@ -23,17 +23,25 @@ class ContentPoster extends StatelessWidget {
       height: 220,
       child: ClipRRect(
         borderRadius: AppColors.borderRadiusAll / 2,
-        child: Image.network(
-          //TODO: cover backendden poster_path olacak hepsinde
-          contentType == ContentTypeEnum.MOVIE
-              // ? "https://image.tmdb.org/t/p/original$posterPath"
-              ? "https://image.tmdb.org/t/p/original/vNrbrsHOpXS3whk9DLuBNcjJy1s.jpg"
-              : contentType == ContentTypeEnum.BOOK
-                  ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCqYZBEzzpdbFogx5zqxp_cOtdRQw5oL3lyg&s"
-                  : "https://images.igdb.com/igdb/image/upload/t_cover_big/co5xex.jpg",
-
-          fit: BoxFit.cover,
-        ),
+        child: posterPath != null
+            ? Image.network(
+                //TODO: cover backendden poster_path olacak hepsinde
+                "https://image.tmdb.org/t/p/original$posterPath",
+                fit: BoxFit.cover,
+              )
+            :
+            // not found
+            Container(
+                color: AppColors.panelBackground,
+                child: const Center(
+                  child: Text(
+                    "Not Found",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+              ),
       ),
     );
   }
