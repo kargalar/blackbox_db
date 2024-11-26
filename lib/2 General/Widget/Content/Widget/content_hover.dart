@@ -1,4 +1,4 @@
-import 'package:blackbox_db/2%20General/Widget/Content%20Widget/content_item_button.dart';
+import 'package:blackbox_db/2%20General/Widget/Content/Widget/content_item_button.dart';
 import 'package:blackbox_db/2%20General/app_colors.dart';
 import 'package:flutter/material.dart';
 

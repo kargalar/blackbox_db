@@ -1,4 +1,4 @@
-import 'package:blackbox_db/2%20General/Widget/Content%20Widget/content_item.dart';
+import 'package:blackbox_db/2%20General/Widget/Content/content_item.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:blackbox_db/7%20Enum/showcase_type_enum.dart';
 import 'package:blackbox_db/8%20Model/showcase_content_model.dart';
