@@ -1,5 +1,4 @@
 import 'package:blackbox_db/2%20General/Widget/Content/Widget/content_poster.dart';
-import 'package:blackbox_db/2%20General/app_colors.dart';
 import 'package:blackbox_db/6%20Provider/content_page_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,13 +15,13 @@ class ContentCover extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
+        const SizedBox(height: 20),
         // poster
         ContentPoster.contentPage(
           posterPath: contentModel!.posterPath,
         ),
         // movie stats
         Container(
-          color: AppColors.panelBackground,
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [

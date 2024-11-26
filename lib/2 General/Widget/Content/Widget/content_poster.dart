@@ -26,18 +26,18 @@ class ContentPoster extends StatelessWidget {
   }) : this(
           key: key,
           posterPath: posterPath,
-          size: 200,
+          size: 230,
         );
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: size * 1.5,
+      width: size,
       decoration: BoxDecoration(
         borderRadius: AppColors.borderRadiusAll / 2,
         boxShadow: AppColors.bottomShadow,
       ),
-      width: size,
-      height: size * 1.5,
       child: ClipRRect(
         borderRadius: AppColors.borderRadiusAll / 2,
         child: posterPath != null

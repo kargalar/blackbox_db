@@ -40,9 +40,10 @@ class _ContentListState extends State<ContentList> {
               child: SizedBox(
                 width: 0.5.sw,
                 child: GridView.builder(
+                  // TODO: ekranın boyutuna göre öğeler esniyor. sabit kalmasını istiyorum.
                   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 160,
-                    mainAxisExtent: 260,
+                    maxCrossAxisExtent: 150,
+                    childAspectRatio: 0.5,
                   ),
                   shrinkWrap: true,
                   itemCount: contentList.length,

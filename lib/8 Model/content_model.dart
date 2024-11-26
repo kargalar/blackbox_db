@@ -1,7 +1,6 @@
 import 'package:blackbox_db/7%20Enum/content_status_enum.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
-import 'package:blackbox_db/8%20Model/cast_model.dart';
-import 'package:blackbox_db/8%20Model/creator_model.dart';
+import 'package:blackbox_db/8%20Model/crew_model.dart';
 import 'package:blackbox_db/8%20Model/genre_model.dart';
 import 'package:blackbox_db/8%20Model/platform_model.dart';
 import 'package:intl/intl.dart';
@@ -36,12 +35,11 @@ class ContentModel {
   final String title;
   final String description;
   final DateTime releaseDate;
-  final List<CreatorModel> creatorList;
-
+  final List<CrewModel> creatorList;
   final List<GenreModel> genreList;
   final int length;
   final List<PlatformModel>? platformList;
-  final List<CastModel>? cast;
+  final List<CrewModel>? cast;
 
   // TODO: filmin bilgileri, istatistikleri ve kullanıcı logu ayrı modelde mi tutulsa
   int consumeCount;
@@ -62,12 +60,12 @@ class ContentModel {
       title: json['title'],
       contentType: ContentTypeEnum.values[json['content_type_id']],
       releaseDate: DateTime.parse(json['release_date']),
-      creatorList: (json['creator_list'] as List).map((i) => CreatorModel.fromJson(i)).toList(),
+      creatorList: (json['creator_list'] as List).map((i) => CrewModel.fromJson(i)).toList(),
       description: json['description'],
       genreList: (json['genre_list'] as List).map((i) => GenreModel.fromJson(i)).toList(),
       length: json['length'],
       platformList: (json['platform_list'] as List).map((i) => PlatformModel.fromJson(i)).toList(),
-      cast: (json['cast_list'] as List).map((i) => CastModel.fromJson(i)).toList(),
+      cast: (json['cast_list'] as List).map((i) => CrewModel.fromJson(i)).toList(),
       consumeCount: json['consume_count'],
       favoriCount: json['favori_count'],
       listCount: json['list_count'],
@@ -117,12 +115,13 @@ class ContentModel {
       title: json['title'],
       contentType: ContentTypeEnum.MOVIE,
       releaseDate: DateTime.parse(json['release_date']),
-      creatorList: [], // TMDB'den bu bilgi gelmez, varsayılan olarak boş liste
+      creatorList: CrewModel.fromJsonList(json['credits']['crew'].where((item) => item['department'] == 'Directing').toList().sublist(0, 1)),
       description: json['overview'],
       genreList: (json['genres'] as List<dynamic>).map((e) => GenreModel(id: e['id'], title: e['name'])).toList(),
       length: json['runtime'],
       platformList: [], // TMDB'den bu bilgi gelmez, varsayılan olarak boş liste
-      cast: [], // TMDB'den bu bilgi gelmez, varsayılan olarak boş liste
+      // TODO: 5 den az olursa sorun olur mu?
+      cast: CrewModel.fromJsonList(json['credits']['cast']).sublist(0, 5),
       consumeCount: 0, // TMDB'den bu bilgi gelmez, varsayılan olarak 0
       favoriCount: 0, // TMDB'den bu bilgi gelmez, varsayılan olarak 0
       listCount: 0, // TMDB'den bu bilgi gelmez, varsayılan olarak 0
