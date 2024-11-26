@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 class ContentPageProvider with ChangeNotifier {
   ContentModel contentModel = ContentModel(
     id: 1,
+    posterPath: "https://image.tmdb.org/t/p/original/vNrbrsHOpXS3whk9DLuBNcjJy1s.jpg",
     title: "Hit the Road ",
     contentType: ContentTypeEnum.MOVIE,
     releaseDate: DateTime(2024),

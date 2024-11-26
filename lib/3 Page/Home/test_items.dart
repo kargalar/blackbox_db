@@ -11,60 +11,130 @@ class TestItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Column(
       children: [
-        // activity
-        Column(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text("ACTIVITY"),
-            ContentItem(
-              showcaseContentModel: ShowcaseContentModel(
-                contentId: 0,
-                contentType: ContentTypeEnum.MOVIE,
-                isFavorite: false,
-                isConsumed: true,
-                rating: null,
-                isReviewed: false,
-                isConsumeLater: false,
-              ),
-              showcaseType: ShowcaseTypeEnum.ACTIVITY,
+            // TEST TEST TEST TEST
+            // activity
+            Column(
+              children: [
+                const Text("ACTIVITY"),
+                ContentItem(
+                  showcaseContentModel: ShowcaseContentModel(
+                    contentId: 0,
+                    contentPosterPath: "https://image.tmdb.org/t/p/original/vNrbrsHOpXS3whk9DLuBNcjJy1s.jpg",
+                    contentType: ContentTypeEnum.MOVIE,
+                    isFavorite: false,
+                    isConsumed: true,
+                    rating: null,
+                    isReviewed: false,
+                    isConsumeLater: false,
+                  ),
+                  showcaseType: ShowcaseTypeEnum.ACTIVITY,
+                ),
+              ],
+            ),
+            // explore
+            Column(
+              children: [
+                const Text("EXPLORE"),
+                ContentItem(
+                  showcaseContentModel: ShowcaseContentModel(
+                    contentId: 1,
+                    contentPosterPath: "https://image.tmdb.org/t/p/original/vNrbrsHOpXS3whk9DLuBNcjJy1s.jpg",
+                    contentType: ContentTypeEnum.BOOK,
+                    isFavorite: true,
+                    isConsumed: true,
+                    rating: null,
+                    isReviewed: false,
+                    isConsumeLater: false,
+                  ),
+                  showcaseType: ShowcaseTypeEnum.EXPLORE,
+                ),
+              ],
+            ),
+            // continue
+            Column(
+              children: [
+                const Text("CONTINUE"),
+                ContentItem(
+                  showcaseContentModel: ShowcaseContentModel(
+                    contentId: 2,
+                    contentPosterPath: "https://image.tmdb.org/t/p/original/vNrbrsHOpXS3whk9DLuBNcjJy1s.jpg",
+                    contentType: ContentTypeEnum.GAME,
+                    isFavorite: false,
+                    isConsumed: false,
+                    rating: null,
+                    isReviewed: false,
+                    isConsumeLater: true,
+                  ),
+                  showcaseType: ShowcaseTypeEnum.CONTIUNE,
+                ),
+              ],
             ),
           ],
         ),
-        // explore
-        Column(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text("EXPLORE"),
-            ContentItem(
-              showcaseContentModel: ShowcaseContentModel(
-                contentId: 1,
-                contentType: ContentTypeEnum.BOOK,
-                isFavorite: true,
-                isConsumed: true,
-                rating: null,
-                isReviewed: false,
-                isConsumeLater: false,
-              ),
-              showcaseType: ShowcaseTypeEnum.EXPLORE,
+            // flat
+            Column(
+              children: [
+                const Text("LIST"),
+                ContentItem(
+                  showcaseContentModel: ShowcaseContentModel(
+                    contentId: 3,
+                    contentPosterPath: "https://image.tmdb.org/t/p/original/vNrbrsHOpXS3whk9DLuBNcjJy1s.jpg",
+                    contentType: ContentTypeEnum.MOVIE,
+                    isFavorite: false,
+                    isConsumed: false,
+                    rating: null,
+                    isReviewed: false,
+                    isConsumeLater: false,
+                  ),
+                  showcaseType: ShowcaseTypeEnum.FLAT,
+                ),
+              ],
             ),
-          ],
-        ),
-        // continue
-        Column(
-          children: [
-            const Text("CONTINUE"),
-            ContentItem(
-              showcaseContentModel: ShowcaseContentModel(
-                contentId: 2,
-                contentType: ContentTypeEnum.GAME,
-                isFavorite: false,
-                isConsumed: false,
-                rating: null,
-                isReviewed: false,
-                isConsumeLater: true,
-              ),
-              showcaseType: ShowcaseTypeEnum.CONTIUNE,
+            // trend
+            Column(
+              children: [
+                const Text("TREND"),
+                ContentItem(
+                  showcaseContentModel: ShowcaseContentModel(
+                    contentId: 4,
+                    contentPosterPath: "https://image.tmdb.org/t/p/original/vNrbrsHOpXS3whk9DLuBNcjJy1s.jpg",
+                    contentType: ContentTypeEnum.BOOK,
+                    isFavorite: false,
+                    isConsumed: false,
+                    rating: null,
+                    isReviewed: false,
+                    isConsumeLater: true,
+                  ),
+                  showcaseType: ShowcaseTypeEnum.TREND,
+                ),
+              ],
+            ),
+            // flat
+            Column(
+              children: [
+                const Text("FLAT"),
+                ContentItem(
+                  showcaseContentModel: ShowcaseContentModel(
+                    contentId: 5,
+                    contentPosterPath: "https://image.tmdb.org/t/p/original/vNrbrsHOpXS3whk9DLuBNcjJy1s.jpg",
+                    contentType: ContentTypeEnum.GAME,
+                    isFavorite: false,
+                    isConsumed: false,
+                    rating: null,
+                    isReviewed: false,
+                    isConsumeLater: false,
+                  ),
+                  showcaseType: ShowcaseTypeEnum.FLAT,
+                ),
+              ],
             ),
           ],
         ),

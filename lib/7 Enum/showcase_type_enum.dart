@@ -1,5 +1,4 @@
 enum ShowcaseTypeEnum {
-  LIST,
   TREND,
   ACTIVITY,
   EXPLORE,

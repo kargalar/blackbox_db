@@ -50,6 +50,7 @@ class _ContentListState extends State<ContentList> {
                     return ContentItem(
                       showcaseContentModel: ShowcaseContentModel(
                         contentId: contentList[index].contentId,
+                        contentPosterPath: contentList[index].contentPosterPath,
                         contentType: contentList[index].contentType,
                         isFavorite: contentList[index].isFavorite,
                         isConsumed: contentList[index].isConsumed,

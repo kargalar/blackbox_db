@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 class ContentModel {
   ContentModel({
     required this.id,
+    required this.posterPath,
     required this.title,
     required this.contentType,
     required this.releaseDate,
@@ -30,6 +31,7 @@ class ContentModel {
   });
 
   final int id;
+  final String posterPath;
   final ContentTypeEnum contentType;
   final String title;
   final String description;
@@ -56,6 +58,7 @@ class ContentModel {
   factory ContentModel.fromJson(Map<String, dynamic> json) {
     return ContentModel(
       id: json['id'],
+      posterPath: json['poster_path'],
       title: json['title'],
       contentType: ContentTypeEnum.values[json['content_type_id']],
       releaseDate: DateTime.parse(json['release_date']),
@@ -84,6 +87,7 @@ class ContentModel {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
+      'poster_path': posterPath,
       'title': title,
       'content_type_id': contentType.index,
       'release_date': DateFormat('yyyy-MM-dd').format(releaseDate),
