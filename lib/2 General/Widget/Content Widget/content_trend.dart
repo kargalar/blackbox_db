@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 class ContentTrend extends StatelessWidget {
   const ContentTrend({
     super.key,
+    required this.index,
   });
+
+  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +23,9 @@ class ContentTrend extends StatelessWidget {
           color: AppColors.black.withOpacity(0.8),
           borderRadius: AppColors.borderRadiusAll / 2,
         ),
-        child: const Text(
-          "#1",
-          style: TextStyle(
+        child: Text(
+          "#$index",
+          style: const TextStyle(
             color: AppColors.white,
             fontSize: 12,
           ),

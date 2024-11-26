@@ -57,7 +57,6 @@ class _ContentItemState extends State<ContentItem> {
                     contentType: widget.showcaseContentModel.contentType,
                     posterPath: widget.showcaseContentModel.contentPosterPath,
                   ),
-                  // TODO: activity için farklı model oluşturulduktan sonra devam edilecek. contentActivity yorum satırına alındı
                   if (!onHover && widget.showcaseType == ShowcaseTypeEnum.ACTIVITY) const ContentActivity(),
                   if (onHover)
                     ContentHover(
@@ -65,7 +64,7 @@ class _ContentItemState extends State<ContentItem> {
                       isConsumed: widget.showcaseContentModel.isConsumed,
                       isConsumeLater: widget.showcaseContentModel.isConsumeLater,
                     ),
-                  if (widget.showcaseType == ShowcaseTypeEnum.TREND) const ContentTrend(),
+                  if (widget.showcaseType == ShowcaseTypeEnum.TREND) ContentTrend(index: widget.showcaseContentModel.trendIndex! + 1),
                 ],
               ),
               if (widget.showcaseType == ShowcaseTypeEnum.EXPLORE)

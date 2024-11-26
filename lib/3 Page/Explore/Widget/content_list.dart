@@ -57,6 +57,7 @@ class _ContentListState extends State<ContentList> {
                         rating: contentList[index].rating,
                         isReviewed: contentList[index].isReviewed,
                         isConsumeLater: contentList[index].isConsumeLater,
+                        trendIndex: index,
                       ),
                       showcaseType: widget.showcaseType,
                     );

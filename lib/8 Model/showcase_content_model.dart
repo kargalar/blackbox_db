@@ -2,17 +2,7 @@ import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:blackbox_db/8%20Model/content_log_model.dart';
 
 class ShowcaseContentModel {
-  ShowcaseContentModel({
-    required this.contentId,
-    required this.contentPosterPath,
-    required this.contentType,
-    required this.isFavorite,
-    required this.isConsumed,
-    required this.isConsumeLater,
-    required this.rating,
-    required this.isReviewed,
-    this.contentLog,
-  });
+  ShowcaseContentModel({required this.contentId, required this.contentPosterPath, required this.contentType, required this.isFavorite, required this.isConsumed, required this.isConsumeLater, required this.rating, required this.isReviewed, this.contentLog, this.trendIndex});
 
   final int contentId;
   final String? contentPosterPath;
@@ -29,6 +19,8 @@ class ShowcaseContentModel {
   // TODO: yukarıdaki üçünü kapsayan bir model yapısı contentLog gibi
   //
   final ContentLogModel? contentLog;
+
+  final int? trendIndex;
 
   factory ShowcaseContentModel.fromJson(Map<String, dynamic> json) {
     return ShowcaseContentModel(

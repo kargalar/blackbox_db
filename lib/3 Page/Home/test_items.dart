@@ -112,6 +112,7 @@ class TestItems extends StatelessWidget {
                     rating: null,
                     isReviewed: false,
                     isConsumeLater: true,
+                    trendIndex: 0,
                   ),
                   showcaseType: ShowcaseTypeEnum.TREND,
                 ),
