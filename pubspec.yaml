@@ -64,6 +64,11 @@ dependencies:
   # Http
   dio: ^5.7.0
 
+  # Cache Network Image 
+  cached_network_image: ^3.4.0
+
+  # shimmer
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:
