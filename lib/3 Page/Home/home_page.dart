@@ -18,30 +18,30 @@ class _HomePageState extends State<HomePage> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          const Text("explore all"),
-          const ContentList(
-            showcaseType: ShowcaseTypeEnum.EXPLORE,
-          ),
-          const Text("activity book"),
+          const Text("activity MOVIE"),
           const ContentList(
             contentType: ContentTypeEnum.MOVIE,
             showcaseType: ShowcaseTypeEnum.EXPLORE,
           ),
-          // const Text("trend BOOK"),
-          // const ContentList(
-          //   contentType: ContentTypeEnum.BOOK,
-          //   showcaseType: ShowcaseTypeEnum.TREND,
-          // ),
-          // const Text("continue BOOK"),
-          // const ContentList(
-          //   contentType: ContentTypeEnum.BOOK,
-          //   showcaseType: ShowcaseTypeEnum.CONTIUNE,
-          // ),
-          // const Text("flat BOOK"),
-          // const ContentList(
-          //   contentType: ContentTypeEnum.BOOK,
-          //   showcaseType: ShowcaseTypeEnum.FLAT,
-          // ),
+          const Text("trend BOOK"),
+          const ContentList(
+            contentType: ContentTypeEnum.BOOK,
+            showcaseType: ShowcaseTypeEnum.TREND,
+          ),
+          const Text("continue GAME"),
+          const ContentList(
+            contentType: ContentTypeEnum.GAME,
+            showcaseType: ShowcaseTypeEnum.CONTIUNE,
+          ),
+          const Text("flat GAME"),
+          const ContentList(
+            contentType: ContentTypeEnum.GAME,
+            showcaseType: ShowcaseTypeEnum.FLAT,
+          ),
+          const Text("explore all"),
+          const ContentList(
+            showcaseType: ShowcaseTypeEnum.EXPLORE,
+          ),
           Divider(color: AppColors.text),
           const TestItems(),
         ],
