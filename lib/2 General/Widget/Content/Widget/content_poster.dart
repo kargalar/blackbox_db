@@ -50,7 +50,8 @@ class ContentPoster extends StatelessWidget {
             ? CachedNetworkImage(
                 imageUrl: "https://image.tmdb.org/t/p/original$posterPath",
                 fit: BoxFit.cover,
-                fadeInDuration: const Duration(milliseconds: 50),
+                fadeInDuration: const Duration(milliseconds: 150),
+                fadeOutDuration: const Duration(milliseconds: 150),
                 memCacheHeight: cacheSize,
                 placeholder: (context, url) {
                   // shimmer
