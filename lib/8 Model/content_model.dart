@@ -2,7 +2,6 @@ import 'package:blackbox_db/7%20Enum/content_status_enum.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:blackbox_db/8%20Model/crew_model.dart';
 import 'package:blackbox_db/8%20Model/genre_model.dart';
-import 'package:blackbox_db/8%20Model/platform_model.dart';
 import 'package:intl/intl.dart';
 
 class ContentModel {
@@ -16,7 +15,6 @@ class ContentModel {
     required this.description,
     required this.genreList,
     required this.length,
-    required this.platformList,
     required this.cast,
     required this.consumeCount,
     required this.favoriCount,
@@ -38,7 +36,6 @@ class ContentModel {
   final List<CrewModel> creatorList;
   final List<GenreModel> genreList;
   final int length;
-  final List<PlatformModel>? platformList;
   final List<CrewModel>? cast;
 
   // TODO: filmin bilgileri, istatistikleri ve kullanıcı logu ayrı modelde mi tutulsa
@@ -64,7 +61,6 @@ class ContentModel {
       description: json['description'],
       genreList: (json['genre_list'] as List).map((i) => GenreModel.fromJson(i)).toList(),
       length: json['length'],
-      platformList: (json['platform_list'] as List).map((i) => PlatformModel.fromJson(i)).toList(),
       cast: (json['cast_list'] as List).map((i) => CrewModel.fromJson(i)).toList(),
       consumeCount: json['consume_count'],
       favoriCount: json['favori_count'],
@@ -93,7 +89,6 @@ class ContentModel {
       'description': description,
       'genre_list': genreList.map((i) => i.toJson()).toList(),
       'length': length,
-      'platform_list': platformList!.map((i) => i.toJson()).toList(),
       'cast_list': cast!.map((i) => i.toJson()).toList(),
       'consume_count': consumeCount,
       'favori_count': favoriCount,
@@ -119,7 +114,6 @@ class ContentModel {
       description: json['overview'],
       genreList: (json['genres'] as List<dynamic>).map((e) => GenreModel(id: e['id'], title: e['name'])).toList(),
       length: json['runtime'],
-      platformList: [], // TMDB'den bu bilgi gelmez, varsayılan olarak boş liste
       // TODO: 5 den az olursa sorun olur mu?
       cast: CrewModel.fromJsonList(json['credits']['cast']).sublist(0, 5),
       consumeCount: 0, // TMDB'den bu bilgi gelmez, varsayılan olarak 0

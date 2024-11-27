@@ -54,7 +54,7 @@ class _ContentItemState extends State<ContentItem> {
               Stack(
                 children: [
                   ContentPoster.showcase(
-                    posterPath: widget.showcaseContentModel.contentPosterPath,
+                    posterPath: widget.showcaseContentModel.posterPath,
                   ),
                   if (!onHover && widget.showcaseType == ShowcaseTypeEnum.ACTIVITY) const ContentActivity(),
                   if (onHover)

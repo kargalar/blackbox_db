@@ -31,7 +31,7 @@ class SearchItem extends StatelessWidget {
           ContentItem(
             showcaseContentModel: ShowcaseContentModel(
               contentId: searchContentModel.contentId,
-              contentPosterPath: searchContentModel.contentPosterPath,
+              posterPath: searchContentModel.contentPosterPath,
               contentType: searchContentModel.contentType,
               isFavorite: searchContentModel.isFavorite,
               isConsumed: searchContentModel.isConsumed,

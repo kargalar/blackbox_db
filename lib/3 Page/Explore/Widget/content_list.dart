@@ -21,52 +21,54 @@ class ContentList extends StatefulWidget {
 }
 
 class _ContentListState extends State<ContentList> {
-  List<ShowcaseContentModel> contentList = [];
+  List<ShowcaseContentModel>? contentList;
 
   bool isLoading = true;
 
   @override
   Widget build(BuildContext context) {
-    if (contentList.isEmpty) {
+    if (contentList == null) {
       getShowcaseContent();
     }
 
     return isLoading
         ? const Center(child: CircularProgressIndicator())
-        : Align(
-            alignment: Alignment.topCenter,
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: SizedBox(
-                width: 0.5.sw,
-                child: GridView.builder(
-                  // TODO: ekranın boyutuna göre öğeler esniyor. sabit kalmasını istiyorum.
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 150,
-                    childAspectRatio: 0.5,
-                  ),
-                  shrinkWrap: true,
-                  itemCount: contentList.length,
-                  itemBuilder: (context, index) {
-                    return ContentItem(
-                      showcaseContentModel: ShowcaseContentModel(
-                        contentId: contentList[index].contentId,
-                        contentPosterPath: contentList[index].contentPosterPath,
-                        contentType: contentList[index].contentType,
-                        isFavorite: contentList[index].isFavorite,
-                        isConsumed: contentList[index].isConsumed,
-                        rating: contentList[index].rating,
-                        isReviewed: contentList[index].isReviewed,
-                        isConsumeLater: contentList[index].isConsumeLater,
-                        trendIndex: index,
+        : contentList!.isEmpty
+            ? const Center(child: Text("Empty"))
+            : Align(
+                alignment: Alignment.topCenter,
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: SizedBox(
+                    width: 0.5.sw,
+                    child: GridView.builder(
+                      // TODO: ekranın boyutuna göre öğeler esniyor. sabit kalmasını istiyorum.
+                      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                        maxCrossAxisExtent: 150,
+                        childAspectRatio: 0.5,
                       ),
-                      showcaseType: widget.showcaseType,
-                    );
-                  },
+                      shrinkWrap: true,
+                      itemCount: contentList!.length,
+                      itemBuilder: (context, index) {
+                        return ContentItem(
+                          showcaseContentModel: ShowcaseContentModel(
+                            contentId: contentList![index].contentId,
+                            posterPath: contentList![index].posterPath,
+                            contentType: contentList![index].contentType,
+                            isFavorite: contentList![index].isFavorite,
+                            isConsumed: contentList![index].isConsumed,
+                            rating: contentList![index].rating,
+                            isReviewed: contentList![index].isReviewed,
+                            isConsumeLater: contentList![index].isConsumeLater,
+                            trendIndex: index,
+                          ),
+                          showcaseType: widget.showcaseType,
+                        );
+                      },
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          );
+              );
   }
 
   void getShowcaseContent() async {

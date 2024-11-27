@@ -4,7 +4,7 @@ import 'package:blackbox_db/8%20Model/content_log_model.dart';
 class ShowcaseContentModel {
   ShowcaseContentModel({
     required this.contentId,
-    required this.contentPosterPath,
+    required this.posterPath,
     required this.contentType,
     required this.isFavorite,
     required this.isConsumed,
@@ -16,7 +16,7 @@ class ShowcaseContentModel {
   });
 
   final int contentId;
-  final String? contentPosterPath;
+  final String? posterPath;
   final ContentTypeEnum contentType;
   final bool isFavorite;
   final bool isConsumed;
@@ -36,8 +36,7 @@ class ShowcaseContentModel {
   factory ShowcaseContentModel.fromJson(Map<String, dynamic> json) {
     return ShowcaseContentModel(
       contentId: json['content_id'],
-      // TODO: normalde
-      contentPosterPath: json['content_poster_path'],
+      posterPath: json['poster_path'],
       contentType: ContentTypeEnum.values[json['content_type_id'] - 1],
       isFavorite: json['is_favorite'],
       isConsumed: json['is_consumed'],

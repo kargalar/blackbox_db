@@ -43,7 +43,7 @@ class ContentUserAction extends StatelessWidget {
                   color: AppColors.main,
                 ),
                 onRatingUpdate: (rating) {
-                  contentPageProvider.rate(rating);
+                  contentPageProvider.rating(rating);
                 },
               ),
             ),
@@ -53,8 +53,8 @@ class ContentUserAction extends StatelessWidget {
               children: [
                 // watch
                 InkWell(
-                  onTap: () {
-                    contentPageProvider.consume();
+                  onTap: () async {
+                    await contentPageProvider.consume();
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(5),
@@ -149,7 +149,7 @@ class ContentUserAction extends StatelessWidget {
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text(log.contentTitle),
+                              Text(log.contentTitle!),
                               const SizedBox(width: 10),
                               Text("${log.contentStatus}"),
                               const SizedBox(width: 10),

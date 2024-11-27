@@ -73,13 +73,6 @@ class ContentInformation extends StatelessWidget {
                 "${contentModel.length} min",
                 style: const TextStyle(fontSize: 16),
               ),
-              const SizedBox(width: 10),
-              if (contentModel.platformList != null) ...[
-                Text(
-                  contentModel.platformList!.map((e) => e.title).join(", "),
-                  style: const TextStyle(fontSize: 16),
-                ),
-              ],
             ],
           ),
           const SizedBox(height: 20),
