@@ -38,19 +38,20 @@ class ContentInformation extends StatelessWidget {
             ],
           ),
 
-          Row(
-            children: [
-              ...List.generate(
-                contentModel.creatorList.length,
-                (index) {
-                  return Text(
-                    contentModel.creatorList[index].name,
-                    style: const TextStyle(fontSize: 15),
-                  );
-                },
-              ),
-            ],
-          ),
+          if (contentModel.creatorList != null)
+            Row(
+              children: [
+                ...List.generate(
+                  contentModel.creatorList!.length,
+                  (index) {
+                    return Text(
+                      contentModel.creatorList![index].name,
+                      style: const TextStyle(fontSize: 15),
+                    );
+                  },
+                ),
+              ],
+            ),
           const SizedBox(height: 20),
           SizedBox(
             width: 500,
@@ -62,19 +63,20 @@ class ContentInformation extends StatelessWidget {
             ),
           ),
           const Divider(),
-          Row(
-            children: [
-              Text(
-                contentModel.genreList.map((e) => e.title).join(", "),
-                style: const TextStyle(fontSize: 16),
-              ),
-              const SizedBox(width: 10),
-              Text(
-                "${contentModel.length} min",
-                style: const TextStyle(fontSize: 16),
-              ),
-            ],
-          ),
+          if (contentModel.genreList != null)
+            Row(
+              children: [
+                Text(
+                  contentModel.genreList!.map((e) => e.title).join(", "),
+                  style: const TextStyle(fontSize: 16),
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  "${contentModel.length} min",
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ],
+            ),
           const SizedBox(height: 20),
           // TODO: buralar sadece isteyenler için açılacak şekilde olsun. tür, mod, actorler, platform falan. yani tasarımdaki gibi
           if (contentModel.cast != null) ...[

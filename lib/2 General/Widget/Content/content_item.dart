@@ -59,6 +59,7 @@ class _ContentItemState extends State<ContentItem> {
                   if (!onHover && widget.showcaseType == ShowcaseTypeEnum.ACTIVITY) const ContentActivity(),
                   if (onHover)
                     ContentHover(
+                      id: widget.showcaseContentModel.contentId,
                       isFavori: widget.showcaseContentModel.isFavorite,
                       isConsumed: widget.showcaseContentModel.isConsumed,
                       isConsumeLater: widget.showcaseContentModel.isConsumeLater,

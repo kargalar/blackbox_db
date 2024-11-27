@@ -24,7 +24,7 @@ class TestItems extends StatelessWidget {
                 ContentItem(
                   showcaseContentModel: ShowcaseContentModel(
                     contentId: 0,
-                    posterPath: "https://image.tmdb.org/t/p/original/vNrbrsHOpXS3whk9DLuBNcjJy1s.jpg",
+                    posterPath: "https://image.tmdb.org/t/p/original/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
                     contentType: ContentTypeEnum.MOVIE,
                     isFavorite: false,
                     isConsumed: true,
@@ -43,7 +43,7 @@ class TestItems extends StatelessWidget {
                 ContentItem(
                   showcaseContentModel: ShowcaseContentModel(
                     contentId: 1,
-                    posterPath: "https://image.tmdb.org/t/p/original/vNrbrsHOpXS3whk9DLuBNcjJy1s.jpg",
+                    posterPath: "https://image.tmdb.org/t/p/original/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
                     contentType: ContentTypeEnum.BOOK,
                     isFavorite: true,
                     isConsumed: true,
@@ -62,7 +62,7 @@ class TestItems extends StatelessWidget {
                 ContentItem(
                   showcaseContentModel: ShowcaseContentModel(
                     contentId: 2,
-                    posterPath: "https://image.tmdb.org/t/p/original/vNrbrsHOpXS3whk9DLuBNcjJy1s.jpg",
+                    posterPath: "https://image.tmdb.org/t/p/original/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
                     contentType: ContentTypeEnum.GAME,
                     isFavorite: false,
                     isConsumed: false,
@@ -86,7 +86,7 @@ class TestItems extends StatelessWidget {
                 ContentItem(
                   showcaseContentModel: ShowcaseContentModel(
                     contentId: 3,
-                    posterPath: "https://image.tmdb.org/t/p/original/vNrbrsHOpXS3whk9DLuBNcjJy1s.jpg",
+                    posterPath: "https://image.tmdb.org/t/p/original/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
                     contentType: ContentTypeEnum.MOVIE,
                     isFavorite: false,
                     isConsumed: false,
@@ -105,7 +105,7 @@ class TestItems extends StatelessWidget {
                 ContentItem(
                   showcaseContentModel: ShowcaseContentModel(
                     contentId: 4,
-                    posterPath: "https://image.tmdb.org/t/p/original/vNrbrsHOpXS3whk9DLuBNcjJy1s.jpg",
+                    posterPath: "https://image.tmdb.org/t/p/original/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
                     contentType: ContentTypeEnum.BOOK,
                     isFavorite: false,
                     isConsumed: false,
@@ -125,7 +125,7 @@ class TestItems extends StatelessWidget {
                 ContentItem(
                   showcaseContentModel: ShowcaseContentModel(
                     contentId: 5,
-                    posterPath: "https://image.tmdb.org/t/p/original/vNrbrsHOpXS3whk9DLuBNcjJy1s.jpg",
+                    posterPath: "https://image.tmdb.org/t/p/original/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
                     contentType: ContentTypeEnum.GAME,
                     isFavorite: false,
                     isConsumed: false,

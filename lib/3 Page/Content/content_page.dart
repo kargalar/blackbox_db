@@ -29,6 +29,13 @@ class _ContentPageState extends State<ContentPage> {
   }
 
   @override
+  void dispose() {
+    provider.contentModel = null;
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return isLoading
         ? const Center(child: CircularProgressIndicator())

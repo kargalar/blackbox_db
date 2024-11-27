@@ -1,4 +1,5 @@
 import 'package:blackbox_db/5%20Service/server_manager.dart';
+import 'package:blackbox_db/5%20Service/tmdb_service.dart';
 import 'package:blackbox_db/7%20Enum/content_status_enum.dart';
 import 'package:blackbox_db/8%20Model/content_log_model.dart';
 import 'package:blackbox_db/8%20Model/content_model.dart';
@@ -7,8 +8,11 @@ import 'package:flutter/material.dart';
 class ContentPageProvider with ChangeNotifier {
   ContentModel? contentModel;
 
-  Future<void> consume() async {
-    // TODO: arama sayfası dışındaki işlemlerde buna gerek yok. zaten veri de mebut olöuyor buna göre basit bir null ise gibi bir kontrol olabilir. ama saydafan çikinca content moeli boşalttığnıa emin ol
+  Future<void> consume({int? contentId}) async {
+    if (contentId != null) {
+      contentModel ??= await TMDBService().getDetail(contentId);
+    }
+
     await ServerManager().checkContent(contentModel: contentModel!);
 
     final ContentLogModel userLog = ContentLogModel(
@@ -26,16 +30,20 @@ class ContentPageProvider with ChangeNotifier {
     );
 
     if (contentModel!.contentStatus == ContentStatusEnum.CONSUMED) {
-      contentModel!.contentStatus = null;
+      if (contentId == null) contentModel!.contentStatus = null;
       userLog.contentStatus = null;
     } else {
-      contentModel!.contentStatus = ContentStatusEnum.CONSUMED;
+      if (contentId == null) contentModel!.contentStatus = ContentStatusEnum.CONSUMED;
       userLog.contentStatus = ContentStatusEnum.CONSUMED;
     }
 
     await ServerManager().contentUserAction(contentLogModel: userLog);
 
-    notifyListeners();
+    if (contentId != null) {
+      contentModel = null;
+    } else {
+      notifyListeners();
+    }
   }
 
   void favorite() {

@@ -33,8 +33,8 @@ class ContentModel {
   final String title;
   final String description;
   final DateTime releaseDate;
-  final List<CrewModel> creatorList;
-  final List<GenreModel> genreList;
+  final List<CrewModel>? creatorList;
+  final List<GenreModel>? genreList;
   final int length;
   final List<CrewModel>? cast;
 
@@ -85,9 +85,9 @@ class ContentModel {
       'title': title,
       'content_type_id': contentType.index,
       'release_date': DateFormat('yyyy-MM-dd').format(releaseDate),
-      'creator_list': creatorList.map((i) => i.toJson()).toList(),
+      'creator_list': creatorList?.map((i) => i.toJson()).toList(),
       'description': description,
-      'genre_list': genreList.map((i) => i.toJson()).toList(),
+      'genre_list': genreList?.map((i) => i.toJson()).toList(),
       'length': length,
       'cast_list': cast!.map((i) => i.toJson()).toList(),
       'consume_count': consumeCount,
@@ -104,23 +104,27 @@ class ContentModel {
 
   // TMDB
   factory ContentModel.fromJsonTMDB(Map<String, dynamic> json) {
+    final List<CrewModel> crewList = CrewModel.fromJsonList(json['credits']['crew'].where((item) => item['department'] == 'Directing').toList());
+    final List<CrewModel> castList = CrewModel.fromJsonList(json['credits']['cast']);
+    final List<GenreModel> genreList = (json['genres'] as List<dynamic>).map((e) => GenreModel(id: e['id'], title: e['name'])).toList();
+
     return ContentModel(
       id: json['id'],
       posterPath: json['poster_path'],
       title: json['title'],
       contentType: ContentTypeEnum.MOVIE,
       releaseDate: DateTime.parse(json['release_date']),
-      creatorList: CrewModel.fromJsonList(json['credits']['crew'].where((item) => item['department'] == 'Directing').toList().sublist(0, 1)),
+      creatorList: crewList.isNotEmpty ? crewList.sublist(0, 1) : null,
       description: json['overview'],
-      genreList: (json['genres'] as List<dynamic>).map((e) => GenreModel(id: e['id'], title: e['name'])).toList(),
+      genreList: genreList,
       length: json['runtime'],
       // TODO: 5 den az olursa sorun olur mu?
-      cast: CrewModel.fromJsonList(json['credits']['cast']).sublist(0, 5),
-      consumeCount: 0, // TMDB'den bu bilgi gelmez, varsayılan olarak 0
-      favoriCount: 0, // TMDB'den bu bilgi gelmez, varsayılan olarak 0
-      listCount: 0, // TMDB'den bu bilgi gelmez, varsayılan olarak 0
-      reviewCount: 0, // TMDB'den bu bilgi gelmez, varsayılan olarak 0
-      ratingDistribution: [], // TMDB'den bu bilgi gelmez, varsayılan olarak boş liste
+      cast: castList.isNotEmpty ? castList.sublist(0, castList.length < 5 ? castList.length : 5) : null,
+      consumeCount: 0,
+      favoriCount: 0,
+      listCount: 0,
+      reviewCount: 0,
+      ratingDistribution: [],
       contentStatus: null,
       rating: 0,
       isFavorite: false,
