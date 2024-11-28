@@ -31,7 +31,7 @@ class ContentUserAction extends StatelessWidget {
             MouseRegion(
               cursor: SystemMouseCursors.click,
               child: RatingBar.builder(
-                initialRating: contentPageProvider.contentModel.rating,
+                initialRating: contentPageProvider.contentModel!.rating,
                 minRating: 0.5,
                 direction: Axis.horizontal,
                 glow: false,
@@ -43,7 +43,7 @@ class ContentUserAction extends StatelessWidget {
                   color: AppColors.main,
                 ),
                 onRatingUpdate: (rating) {
-                  contentPageProvider.rate(rating);
+                  contentPageProvider.rating(rating);
                 },
               ),
             ),
@@ -53,14 +53,14 @@ class ContentUserAction extends StatelessWidget {
               children: [
                 // watch
                 InkWell(
-                  onTap: () {
-                    contentPageProvider.consume();
+                  onTap: () async {
+                    await contentPageProvider.consume();
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(5),
                     child: Icon(
                       Icons.remove_red_eye,
-                      color: contentPageProvider.contentModel.contentStatus == ContentStatusEnum.CONSUMED ? AppColors.main : null,
+                      color: contentPageProvider.contentModel!.contentStatus == ContentStatusEnum.CONSUMED ? AppColors.main : null,
                       size: 30,
                     ),
                   ),
@@ -75,7 +75,7 @@ class ContentUserAction extends StatelessWidget {
                     padding: const EdgeInsets.all(5),
                     child: Icon(
                       Icons.favorite,
-                      color: contentPageProvider.contentModel.isFavorite ? AppColors.main : null,
+                      color: contentPageProvider.contentModel!.isFavorite ? AppColors.main : null,
                       size: 30,
                     ),
                   ),
@@ -89,7 +89,7 @@ class ContentUserAction extends StatelessWidget {
                     padding: const EdgeInsets.all(5),
                     child: Icon(
                       Icons.watch_later,
-                      color: contentPageProvider.contentModel.isConsumeLater ? AppColors.main : null,
+                      color: contentPageProvider.contentModel!.isConsumeLater ? AppColors.main : null,
                       size: 30,
                     ),
                   ),
@@ -127,13 +127,13 @@ class ContentUserAction extends StatelessWidget {
                   id: 0,
                   userID: 1,
                   date: DateTime.now(),
-                  contentID: contentPageProvider.contentModel.id,
-                  contentType: contentPageProvider.contentModel.contentType,
-                  contentStatus: contentPageProvider.contentModel.contentStatus,
-                  rating: contentPageProvider.contentModel.rating,
-                  isFavorite: contentPageProvider.contentModel.isFavorite,
-                  contentTitle: contentPageProvider.contentModel.title,
-                  isConsumeLater: contentPageProvider.contentModel.isConsumeLater,
+                  contentID: contentPageProvider.contentModel!.id,
+                  contentType: contentPageProvider.contentModel!.contentType,
+                  contentStatus: contentPageProvider.contentModel!.contentStatus,
+                  rating: contentPageProvider.contentModel!.rating,
+                  isFavorite: contentPageProvider.contentModel!.isFavorite,
+                  contentTitle: contentPageProvider.contentModel!.title,
+                  isConsumeLater: contentPageProvider.contentModel!.isConsumeLater,
                 );
                 // add log
                 // open log dialog
@@ -149,7 +149,7 @@ class ContentUserAction extends StatelessWidget {
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text(log.contentTitle),
+                              Text(log.contentTitle!),
                               const SizedBox(width: 10),
                               Text("${log.contentStatus}"),
                               const SizedBox(width: 10),

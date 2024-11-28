@@ -64,6 +64,7 @@ class _AppbarSearchState extends State<AppbarSearch> {
   }
 
   void search() {
+    if (controller.text.isEmpty) return;
     appbarProvider.search(controller.text);
     controller.clear();
   }

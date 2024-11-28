@@ -1,10 +1,10 @@
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
+import 'package:blackbox_db/8%20Model/content_log_model.dart';
 import 'package:blackbox_db/8%20Model/content_model.dart';
 import 'package:blackbox_db/8%20Model/genre_model.dart';
 import 'package:blackbox_db/8%20Model/showcase_content_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
 
 class ServerManager {
   ServerManager._privateConstructor();
@@ -24,7 +24,7 @@ class ServerManager {
   // check request
   void checkRequest(Response response) {
     if (response.statusCode == 200) {
-      debugPrint(json.encode(response.data));
+      // debugPrint(json.encode(response.data));
     } else {
       debugPrint(response.statusMessage);
     }
@@ -83,6 +83,54 @@ class ServerManager {
       "$_baseUrl/genre",
       data: {
         'name': name,
+      },
+      options: Options(
+        method: 'POST',
+      ),
+    );
+
+    checkRequest(response);
+  }
+
+  //conent_user_action
+  Future<void> contentUserAction({
+    required ContentLogModel contentLogModel,
+  }) async {
+    var response = await dio.request(
+      "$_baseUrl/content_user_action",
+      data: {
+        'user_id': contentLogModel.userID,
+        'content_id': contentLogModel.contentID,
+        'content_status_id': contentLogModel.contentStatus == null ? null : contentLogModel.contentStatus!.index + 1,
+        'rating': contentLogModel.rating,
+        'is_favorite': contentLogModel.isFavorite,
+        'is_consume_later': contentLogModel.isConsumeLater,
+        'review': contentLogModel.review,
+      },
+      options: Options(
+        method: 'POST',
+      ),
+    );
+
+    checkRequest(response);
+  }
+
+  Future<void> checkContent({
+    required ContentModel contentModel,
+  }) async {
+    var response = await dio.request(
+      "$_baseUrl/check_content",
+      data: {
+        'id': contentModel.id,
+        'poster_path': contentModel.posterPath,
+        'title': contentModel.title,
+        'content_type_id': contentModel.contentType.index + 1,
+        'release_date': contentModel.releaseDate.toIso8601String(),
+        'creator_list': contentModel.creatorList?.map((i) => i.toJson()).toList(),
+        'description': contentModel.description,
+        'genre_list': contentModel.genreList?.map((i) => i.toJson()).toList(),
+        'length': contentModel.length,
+        'cast_list': contentModel.cast?.map((i) => i.toJson()).toList() ?? [],
       },
       options: Options(
         method: 'POST',

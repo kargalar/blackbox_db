@@ -1,14 +1,13 @@
 import 'package:blackbox_db/7%20Enum/content_status_enum.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
-import 'package:blackbox_db/8%20Model/cast_model.dart';
-import 'package:blackbox_db/8%20Model/creator_model.dart';
+import 'package:blackbox_db/8%20Model/crew_model.dart';
 import 'package:blackbox_db/8%20Model/genre_model.dart';
-import 'package:blackbox_db/8%20Model/platform_model.dart';
 import 'package:intl/intl.dart';
 
 class ContentModel {
   ContentModel({
     required this.id,
+    required this.posterPath,
     required this.title,
     required this.contentType,
     required this.releaseDate,
@@ -16,7 +15,6 @@ class ContentModel {
     required this.description,
     required this.genreList,
     required this.length,
-    required this.platformList,
     required this.cast,
     required this.consumeCount,
     required this.favoriCount,
@@ -30,16 +28,15 @@ class ContentModel {
   });
 
   final int id;
+  final String posterPath;
   final ContentTypeEnum contentType;
   final String title;
   final String description;
   final DateTime releaseDate;
-  final List<CreatorModel> creatorList;
-
-  final List<GenreModel> genreList;
+  final List<CrewModel>? creatorList;
+  final List<GenreModel>? genreList;
   final int length;
-  final List<PlatformModel>? platformList;
-  final List<CastModel>? cast;
+  final List<CrewModel>? cast;
 
   // TODO: filmin bilgileri, istatistikleri ve kullanıcı logu ayrı modelde mi tutulsa
   int consumeCount;
@@ -56,15 +53,15 @@ class ContentModel {
   factory ContentModel.fromJson(Map<String, dynamic> json) {
     return ContentModel(
       id: json['id'],
+      posterPath: json['poster_path'],
       title: json['title'],
       contentType: ContentTypeEnum.values[json['content_type_id']],
       releaseDate: DateTime.parse(json['release_date']),
-      creatorList: (json['creator_list'] as List).map((i) => CreatorModel.fromJson(i)).toList(),
+      creatorList: (json['creator_list'] as List).map((i) => CrewModel.fromJson(i)).toList(),
       description: json['description'],
       genreList: (json['genre_list'] as List).map((i) => GenreModel.fromJson(i)).toList(),
       length: json['length'],
-      platformList: (json['platform_list'] as List).map((i) => PlatformModel.fromJson(i)).toList(),
-      cast: (json['cast_list'] as List).map((i) => CastModel.fromJson(i)).toList(),
+      cast: (json['cast_list'] as List).map((i) => CrewModel.fromJson(i)).toList(),
       consumeCount: json['consume_count'],
       favoriCount: json['favori_count'],
       listCount: json['list_count'],
@@ -84,14 +81,14 @@ class ContentModel {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
+      'poster_path': posterPath,
       'title': title,
       'content_type_id': contentType.index,
       'release_date': DateFormat('yyyy-MM-dd').format(releaseDate),
-      'creator_list': creatorList.map((i) => i.toJson()).toList(),
+      'creator_list': creatorList?.map((i) => i.toJson()).toList(),
       'description': description,
-      'genre_list': genreList.map((i) => i.toJson()).toList(),
+      'genre_list': genreList?.map((i) => i.toJson()).toList(),
       'length': length,
-      'platform_list': platformList!.map((i) => i.toJson()).toList(),
       'cast_list': cast!.map((i) => i.toJson()).toList(),
       'consume_count': consumeCount,
       'favori_count': favoriCount,
@@ -103,5 +100,35 @@ class ContentModel {
       'is_favorite': isFavorite,
       'is_consume_later': isConsumeLater,
     };
+  }
+
+  // TMDB
+  factory ContentModel.fromJsonTMDB(Map<String, dynamic> json) {
+    final List<CrewModel> crewList = CrewModel.fromJsonList(json['credits']['crew'].where((item) => item['department'] == 'Directing').toList());
+    final List<CrewModel> castList = CrewModel.fromJsonList(json['credits']['cast']);
+    final List<GenreModel> genreList = (json['genres'] as List<dynamic>).map((e) => GenreModel(id: e['id'], title: e['name'])).toList();
+
+    return ContentModel(
+      id: json['id'],
+      posterPath: json['poster_path'],
+      title: json['title'],
+      contentType: ContentTypeEnum.MOVIE,
+      releaseDate: DateTime.parse(json['release_date']),
+      creatorList: crewList.isNotEmpty ? crewList.sublist(0, 1) : null,
+      description: json['overview'],
+      genreList: genreList,
+      length: json['runtime'],
+      // TODO: 5 den az olursa sorun olur mu?
+      cast: castList.isNotEmpty ? castList.sublist(0, castList.length < 5 ? castList.length : 5) : null,
+      consumeCount: 0,
+      favoriCount: 0,
+      listCount: 0,
+      reviewCount: 0,
+      ratingDistribution: [],
+      contentStatus: null,
+      rating: 0,
+      isFavorite: false,
+      isConsumeLater: false,
+    );
   }
 }

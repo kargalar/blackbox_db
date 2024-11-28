@@ -3,7 +3,7 @@ import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 
 class ContentLogModel {
   ContentLogModel({
-    required this.id,
+    this.id,
     required this.userID,
     required this.contentID,
     required this.date,
@@ -12,16 +12,16 @@ class ContentLogModel {
     this.isFavorite = false,
     this.isConsumeLater = false,
     this.review,
-    required this.contentTitle,
+    this.contentTitle,
     required this.contentType,
   });
 
-  final int id;
+  final int? id;
   final int userID;
   final int contentID;
   ContentStatusEnum? contentStatus;
   final DateTime date;
-  final String contentTitle;
+  final String? contentTitle;
   final ContentTypeEnum contentType;
 
   double? rating;
