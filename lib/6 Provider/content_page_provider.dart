@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 class ContentPageProvider with ChangeNotifier {
   ContentModel? contentModel;
 
+  // ? contentId null ise contentPage de demek
+
   Future<void> consume({int? contentId}) async {
     if (contentId != null) {
       contentModel ??= await TMDBService().getDetail(contentId);

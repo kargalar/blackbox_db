@@ -29,6 +29,7 @@ class SearchItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ContentItem(
+            isSearch: true,
             showcaseContentModel: ShowcaseContentModel(
               contentId: searchContentModel.contentId,
               posterPath: searchContentModel.contentPosterPath,

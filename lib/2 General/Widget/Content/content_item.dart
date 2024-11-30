@@ -14,10 +14,12 @@ class ContentItem extends StatefulWidget {
     super.key,
     required this.showcaseContentModel,
     required this.showcaseType,
+    this.isSearch = false,
   });
 
   final ShowcaseContentModel showcaseContentModel;
   final ShowcaseTypeEnum showcaseType;
+  final bool isSearch;
 
   @override
   State<ContentItem> createState() => _ContentItemState();
@@ -33,6 +35,8 @@ class _ContentItemState extends State<ContentItem> {
       child: MouseRegion(
         cursor: SystemMouseCursors.click,
         onEnter: (event) {
+          if (widget.isSearch) return;
+
           setState(() {
             onHover = true;
           });
@@ -50,6 +54,7 @@ class _ContentItemState extends State<ContentItem> {
                 );
           },
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Stack(
                 children: [
