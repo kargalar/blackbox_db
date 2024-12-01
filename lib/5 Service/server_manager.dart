@@ -1,3 +1,4 @@
+import 'package:blackbox_db/2%20General/accessible.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:blackbox_db/8%20Model/content_log_model.dart';
 import 'package:blackbox_db/8%20Model/content_model.dart';
@@ -60,7 +61,7 @@ class ServerManager {
     return (response.data as List).map((e) => ContentModel.fromJson(e)).toList();
   }
 
-  // get all content fow showcase with user id
+  // get all content for showcase with user id
   Future<List<ShowcaseContentModel>> getExploreContent({
     required ContentTypeEnum? contentType,
     required int userId,
@@ -118,28 +119,19 @@ class ServerManager {
     checkRequest(response);
   }
 
-  Future<void> checkContent({
-    required ContentModel contentModel,
+  Future<ContentModel> getContentDetail({
+    required int contentId,
+    int? userId,
   }) async {
     var response = await dio.request(
-      "$_baseUrl/check_content",
-      data: {
-        'id': contentModel.id,
-        'poster_path': contentModel.posterPath,
-        'title': contentModel.title,
-        'content_type_id': contentModel.contentType.index + 1,
-        'release_date': contentModel.releaseDate.toIso8601String(),
-        'creator_list': contentModel.creatorList?.map((i) => i.toJson()).toList(),
-        'description': contentModel.description,
-        'genre_list': contentModel.genreList?.map((i) => i.toJson()).toList(),
-        'length': contentModel.length,
-        'cast_list': contentModel.cast?.map((i) => i.toJson()).toList() ?? [],
-      },
+      "$_baseUrl/content_detail?content_id=$contentId&user_id=${userId ?? userID}",
       options: Options(
-        method: 'POST',
+        method: 'GET',
       ),
     );
 
     checkRequest(response);
+
+    return ContentModel.fromJson(response.data);
   }
 }

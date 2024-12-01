@@ -10,7 +10,7 @@ class GenreModel {
   factory GenreModel.fromJson(Map<String, dynamic> json) {
     return GenreModel(
       id: json['id'],
-      title: json['name'],
+      title: json['title'],
     );
   }
 

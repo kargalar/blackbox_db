@@ -55,22 +55,22 @@ class ContentModel {
       id: json['id'],
       posterPath: json['poster_path'],
       title: json['title'],
-      contentType: ContentTypeEnum.values[json['content_type_id']],
+      contentType: ContentTypeEnum.values[json['content_type_id'] - 1],
       releaseDate: DateTime.parse(json['release_date']),
-      creatorList: (json['creator_list'] as List).map((i) => CrewModel.fromJson(i)).toList(),
+      creatorList: json['creator_list'] != null ? (json['creator_list'] as List).map((i) => CrewModel.fromJson(i)).toList() : null,
       description: json['description'],
-      genreList: (json['genre_list'] as List).map((i) => GenreModel.fromJson(i)).toList(),
+      genreList: json['genre_list'] != null ? (json['genre_list'] as List).map((i) => GenreModel.fromJson(i)).toList() : null,
       length: json['length'],
-      cast: (json['cast_list'] as List).map((i) => CrewModel.fromJson(i)).toList(),
+      cast: json['cast_list'] != null ? (json['cast_list'] as List).map((i) => CrewModel.fromJson(i)).toList() : null,
       consumeCount: json['consume_count'],
       favoriCount: json['favori_count'],
       listCount: json['list_count'],
       reviewCount: json['review_count'],
-      ratingDistribution: (json['rating_distribution'] as List).map((i) => i as int).toList(),
-      contentStatus: json['content_status_id'] != null ? ContentStatusEnum.values[json['content_status_id']] : null,
-      rating: json['rating'],
-      isFavorite: json['is_favorite'],
-      isConsumeLater: json['is_consume_later'],
+      ratingDistribution: json['rating_distribution'] != null ? (json['rating_distribution'] as List).map((i) => i as int).toList() : [],
+      contentStatus: json['content_status_id'] != null ? ContentStatusEnum.values[json['content_status_id'] - 1] : null,
+      rating: json['rating']?.toDouble() ?? 0,
+      isFavorite: json['is_favorite'] ?? false,
+      isConsumeLater: json['is_consume_later'] ?? false,
     );
   }
 
@@ -100,35 +100,5 @@ class ContentModel {
       'is_favorite': isFavorite,
       'is_consume_later': isConsumeLater,
     };
-  }
-
-  // TMDB
-  factory ContentModel.fromJsonTMDB(Map<String, dynamic> json) {
-    final List<CrewModel> crewList = CrewModel.fromJsonList(json['credits']['crew'].where((item) => item['department'] == 'Directing').toList());
-    final List<CrewModel> castList = CrewModel.fromJsonList(json['credits']['cast']);
-    final List<GenreModel> genreList = (json['genres'] as List<dynamic>).map((e) => GenreModel(id: e['id'], title: e['name'])).toList();
-
-    return ContentModel(
-      id: json['id'],
-      posterPath: json['poster_path'],
-      title: json['title'],
-      contentType: ContentTypeEnum.MOVIE,
-      releaseDate: DateTime.parse(json['release_date']),
-      creatorList: crewList.isNotEmpty ? crewList.sublist(0, 1) : null,
-      description: json['overview'],
-      genreList: genreList,
-      length: json['runtime'],
-      // TODO: 5 den az olursa sorun olur mu?
-      cast: castList.isNotEmpty ? castList.sublist(0, castList.length < 5 ? castList.length : 5) : null,
-      consumeCount: 0,
-      favoriCount: 0,
-      listCount: 0,
-      reviewCount: 0,
-      ratingDistribution: [],
-      contentStatus: null,
-      rating: 0,
-      isFavorite: false,
-      isConsumeLater: false,
-    );
   }
 }
