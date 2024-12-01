@@ -44,6 +44,7 @@ class _HomePageState extends State<HomePage> {
           ),
           Divider(color: AppColors.text),
           const TestItems(),
+          SizedBox(height: 100),
         ],
       ),
     );

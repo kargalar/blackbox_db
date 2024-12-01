@@ -47,7 +47,7 @@ class TestItems extends StatelessWidget {
                     contentType: ContentTypeEnum.BOOK,
                     isFavorite: true,
                     isConsumed: true,
-                    rating: null,
+                    rating: 3.5,
                     isReviewed: false,
                     isConsumeLater: false,
                   ),
@@ -74,31 +74,6 @@ class TestItems extends StatelessWidget {
                 ),
               ],
             ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // flat
-            Column(
-              children: [
-                const Text("LIST"),
-                ContentItem(
-                  showcaseContentModel: ShowcaseContentModel(
-                    contentId: 3,
-                    posterPath: "https://image.tmdb.org/t/p/original/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
-                    contentType: ContentTypeEnum.MOVIE,
-                    isFavorite: false,
-                    isConsumed: false,
-                    rating: null,
-                    isReviewed: false,
-                    isConsumeLater: false,
-                  ),
-                  showcaseType: ShowcaseTypeEnum.FLAT,
-                ),
-              ],
-            ),
-            // trend
             Column(
               children: [
                 const Text("TREND"),

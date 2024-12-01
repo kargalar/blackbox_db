@@ -45,11 +45,11 @@ class ContentUserAction extends StatelessWidget {
                   Icons.star,
                   color: AppColors.main,
                 ),
-                onRatingUpdate: (rating) async {
+                onRatingUpdate: (rating) {
                   if (rating == userRating) return;
 
                   userRating = rating;
-                  await contentPageProvider.contentUserAction(
+                  contentPageProvider.contentUserAction(
                     contentType: contentPageProvider.contentModel!.contentType,
                     contentStatus: ContentStatusEnum.CONSUMED,
                     rating: userRating,
@@ -65,10 +65,10 @@ class ContentUserAction extends StatelessWidget {
               children: [
                 // watch
                 InkWell(
-                  onTap: () async {
+                  onTap: () {
                     contentPageProvider.contentModel!.contentStatus = contentPageProvider.contentModel!.contentStatus != null ? null : ContentStatusEnum.CONSUMED;
 
-                    await contentPageProvider.contentUserAction(
+                    contentPageProvider.contentUserAction(
                       contentType: contentPageProvider.contentModel!.contentType,
                       contentStatus: contentPageProvider.contentModel!.contentStatus,
                       rating: contentPageProvider.contentModel!.rating,
@@ -89,7 +89,15 @@ class ContentUserAction extends StatelessWidget {
                 // favori
                 InkWell(
                   onTap: () {
-                    // contentPageProvider.favorite();
+                    contentPageProvider.contentModel!.isFavorite = !contentPageProvider.contentModel!.isFavorite;
+
+                    contentPageProvider.contentUserAction(
+                      contentType: contentPageProvider.contentModel!.contentType,
+                      contentStatus: contentPageProvider.contentModel!.contentStatus,
+                      rating: contentPageProvider.contentModel!.rating,
+                      isFavorite: contentPageProvider.contentModel!.isFavorite,
+                      isConsumeLater: contentPageProvider.contentModel!.isConsumeLater,
+                    );
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(5),
@@ -103,7 +111,15 @@ class ContentUserAction extends StatelessWidget {
                 // wathlater
                 InkWell(
                   onTap: () {
-                    // contentPageProvider.consumeLater();
+                    contentPageProvider.contentModel!.isConsumeLater = !contentPageProvider.contentModel!.isConsumeLater;
+
+                    contentPageProvider.contentUserAction(
+                      contentType: contentPageProvider.contentModel!.contentType,
+                      contentStatus: contentPageProvider.contentModel!.contentStatus,
+                      rating: contentPageProvider.contentModel!.rating,
+                      isFavorite: contentPageProvider.contentModel!.isFavorite,
+                      isConsumeLater: contentPageProvider.contentModel!.isConsumeLater,
+                    );
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(5),
