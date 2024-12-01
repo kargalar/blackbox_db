@@ -1,4 +1,5 @@
 import 'package:blackbox_db/2%20General/Widget/Content/content_item.dart';
+import 'package:blackbox_db/2%20General/accessible.dart';
 import 'package:blackbox_db/5%20Service/server_manager.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:blackbox_db/7%20Enum/showcase_type_enum.dart';
@@ -79,8 +80,7 @@ class _ContentListState extends State<ContentList> {
 
       contentList = await ServerManager().getExploreContent(
         contentType: widget.contentType,
-        // TODO: userId
-        userId: "1",
+        userId: userID,
       );
 
       setState(() {

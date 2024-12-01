@@ -18,15 +18,15 @@ class ShowcaseContentModel {
   final int contentId;
   final String? posterPath;
   final ContentTypeEnum contentType;
-  final bool isFavorite;
-  final bool isConsumed;
-  final bool isConsumeLater;
+  bool isFavorite;
+  bool isConsumed;
+  bool isConsumeLater;
 
   // TODO: yukarıdakielr her zaman alınacak ama biris list ise biris activity ise alınacak. bunun için türüne göre farklı istek mı olsa. yani hepsini explore da yapmak yerine activity, list, explore gibi
   //
   // final bool isFavorite;
-  final double? rating;
-  final bool isReviewed;
+  double? rating;
+  bool isReviewed;
   // TODO: yukarıdaki üçünü kapsayan bir model yapısı contentLog gibi
   //
   final ContentLogModel? contentLog;

@@ -1,3 +1,4 @@
+import 'package:blackbox_db/2%20General/accessible.dart';
 import 'package:blackbox_db/5%20Service/server_manager.dart';
 import 'package:blackbox_db/5%20Service/tmdb_service.dart';
 import 'package:blackbox_db/7%20Enum/content_status_enum.dart';
@@ -6,20 +7,30 @@ import 'package:blackbox_db/8%20Model/content_model.dart';
 import 'package:flutter/material.dart';
 
 class ContentPageProvider with ChangeNotifier {
+  static final ContentPageProvider _instance = ContentPageProvider._internal();
+
+  factory ContentPageProvider() {
+    return _instance;
+  }
+
+  ContentPageProvider._internal();
+
   ContentModel? contentModel;
 
   // ? contentId null ise contentPage de demek
 
   Future<void> consume({int? contentId}) async {
     if (contentId != null) {
+      // TODO: aynı filme 2. defa log atmak istediğinde tekrar get detaile gerek olmamalı
       contentModel ??= await TMDBService().getDetail(contentId);
     }
 
+// TODO: check content direkt getdetail içinde backendde yapılacak. loglam işlemninde de yine backendde yapılacak.
     await ServerManager().checkContent(contentModel: contentModel!);
 
     final ContentLogModel userLog = ContentLogModel(
       // TODO: id ve diğerleri. böyle ayrı ayrı olmak yerine 1 tane fonksiyon oluşturayım orada verilenlere göre mi loglayayım. ya da sadece log u dışarı çıkarayım.
-      userID: 1,
+      userID: userID,
       // TODO: date postgresql tarafında yapılabilir.
       date: DateTime.now(),
       contentID: contentModel!.id,

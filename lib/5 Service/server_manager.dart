@@ -63,7 +63,7 @@ class ServerManager {
   // get all content fow showcase with user id
   Future<List<ShowcaseContentModel>> getExploreContent({
     required ContentTypeEnum? contentType,
-    required String userId,
+    required int userId,
   }) async {
     var response = await dio.request(
       "$_baseUrl/explore?user_id=$userId${contentType != null ? "&content_type_id=${contentType.index + 1}" : ""}",
@@ -111,6 +111,9 @@ class ServerManager {
         method: 'POST',
       ),
     );
+    // 'content_status_id': contentLogModel.contentStatus == null ? null : contentLogModel.contentStatus!.index + 1,
+
+    debugPrint(contentLogModel.contentStatus?.index.toString());
 
     checkRequest(response);
   }

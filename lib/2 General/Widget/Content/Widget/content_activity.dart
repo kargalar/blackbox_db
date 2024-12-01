@@ -1,4 +1,5 @@
 import 'package:blackbox_db/2%20General/Widget/profile_picture.dart';
+import 'package:blackbox_db/2%20General/accessible.dart';
 import 'package:blackbox_db/2%20General/app_colors.dart';
 import 'package:blackbox_db/7%20Enum/content_status_enum.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
@@ -16,7 +17,7 @@ class ContentActivity extends StatelessWidget {
     // TODO: backendden gelecek
     final ContentLogModel userLog = ContentLogModel(
       id: 1,
-      userID: 1,
+      userID: userID,
       date: DateTime.now(),
       contentID: 1,
       contentType: ContentTypeEnum.MOVIE,

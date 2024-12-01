@@ -1,22 +1,13 @@
 import 'package:blackbox_db/2%20General/Widget/Content/Widget/content_item_button.dart';
 import 'package:blackbox_db/2%20General/app_colors.dart';
-import 'package:blackbox_db/6%20Provider/content_page_provider.dart';
+import 'package:blackbox_db/6%20Provider/content_item_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ContentHover extends StatelessWidget {
   const ContentHover({
     super.key,
-    required this.id,
-    required this.isFavori,
-    required this.isConsumed,
-    required this.isConsumeLater,
   });
-
-  final int id;
-  final bool isFavori;
-  final bool isConsumed;
-  final bool isConsumeLater;
 
   @override
   Widget build(BuildContext context) {
@@ -32,21 +23,21 @@ class ContentHover extends StatelessWidget {
               children: [
                 ContentItemButton(
                   icon: Icons.favorite,
-                  color: isFavori ? AppColors.red : AppColors.white,
+                  color: context.watch<ContentItemProvider>().showcaseContentModel.isFavorite ? AppColors.red : AppColors.white,
                   onTap: () {
                     // TODO: add to favorite
                   },
                 ),
                 ContentItemButton(
                   icon: Icons.remove_red_eye,
-                  color: isConsumed ? AppColors.red : AppColors.white,
+                  color: context.watch<ContentItemProvider>().showcaseContentModel.isConsumed ? AppColors.red : AppColors.white,
                   onTap: () async {
-                    await context.read<ContentPageProvider>().consume(contentId: id);
+                    await context.read<ContentItemProvider>().consume();
                   },
                 ),
                 ContentItemButton(
                   icon: Icons.watch_later,
-                  color: isConsumeLater ? AppColors.red : AppColors.white,
+                  color: context.watch<ContentItemProvider>().showcaseContentModel.isConsumeLater ? AppColors.red : AppColors.white,
                   onTap: () {
                     // TODO: add to watchlist
                   },

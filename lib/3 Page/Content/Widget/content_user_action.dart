@@ -1,3 +1,4 @@
+import 'package:blackbox_db/2%20General/accessible.dart';
 import 'package:blackbox_db/2%20General/app_colors.dart';
 import 'package:blackbox_db/6%20Provider/content_page_provider.dart';
 import 'package:blackbox_db/7%20Enum/content_status_enum.dart';
@@ -125,7 +126,7 @@ class ContentUserAction extends StatelessWidget {
               onTap: () {
                 final log = ContentLogModel(
                   id: 0,
-                  userID: 1,
+                  userID: userID,
                   date: DateTime.now(),
                   contentID: contentPageProvider.contentModel!.id,
                   contentType: contentPageProvider.contentModel!.contentType,

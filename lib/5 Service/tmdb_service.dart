@@ -45,6 +45,8 @@ class TMDBService {
 
   // get detail
   Future<ContentModel> getDetail(int id) async {
+    // tODO: get details dediğimde eğer flm benim veritabanımda var ise kullanıcının logunu da kontrol edip getirlmelyimi. yoksa sadece tmdb dekileri getirmek yeterli.
+
     // with credits
     final url = 'https://api.themoviedb.org/3/movie/$id?language=en-US&append_to_response=credits';
 

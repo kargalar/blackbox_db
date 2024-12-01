@@ -3,6 +3,7 @@ import 'package:blackbox_db/2%20General/Widget/Content/Widget/content_hover.dart
 import 'package:blackbox_db/2%20General/Widget/Content/Widget/content_list.dart';
 import 'package:blackbox_db/2%20General/Widget/Content/Widget/content_poster.dart';
 import 'package:blackbox_db/2%20General/Widget/Content/Widget/content_trend.dart';
+import 'package:blackbox_db/6%20Provider/content_item_provider.dart';
 import 'package:blackbox_db/6%20Provider/page_provider.dart';
 import 'package:blackbox_db/7%20Enum/showcase_type_enum.dart';
 import 'package:blackbox_db/8%20Model/showcase_content_model.dart';
@@ -30,56 +31,53 @@ class _ContentItemState extends State<ContentItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        onEnter: (event) {
-          if (widget.isSearch) return;
+    return ChangeNotifierProvider(
+      create: (context) => ContentItemProvider(showcaseContentModel: widget.showcaseContentModel),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
+        child: MouseRegion(
+          cursor: SystemMouseCursors.click,
+          onEnter: (event) {
+            if (widget.isSearch) return;
 
-          setState(() {
-            onHover = true;
-          });
-        },
-        onExit: (event) {
-          setState(() {
-            onHover = false;
-          });
-        },
-        child: GestureDetector(
-          onTap: () {
-            context.read<PageProvider>().content(
-                  widget.showcaseContentModel.contentId,
-                  widget.showcaseContentModel.contentType,
-                );
+            setState(() {
+              onHover = true;
+            });
           },
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Stack(
-                children: [
-                  ContentPoster.showcase(
-                    posterPath: widget.showcaseContentModel.posterPath,
-                  ),
-                  if (!onHover && widget.showcaseType == ShowcaseTypeEnum.ACTIVITY) const ContentActivity(),
-                  if (onHover)
-                    ContentHover(
-                      id: widget.showcaseContentModel.contentId,
-                      isFavori: widget.showcaseContentModel.isFavorite,
-                      isConsumed: widget.showcaseContentModel.isConsumed,
-                      isConsumeLater: widget.showcaseContentModel.isConsumeLater,
+          onExit: (event) {
+            setState(() {
+              onHover = false;
+            });
+          },
+          child: GestureDetector(
+            onTap: () {
+              context.read<PageProvider>().content(
+                    widget.showcaseContentModel.contentId,
+                    widget.showcaseContentModel.contentType,
+                  );
+            },
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Stack(
+                  children: [
+                    ContentPoster.showcase(
+                      posterPath: widget.showcaseContentModel.posterPath,
                     ),
-                  if (widget.showcaseType == ShowcaseTypeEnum.TREND) ContentTrend(index: widget.showcaseContentModel.trendIndex! + 1),
-                ],
-              ),
-              if (widget.showcaseType == ShowcaseTypeEnum.EXPLORE)
-                ContentList(
-                  // TODO: normalde burası giriş yapan kullanıcıya göre değil profili gezilen kullanıcını veya giriş yapan kullanıcıya göre olacak
-                  rating: widget.showcaseContentModel.rating,
-                  isFavorite: widget.showcaseContentModel.isFavorite,
-                  isReviewed: widget.showcaseContentModel.isReviewed,
+                    if (!onHover && widget.showcaseType == ShowcaseTypeEnum.ACTIVITY) const ContentActivity(),
+                    if (onHover) ContentHover(),
+                    if (widget.showcaseType == ShowcaseTypeEnum.TREND) ContentTrend(index: widget.showcaseContentModel.trendIndex! + 1),
+                  ],
                 ),
-            ],
+                if (widget.showcaseType == ShowcaseTypeEnum.EXPLORE)
+                  ContentList(
+                    // TODO: normalde burası giriş yapan kullanıcıya göre değil profili gezilen kullanıcını veya giriş yapan kullanıcıya göre olacak
+                    rating: widget.showcaseContentModel.rating,
+                    isFavorite: widget.showcaseContentModel.isFavorite,
+                    isReviewed: widget.showcaseContentModel.isReviewed,
+                  ),
+              ],
+            ),
           ),
         ),
       ),
