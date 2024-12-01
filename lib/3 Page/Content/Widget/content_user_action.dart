@@ -80,7 +80,7 @@ class ContentUserAction extends StatelessWidget {
                     padding: const EdgeInsets.all(5),
                     child: Icon(
                       Icons.remove_red_eye,
-                      color: contentPageProvider.contentModel!.contentStatus == ContentStatusEnum.CONSUMED ? AppColors.main : null,
+                      color: contentPageProvider.contentModel!.contentStatus == ContentStatusEnum.CONSUMED ? AppColors.deepGreen : null,
                       size: 30,
                     ),
                   ),
@@ -103,7 +103,7 @@ class ContentUserAction extends StatelessWidget {
                     padding: const EdgeInsets.all(5),
                     child: Icon(
                       Icons.favorite,
-                      color: contentPageProvider.contentModel!.isFavorite ? AppColors.main : null,
+                      color: contentPageProvider.contentModel!.isFavorite ? AppColors.dirtyRed : null,
                       size: 30,
                     ),
                   ),
