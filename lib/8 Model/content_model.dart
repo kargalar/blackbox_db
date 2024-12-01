@@ -45,7 +45,7 @@ class ContentModel {
   int reviewCount;
   List<int> ratingDistribution;
 
-  double rating;
+  double? rating;
   ContentStatusEnum? contentStatus;
   bool isFavorite;
   bool isConsumeLater;
@@ -68,7 +68,7 @@ class ContentModel {
       reviewCount: json['review_count'],
       ratingDistribution: json['rating_distribution'] != null ? (json['rating_distribution'] as List).map((i) => i as int).toList() : [],
       contentStatus: json['content_status_id'] != null ? ContentStatusEnum.values[json['content_status_id'] - 1] : null,
-      rating: json['rating']?.toDouble() ?? 0,
+      rating: json['rating'] != null ? (json['rating'] is int ? json['rating'].toDouble() : double.parse(json['rating'])) : 0,
       isFavorite: json['is_favorite'] ?? false,
       isConsumeLater: json['is_consume_later'] ?? false,
     );

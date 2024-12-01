@@ -103,7 +103,7 @@ class ServerManager {
         'user_id': contentLogModel.userID,
         'content_id': contentLogModel.contentID,
         'content_status_id': contentLogModel.contentStatus == null ? null : contentLogModel.contentStatus!.index + 1,
-        'rating': contentLogModel.rating,
+        'rating': contentLogModel.rating == 0 ? null : contentLogModel.rating,
         'is_favorite': contentLogModel.isFavorite,
         'is_consume_later': contentLogModel.isConsumeLater,
         'review': contentLogModel.review,
@@ -112,9 +112,6 @@ class ServerManager {
         method: 'POST',
       ),
     );
-    // 'content_status_id': contentLogModel.contentStatus == null ? null : contentLogModel.contentStatus!.index + 1,
-
-    debugPrint(contentLogModel.contentStatus?.index.toString());
 
     checkRequest(response);
   }

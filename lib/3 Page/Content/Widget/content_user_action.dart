@@ -17,6 +17,8 @@ class ContentUserAction extends StatelessWidget {
   Widget build(BuildContext context) {
     late final contentPageProvider = context.watch<ContentPageProvider>();
 
+    double userRating = contentPageProvider.contentModel!.rating ?? 0;
+
     return Padding(
       padding: const EdgeInsets.all(25),
       child: Container(
@@ -32,7 +34,7 @@ class ContentUserAction extends StatelessWidget {
             MouseRegion(
               cursor: SystemMouseCursors.click,
               child: RatingBar.builder(
-                initialRating: contentPageProvider.contentModel!.rating,
+                initialRating: contentPageProvider.contentModel!.rating ?? 0,
                 minRating: 0.5,
                 direction: Axis.horizontal,
                 glow: false,
@@ -43,8 +45,17 @@ class ContentUserAction extends StatelessWidget {
                   Icons.star,
                   color: AppColors.main,
                 ),
-                onRatingUpdate: (rating) {
-                  contentPageProvider.rating(rating);
+                onRatingUpdate: (rating) async {
+                  if (rating == userRating) return;
+
+                  userRating = rating;
+                  await contentPageProvider.contentUserAction(
+                    contentType: contentPageProvider.contentModel!.contentType,
+                    contentStatus: ContentStatusEnum.CONSUMED,
+                    rating: userRating,
+                    isFavorite: contentPageProvider.contentModel!.isFavorite,
+                    isConsumeLater: contentPageProvider.contentModel!.isConsumeLater,
+                  );
                 },
               ),
             ),
@@ -55,7 +66,15 @@ class ContentUserAction extends StatelessWidget {
                 // watch
                 InkWell(
                   onTap: () async {
-                    await contentPageProvider.consume();
+                    contentPageProvider.contentModel!.contentStatus = contentPageProvider.contentModel!.contentStatus != null ? null : ContentStatusEnum.CONSUMED;
+
+                    await contentPageProvider.contentUserAction(
+                      contentType: contentPageProvider.contentModel!.contentType,
+                      contentStatus: contentPageProvider.contentModel!.contentStatus,
+                      rating: contentPageProvider.contentModel!.rating,
+                      isFavorite: contentPageProvider.contentModel!.isFavorite,
+                      isConsumeLater: contentPageProvider.contentModel!.isConsumeLater,
+                    );
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(5),
@@ -70,7 +89,7 @@ class ContentUserAction extends StatelessWidget {
                 // favori
                 InkWell(
                   onTap: () {
-                    contentPageProvider.favorite();
+                    // contentPageProvider.favorite();
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(5),
@@ -84,7 +103,7 @@ class ContentUserAction extends StatelessWidget {
                 // wathlater
                 InkWell(
                   onTap: () {
-                    contentPageProvider.consumeLater();
+                    // contentPageProvider.consumeLater();
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(5),
