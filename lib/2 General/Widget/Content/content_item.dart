@@ -10,8 +10,8 @@ import 'package:blackbox_db/8%20Model/showcase_movie_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class MovieItem extends StatefulWidget {
-  const MovieItem({
+class ContentItem extends StatefulWidget {
+  const ContentItem({
     super.key,
     required this.showcaseContentModel,
     required this.showcaseType,
@@ -23,10 +23,10 @@ class MovieItem extends StatefulWidget {
   final bool isSearch;
 
   @override
-  State<MovieItem> createState() => _MovieItemState();
+  State<ContentItem> createState() => _ContentItemState();
 }
 
-class _MovieItemState extends State<MovieItem> {
+class _ContentItemState extends State<ContentItem> {
   bool onHover = false;
 
   @override

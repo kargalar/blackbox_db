@@ -1,4 +1,4 @@
-import 'package:blackbox_db/2%20General/Widget/Content/movie_item.dart';
+import 'package:blackbox_db/2%20General/Widget/Content/content_item.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:blackbox_db/7%20Enum/showcase_type_enum.dart';
 import 'package:blackbox_db/8%20Model/showcase_movie_model.dart';
@@ -21,7 +21,7 @@ class TestItems extends StatelessWidget {
             Column(
               children: [
                 const Text("ACTIVITY"),
-                MovieItem(
+                ContentItem(
                   showcaseContentModel: ShowcaseMovieModel(
                     movieId: 0,
                     posterPath: "https://image.tmdb.org/t/p/original/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
@@ -40,7 +40,7 @@ class TestItems extends StatelessWidget {
             Column(
               children: [
                 const Text("EXPLORE"),
-                MovieItem(
+                ContentItem(
                   showcaseContentModel: ShowcaseMovieModel(
                     movieId: 1,
                     posterPath: "https://image.tmdb.org/t/p/original/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
@@ -59,7 +59,7 @@ class TestItems extends StatelessWidget {
             Column(
               children: [
                 const Text("CONTINUE"),
-                MovieItem(
+                ContentItem(
                   showcaseContentModel: ShowcaseMovieModel(
                     movieId: 2,
                     posterPath: "https://image.tmdb.org/t/p/original/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
@@ -77,7 +77,7 @@ class TestItems extends StatelessWidget {
             Column(
               children: [
                 const Text("TREND"),
-                MovieItem(
+                ContentItem(
                   showcaseContentModel: ShowcaseMovieModel(
                     movieId: 4,
                     posterPath: "https://image.tmdb.org/t/p/original/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
@@ -97,7 +97,7 @@ class TestItems extends StatelessWidget {
             Column(
               children: [
                 const Text("FLAT"),
-                MovieItem(
+                ContentItem(
                   showcaseContentModel: ShowcaseMovieModel(
                     movieId: 5,
                     posterPath: "https://image.tmdb.org/t/p/original/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",

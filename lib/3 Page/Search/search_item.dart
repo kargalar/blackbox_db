@@ -1,4 +1,4 @@
-import 'package:blackbox_db/2%20General/Widget/Content/movie_item.dart';
+import 'package:blackbox_db/2%20General/Widget/Content/content_item.dart';
 import 'package:blackbox_db/2%20General/app_colors.dart';
 import 'package:blackbox_db/6%20Provider/page_provider.dart';
 import 'package:blackbox_db/7%20Enum/showcase_type_enum.dart';
@@ -28,7 +28,7 @@ class SearchItem extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          MovieItem(
+          ContentItem(
             isSearch: true,
             showcaseContentModel: ShowcaseMovieModel(
               movieId: searchMovieModel.movieId,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class PageProvider with ChangeNotifier {
   int currentIndex = 0;
   String searchText = '';
+  ContentTypeEnum searchFilter = ContentTypeEnum.MOVIE;
   ContentTypeEnum exploreContentType = ContentTypeEnum.MOVIE;
   String currentUserID = "";
   int contentID = 0;

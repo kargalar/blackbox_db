@@ -1,6 +1,7 @@
 import 'package:blackbox_db/3%20Page/Search/search_item.dart';
 import 'package:blackbox_db/5%20Service/tmdb_service.dart';
 import 'package:blackbox_db/6%20Provider/page_provider.dart';
+import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:blackbox_db/8%20Model/search_movie_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,11 +15,11 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  late final appbarProvider = context.watch<PageProvider>();
+  late final pageProvider = context.read<PageProvider>();
 
   bool isLoading = true;
 
-  late List<SearchMovieModel> movieList;
+  late List<SearchMovieModel> contentList;
 
   @override
   void initState() {
@@ -31,7 +32,7 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return isLoading
         ? const Center(child: CircularProgressIndicator())
-        : movieList.isEmpty
+        : contentList.isEmpty
             ? const Center(
                 child: Text(
                   'No content found',
@@ -49,22 +50,22 @@ class _SearchPageState extends State<SearchPage> {
                     width: 0.4.sw,
                     child: ListView.builder(
                       shrinkWrap: true,
-                      itemCount: movieList.length,
+                      itemCount: contentList.length,
                       itemBuilder: (context, index) {
                         return SearchItem(
                           searchMovieModel: SearchMovieModel(
-                            movieId: movieList[index].movieId,
-                            moviePosterPath: movieList[index].moviePosterPath,
-                            contentType: movieList[index].contentType,
-                            isFavorite: movieList[index].isFavorite,
-                            isConsumed: movieList[index].isConsumed,
-                            rating: movieList[index].rating,
-                            isReviewed: movieList[index].isReviewed,
-                            isConsumeLater: movieList[index].isConsumeLater,
-                            title: movieList[index].title,
-                            description: movieList[index].description,
-                            year: movieList[index].year,
-                            originalTitle: movieList[index].originalTitle,
+                            movieId: contentList[index].movieId,
+                            moviePosterPath: contentList[index].moviePosterPath,
+                            contentType: contentList[index].contentType,
+                            isFavorite: contentList[index].isFavorite,
+                            isConsumed: contentList[index].isConsumed,
+                            rating: contentList[index].rating,
+                            isReviewed: contentList[index].isReviewed,
+                            isConsumeLater: contentList[index].isConsumeLater,
+                            title: contentList[index].title,
+                            description: contentList[index].description,
+                            year: contentList[index].year,
+                            originalTitle: contentList[index].originalTitle,
                           ),
                         );
                       },
@@ -76,7 +77,13 @@ class _SearchPageState extends State<SearchPage> {
 
   Future<void> search() async {
     try {
-      movieList = await TMDBService().search(context.read<PageProvider>().searchText);
+      if (pageProvider.searchFilter == ContentTypeEnum.MOVIE) {
+        contentList = await TMDBService().search(pageProvider.searchText);
+      } else if (pageProvider.searchFilter == ContentTypeEnum.GAME) {
+        // contentList = igdb;
+      } else {
+        // contentList = bookapi;
+      }
 
       setState(() {
         isLoading = false;
