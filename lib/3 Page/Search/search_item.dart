@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blackbox_db/2%20General/Widget/Content/content_item.dart';
 import 'package:blackbox_db/2%20General/app_colors.dart';
 import 'package:blackbox_db/6%20Provider/page_provider.dart';
@@ -13,7 +14,7 @@ class SearchItem extends StatelessWidget {
     super.key,
     required this.searchMovieModel,
   });
-  final SearchMovieModel searchMovieModel;
+  final SearchContentModel searchMovieModel;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class SearchItem extends StatelessWidget {
       borderRadius: AppColors.borderRadiusAll,
       onTap: () {
         context.read<PageProvider>().content(
-              searchMovieModel.movieId,
+              searchMovieModel.contentId,
               searchMovieModel.contentType,
             );
       },
@@ -31,8 +32,8 @@ class SearchItem extends StatelessWidget {
           ContentItem(
             isSearch: true,
             showcaseContentModel: ShowcaseMovieModel(
-              movieId: searchMovieModel.movieId,
-              posterPath: searchMovieModel.moviePosterPath,
+              movieId: searchMovieModel.contentId,
+              posterPath: searchMovieModel.contentPosterPath,
               contentType: searchMovieModel.contentType,
               isFavorite: searchMovieModel.isFavorite,
               isConsumed: searchMovieModel.isConsumed,
@@ -49,21 +50,26 @@ class SearchItem extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Text(
-                      searchMovieModel.title,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25,
+                    SizedBox(
+                      width: 0.275.sw,
+                      child: AutoSizeText(
+                        searchMovieModel.title,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25,
+                        ),
+                        maxLines: 2,
                       ),
                     ),
                     const SizedBox(width: 5),
-                    Text(
-                      searchMovieModel.year,
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: AppColors.text.withOpacity(0.6),
+                    if (searchMovieModel.year != null)
+                      Text(
+                        searchMovieModel.year!,
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: AppColors.text.withOpacity(0.6),
+                        ),
                       ),
-                    ),
                   ],
                 ),
                 if (searchMovieModel.title != searchMovieModel.originalTitle)
@@ -76,14 +82,15 @@ class SearchItem extends StatelessWidget {
                   ),
                 // TODO: director
                 // Text(searchMovieModel.creator),
-                SizedBox(
-                  width: 0.3.sw,
-                  child: Text(
-                    searchMovieModel.description,
-                    maxLines: 6,
-                    overflow: TextOverflow.ellipsis,
+                if (searchMovieModel.description != null)
+                  SizedBox(
+                    width: 0.3.sw,
+                    child: Text(
+                      searchMovieModel.description!,
+                      maxLines: 6,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                ),
               ],
             ),
           ),

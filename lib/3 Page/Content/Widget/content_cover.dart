@@ -10,7 +10,7 @@ class ContentCover extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    late final movieModel = context.read<ContentPageProvider>().contentModel;
+    late final contentModel = context.read<ContentPageProvider>().contentModel;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -18,7 +18,8 @@ class ContentCover extends StatelessWidget {
         const SizedBox(height: 20),
         // poster
         ContentPoster.contentPage(
-          posterPath: movieModel!.posterPath,
+          posterPath: contentModel!.posterPath,
+          contentType: contentModel.contentType,
         ),
         // movie stats
         Container(
@@ -30,7 +31,7 @@ class ContentCover extends StatelessWidget {
                   Column(
                     children: [
                       Text(
-                        movieModel.consumeCount.toString(),
+                        contentModel.consumeCount.toString(),
                         style: const TextStyle(fontSize: 18),
                       ),
                       const Text("Watch"),
@@ -40,7 +41,7 @@ class ContentCover extends StatelessWidget {
                   Column(
                     children: [
                       Text(
-                        movieModel.favoriCount.toString(),
+                        contentModel.favoriCount.toString(),
                         style: const TextStyle(fontSize: 18),
                       ),
                       const Text("Favori"),
@@ -50,7 +51,7 @@ class ContentCover extends StatelessWidget {
                   Column(
                     children: [
                       Text(
-                        movieModel.listCount.toString(),
+                        contentModel.listCount.toString(),
                         style: const TextStyle(fontSize: 18),
                       ),
                       const Text("List"),
@@ -60,7 +61,7 @@ class ContentCover extends StatelessWidget {
                   Column(
                     children: [
                       Text(
-                        movieModel.reviewCount.toString(),
+                        contentModel.reviewCount.toString(),
                         style: const TextStyle(fontSize: 18),
                       ),
                       const Text("Review"),
@@ -71,11 +72,11 @@ class ContentCover extends StatelessWidget {
               const SizedBox(height: 20),
               Row(
                 children: [
-                  for (var i = 0; i < movieModel.ratingDistribution.length; i++)
+                  for (var i = 0; i < contentModel.ratingDistribution.length; i++)
                     Column(
                       children: [
                         Text(
-                          "${movieModel.ratingDistribution[i]} ",
+                          "${contentModel.ratingDistribution[i]} ",
                           style: const TextStyle(fontSize: 18),
                         ),
                         Text("${i + 1}"),
@@ -85,7 +86,7 @@ class ContentCover extends StatelessWidget {
                   Column(
                     children: [
                       Text(
-                        movieModel.rating.toString(),
+                        contentModel.rating.toString(),
                         style: const TextStyle(fontSize: 18),
                       ),
                       const Text("Rating"),

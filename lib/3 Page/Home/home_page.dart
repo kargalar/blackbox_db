@@ -1,6 +1,4 @@
-import 'package:blackbox_db/2%20General/app_colors.dart';
 import 'package:blackbox_db/3%20Page/Explore/Widget/content_list.dart';
-import 'package:blackbox_db/3%20Page/Home/test_items.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:blackbox_db/7%20Enum/showcase_type_enum.dart';
 import 'package:flutter/material.dart';
@@ -23,28 +21,33 @@ class _HomePageState extends State<HomePage> {
             contentType: ContentTypeEnum.MOVIE,
             showcaseType: ShowcaseTypeEnum.EXPLORE,
           ),
-          const Text("trend BOOK"),
-          const ContentList(
-            contentType: ContentTypeEnum.BOOK,
-            showcaseType: ShowcaseTypeEnum.TREND,
-          ),
-          const Text("continue GAME"),
+          const Text("activity MOVIE"),
           const ContentList(
             contentType: ContentTypeEnum.GAME,
-            showcaseType: ShowcaseTypeEnum.CONTIUNE,
-          ),
-          const Text("flat GAME"),
-          const ContentList(
-            contentType: ContentTypeEnum.GAME,
-            showcaseType: ShowcaseTypeEnum.FLAT,
-          ),
-          const Text("explore all"),
-          const ContentList(
             showcaseType: ShowcaseTypeEnum.EXPLORE,
           ),
-          Divider(color: AppColors.text),
-          const TestItems(),
-          SizedBox(height: 100),
+          // const Text("trend BOOK"),
+          // const ContentList(
+          //   contentType: ContentTypeEnum.BOOK,
+          //   showcaseType: ShowcaseTypeEnum.TREND,
+          // ),
+          // const Text("continue GAME"),
+          // const ContentList(
+          //   contentType: ContentTypeEnum.GAME,
+          //   showcaseType: ShowcaseTypeEnum.CONTIUNE,
+          // ),
+          // const Text("flat GAME"),
+          // const ContentList(
+          //   contentType: ContentTypeEnum.GAME,
+          //   showcaseType: ShowcaseTypeEnum.FLAT,
+          // ),
+          // const Text("explore all"),
+          // const ContentList(
+          //   showcaseType: ShowcaseTypeEnum.EXPLORE,
+          // ),
+          // Divider(color: AppColors.text),
+          // const TestItems(),
+          // SizedBox(height: 100),
         ],
       ),
     );

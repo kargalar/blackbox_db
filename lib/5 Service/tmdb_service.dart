@@ -27,7 +27,7 @@ class TMDBService {
   }
 
   // get all genres
-  Future<List<SearchMovieModel>> search(searchText) async {
+  Future<List<SearchContentModel>> search(searchText) async {
     final url = 'https://api.themoviedb.org/3/search/movie?query=$searchText&include_adult=false&language=en-US&page=1';
 
     final response = await Dio().get(
@@ -39,6 +39,6 @@ class TMDBService {
 
     checkRequest(response);
 
-    return SearchMovieModel.fromJsonTMDBList(response.data);
+    return SearchContentModel.fromJsonTMDBList(response.data);
   }
 }

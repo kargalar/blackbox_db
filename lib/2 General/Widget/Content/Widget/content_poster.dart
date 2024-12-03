@@ -1,4 +1,5 @@
 import 'package:blackbox_db/2%20General/app_colors.dart';
+import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
@@ -7,19 +8,23 @@ class ContentPoster extends StatelessWidget {
   const ContentPoster({
     super.key,
     required this.posterPath,
+    required this.contentType,
     this.size = 150,
     this.cacheSize = 300,
   });
 
   final String? posterPath;
+  final ContentTypeEnum contentType;
   final double size;
   final int cacheSize;
 
   const ContentPoster.showcase({
     Key? key,
     required String? posterPath,
+    required ContentTypeEnum contentType,
   }) : this(
           key: key,
+          contentType: contentType,
           posterPath: posterPath,
           size: 150,
           cacheSize: 700,
@@ -28,8 +33,10 @@ class ContentPoster extends StatelessWidget {
   const ContentPoster.contentPage({
     Key? key,
     required String? posterPath,
+    required ContentTypeEnum contentType,
   }) : this(
           key: key,
+          contentType: contentType,
           posterPath: posterPath,
           size: 230,
           cacheSize: 2000,
@@ -37,6 +44,16 @@ class ContentPoster extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    late String imageURL;
+
+    if (contentType == ContentTypeEnum.MOVIE) {
+      imageURL = "https://image.tmdb.org/t/p/original$posterPath";
+    } else if (contentType == ContentTypeEnum.BOOK) {
+      // imageURL =
+    } else if (contentType == ContentTypeEnum.GAME) {
+      imageURL = "https://images.igdb.com/igdb/image/upload/t_720p/$posterPath.jpg";
+    }
+
     return Container(
       height: size * 1.5,
       width: size,
@@ -48,7 +65,7 @@ class ContentPoster extends StatelessWidget {
         borderRadius: AppColors.borderRadiusAll / 2,
         child: posterPath != null
             ? CachedNetworkImage(
-                imageUrl: "https://image.tmdb.org/t/p/original$posterPath",
+                imageUrl: imageURL,
                 fit: BoxFit.cover,
                 fadeInDuration: const Duration(milliseconds: 150),
                 fadeOutDuration: const Duration(milliseconds: 150),

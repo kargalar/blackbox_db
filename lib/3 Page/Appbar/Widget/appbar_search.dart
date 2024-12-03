@@ -23,8 +23,8 @@ class _AppbarSearchState extends State<AppbarSearch> {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // search type dropdown menu (movie,game,book)
         searchFilter(),
+        const SizedBox(width: 10),
         SizedBox(
           width: 250,
           height: 43,

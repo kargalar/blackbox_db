@@ -1,4 +1,5 @@
 import 'package:blackbox_db/3%20Page/Search/search_item.dart';
+import 'package:blackbox_db/5%20Service/igdb_service.dart';
 import 'package:blackbox_db/5%20Service/tmdb_service.dart';
 import 'package:blackbox_db/6%20Provider/page_provider.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
@@ -19,7 +20,7 @@ class _SearchPageState extends State<SearchPage> {
 
   bool isLoading = true;
 
-  late List<SearchMovieModel> contentList;
+  late List<SearchContentModel> contentList;
 
   @override
   void initState() {
@@ -53,9 +54,9 @@ class _SearchPageState extends State<SearchPage> {
                       itemCount: contentList.length,
                       itemBuilder: (context, index) {
                         return SearchItem(
-                          searchMovieModel: SearchMovieModel(
-                            movieId: contentList[index].movieId,
-                            moviePosterPath: contentList[index].moviePosterPath,
+                          searchMovieModel: SearchContentModel(
+                            contentId: contentList[index].contentId,
+                            contentPosterPath: contentList[index].contentPosterPath,
                             contentType: contentList[index].contentType,
                             isFavorite: contentList[index].isFavorite,
                             isConsumed: contentList[index].isConsumed,
@@ -80,7 +81,7 @@ class _SearchPageState extends State<SearchPage> {
       if (pageProvider.searchFilter == ContentTypeEnum.MOVIE) {
         contentList = await TMDBService().search(pageProvider.searchText);
       } else if (pageProvider.searchFilter == ContentTypeEnum.GAME) {
-        // contentList = igdb;
+        contentList = await IGDBService().search(pageProvider.searchText);
       } else {
         // contentList = bookapi;
       }
