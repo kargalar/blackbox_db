@@ -36,7 +36,8 @@ class IGDBService {
       options: Options(
         headers: headers,
       ),
-      data: 'fields id,cover.image_id,name,summary,first_release_date; search "$searchText"; where version_parent = null; limit 20;',
+      // TODO: şimdilik sadece pc oyunları geliyor ileride platform seçimi yapılacak
+      data: 'fields id,cover.image_id,name,summary,first_release_date; search "$searchText"; where version_parent = null & category = 0 & platforms = (6); limit 20;',
     );
 
     checkRequest(response);
