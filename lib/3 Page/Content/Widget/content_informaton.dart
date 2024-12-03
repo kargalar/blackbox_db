@@ -9,7 +9,7 @@ class ContentInformation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    late final movieModel = context.read<ContentPageProvider>().contentModel;
+    late final contentModel = context.read<ContentPageProvider>().contentModel;
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -18,10 +18,11 @@ class ContentInformation extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            //TODO: loglarıynca move kaydediyor game ekaydedecek sprun bu
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                movieModel!.title,
+                contentModel!.title,
                 style: const TextStyle(
                   fontSize: 26,
                   fontWeight: FontWeight.bold,
@@ -29,7 +30,7 @@ class ContentInformation extends StatelessWidget {
               ),
               const SizedBox(width: 5),
               Text(
-                movieModel.releaseDate.year.toString(),
+                contentModel.releaseDate.year.toString(),
                 style: TextStyle(
                   fontSize: 24,
                   color: AppColors.text.withOpacity(0.6),
@@ -38,14 +39,14 @@ class ContentInformation extends StatelessWidget {
             ],
           ),
 
-          if (movieModel.creatorList != null)
+          if (contentModel.creatorList != null)
             Row(
               children: [
                 ...List.generate(
-                  movieModel.creatorList!.length,
+                  contentModel.creatorList!.length,
                   (index) {
                     return Text(
-                      movieModel.creatorList![index].name,
+                      contentModel.creatorList![index].name,
                       style: const TextStyle(fontSize: 15),
                     );
                   },
@@ -56,30 +57,30 @@ class ContentInformation extends StatelessWidget {
           SizedBox(
             width: 500,
             child: Text(
-              movieModel.description,
+              contentModel.description,
               style: const TextStyle(
                 fontSize: 16,
               ),
             ),
           ),
           const Divider(),
-          if (movieModel.genreList != null)
+          if (contentModel.genreList != null)
             Row(
               children: [
                 Text(
-                  movieModel.genreList!.map((e) => e.title).join(", "),
+                  contentModel.genreList!.map((e) => e.title).join(", "),
                   style: const TextStyle(fontSize: 16),
                 ),
                 const SizedBox(width: 10),
                 Text(
-                  "${movieModel.length} min",
+                  "${contentModel.length} min",
                   style: const TextStyle(fontSize: 16),
                 ),
               ],
             ),
           const SizedBox(height: 20),
           // TODO: buralar sadece isteyenler için açılacak şekilde olsun. tür, mod, actorler, platform falan. yani tasarımdaki gibi
-          if (movieModel.cast != null) ...[
+          if (contentModel.cast != null) ...[
             SizedBox(
               width: 500,
               height: 50,
@@ -87,10 +88,10 @@ class ContentInformation extends StatelessWidget {
                 shrinkWrap: true,
                 separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 2),
                 scrollDirection: Axis.horizontal,
-                itemCount: movieModel.cast!.length,
+                itemCount: contentModel.cast!.length,
                 itemBuilder: (BuildContext context, int index) {
                   return CastItem(
-                    crewModel: movieModel.cast![index],
+                    crewModel: contentModel.cast![index],
                   );
                 },
               ),

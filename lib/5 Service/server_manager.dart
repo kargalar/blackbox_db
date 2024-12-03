@@ -1,7 +1,7 @@
 import 'package:blackbox_db/2%20General/accessible.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:blackbox_db/8%20Model/movie_log_model.dart';
-import 'package:blackbox_db/8%20Model/movie_model.dart';
+import 'package:blackbox_db/8%20Model/content_model.dart';
 import 'package:blackbox_db/8%20Model/genre_model.dart';
 import 'package:blackbox_db/8%20Model/showcase_movie_model.dart';
 import 'package:dio/dio.dart';
@@ -94,19 +94,19 @@ class ServerManager {
   }
 
   //conent_user_action
-  Future<void> movieUserAction({
-    required MovieLogModel movieLogModel,
+  Future<void> contentUserAction({
+    required MovieLogModel contentLogModel,
   }) async {
     var response = await dio.request(
       "$_baseUrl/movie_user_action",
       data: {
-        'user_id': movieLogModel.userID,
-        'movie_id': movieLogModel.movieID,
-        'content_status_id': movieLogModel.contentStatus == null ? null : movieLogModel.contentStatus!.index + 1,
-        'rating': movieLogModel.rating == 0 ? null : movieLogModel.rating,
-        'is_favorite': movieLogModel.isFavorite,
-        'is_consume_later': movieLogModel.isConsumeLater,
-        'review': movieLogModel.review,
+        'user_id': contentLogModel.userID,
+        'movie_id': contentLogModel.movieID,
+        'content_status_id': contentLogModel.contentStatus == null ? null : contentLogModel.contentStatus!.index + 1,
+        'rating': contentLogModel.rating == 0 ? null : contentLogModel.rating,
+        'is_favorite': contentLogModel.isFavorite,
+        'is_consume_later': contentLogModel.isConsumeLater,
+        'review': contentLogModel.review,
       },
       options: Options(
         method: 'POST',
@@ -132,7 +132,7 @@ class ServerManager {
     }
 
     var response = await dio.request(
-      "$_baseUrl/$contentTypeString?movie_id=$contentId&user_id=${userId ?? userID}",
+      "$_baseUrl/$contentTypeString?content_id=$contentId&user_id=${userId ?? userID}",
       options: Options(
         method: 'GET',
       ),

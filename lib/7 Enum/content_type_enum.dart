@@ -1,5 +1,5 @@
 enum ContentTypeEnum {
   MOVIE,
-  BOOK,
   GAME,
+  BOOK,
 }

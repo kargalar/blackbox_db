@@ -35,7 +35,7 @@ class ContentModel {
   final DateTime releaseDate;
   final List<CastModel>? creatorList;
   final List<GenreModel>? genreList;
-  final int length;
+  final int? length;
   final List<CastModel>? cast;
 
   // TODO: filmin bilgileri, istatistikleri ve kullanıcı logu ayrı modelde mi tutulsa
@@ -56,10 +56,11 @@ class ContentModel {
       posterPath: json['poster_path'],
       title: json['title'],
       contentType: ContentTypeEnum.values[json['content_type_id'] - 1],
-      releaseDate: DateTime.parse(json['release_date']),
+      releaseDate: json['release_date'] is int ? DateTime.fromMillisecondsSinceEpoch(json['release_date'] * 1000) : DateTime.parse(json['release_date']),
       creatorList: json['creator_list'] != null ? (json['creator_list'] as List).map((i) => CastModel.fromJson(i)).toList() : null,
       description: json['description'],
       genreList: json['genre_list'] != null ? (json['genre_list'] as List).map((i) => GenreModel.fromJson(i)).toList() : null,
+      // TODO: game timestamp fix
       length: json['length'],
       cast: json['cast_list'] != null ? (json['cast_list'] as List).map((i) => CastModel.fromJson(i)).toList() : null,
       consumeCount: json['consume_count'],
