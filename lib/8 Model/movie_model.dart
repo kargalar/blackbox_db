@@ -4,8 +4,8 @@ import 'package:blackbox_db/8%20Model/cast_model.dart';
 import 'package:blackbox_db/8%20Model/genre_model.dart';
 import 'package:intl/intl.dart';
 
-class MovieModel {
-  MovieModel({
+class ContentModel {
+  ContentModel({
     required this.id,
     required this.posterPath,
     required this.title,
@@ -50,8 +50,8 @@ class MovieModel {
   bool isFavorite;
   bool isConsumeLater;
 
-  factory MovieModel.fromJson(Map<String, dynamic> json) {
-    return MovieModel(
+  factory ContentModel.fromJson(Map<String, dynamic> json) {
+    return ContentModel(
       id: json['id'],
       posterPath: json['poster_path'],
       title: json['title'],
@@ -74,8 +74,8 @@ class MovieModel {
     );
   }
 
-  static List<MovieModel> fromJsonList(List<dynamic> jsonList) {
-    return jsonList.map((i) => MovieModel.fromJson(i)).toList();
+  static List<ContentModel> fromJsonList(List<dynamic> jsonList) {
+    return jsonList.map((i) => ContentModel.fromJson(i)).toList();
   }
 
   Map<String, dynamic> toJson() {

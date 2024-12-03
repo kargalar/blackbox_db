@@ -6,20 +6,20 @@ import 'package:blackbox_db/8%20Model/movie_log_model.dart';
 import 'package:blackbox_db/8%20Model/movie_model.dart';
 import 'package:flutter/material.dart';
 
-class MoviePageProvider with ChangeNotifier {
-  static final MoviePageProvider _instance = MoviePageProvider._internal();
+class ContentPageProvider with ChangeNotifier {
+  static final ContentPageProvider _instance = ContentPageProvider._internal();
 
-  factory MoviePageProvider() {
+  factory ContentPageProvider() {
     return _instance;
   }
 
-  MoviePageProvider._internal();
+  ContentPageProvider._internal();
 
-  MovieModel? movieModel;
+  ContentModel? contentModel;
 
   // ? contentId null ise contentPage de demek
 
-  Future<void> movieUserAction({
+  Future<void> contentUserAction({
     int? movieId,
     required ContentTypeEnum contentType,
     required ContentStatusEnum? contentStatus,
@@ -32,16 +32,16 @@ class MoviePageProvider with ChangeNotifier {
       userID: userID,
       // TODO: date postgresql tarafında yapılabilir.
       date: DateTime.now(),
-      movieID: movieId ?? movieModel!.id,
+      movieID: movieId ?? contentModel!.id,
       contentType: contentType,
       // review: "A chaotic family is on a road trip across a rugged landscape. In the back seat, Dad has a broken leg, Mom tries to laugh when she’s not holding back tears, and the youngest keeps",
     );
 
     if (movieId == null) {
-      movieModel!.contentStatus = contentStatus;
-      movieModel!.rating = rating;
-      movieModel!.isFavorite = isFavorite;
-      movieModel!.isConsumeLater = isConsumeLater;
+      contentModel!.contentStatus = contentStatus;
+      contentModel!.rating = rating;
+      contentModel!.isFavorite = isFavorite;
+      contentModel!.isConsumeLater = isConsumeLater;
     }
     userLog.contentStatus = contentStatus;
     userLog.rating = rating;

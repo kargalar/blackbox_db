@@ -10,7 +10,7 @@ class ContentCover extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    late final movieModel = context.read<MoviePageProvider>().movieModel;
+    late final movieModel = context.read<ContentPageProvider>().contentModel;
 
     return Column(
       mainAxisSize: MainAxisSize.min,

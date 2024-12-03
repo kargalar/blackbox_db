@@ -13,7 +13,7 @@ class ContentItemProvider with ChangeNotifier {
   Future consume() async {
     showcaseContentModel.isConsumed = !showcaseContentModel.isConsumed;
 
-    await MoviePageProvider().movieUserAction(
+    await ContentPageProvider().contentUserAction(
       movieId: showcaseContentModel.movieId,
       contentType: showcaseContentModel.contentType,
       contentStatus: showcaseContentModel.isConsumed ? ContentStatusEnum.CONSUMED : null,

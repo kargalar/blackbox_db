@@ -19,7 +19,7 @@ class ContentPage extends StatefulWidget {
 class _ContentPageState extends State<ContentPage> {
   bool isLoading = true;
 
-  late final provider = context.read<MoviePageProvider>();
+  late final provider = context.read<ContentPageProvider>();
 
   @override
   void initState() {
@@ -30,7 +30,7 @@ class _ContentPageState extends State<ContentPage> {
 
   @override
   void dispose() {
-    provider.movieModel = null;
+    provider.contentModel = null;
 
     super.dispose();
   }
@@ -39,7 +39,7 @@ class _ContentPageState extends State<ContentPage> {
   Widget build(BuildContext context) {
     return isLoading
         ? const Center(child: CircularProgressIndicator())
-        : provider.movieModel == null
+        : provider.contentModel == null
             ? const Center(child: Text("Content not found"))
             : const Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,9 +54,12 @@ class _ContentPageState extends State<ContentPage> {
 
   void getContentDetail() async {
     try {
-      provider.movieModel = await ServerManager().getMovieDetail(movieId: context.read<PageProvider>().contentID);
+      provider.contentModel = await ServerManager().getContentDetail(
+        contentId: context.read<PageProvider>().contentID,
+        contentType: context.read<PageProvider>().contentPageContentTpye,
+      );
     } catch (e) {
-      provider.movieModel = null;
+      provider.contentModel = null;
       debugPrint(e.toString());
     }
 

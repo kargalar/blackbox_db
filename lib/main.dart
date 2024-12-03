@@ -15,7 +15,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => PageProvider()),
-        ChangeNotifierProvider(create: (context) => MoviePageProvider()),
+        ChangeNotifierProvider(create: (context) => ContentPageProvider()),
       ],
       child: const Main(),
     ),

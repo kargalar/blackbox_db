@@ -48,7 +48,7 @@ class ServerManager {
   }
 
   // get all movie
-  Future<List<MovieModel>> getAllMovie() async {
+  Future<List<ContentModel>> getAllMovie() async {
     var response = await dio.request(
       "$_baseUrl/movie",
       options: Options(
@@ -58,7 +58,7 @@ class ServerManager {
 
     checkRequest(response);
 
-    return (response.data as List).map((e) => MovieModel.fromJson(e)).toList();
+    return (response.data as List).map((e) => ContentModel.fromJson(e)).toList();
   }
 
   // get all movie for showcase with user id
@@ -116,12 +116,23 @@ class ServerManager {
     checkRequest(response);
   }
 
-  Future<MovieModel> getMovieDetail({
-    required int movieId,
+  Future<ContentModel> getContentDetail({
+    required int contentId,
+    required ContentTypeEnum contentType,
     int? userId,
   }) async {
+    late String contentTypeString;
+
+    if (contentType == ContentTypeEnum.MOVIE) {
+      contentTypeString = 'movie_detail';
+    } else if (contentType == ContentTypeEnum.GAME) {
+      contentTypeString = 'game_detail';
+    } else {
+      contentTypeString = 'book_detail';
+    }
+
     var response = await dio.request(
-      "$_baseUrl/movie_detail?movie_id=$movieId&user_id=${userId ?? userID}",
+      "$_baseUrl/$contentTypeString?movie_id=$contentId&user_id=${userId ?? userID}",
       options: Options(
         method: 'GET',
       ),
@@ -129,6 +140,6 @@ class ServerManager {
 
     checkRequest(response);
 
-    return MovieModel.fromJson(response.data);
+    return ContentModel.fromJson(response.data);
   }
 }

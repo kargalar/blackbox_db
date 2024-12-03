@@ -9,7 +9,7 @@ class ContentInformation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    late final movieModel = context.read<MoviePageProvider>().movieModel;
+    late final movieModel = context.read<ContentPageProvider>().contentModel;
 
     return Container(
       padding: const EdgeInsets.all(20),
