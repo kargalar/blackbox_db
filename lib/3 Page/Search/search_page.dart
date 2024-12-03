@@ -18,7 +18,7 @@ class _SearchPageState extends State<SearchPage> {
 
   bool isLoading = true;
 
-  late List<SearchMovieModel> contentList;
+  late List<SearchMovieModel> movieList;
 
   @override
   void initState() {
@@ -31,7 +31,7 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return isLoading
         ? const Center(child: CircularProgressIndicator())
-        : contentList.isEmpty
+        : movieList.isEmpty
             ? const Center(
                 child: Text(
                   'No content found',
@@ -49,22 +49,22 @@ class _SearchPageState extends State<SearchPage> {
                     width: 0.4.sw,
                     child: ListView.builder(
                       shrinkWrap: true,
-                      itemCount: contentList.length,
+                      itemCount: movieList.length,
                       itemBuilder: (context, index) {
                         return SearchItem(
                           searchMovieModel: SearchMovieModel(
-                            contentId: contentList[index].contentId,
-                            contentPosterPath: contentList[index].contentPosterPath,
-                            contentType: contentList[index].contentType,
-                            isFavorite: contentList[index].isFavorite,
-                            isConsumed: contentList[index].isConsumed,
-                            rating: contentList[index].rating,
-                            isReviewed: contentList[index].isReviewed,
-                            isConsumeLater: contentList[index].isConsumeLater,
-                            title: contentList[index].title,
-                            description: contentList[index].description,
-                            year: contentList[index].year,
-                            originalTitle: contentList[index].originalTitle,
+                            movieId: movieList[index].movieId,
+                            moviePosterPath: movieList[index].moviePosterPath,
+                            contentType: movieList[index].contentType,
+                            isFavorite: movieList[index].isFavorite,
+                            isConsumed: movieList[index].isConsumed,
+                            rating: movieList[index].rating,
+                            isReviewed: movieList[index].isReviewed,
+                            isConsumeLater: movieList[index].isConsumeLater,
+                            title: movieList[index].title,
+                            description: movieList[index].description,
+                            year: movieList[index].year,
+                            originalTitle: movieList[index].originalTitle,
                           ),
                         );
                       },
@@ -76,7 +76,7 @@ class _SearchPageState extends State<SearchPage> {
 
   Future<void> search() async {
     try {
-      contentList = await TMDBService().search(context.read<PageProvider>().searchText);
+      movieList = await TMDBService().search(context.read<PageProvider>().searchText);
 
       setState(() {
         isLoading = false;

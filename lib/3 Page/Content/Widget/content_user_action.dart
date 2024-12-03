@@ -1,6 +1,6 @@
 import 'package:blackbox_db/2%20General/accessible.dart';
 import 'package:blackbox_db/2%20General/app_colors.dart';
-import 'package:blackbox_db/6%20Provider/content_page_provider.dart';
+import 'package:blackbox_db/6%20Provider/movie_page_provider.dart';
 import 'package:blackbox_db/7%20Enum/content_status_enum.dart';
 import 'package:blackbox_db/8%20Model/movie_log_model.dart';
 import 'package:flutter/material.dart';
@@ -15,9 +15,9 @@ class ContentUserAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    late final contentPageProvider = context.watch<ContentPageProvider>();
+    late final moviePageProvider = context.watch<MoviePageProvider>();
 
-    double userRating = contentPageProvider.contentModel!.rating ?? 0;
+    double userRating = moviePageProvider.movieModel!.rating ?? 0;
 
     return Padding(
       padding: const EdgeInsets.all(25),
@@ -34,7 +34,7 @@ class ContentUserAction extends StatelessWidget {
             MouseRegion(
               cursor: SystemMouseCursors.click,
               child: RatingBar.builder(
-                initialRating: contentPageProvider.contentModel!.rating ?? 0,
+                initialRating: moviePageProvider.movieModel!.rating ?? 0,
                 minRating: 0.5,
                 direction: Axis.horizontal,
                 glow: false,
@@ -49,12 +49,12 @@ class ContentUserAction extends StatelessWidget {
                   if (rating == userRating) return;
 
                   userRating = rating;
-                  contentPageProvider.contentUserAction(
-                    contentType: contentPageProvider.contentModel!.contentType,
+                  moviePageProvider.movieUserAction(
+                    contentType: moviePageProvider.movieModel!.contentType,
                     contentStatus: ContentStatusEnum.CONSUMED,
                     rating: userRating,
-                    isFavorite: contentPageProvider.contentModel!.isFavorite,
-                    isConsumeLater: contentPageProvider.contentModel!.isConsumeLater,
+                    isFavorite: moviePageProvider.movieModel!.isFavorite,
+                    isConsumeLater: moviePageProvider.movieModel!.isConsumeLater,
                   );
                 },
               ),
@@ -66,21 +66,21 @@ class ContentUserAction extends StatelessWidget {
                 // watch
                 InkWell(
                   onTap: () {
-                    contentPageProvider.contentModel!.contentStatus = contentPageProvider.contentModel!.contentStatus != null ? null : ContentStatusEnum.CONSUMED;
+                    moviePageProvider.movieModel!.contentStatus = moviePageProvider.movieModel!.contentStatus != null ? null : ContentStatusEnum.CONSUMED;
 
-                    contentPageProvider.contentUserAction(
-                      contentType: contentPageProvider.contentModel!.contentType,
-                      contentStatus: contentPageProvider.contentModel!.contentStatus,
-                      rating: contentPageProvider.contentModel!.rating,
-                      isFavorite: contentPageProvider.contentModel!.isFavorite,
-                      isConsumeLater: contentPageProvider.contentModel!.isConsumeLater,
+                    moviePageProvider.movieUserAction(
+                      contentType: moviePageProvider.movieModel!.contentType,
+                      contentStatus: moviePageProvider.movieModel!.contentStatus,
+                      rating: moviePageProvider.movieModel!.rating,
+                      isFavorite: moviePageProvider.movieModel!.isFavorite,
+                      isConsumeLater: moviePageProvider.movieModel!.isConsumeLater,
                     );
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(5),
                     child: Icon(
                       Icons.remove_red_eye,
-                      color: contentPageProvider.contentModel!.contentStatus == ContentStatusEnum.CONSUMED ? AppColors.deepGreen : null,
+                      color: moviePageProvider.movieModel!.contentStatus == ContentStatusEnum.CONSUMED ? AppColors.deepGreen : null,
                       size: 30,
                     ),
                   ),
@@ -89,21 +89,21 @@ class ContentUserAction extends StatelessWidget {
                 // favori
                 InkWell(
                   onTap: () {
-                    contentPageProvider.contentModel!.isFavorite = !contentPageProvider.contentModel!.isFavorite;
+                    moviePageProvider.movieModel!.isFavorite = !moviePageProvider.movieModel!.isFavorite;
 
-                    contentPageProvider.contentUserAction(
-                      contentType: contentPageProvider.contentModel!.contentType,
-                      contentStatus: contentPageProvider.contentModel!.contentStatus,
-                      rating: contentPageProvider.contentModel!.rating,
-                      isFavorite: contentPageProvider.contentModel!.isFavorite,
-                      isConsumeLater: contentPageProvider.contentModel!.isConsumeLater,
+                    moviePageProvider.movieUserAction(
+                      contentType: moviePageProvider.movieModel!.contentType,
+                      contentStatus: moviePageProvider.movieModel!.contentStatus,
+                      rating: moviePageProvider.movieModel!.rating,
+                      isFavorite: moviePageProvider.movieModel!.isFavorite,
+                      isConsumeLater: moviePageProvider.movieModel!.isConsumeLater,
                     );
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(5),
                     child: Icon(
                       Icons.favorite,
-                      color: contentPageProvider.contentModel!.isFavorite ? AppColors.dirtyRed : null,
+                      color: moviePageProvider.movieModel!.isFavorite ? AppColors.dirtyRed : null,
                       size: 30,
                     ),
                   ),
@@ -111,21 +111,21 @@ class ContentUserAction extends StatelessWidget {
                 // wathlater
                 InkWell(
                   onTap: () {
-                    contentPageProvider.contentModel!.isConsumeLater = !contentPageProvider.contentModel!.isConsumeLater;
+                    moviePageProvider.movieModel!.isConsumeLater = !moviePageProvider.movieModel!.isConsumeLater;
 
-                    contentPageProvider.contentUserAction(
-                      contentType: contentPageProvider.contentModel!.contentType,
-                      contentStatus: contentPageProvider.contentModel!.contentStatus,
-                      rating: contentPageProvider.contentModel!.rating,
-                      isFavorite: contentPageProvider.contentModel!.isFavorite,
-                      isConsumeLater: contentPageProvider.contentModel!.isConsumeLater,
+                    moviePageProvider.movieUserAction(
+                      contentType: moviePageProvider.movieModel!.contentType,
+                      contentStatus: moviePageProvider.movieModel!.contentStatus,
+                      rating: moviePageProvider.movieModel!.rating,
+                      isFavorite: moviePageProvider.movieModel!.isFavorite,
+                      isConsumeLater: moviePageProvider.movieModel!.isConsumeLater,
                     );
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(5),
                     child: Icon(
                       Icons.watch_later,
-                      color: contentPageProvider.contentModel!.isConsumeLater ? AppColors.main : null,
+                      color: moviePageProvider.movieModel!.isConsumeLater ? AppColors.main : null,
                       size: 30,
                     ),
                   ),
@@ -163,13 +163,13 @@ class ContentUserAction extends StatelessWidget {
                   id: 0,
                   userID: userID,
                   date: DateTime.now(),
-                  movieID: contentPageProvider.contentModel!.id,
-                  contentType: contentPageProvider.contentModel!.contentType,
-                  contentStatus: contentPageProvider.contentModel!.contentStatus,
-                  rating: contentPageProvider.contentModel!.rating,
-                  isFavorite: contentPageProvider.contentModel!.isFavorite,
-                  contentTitle: contentPageProvider.contentModel!.title,
-                  isConsumeLater: contentPageProvider.contentModel!.isConsumeLater,
+                  movieID: moviePageProvider.movieModel!.id,
+                  contentType: moviePageProvider.movieModel!.contentType,
+                  contentStatus: moviePageProvider.movieModel!.contentStatus,
+                  rating: moviePageProvider.movieModel!.rating,
+                  isFavorite: moviePageProvider.movieModel!.isFavorite,
+                  movieTitle: moviePageProvider.movieModel!.title,
+                  isConsumeLater: moviePageProvider.movieModel!.isConsumeLater,
                 );
                 // add log
                 // open log dialog
@@ -185,7 +185,7 @@ class ContentUserAction extends StatelessWidget {
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text(log.contentTitle!),
+                              Text(log.movieTitle!),
                               const SizedBox(width: 10),
                               Text("${log.contentStatus}"),
                               const SizedBox(width: 10),

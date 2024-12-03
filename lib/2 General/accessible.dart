@@ -1,4 +1,4 @@
-// filer content type list
+// TODO: filter content type list
 
 bool showMovie = true;
 bool showBook = true;

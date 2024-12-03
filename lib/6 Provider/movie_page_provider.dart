@@ -6,21 +6,21 @@ import 'package:blackbox_db/8%20Model/movie_log_model.dart';
 import 'package:blackbox_db/8%20Model/movie_model.dart';
 import 'package:flutter/material.dart';
 
-class ContentPageProvider with ChangeNotifier {
-  static final ContentPageProvider _instance = ContentPageProvider._internal();
+class MoviePageProvider with ChangeNotifier {
+  static final MoviePageProvider _instance = MoviePageProvider._internal();
 
-  factory ContentPageProvider() {
+  factory MoviePageProvider() {
     return _instance;
   }
 
-  ContentPageProvider._internal();
+  MoviePageProvider._internal();
 
-  MovieModel? contentModel;
+  MovieModel? movieModel;
 
   // ? contentId null ise contentPage de demek
 
-  Future<void> contentUserAction({
-    int? contentId,
+  Future<void> movieUserAction({
+    int? movieId,
     required ContentTypeEnum contentType,
     required ContentStatusEnum? contentStatus,
     required double? rating,
@@ -32,16 +32,16 @@ class ContentPageProvider with ChangeNotifier {
       userID: userID,
       // TODO: date postgresql tarafında yapılabilir.
       date: DateTime.now(),
-      movieID: contentId ?? contentModel!.id,
+      movieID: movieId ?? movieModel!.id,
       contentType: contentType,
       // review: "A chaotic family is on a road trip across a rugged landscape. In the back seat, Dad has a broken leg, Mom tries to laugh when she’s not holding back tears, and the youngest keeps",
     );
 
-    if (contentId == null) {
-      contentModel!.contentStatus = contentStatus;
-      contentModel!.rating = rating;
-      contentModel!.isFavorite = isFavorite;
-      contentModel!.isConsumeLater = isConsumeLater;
+    if (movieId == null) {
+      movieModel!.contentStatus = contentStatus;
+      movieModel!.rating = rating;
+      movieModel!.isFavorite = isFavorite;
+      movieModel!.isConsumeLater = isConsumeLater;
     }
     userLog.contentStatus = contentStatus;
     userLog.rating = rating;
@@ -50,7 +50,7 @@ class ContentPageProvider with ChangeNotifier {
 
     await ServerManager().movieUserAction(movieLogModel: userLog);
 
-    if (contentId == null) {
+    if (movieId == null) {
       notifyListeners();
     }
   }

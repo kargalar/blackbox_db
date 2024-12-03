@@ -12,7 +12,7 @@ class MovieLogModel {
     this.isFavorite = false,
     this.isConsumeLater = false,
     this.review,
-    this.contentTitle,
+    this.movieTitle,
     required this.contentType,
   });
 
@@ -21,7 +21,7 @@ class MovieLogModel {
   final int movieID;
   ContentStatusEnum? contentStatus;
   final DateTime date;
-  final String? contentTitle;
+  final String? movieTitle;
   final ContentTypeEnum contentType;
 
   double? rating;
@@ -33,14 +33,14 @@ class MovieLogModel {
     return MovieLogModel(
       id: json['id'],
       userID: json['user_id'],
-      movieID: json['content_id'],
+      movieID: json['movie_id'],
       date: DateTime.parse(json['date']),
       contentStatus: ContentStatusEnum.values[json['content_status_id'] - 1],
       rating: double.parse(json['rating']),
       isFavorite: json['is_favorite'],
       isConsumeLater: json['is_consume_later'],
       review: json['review'],
-      contentTitle: json['content_title'],
+      movieTitle: json['movie_title'],
       contentType: ContentTypeEnum.values[json['content_type_id'] - 1],
     );
   }
@@ -53,7 +53,7 @@ class MovieLogModel {
     return {
       'id': id,
       'user_id': userID,
-      'content_id': movieID,
+      'movie_id': movieID,
       'date': date.toIso8601String(),
       'content_status_id': contentStatus!.index + 1,
       'rating': rating,

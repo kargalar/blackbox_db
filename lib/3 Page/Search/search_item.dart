@@ -1,4 +1,4 @@
-import 'package:blackbox_db/2%20General/Widget/Content/content_item.dart';
+import 'package:blackbox_db/2%20General/Widget/Content/movie_item.dart';
 import 'package:blackbox_db/2%20General/app_colors.dart';
 import 'package:blackbox_db/6%20Provider/page_provider.dart';
 import 'package:blackbox_db/7%20Enum/showcase_type_enum.dart';
@@ -21,18 +21,18 @@ class SearchItem extends StatelessWidget {
       borderRadius: AppColors.borderRadiusAll,
       onTap: () {
         context.read<PageProvider>().content(
-              searchMovieModel.contentId,
+              searchMovieModel.movieId,
               searchMovieModel.contentType,
             );
       },
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ContentItem(
+          MovieItem(
             isSearch: true,
             showcaseContentModel: ShowcaseMovieModel(
-              contentId: searchMovieModel.contentId,
-              posterPath: searchMovieModel.contentPosterPath,
+              movieId: searchMovieModel.movieId,
+              posterPath: searchMovieModel.moviePosterPath,
               contentType: searchMovieModel.contentType,
               isFavorite: searchMovieModel.isFavorite,
               isConsumed: searchMovieModel.isConsumed,

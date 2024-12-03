@@ -25,7 +25,7 @@ class ContentActivity extends StatelessWidget {
       rating: 3.5,
       isFavorite: false,
       isConsumeLater: false,
-      contentTitle: "The Road",
+      movieTitle: "The Road",
       review: "A chaotic family is on a road trip across a rugged landscape. In the back seat, Dad has a broken leg, Mom tries to laugh when she’s not holding back tears, and the youngest keeps",
     );
 
@@ -58,7 +58,7 @@ class ContentActivity extends StatelessWidget {
                   // profile picture
                   const ProfileImage.content(
                     // TODO:
-                    // imageUrl: "asd/cover/${userLog.contentID}",
+                    // imageUrl: "asd/cover/${userLog.userID}",
                     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/220px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg",
                   ),
                   const SizedBox(

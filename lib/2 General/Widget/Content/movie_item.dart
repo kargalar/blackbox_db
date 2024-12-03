@@ -10,8 +10,8 @@ import 'package:blackbox_db/8%20Model/showcase_movie_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ContentItem extends StatefulWidget {
-  const ContentItem({
+class MovieItem extends StatefulWidget {
+  const MovieItem({
     super.key,
     required this.showcaseContentModel,
     required this.showcaseType,
@@ -23,10 +23,10 @@ class ContentItem extends StatefulWidget {
   final bool isSearch;
 
   @override
-  State<ContentItem> createState() => _ContentItemState();
+  State<MovieItem> createState() => _MovieItemState();
 }
 
-class _ContentItemState extends State<ContentItem> {
+class _MovieItemState extends State<MovieItem> {
   bool onHover = false;
 
   @override
@@ -52,7 +52,7 @@ class _ContentItemState extends State<ContentItem> {
           child: GestureDetector(
             onTap: () {
               context.read<PageProvider>().content(
-                    widget.showcaseContentModel.contentId,
+                    widget.showcaseContentModel.movieId,
                     widget.showcaseContentModel.contentType,
                   );
             },

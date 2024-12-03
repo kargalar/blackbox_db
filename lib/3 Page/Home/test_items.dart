@@ -1,4 +1,4 @@
-import 'package:blackbox_db/2%20General/Widget/Content/content_item.dart';
+import 'package:blackbox_db/2%20General/Widget/Content/movie_item.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:blackbox_db/7%20Enum/showcase_type_enum.dart';
 import 'package:blackbox_db/8%20Model/showcase_movie_model.dart';
@@ -21,9 +21,9 @@ class TestItems extends StatelessWidget {
             Column(
               children: [
                 const Text("ACTIVITY"),
-                ContentItem(
+                MovieItem(
                   showcaseContentModel: ShowcaseMovieModel(
-                    contentId: 0,
+                    movieId: 0,
                     posterPath: "https://image.tmdb.org/t/p/original/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
                     contentType: ContentTypeEnum.MOVIE,
                     isFavorite: false,
@@ -40,9 +40,9 @@ class TestItems extends StatelessWidget {
             Column(
               children: [
                 const Text("EXPLORE"),
-                ContentItem(
+                MovieItem(
                   showcaseContentModel: ShowcaseMovieModel(
-                    contentId: 1,
+                    movieId: 1,
                     posterPath: "https://image.tmdb.org/t/p/original/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
                     contentType: ContentTypeEnum.BOOK,
                     isFavorite: true,
@@ -59,9 +59,9 @@ class TestItems extends StatelessWidget {
             Column(
               children: [
                 const Text("CONTINUE"),
-                ContentItem(
+                MovieItem(
                   showcaseContentModel: ShowcaseMovieModel(
-                    contentId: 2,
+                    movieId: 2,
                     posterPath: "https://image.tmdb.org/t/p/original/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
                     contentType: ContentTypeEnum.GAME,
                     isFavorite: false,
@@ -77,9 +77,9 @@ class TestItems extends StatelessWidget {
             Column(
               children: [
                 const Text("TREND"),
-                ContentItem(
+                MovieItem(
                   showcaseContentModel: ShowcaseMovieModel(
-                    contentId: 4,
+                    movieId: 4,
                     posterPath: "https://image.tmdb.org/t/p/original/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
                     contentType: ContentTypeEnum.BOOK,
                     isFavorite: false,
@@ -97,9 +97,9 @@ class TestItems extends StatelessWidget {
             Column(
               children: [
                 const Text("FLAT"),
-                ContentItem(
+                MovieItem(
                   showcaseContentModel: ShowcaseMovieModel(
-                    contentId: 5,
+                    movieId: 5,
                     posterPath: "https://image.tmdb.org/t/p/original/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
                     contentType: ContentTypeEnum.GAME,
                     isFavorite: false,

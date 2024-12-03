@@ -3,7 +3,7 @@ import 'package:blackbox_db/8%20Model/movie_log_model.dart';
 
 class ShowcaseMovieModel {
   ShowcaseMovieModel({
-    required this.contentId,
+    required this.movieId,
     required this.posterPath,
     required this.contentType,
     required this.isFavorite,
@@ -11,11 +11,11 @@ class ShowcaseMovieModel {
     required this.isConsumeLater,
     required this.rating,
     required this.isReviewed,
-    this.contentLog,
+    this.movieLog,
     this.trendIndex,
   });
 
-  final int contentId;
+  final int movieId;
   final String? posterPath;
   final ContentTypeEnum contentType;
   bool isFavorite;
@@ -27,15 +27,15 @@ class ShowcaseMovieModel {
   // final bool isFavorite;
   double? rating;
   bool isReviewed;
-  // TODO: yukarıdaki üçünü kapsayan bir model yapısı contentLog gibi
+  // TODO: yukarıdaki üçünü kapsayan bir model yapısı movieLog gibi
   //
-  final MovieLogModel? contentLog;
+  final MovieLogModel? movieLog;
 
   final int? trendIndex;
 
   factory ShowcaseMovieModel.fromJson(Map<String, dynamic> json) {
     return ShowcaseMovieModel(
-      contentId: json['movie_id'],
+      movieId: json['movie_id'],
       posterPath: json['poster_path'],
       contentType: ContentTypeEnum.values[json['content_type_id'] - 1],
       isFavorite: json['is_favorite'],
@@ -43,7 +43,7 @@ class ShowcaseMovieModel {
       rating: double.parse(json['rating']),
       isReviewed: json['is_reviewed'],
       isConsumeLater: json['is_consume_later'],
-      contentLog: json['content_log'] != null ? MovieLogModel.fromJson(json['content_log']) : null,
+      movieLog: json['movie_log'] != null ? MovieLogModel.fromJson(json['movie_log']) : null,
     );
   }
 

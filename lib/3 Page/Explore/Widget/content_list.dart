@@ -1,4 +1,4 @@
-import 'package:blackbox_db/2%20General/Widget/Content/content_item.dart';
+import 'package:blackbox_db/2%20General/Widget/Content/movie_item.dart';
 import 'package:blackbox_db/2%20General/accessible.dart';
 import 'package:blackbox_db/5%20Service/server_manager.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
@@ -51,9 +51,9 @@ class _ContentListState extends State<ContentList> {
                       shrinkWrap: true,
                       itemCount: contentList!.length,
                       itemBuilder: (context, index) {
-                        return ContentItem(
+                        return MovieItem(
                           showcaseContentModel: ShowcaseMovieModel(
-                            contentId: contentList![index].contentId,
+                            movieId: contentList![index].movieId,
                             posterPath: contentList![index].posterPath,
                             contentType: contentList![index].contentType,
                             isFavorite: contentList![index].isFavorite,

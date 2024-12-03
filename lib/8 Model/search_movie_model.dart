@@ -2,8 +2,8 @@ import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 
 class SearchMovieModel {
   SearchMovieModel({
-    required this.contentId,
-    required this.contentPosterPath,
+    required this.movieId,
+    required this.moviePosterPath,
     required this.contentType,
     required this.isFavorite,
     required this.isConsumed,
@@ -17,8 +17,8 @@ class SearchMovieModel {
     required this.originalTitle,
   });
 
-  final int contentId;
-  final String? contentPosterPath;
+  final int movieId;
+  final String? moviePosterPath;
   final ContentTypeEnum contentType;
   final bool isFavorite;
   final bool isConsumed;
@@ -37,8 +37,8 @@ class SearchMovieModel {
   // TMDB
   factory SearchMovieModel.fromJsonTMDB(Map<String, dynamic> json) {
     return SearchMovieModel(
-      contentId: json['id'],
-      contentPosterPath: json['poster_path'],
+      movieId: json['id'],
+      moviePosterPath: json['poster_path'],
       contentType: ContentTypeEnum.MOVIE,
       // TODO: bunlar backendden gelecek
       isFavorite: false,
