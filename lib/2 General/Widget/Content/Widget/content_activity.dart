@@ -3,7 +3,7 @@ import 'package:blackbox_db/2%20General/accessible.dart';
 import 'package:blackbox_db/2%20General/app_colors.dart';
 import 'package:blackbox_db/7%20Enum/content_status_enum.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
-import 'package:blackbox_db/8%20Model/content_log_model.dart';
+import 'package:blackbox_db/8%20Model/movie_log_model.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 
@@ -15,11 +15,11 @@ class ContentActivity extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: backendden gelecek
-    final ContentLogModel userLog = ContentLogModel(
+    final MovieLogModel userLog = MovieLogModel(
       id: 1,
       userID: userID,
       date: DateTime.now(),
-      contentID: 1,
+      movieID: 1,
       contentType: ContentTypeEnum.MOVIE,
       contentStatus: ContentStatusEnum.CONSUMED,
       rating: 3.5,

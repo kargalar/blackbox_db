@@ -1,7 +1,7 @@
 import 'package:blackbox_db/2%20General/Widget/Content/content_item.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:blackbox_db/7%20Enum/showcase_type_enum.dart';
-import 'package:blackbox_db/8%20Model/showcase_content_model.dart';
+import 'package:blackbox_db/8%20Model/showcase_movie_model.dart';
 import 'package:flutter/material.dart';
 
 class TestItems extends StatelessWidget {
@@ -22,7 +22,7 @@ class TestItems extends StatelessWidget {
               children: [
                 const Text("ACTIVITY"),
                 ContentItem(
-                  showcaseContentModel: ShowcaseContentModel(
+                  showcaseContentModel: ShowcaseMovieModel(
                     contentId: 0,
                     posterPath: "https://image.tmdb.org/t/p/original/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
                     contentType: ContentTypeEnum.MOVIE,
@@ -41,7 +41,7 @@ class TestItems extends StatelessWidget {
               children: [
                 const Text("EXPLORE"),
                 ContentItem(
-                  showcaseContentModel: ShowcaseContentModel(
+                  showcaseContentModel: ShowcaseMovieModel(
                     contentId: 1,
                     posterPath: "https://image.tmdb.org/t/p/original/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
                     contentType: ContentTypeEnum.BOOK,
@@ -60,7 +60,7 @@ class TestItems extends StatelessWidget {
               children: [
                 const Text("CONTINUE"),
                 ContentItem(
-                  showcaseContentModel: ShowcaseContentModel(
+                  showcaseContentModel: ShowcaseMovieModel(
                     contentId: 2,
                     posterPath: "https://image.tmdb.org/t/p/original/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
                     contentType: ContentTypeEnum.GAME,
@@ -78,7 +78,7 @@ class TestItems extends StatelessWidget {
               children: [
                 const Text("TREND"),
                 ContentItem(
-                  showcaseContentModel: ShowcaseContentModel(
+                  showcaseContentModel: ShowcaseMovieModel(
                     contentId: 4,
                     posterPath: "https://image.tmdb.org/t/p/original/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
                     contentType: ContentTypeEnum.BOOK,
@@ -98,7 +98,7 @@ class TestItems extends StatelessWidget {
               children: [
                 const Text("FLAT"),
                 ContentItem(
-                  showcaseContentModel: ShowcaseContentModel(
+                  showcaseContentModel: ShowcaseMovieModel(
                     contentId: 5,
                     posterPath: "https://image.tmdb.org/t/p/original/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
                     contentType: ContentTypeEnum.GAME,

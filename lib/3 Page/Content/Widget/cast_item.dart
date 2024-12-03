@@ -1,11 +1,11 @@
 import 'package:blackbox_db/2%20General/app_colors.dart';
-import 'package:blackbox_db/8%20Model/crew_model.dart';
+import 'package:blackbox_db/8%20Model/cast_model.dart';
 import 'package:flutter/material.dart';
 
 class CastItem extends StatelessWidget {
   const CastItem({super.key, required this.crewModel});
 
-  final CrewModel crewModel;
+  final CastModel crewModel;
 
   @override
   Widget build(BuildContext context) {

@@ -1,8 +1,8 @@
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
-import 'package:blackbox_db/8%20Model/content_log_model.dart';
+import 'package:blackbox_db/8%20Model/movie_log_model.dart';
 
-class ShowcaseContentModel {
-  ShowcaseContentModel({
+class ShowcaseMovieModel {
+  ShowcaseMovieModel({
     required this.contentId,
     required this.posterPath,
     required this.contentType,
@@ -29,13 +29,13 @@ class ShowcaseContentModel {
   bool isReviewed;
   // TODO: yukarıdaki üçünü kapsayan bir model yapısı contentLog gibi
   //
-  final ContentLogModel? contentLog;
+  final MovieLogModel? contentLog;
 
   final int? trendIndex;
 
-  factory ShowcaseContentModel.fromJson(Map<String, dynamic> json) {
-    return ShowcaseContentModel(
-      contentId: json['content_id'],
+  factory ShowcaseMovieModel.fromJson(Map<String, dynamic> json) {
+    return ShowcaseMovieModel(
+      contentId: json['movie_id'],
       posterPath: json['poster_path'],
       contentType: ContentTypeEnum.values[json['content_type_id'] - 1],
       isFavorite: json['is_favorite'],
@@ -43,11 +43,11 @@ class ShowcaseContentModel {
       rating: double.parse(json['rating']),
       isReviewed: json['is_reviewed'],
       isConsumeLater: json['is_consume_later'],
-      contentLog: json['content_log'] != null ? ContentLogModel.fromJson(json['content_log']) : null,
+      contentLog: json['content_log'] != null ? MovieLogModel.fromJson(json['content_log']) : null,
     );
   }
 
-  static List<ShowcaseContentModel> fromJsonList(List<dynamic> jsonList) {
-    return jsonList.map((e) => ShowcaseContentModel.fromJson(e)).toList();
+  static List<ShowcaseMovieModel> fromJsonList(List<dynamic> jsonList) {
+    return jsonList.map((e) => ShowcaseMovieModel.fromJson(e)).toList();
   }
 }

@@ -1,7 +1,7 @@
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 
-class SearchContentModel {
-  SearchContentModel({
+class SearchMovieModel {
+  SearchMovieModel({
     required this.contentId,
     required this.contentPosterPath,
     required this.contentType,
@@ -35,8 +35,8 @@ class SearchContentModel {
   // TODO bu model content model deki notlarla onun gibi güncellenecek
 
   // TMDB
-  factory SearchContentModel.fromJsonTMDB(Map<String, dynamic> json) {
-    return SearchContentModel(
+  factory SearchMovieModel.fromJsonTMDB(Map<String, dynamic> json) {
+    return SearchMovieModel(
       contentId: json['id'],
       contentPosterPath: json['poster_path'],
       contentType: ContentTypeEnum.MOVIE,
@@ -53,8 +53,8 @@ class SearchContentModel {
     );
   }
 
-  static List<SearchContentModel> fromJsonTMDBList(Map<String, dynamic> jsonMap) {
+  static List<SearchMovieModel> fromJsonTMDBList(Map<String, dynamic> jsonMap) {
     final results = jsonMap['results'] as List<dynamic>;
-    return results.map((e) => SearchContentModel.fromJsonTMDB(e)).toList();
+    return results.map((e) => SearchMovieModel.fromJsonTMDB(e)).toList();
   }
 }

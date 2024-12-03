@@ -1,9 +1,9 @@
 import 'package:blackbox_db/2%20General/accessible.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
-import 'package:blackbox_db/8%20Model/content_log_model.dart';
-import 'package:blackbox_db/8%20Model/content_model.dart';
+import 'package:blackbox_db/8%20Model/movie_log_model.dart';
+import 'package:blackbox_db/8%20Model/movie_model.dart';
 import 'package:blackbox_db/8%20Model/genre_model.dart';
-import 'package:blackbox_db/8%20Model/showcase_content_model.dart';
+import 'package:blackbox_db/8%20Model/showcase_movie_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
@@ -47,10 +47,10 @@ class ServerManager {
     return (response.data as List).map((e) => GenreModel.fromJson(e)).toList();
   }
 
-  // get all content
-  Future<List<ContentModel>> getAllContent() async {
+  // get all movie
+  Future<List<MovieModel>> getAllMovie() async {
     var response = await dio.request(
-      "$_baseUrl/content",
+      "$_baseUrl/movie",
       options: Options(
         method: 'GET',
       ),
@@ -58,11 +58,11 @@ class ServerManager {
 
     checkRequest(response);
 
-    return (response.data as List).map((e) => ContentModel.fromJson(e)).toList();
+    return (response.data as List).map((e) => MovieModel.fromJson(e)).toList();
   }
 
-  // get all content for showcase with user id
-  Future<List<ShowcaseContentModel>> getExploreContent({
+  // get all movie for showcase with user id
+  Future<List<ShowcaseMovieModel>> getExploreMovie({
     required ContentTypeEnum? contentType,
     required int userId,
   }) async {
@@ -75,7 +75,7 @@ class ServerManager {
 
     checkRequest(response);
 
-    return (response.data as List).map((e) => ShowcaseContentModel.fromJson(e)).toList();
+    return (response.data as List).map((e) => ShowcaseMovieModel.fromJson(e)).toList();
   }
 
   // add genre
@@ -94,19 +94,19 @@ class ServerManager {
   }
 
   //conent_user_action
-  Future<void> contentUserAction({
-    required ContentLogModel contentLogModel,
+  Future<void> movieUserAction({
+    required MovieLogModel movieLogModel,
   }) async {
     var response = await dio.request(
-      "$_baseUrl/content_user_action",
+      "$_baseUrl/movie_user_action",
       data: {
-        'user_id': contentLogModel.userID,
-        'content_id': contentLogModel.contentID,
-        'content_status_id': contentLogModel.contentStatus == null ? null : contentLogModel.contentStatus!.index + 1,
-        'rating': contentLogModel.rating == 0 ? null : contentLogModel.rating,
-        'is_favorite': contentLogModel.isFavorite,
-        'is_consume_later': contentLogModel.isConsumeLater,
-        'review': contentLogModel.review,
+        'user_id': movieLogModel.userID,
+        'movie_id': movieLogModel.movieID,
+        'content_status_id': movieLogModel.contentStatus == null ? null : movieLogModel.contentStatus!.index + 1,
+        'rating': movieLogModel.rating == 0 ? null : movieLogModel.rating,
+        'is_favorite': movieLogModel.isFavorite,
+        'is_consume_later': movieLogModel.isConsumeLater,
+        'review': movieLogModel.review,
       },
       options: Options(
         method: 'POST',
@@ -116,12 +116,12 @@ class ServerManager {
     checkRequest(response);
   }
 
-  Future<ContentModel> getContentDetail({
-    required int contentId,
+  Future<MovieModel> getMovieDetail({
+    required int movieId,
     int? userId,
   }) async {
     var response = await dio.request(
-      "$_baseUrl/content_detail?content_id=$contentId&user_id=${userId ?? userID}",
+      "$_baseUrl/movie_detail?movie_id=$movieId&user_id=${userId ?? userID}",
       options: Options(
         method: 'GET',
       ),
@@ -129,6 +129,6 @@ class ServerManager {
 
     checkRequest(response);
 
-    return ContentModel.fromJson(response.data);
+    return MovieModel.fromJson(response.data);
   }
 }

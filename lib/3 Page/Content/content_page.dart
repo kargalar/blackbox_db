@@ -54,7 +54,7 @@ class _ContentPageState extends State<ContentPage> {
 
   void getContentDetail() async {
     try {
-      provider.contentModel = await ServerManager().getContentDetail(contentId: context.read<PageProvider>().contentID);
+      provider.contentModel = await ServerManager().getMovieDetail(movieId: context.read<PageProvider>().contentID);
     } catch (e) {
       provider.contentModel = null;
       debugPrint(e.toString());

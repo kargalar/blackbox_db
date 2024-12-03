@@ -1,11 +1,11 @@
 import 'package:blackbox_db/7%20Enum/content_status_enum.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 
-class ContentLogModel {
-  ContentLogModel({
+class MovieLogModel {
+  MovieLogModel({
     this.id,
     required this.userID,
-    required this.contentID,
+    required this.movieID,
     required this.date,
     this.contentStatus,
     this.rating,
@@ -18,7 +18,7 @@ class ContentLogModel {
 
   final int? id;
   final int userID;
-  final int contentID;
+  final int movieID;
   ContentStatusEnum? contentStatus;
   final DateTime date;
   final String? contentTitle;
@@ -29,11 +29,11 @@ class ContentLogModel {
   String? review;
   bool isConsumeLater;
 
-  factory ContentLogModel.fromJson(Map<String, dynamic> json) {
-    return ContentLogModel(
+  factory MovieLogModel.fromJson(Map<String, dynamic> json) {
+    return MovieLogModel(
       id: json['id'],
       userID: json['user_id'],
-      contentID: json['content_id'],
+      movieID: json['content_id'],
       date: DateTime.parse(json['date']),
       contentStatus: ContentStatusEnum.values[json['content_status_id'] - 1],
       rating: double.parse(json['rating']),
@@ -45,15 +45,15 @@ class ContentLogModel {
     );
   }
 
-  static List<ContentLogModel> fromJsonList(List<dynamic> jsonList) {
-    return jsonList.map((e) => ContentLogModel.fromJson(e)).toList();
+  static List<MovieLogModel> fromJsonList(List<dynamic> jsonList) {
+    return jsonList.map((e) => MovieLogModel.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
       'user_id': userID,
-      'content_id': contentID,
+      'content_id': movieID,
       'date': date.toIso8601String(),
       'content_status_id': contentStatus!.index + 1,
       'rating': rating,

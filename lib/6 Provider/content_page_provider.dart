@@ -2,8 +2,8 @@ import 'package:blackbox_db/2%20General/accessible.dart';
 import 'package:blackbox_db/5%20Service/server_manager.dart';
 import 'package:blackbox_db/7%20Enum/content_status_enum.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
-import 'package:blackbox_db/8%20Model/content_log_model.dart';
-import 'package:blackbox_db/8%20Model/content_model.dart';
+import 'package:blackbox_db/8%20Model/movie_log_model.dart';
+import 'package:blackbox_db/8%20Model/movie_model.dart';
 import 'package:flutter/material.dart';
 
 class ContentPageProvider with ChangeNotifier {
@@ -15,7 +15,7 @@ class ContentPageProvider with ChangeNotifier {
 
   ContentPageProvider._internal();
 
-  ContentModel? contentModel;
+  MovieModel? contentModel;
 
   // ? contentId null ise contentPage de demek
 
@@ -27,12 +27,12 @@ class ContentPageProvider with ChangeNotifier {
     required bool isFavorite,
     required bool isConsumeLater,
   }) async {
-    final ContentLogModel userLog = ContentLogModel(
+    final MovieLogModel userLog = MovieLogModel(
       // TODO: id ve diğerleri. böyle ayrı ayrı olmak yerine 1 tane fonksiyon oluşturayım orada verilenlere göre mi loglayayım. ya da sadece log u dışarı çıkarayım.
       userID: userID,
       // TODO: date postgresql tarafında yapılabilir.
       date: DateTime.now(),
-      contentID: contentId ?? contentModel!.id,
+      movieID: contentId ?? contentModel!.id,
       contentType: contentType,
       // review: "A chaotic family is on a road trip across a rugged landscape. In the back seat, Dad has a broken leg, Mom tries to laugh when she’s not holding back tears, and the youngest keeps",
     );
@@ -48,7 +48,7 @@ class ContentPageProvider with ChangeNotifier {
     userLog.isFavorite = isFavorite;
     userLog.isConsumeLater = isConsumeLater;
 
-    await ServerManager().contentUserAction(contentLogModel: userLog);
+    await ServerManager().movieUserAction(movieLogModel: userLog);
 
     if (contentId == null) {
       notifyListeners();

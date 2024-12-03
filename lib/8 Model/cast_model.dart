@@ -1,5 +1,5 @@
-class CrewModel {
-  CrewModel({
+class CastModel {
+  CastModel({
     required this.id,
     required this.profilePath,
     required this.name,
@@ -9,18 +9,18 @@ class CrewModel {
   String? profilePath;
   String name;
 
-  factory CrewModel.fromJson(Map<String, dynamic> json) {
-    return CrewModel(
+  factory CastModel.fromJson(Map<String, dynamic> json) {
+    return CastModel(
       id: json['id'],
       profilePath: json['profile_path'],
       name: json['name'],
     );
   }
 
-  static List<CrewModel> fromJsonList(List<dynamic> jsonList) {
-    List<CrewModel> list = [];
+  static List<CastModel> fromJsonList(List<dynamic> jsonList) {
+    List<CastModel> list = [];
     for (var json in jsonList) {
-      list.add(CrewModel.fromJson(json));
+      list.add(CastModel.fromJson(json));
     }
     return list;
   }

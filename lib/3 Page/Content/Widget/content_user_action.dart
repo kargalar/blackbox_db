@@ -2,7 +2,7 @@ import 'package:blackbox_db/2%20General/accessible.dart';
 import 'package:blackbox_db/2%20General/app_colors.dart';
 import 'package:blackbox_db/6%20Provider/content_page_provider.dart';
 import 'package:blackbox_db/7%20Enum/content_status_enum.dart';
-import 'package:blackbox_db/8%20Model/content_log_model.dart';
+import 'package:blackbox_db/8%20Model/movie_log_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/route_manager.dart';
@@ -159,11 +159,11 @@ class ContentUserAction extends StatelessWidget {
             // edit or add log
             InkWell(
               onTap: () {
-                final log = ContentLogModel(
+                final log = MovieLogModel(
                   id: 0,
                   userID: userID,
                   date: DateTime.now(),
-                  contentID: contentPageProvider.contentModel!.id,
+                  movieID: contentPageProvider.contentModel!.id,
                   contentType: contentPageProvider.contentModel!.contentType,
                   contentStatus: contentPageProvider.contentModel!.contentStatus,
                   rating: contentPageProvider.contentModel!.rating,

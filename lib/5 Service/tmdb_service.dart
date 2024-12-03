@@ -1,4 +1,4 @@
-import 'package:blackbox_db/8%20Model/search_content_model.dart';
+import 'package:blackbox_db/8%20Model/search_movie_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +27,7 @@ class TMDBService {
   }
 
   // get all genres
-  Future<List<SearchContentModel>> search(searchText) async {
+  Future<List<SearchMovieModel>> search(searchText) async {
     final url = 'https://api.themoviedb.org/3/search/movie?query=$searchText&include_adult=false&language=en-US&page=1';
 
     final response = await Dio().get(
@@ -39,6 +39,6 @@ class TMDBService {
 
     checkRequest(response);
 
-    return SearchContentModel.fromJsonTMDBList(response.data);
+    return SearchMovieModel.fromJsonTMDBList(response.data);
   }
 }

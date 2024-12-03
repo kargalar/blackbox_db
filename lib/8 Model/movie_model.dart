@@ -1,11 +1,11 @@
 import 'package:blackbox_db/7%20Enum/content_status_enum.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
-import 'package:blackbox_db/8%20Model/crew_model.dart';
+import 'package:blackbox_db/8%20Model/cast_model.dart';
 import 'package:blackbox_db/8%20Model/genre_model.dart';
 import 'package:intl/intl.dart';
 
-class ContentModel {
-  ContentModel({
+class MovieModel {
+  MovieModel({
     required this.id,
     required this.posterPath,
     required this.title,
@@ -33,10 +33,10 @@ class ContentModel {
   final String title;
   final String description;
   final DateTime releaseDate;
-  final List<CrewModel>? creatorList;
+  final List<CastModel>? creatorList;
   final List<GenreModel>? genreList;
   final int length;
-  final List<CrewModel>? cast;
+  final List<CastModel>? cast;
 
   // TODO: filmin bilgileri, istatistikleri ve kullanıcı logu ayrı modelde mi tutulsa
   int consumeCount;
@@ -50,18 +50,18 @@ class ContentModel {
   bool isFavorite;
   bool isConsumeLater;
 
-  factory ContentModel.fromJson(Map<String, dynamic> json) {
-    return ContentModel(
+  factory MovieModel.fromJson(Map<String, dynamic> json) {
+    return MovieModel(
       id: json['id'],
       posterPath: json['poster_path'],
       title: json['title'],
       contentType: ContentTypeEnum.values[json['content_type_id'] - 1],
       releaseDate: DateTime.parse(json['release_date']),
-      creatorList: json['creator_list'] != null ? (json['creator_list'] as List).map((i) => CrewModel.fromJson(i)).toList() : null,
+      creatorList: json['creator_list'] != null ? (json['creator_list'] as List).map((i) => CastModel.fromJson(i)).toList() : null,
       description: json['description'],
       genreList: json['genre_list'] != null ? (json['genre_list'] as List).map((i) => GenreModel.fromJson(i)).toList() : null,
       length: json['length'],
-      cast: json['cast_list'] != null ? (json['cast_list'] as List).map((i) => CrewModel.fromJson(i)).toList() : null,
+      cast: json['cast_list'] != null ? (json['cast_list'] as List).map((i) => CastModel.fromJson(i)).toList() : null,
       consumeCount: json['consume_count'],
       favoriCount: json['favori_count'],
       listCount: json['list_count'],
@@ -74,8 +74,8 @@ class ContentModel {
     );
   }
 
-  static List<ContentModel> fromJsonList(List<dynamic> jsonList) {
-    return jsonList.map((i) => ContentModel.fromJson(i)).toList();
+  static List<MovieModel> fromJsonList(List<dynamic> jsonList) {
+    return jsonList.map((i) => MovieModel.fromJson(i)).toList();
   }
 
   Map<String, dynamic> toJson() {

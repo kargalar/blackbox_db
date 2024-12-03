@@ -3,7 +3,7 @@ import 'package:blackbox_db/2%20General/accessible.dart';
 import 'package:blackbox_db/5%20Service/server_manager.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:blackbox_db/7%20Enum/showcase_type_enum.dart';
-import 'package:blackbox_db/8%20Model/showcase_content_model.dart';
+import 'package:blackbox_db/8%20Model/showcase_movie_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -22,7 +22,7 @@ class ContentList extends StatefulWidget {
 }
 
 class _ContentListState extends State<ContentList> {
-  List<ShowcaseContentModel>? contentList;
+  List<ShowcaseMovieModel>? contentList;
 
   bool isLoading = true;
 
@@ -52,7 +52,7 @@ class _ContentListState extends State<ContentList> {
                       itemCount: contentList!.length,
                       itemBuilder: (context, index) {
                         return ContentItem(
-                          showcaseContentModel: ShowcaseContentModel(
+                          showcaseContentModel: ShowcaseMovieModel(
                             contentId: contentList![index].contentId,
                             posterPath: contentList![index].posterPath,
                             contentType: contentList![index].contentType,
@@ -78,7 +78,7 @@ class _ContentListState extends State<ContentList> {
       // TODO: mesela trend ise sadece 5 tane getirecek. actviity ise contentlogmodel için de veri getirecek...
       // TODO: contentType null ise farklı istek atacak
 
-      contentList = await ServerManager().getExploreContent(
+      contentList = await ServerManager().getExploreMovie(
         contentType: widget.contentType,
         userId: userID,
       );
