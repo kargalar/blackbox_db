@@ -32,7 +32,7 @@ class ContentModel {
   final ContentTypeEnum contentType;
   final String title;
   final String description;
-  final DateTime releaseDate;
+  final DateTime? releaseDate;
   final List<CastModel>? creatorList;
   final List<GenreModel>? genreList;
   final int? length;
@@ -56,7 +56,8 @@ class ContentModel {
       posterPath: json['poster_path'],
       title: json['title'],
       contentType: ContentTypeEnum.values[json['content_type_id'] - 1],
-      releaseDate: json['release_date'] is int ? DateTime.fromMillisecondsSinceEpoch(json['release_date'] * 1000) : DateTime.parse(json['release_date']),
+      // releaseDate: json['release_date'] is int ? DateTime.fromMillisecondsSinceEpoch(json['release_date'] * 1000) : DateTime.parse(json['release_date']),
+      releaseDate: json['release_date'] != null ? DateTime.parse(json['release_date']) : null,
       creatorList: json['creator_list'] != null ? (json['creator_list'] as List).map((i) => CastModel.fromJson(i)).toList() : null,
       description: json['description'],
       genreList: json['genre_list'] != null ? (json['genre_list'] as List).map((i) => GenreModel.fromJson(i)).toList() : null,
@@ -85,7 +86,7 @@ class ContentModel {
       'poster_path': posterPath,
       'title': title,
       'content_type_id': contentType.index,
-      'release_date': DateFormat('yyyy-MM-dd').format(releaseDate),
+      'release_date': releaseDate != null ? DateFormat('yyyy-MM-dd').format(releaseDate!) : null,
       'creator_list': creatorList?.map((i) => i.toJson()).toList(),
       'description': description,
       'genre_list': genreList?.map((i) => i.toJson()).toList(),

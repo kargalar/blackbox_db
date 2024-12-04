@@ -2,7 +2,6 @@ import 'package:blackbox_db/2%20General/accessible.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:blackbox_db/8%20Model/content_log_model.dart';
 import 'package:blackbox_db/8%20Model/content_model.dart';
-import 'package:blackbox_db/8%20Model/genre_model.dart';
 import 'package:blackbox_db/8%20Model/showcase_movie_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -33,36 +32,36 @@ class ServerManager {
 
   // ********************************************
 
-  // get all genres
-  Future<List<GenreModel>> getGenres() async {
-    var response = await dio.request(
-      "$_baseUrl/genre",
-      options: Options(
-        method: 'GET',
-      ),
-    );
+  // // get all genres
+  // Future<List<GenreModel>> getGenres() async {
+  //   var response = await dio.request(
+  //     "$_baseUrl/genre",
+  //     options: Options(
+  //       method: 'GET',
+  //     ),
+  //   );
 
-    checkRequest(response);
+  //   checkRequest(response);
 
-    return (response.data as List).map((e) => GenreModel.fromJson(e)).toList();
-  }
+  //   return (response.data as List).map((e) => GenreModel.fromJson(e)).toList();
+  // }
 
-  // get all movie
-  Future<List<ContentModel>> getAllMovie() async {
-    var response = await dio.request(
-      "$_baseUrl/movie",
-      options: Options(
-        method: 'GET',
-      ),
-    );
+  // // get all movie
+  // Future<List<ContentModel>> getAllMovie() async {
+  //   var response = await dio.request(
+  //     "$_baseUrl/movie",
+  //     options: Options(
+  //       method: 'GET',
+  //     ),
+  //   );
 
-    checkRequest(response);
+  //   checkRequest(response);
 
-    return (response.data as List).map((e) => ContentModel.fromJson(e)).toList();
-  }
+  //   return (response.data as List).map((e) => ContentModel.fromJson(e)).toList();
+  // }
 
   // get all movie for showcase with user id
-  Future<List<ShowcaseContentModel>> getExploreMovie({
+  Future<List<ShowcaseContentModel>> getExploreContent({
     required ContentTypeEnum? contentType,
     required int userId,
   }) async {
@@ -78,31 +77,32 @@ class ServerManager {
     return (response.data as List).map((e) => ShowcaseContentModel.fromJson(e)).toList();
   }
 
-  // add genre
-  Future<void> addGenre(String name) async {
-    var response = await dio.request(
-      "$_baseUrl/genre",
-      data: {
-        'name': name,
-      },
-      options: Options(
-        method: 'POST',
-      ),
-    );
+  // // add genre
+  // Future<void> addGenre(String name) async {
+  //   var response = await dio.request(
+  //     "$_baseUrl/genre",
+  //     data: {
+  //       'name': name,
+  //     },
+  //     options: Options(
+  //       method: 'POST',
+  //     ),
+  //   );
 
-    checkRequest(response);
-  }
+  //   checkRequest(response);
+  // }
 
   //conent_user_action
   Future<void> contentUserAction({
     required ContentLogModel contentLogModel,
   }) async {
     var response = await dio.request(
-      "$_baseUrl/movie_user_action",
+      "$_baseUrl/content_user_action",
       data: {
         'user_id': contentLogModel.userID,
-        'movie_id': contentLogModel.contentID,
+        'content_id': contentLogModel.contentID,
         'content_status_id': contentLogModel.contentStatus == null ? null : contentLogModel.contentStatus!.index + 1,
+        'content_type_id': contentLogModel.contentType.index + 1,
         'rating': contentLogModel.rating == 0 ? null : contentLogModel.rating,
         'is_favorite': contentLogModel.isFavorite,
         'is_consume_later': contentLogModel.isConsumeLater,
@@ -121,18 +121,8 @@ class ServerManager {
     required ContentTypeEnum contentType,
     int? userId,
   }) async {
-    late String contentTypeString;
-
-    if (contentType == ContentTypeEnum.MOVIE) {
-      contentTypeString = 'movie_detail';
-    } else if (contentType == ContentTypeEnum.GAME) {
-      contentTypeString = 'game_detail';
-    } else {
-      contentTypeString = 'book_detail';
-    }
-
     var response = await dio.request(
-      "$_baseUrl/$contentTypeString?content_id=$contentId&user_id=${userId ?? userID}",
+      "$_baseUrl/content_detail?content_id=$contentId&user_id=${userId ?? userID}&content_type_id=${contentType.index + 1}",
       options: Options(
         method: 'GET',
       ),

@@ -29,13 +29,14 @@ class ContentInformation extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 5),
-              Text(
-                contentModel.releaseDate.year.toString(),
-                style: TextStyle(
-                  fontSize: 24,
-                  color: AppColors.text.withOpacity(0.6),
+              if (contentModel.rating != null)
+                Text(
+                  contentModel.releaseDate!.year.toString(),
+                  style: TextStyle(
+                    fontSize: 24,
+                    color: AppColors.text.withOpacity(0.6),
+                  ),
                 ),
-              ),
             ],
           ),
 

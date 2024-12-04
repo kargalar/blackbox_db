@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
             contentType: ContentTypeEnum.MOVIE,
             showcaseType: ShowcaseTypeEnum.EXPLORE,
           ),
-          const Text("activity MOVIE"),
+          const Text("activity game"),
           const ContentList(
             contentType: ContentTypeEnum.GAME,
             showcaseType: ShowcaseTypeEnum.EXPLORE,

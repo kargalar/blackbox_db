@@ -78,7 +78,7 @@ class _ContentListState extends State<ContentList> {
       // TODO: mesela trend ise sadece 5 tane getirecek. actviity ise contentlogmodel için de veri getirecek...
       // TODO: contentType null ise farklı istek atacak
 
-      contentList = await ServerManager().getExploreMovie(
+      contentList = await ServerManager().getExploreContent(
         contentType: widget.contentType,
         userId: userID,
       );
