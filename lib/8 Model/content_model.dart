@@ -28,7 +28,7 @@ class ContentModel {
   });
 
   final int id;
-  final String posterPath;
+  final String? posterPath;
   final ContentTypeEnum contentType;
   final String title;
   final String description;
@@ -57,7 +57,7 @@ class ContentModel {
       title: json['title'],
       contentType: ContentTypeEnum.values[json['content_type_id'] - 1],
       // releaseDate: json['release_date'] is int ? DateTime.fromMillisecondsSinceEpoch(json['release_date'] * 1000) : DateTime.parse(json['release_date']),
-      releaseDate: json['release_date'] != null ? DateTime.parse(json['release_date']) : null,
+      releaseDate: (json['release_date'] != null && json['release_date'] != "") ? DateTime.parse(json['release_date']) : null,
       creatorList: json['creator_list'] != null ? (json['creator_list'] as List).map((i) => CastModel.fromJson(i)).toList() : null,
       description: json['description'],
       genreList: json['genre_list'] != null ? (json['genre_list'] as List).map((i) => GenreModel.fromJson(i)).toList() : null,

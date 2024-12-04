@@ -29,7 +29,7 @@ class ContentInformation extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 5),
-              if (contentModel.rating != null)
+              if (contentModel.releaseDate != null)
                 Text(
                   contentModel.releaseDate!.year.toString(),
                   style: TextStyle(
