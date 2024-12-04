@@ -1,9 +1,9 @@
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
-import 'package:blackbox_db/8%20Model/movie_log_model.dart';
+import 'package:blackbox_db/8%20Model/content_log_model.dart';
 
-class ShowcaseMovieModel {
-  ShowcaseMovieModel({
-    required this.movieId,
+class ShowcaseContentModel {
+  ShowcaseContentModel({
+    required this.contentId,
     required this.posterPath,
     required this.contentType,
     required this.isFavorite,
@@ -11,11 +11,11 @@ class ShowcaseMovieModel {
     required this.isConsumeLater,
     required this.rating,
     required this.isReviewed,
-    this.movieLog,
+    this.contentLog,
     this.trendIndex,
   });
 
-  final int movieId;
+  final int contentId;
   final String? posterPath;
   final ContentTypeEnum contentType;
   bool isFavorite;
@@ -29,13 +29,13 @@ class ShowcaseMovieModel {
   bool isReviewed;
   // TODO: yukarıdaki üçünü kapsayan bir model yapısı movieLog gibi
   //
-  final MovieLogModel? movieLog;
+  final ContentLogModel? contentLog;
 
   final int? trendIndex;
 
-  factory ShowcaseMovieModel.fromJson(Map<String, dynamic> json) {
-    return ShowcaseMovieModel(
-      movieId: json['movie_id'],
+  factory ShowcaseContentModel.fromJson(Map<String, dynamic> json) {
+    return ShowcaseContentModel(
+      contentId: json['movie_id'],
       posterPath: json['poster_path'],
       contentType: ContentTypeEnum.values[json['content_type_id'] - 1],
       isFavorite: json['is_favorite'],
@@ -43,11 +43,11 @@ class ShowcaseMovieModel {
       rating: double.parse(json['rating']),
       isReviewed: json['is_reviewed'],
       isConsumeLater: json['is_consume_later'],
-      movieLog: json['movie_log'] != null ? MovieLogModel.fromJson(json['movie_log']) : null,
+      contentLog: json['movie_log'] != null ? ContentLogModel.fromJson(json['movie_log']) : null,
     );
   }
 
-  static List<ShowcaseMovieModel> fromJsonList(List<dynamic> jsonList) {
-    return jsonList.map((e) => ShowcaseMovieModel.fromJson(e)).toList();
+  static List<ShowcaseContentModel> fromJsonList(List<dynamic> jsonList) {
+    return jsonList.map((e) => ShowcaseContentModel.fromJson(e)).toList();
   }
 }

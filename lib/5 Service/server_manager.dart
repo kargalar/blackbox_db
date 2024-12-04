@@ -1,6 +1,6 @@
 import 'package:blackbox_db/2%20General/accessible.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
-import 'package:blackbox_db/8%20Model/movie_log_model.dart';
+import 'package:blackbox_db/8%20Model/content_log_model.dart';
 import 'package:blackbox_db/8%20Model/content_model.dart';
 import 'package:blackbox_db/8%20Model/genre_model.dart';
 import 'package:blackbox_db/8%20Model/showcase_movie_model.dart';
@@ -62,7 +62,7 @@ class ServerManager {
   }
 
   // get all movie for showcase with user id
-  Future<List<ShowcaseMovieModel>> getExploreMovie({
+  Future<List<ShowcaseContentModel>> getExploreMovie({
     required ContentTypeEnum? contentType,
     required int userId,
   }) async {
@@ -75,7 +75,7 @@ class ServerManager {
 
     checkRequest(response);
 
-    return (response.data as List).map((e) => ShowcaseMovieModel.fromJson(e)).toList();
+    return (response.data as List).map((e) => ShowcaseContentModel.fromJson(e)).toList();
   }
 
   // add genre
@@ -95,13 +95,13 @@ class ServerManager {
 
   //conent_user_action
   Future<void> contentUserAction({
-    required MovieLogModel contentLogModel,
+    required ContentLogModel contentLogModel,
   }) async {
     var response = await dio.request(
       "$_baseUrl/movie_user_action",
       data: {
         'user_id': contentLogModel.userID,
-        'movie_id': contentLogModel.movieID,
+        'movie_id': contentLogModel.contentID,
         'content_status_id': contentLogModel.contentStatus == null ? null : contentLogModel.contentStatus!.index + 1,
         'rating': contentLogModel.rating == 0 ? null : contentLogModel.rating,
         'is_favorite': contentLogModel.isFavorite,

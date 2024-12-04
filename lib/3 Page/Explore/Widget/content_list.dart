@@ -22,7 +22,7 @@ class ContentList extends StatefulWidget {
 }
 
 class _ContentListState extends State<ContentList> {
-  List<ShowcaseMovieModel>? contentList;
+  List<ShowcaseContentModel>? contentList;
 
   bool isLoading = true;
 
@@ -52,8 +52,8 @@ class _ContentListState extends State<ContentList> {
                       itemCount: contentList!.length,
                       itemBuilder: (context, index) {
                         return ContentItem(
-                          showcaseContentModel: ShowcaseMovieModel(
-                            movieId: contentList![index].movieId,
+                          showcaseContentModel: ShowcaseContentModel(
+                            contentId: contentList![index].contentId,
                             posterPath: contentList![index].posterPath,
                             contentType: contentList![index].contentType,
                             isFavorite: contentList![index].isFavorite,

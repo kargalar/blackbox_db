@@ -18,7 +18,7 @@ class ContentItem extends StatefulWidget {
     this.isSearch = false,
   });
 
-  final ShowcaseMovieModel showcaseContentModel;
+  final ShowcaseContentModel showcaseContentModel;
   final ShowcaseTypeEnum showcaseType;
   final bool isSearch;
 
@@ -52,7 +52,7 @@ class _ContentItemState extends State<ContentItem> {
           child: GestureDetector(
             onTap: () {
               context.read<PageProvider>().content(
-                    widget.showcaseContentModel.movieId,
+                    widget.showcaseContentModel.contentId,
                     widget.showcaseContentModel.contentType,
                   );
             },

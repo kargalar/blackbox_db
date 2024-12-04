@@ -22,8 +22,8 @@ class TestItems extends StatelessWidget {
               children: [
                 const Text("ACTIVITY"),
                 ContentItem(
-                  showcaseContentModel: ShowcaseMovieModel(
-                    movieId: 0,
+                  showcaseContentModel: ShowcaseContentModel(
+                    contentId: 0,
                     posterPath: "https://image.tmdb.org/t/p/original/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
                     contentType: ContentTypeEnum.MOVIE,
                     isFavorite: false,
@@ -41,8 +41,8 @@ class TestItems extends StatelessWidget {
               children: [
                 const Text("EXPLORE"),
                 ContentItem(
-                  showcaseContentModel: ShowcaseMovieModel(
-                    movieId: 1,
+                  showcaseContentModel: ShowcaseContentModel(
+                    contentId: 1,
                     posterPath: "https://image.tmdb.org/t/p/original/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
                     contentType: ContentTypeEnum.BOOK,
                     isFavorite: true,
@@ -60,8 +60,8 @@ class TestItems extends StatelessWidget {
               children: [
                 const Text("CONTINUE"),
                 ContentItem(
-                  showcaseContentModel: ShowcaseMovieModel(
-                    movieId: 2,
+                  showcaseContentModel: ShowcaseContentModel(
+                    contentId: 2,
                     posterPath: "https://image.tmdb.org/t/p/original/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
                     contentType: ContentTypeEnum.GAME,
                     isFavorite: false,
@@ -78,8 +78,8 @@ class TestItems extends StatelessWidget {
               children: [
                 const Text("TREND"),
                 ContentItem(
-                  showcaseContentModel: ShowcaseMovieModel(
-                    movieId: 4,
+                  showcaseContentModel: ShowcaseContentModel(
+                    contentId: 4,
                     posterPath: "https://image.tmdb.org/t/p/original/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
                     contentType: ContentTypeEnum.BOOK,
                     isFavorite: false,
@@ -98,8 +98,8 @@ class TestItems extends StatelessWidget {
               children: [
                 const Text("FLAT"),
                 ContentItem(
-                  showcaseContentModel: ShowcaseMovieModel(
-                    movieId: 5,
+                  showcaseContentModel: ShowcaseContentModel(
+                    contentId: 5,
                     posterPath: "https://image.tmdb.org/t/p/original/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
                     contentType: ContentTypeEnum.GAME,
                     isFavorite: false,

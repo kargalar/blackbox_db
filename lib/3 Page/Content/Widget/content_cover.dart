@@ -1,5 +1,5 @@
 import 'package:blackbox_db/2%20General/Widget/Content/Widget/content_poster.dart';
-import 'package:blackbox_db/6%20Provider/movie_page_provider.dart';
+import 'package:blackbox_db/6%20Provider/content_page_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

@@ -2,7 +2,7 @@ import 'package:blackbox_db/2%20General/accessible.dart';
 import 'package:blackbox_db/5%20Service/server_manager.dart';
 import 'package:blackbox_db/7%20Enum/content_status_enum.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
-import 'package:blackbox_db/8%20Model/movie_log_model.dart';
+import 'package:blackbox_db/8%20Model/content_log_model.dart';
 import 'package:blackbox_db/8%20Model/content_model.dart';
 import 'package:flutter/material.dart';
 
@@ -27,12 +27,12 @@ class ContentPageProvider with ChangeNotifier {
     required bool isFavorite,
     required bool isConsumeLater,
   }) async {
-    final MovieLogModel userLog = MovieLogModel(
+    final ContentLogModel userLog = ContentLogModel(
       // TODO: id ve diğerleri. böyle ayrı ayrı olmak yerine 1 tane fonksiyon oluşturayım orada verilenlere göre mi loglayayım. ya da sadece log u dışarı çıkarayım.
       userID: userID,
       // TODO: date postgresql tarafında yapılabilir.
       date: DateTime.now(),
-      movieID: movieId ?? contentModel!.id,
+      contentID: movieId ?? contentModel!.id,
       contentType: contentType,
       // review: "A chaotic family is on a road trip across a rugged landscape. In the back seat, Dad has a broken leg, Mom tries to laugh when she’s not holding back tears, and the youngest keeps",
     );

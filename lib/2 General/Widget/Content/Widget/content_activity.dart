@@ -3,7 +3,7 @@ import 'package:blackbox_db/2%20General/accessible.dart';
 import 'package:blackbox_db/2%20General/app_colors.dart';
 import 'package:blackbox_db/7%20Enum/content_status_enum.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
-import 'package:blackbox_db/8%20Model/movie_log_model.dart';
+import 'package:blackbox_db/8%20Model/content_log_model.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 
@@ -15,17 +15,17 @@ class ContentActivity extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: backendden gelecek
-    final MovieLogModel userLog = MovieLogModel(
+    final ContentLogModel userLog = ContentLogModel(
       id: 1,
       userID: userID,
       date: DateTime.now(),
-      movieID: 1,
+      contentID: 1,
       contentType: ContentTypeEnum.MOVIE,
       contentStatus: ContentStatusEnum.CONSUMED,
       rating: 3.5,
       isFavorite: false,
       isConsumeLater: false,
-      movieTitle: "The Road",
+      contentTitle: "The Road",
       review: "A chaotic family is on a road trip across a rugged landscape. In the back seat, Dad has a broken leg, Mom tries to laugh when she’s not holding back tears, and the youngest keeps",
     );
 

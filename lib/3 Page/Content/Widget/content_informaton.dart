@@ -1,6 +1,6 @@
 import 'package:blackbox_db/2%20General/app_colors.dart';
 import 'package:blackbox_db/3%20Page/Content/Widget/cast_item.dart';
-import 'package:blackbox_db/6%20Provider/movie_page_provider.dart';
+import 'package:blackbox_db/6%20Provider/content_page_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
