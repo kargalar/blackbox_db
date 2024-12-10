@@ -10,6 +10,7 @@ class SelectFilter extends StatefulWidget {
 }
 
 class _SelectFilterState extends State<SelectFilter> {
+  // TODO: get all genre to tmdb api
   final List<String> genres = ["Drama", "Action", "Comedy", "a1b2c3d4e5f6g7h8ı9i10", "Horror", "Sci-Fi"];
   final List<String> selectedGenres = [];
 

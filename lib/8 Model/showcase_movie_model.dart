@@ -40,7 +40,7 @@ class ShowcaseContentModel {
       contentType: ContentTypeEnum.values[json['content_type_id'] - 1],
       isFavorite: json['is_favorite'],
       isConsumed: json['is_consumed'],
-      rating: double.parse(json['rating']),
+      rating: json['rating'] != null ? double.parse(json['rating']) : null,
       isReviewed: json['is_reviewed'],
       isConsumeLater: json['is_consume_later'],
       contentLog: json['movie_log'] != null ? ContentLogModel.fromJson(json['movie_log']) : null,

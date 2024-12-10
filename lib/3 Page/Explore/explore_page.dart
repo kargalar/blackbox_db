@@ -24,6 +24,7 @@ class _ExplorePageState extends State<ExplorePage> {
         ContentList(
           contentType: appbarProvider.exploreContentType,
           showcaseType: ShowcaseTypeEnum.EXPLORE,
+          isExplorePage: true,
         ),
         ExploreFilter(),
       ],

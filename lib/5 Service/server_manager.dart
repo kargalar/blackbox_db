@@ -61,12 +61,44 @@ class ServerManager {
   // }
 
   // get all movie for showcase with user id
-  Future<List<ShowcaseContentModel>> getExploreContent({
+  Future<List<ShowcaseContentModel>> getUserExploreContent({
     required ContentTypeEnum? contentType,
     required int userId,
   }) async {
     var response = await dio.request(
-      "$_baseUrl/explore?user_id=$userId${contentType != null ? "&content_type_id=${contentType.index + 1}" : ""}",
+      "$_baseUrl/exploreUser?user_id=$userId${contentType != null ? "&content_type_id=${contentType.index + 1}" : ""}",
+      options: Options(
+        method: 'GET',
+      ),
+    );
+
+    checkRequest(response);
+
+    return (response.data as List).map((e) => ShowcaseContentModel.fromJson(e)).toList();
+  }
+
+  // get discover content
+  Future<List<ShowcaseContentModel>> getDiscoverContent({
+    required ContentTypeEnum? contentType,
+    required int userId,
+    String? genreFilter,
+    int? yearFilter,
+  }) async {
+    String url = "$_baseUrl/discoverMovie?user_id=$userId";
+
+    // Add filters
+    if (contentType != null) {
+      url += "&content_type_id=${contentType.index + 1}";
+    }
+    if (genreFilter != null) {
+      url += "&with_genres=$genreFilter";
+    }
+    if (yearFilter != null) {
+      url += "&primary_release_year=$yearFilter";
+    }
+
+    var response = await dio.request(
+      url,
       options: Options(
         method: 'GET',
       ),

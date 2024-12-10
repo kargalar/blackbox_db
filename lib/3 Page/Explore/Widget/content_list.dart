@@ -12,10 +12,12 @@ class ContentList extends StatefulWidget {
     super.key,
     this.contentType,
     required this.showcaseType,
+    this.isExplorePage = false,
   });
 
   final ContentTypeEnum? contentType;
   final ShowcaseTypeEnum showcaseType;
+  final bool isExplorePage;
 
   @override
   State<ContentList> createState() => _ContentListState();
@@ -29,7 +31,7 @@ class _ContentListState extends State<ContentList> {
   @override
   Widget build(BuildContext context) {
     if (contentList == null) {
-      getShowcaseContent();
+      getContent();
     }
 
     return isLoading
@@ -72,16 +74,23 @@ class _ContentListState extends State<ContentList> {
               );
   }
 
-  void getShowcaseContent() async {
+  void getContent() async {
     try {
       // TODO: widget.showcaseType a göre farklı endpointlere istek atacak
       // TODO: mesela trend ise sadece 5 tane getirecek. actviity ise contentlogmodel için de veri getirecek...
       // TODO: contentType null ise farklı istek atacak
 
-      contentList = await ServerManager().getExploreContent(
-        contentType: widget.contentType,
-        userId: userID,
-      );
+      if (widget.isExplorePage) {
+        contentList = await ServerManager().getDiscoverContent(
+          contentType: widget.contentType,
+          userId: userID,
+        );
+      } else {
+        contentList = await ServerManager().getUserExploreContent(
+          contentType: widget.contentType,
+          userId: userID,
+        );
+      }
 
       setState(() {
         isLoading = false;
