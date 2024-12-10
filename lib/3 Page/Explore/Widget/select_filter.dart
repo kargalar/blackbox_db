@@ -114,28 +114,26 @@ class _SelectFilterState extends State<SelectFilter> {
           ),
         ),
         const SizedBox(height: 5),
-        GridView.count(
-          shrinkWrap: true,
-          crossAxisCount: 3, // Number of columns
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-          childAspectRatio: 1.7,
+        Wrap(
           children: PageProvider().filteredGenreList.map((genre) {
-            return InkWell(
-              borderRadius: AppColors.borderRadiusAll,
+            return GestureDetector(
               onTap: () {
                 _removeItem(genre);
               },
               child: Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.symmetric(horizontal: 3),
+                margin: const EdgeInsets.only(right: 5, bottom: 5),
+                padding: const EdgeInsets.all(5),
                 decoration: BoxDecoration(
                   color: AppColors.panelBackground2,
-                  borderRadius: AppColors.borderRadiusAll,
+                  borderRadius: BorderRadius.circular(8),
                 ),
-                child: AutoSizeText(
-                  genre.name,
-                  maxLines: 1,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    AutoSizeText(
+                      genre.name,
+                    ),
+                  ],
                 ),
               ),
             );
