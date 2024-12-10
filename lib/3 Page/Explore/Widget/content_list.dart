@@ -1,6 +1,7 @@
 import 'package:blackbox_db/2%20General/Widget/Content/content_item.dart';
 import 'package:blackbox_db/2%20General/accessible.dart';
 import 'package:blackbox_db/5%20Service/server_manager.dart';
+import 'package:blackbox_db/6%20Provider/page_provider.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:blackbox_db/7%20Enum/showcase_type_enum.dart';
 import 'package:blackbox_db/8%20Model/showcase_movie_model.dart';
@@ -51,7 +52,7 @@ class _ContentListState extends State<ContentList> {
                         childAspectRatio: 0.6,
                       ),
                       shrinkWrap: true,
-                      itemCount: contentList!.length,
+                      itemCount: contentList!.length > 18 ? 18 : contentList!.length,
                       itemBuilder: (context, index) {
                         return ContentItem(
                           showcaseContentModel: ShowcaseContentModel(
@@ -81,10 +82,12 @@ class _ContentListState extends State<ContentList> {
       // TODO: contentType null ise farklı istek atacak
 
       if (widget.isExplorePage) {
-        contentList = await ServerManager().getDiscoverContent(
+        var response = await ServerManager().getDiscoverContent(
           contentType: widget.contentType,
           userId: userID,
         );
+        contentList = response['contentList'];
+        PageProvider().totalPageIndex = response['totalPages'];
       } else {
         contentList = await ServerManager().getUserExploreContent(
           contentType: widget.contentType,

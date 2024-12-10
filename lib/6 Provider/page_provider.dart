@@ -2,6 +2,12 @@ import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:flutter/material.dart';
 
 class PageProvider with ChangeNotifier {
+  PageProvider._privateConstructor();
+  static final PageProvider _instance = PageProvider._privateConstructor();
+  factory PageProvider() {
+    return _instance;
+  }
+
   int currentIndex = 0;
   String searchText = '';
   ContentTypeEnum searchFilter = ContentTypeEnum.MOVIE;
@@ -9,6 +15,9 @@ class PageProvider with ChangeNotifier {
   String currentUserID = "";
   int contentID = 0;
   ContentTypeEnum contentPageContentTpye = ContentTypeEnum.MOVIE;
+
+  int currentPageIndex = 0;
+  late int totalPageIndex;
 
   void home() {
     currentIndex = 0;

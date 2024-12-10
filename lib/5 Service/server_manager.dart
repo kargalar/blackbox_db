@@ -1,4 +1,5 @@
 import 'package:blackbox_db/2%20General/accessible.dart';
+import 'package:blackbox_db/6%20Provider/page_provider.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:blackbox_db/8%20Model/content_log_model.dart';
 import 'package:blackbox_db/8%20Model/content_model.dart';
@@ -78,7 +79,7 @@ class ServerManager {
   }
 
   // get discover content
-  Future<List<ShowcaseContentModel>> getDiscoverContent({
+  Future getDiscoverContent({
     required ContentTypeEnum? contentType,
     required int userId,
     String? genreFilter,
@@ -87,15 +88,16 @@ class ServerManager {
     String url = "$_baseUrl/discoverMovie?user_id=$userId";
 
     // Add filters
-    if (contentType != null) {
-      url += "&content_type_id=${contentType.index + 1}";
-    }
+    // if (contentType != null) {
+    //   url += "&content_type_id=${contentType.index + 1}";
+    // }
     if (genreFilter != null) {
       url += "&with_genres=$genreFilter";
     }
     if (yearFilter != null) {
       url += "&primary_release_year=$yearFilter";
     }
+    url += "&page=${PageProvider().currentPageIndex}";
 
     var response = await dio.request(
       url,
@@ -106,7 +108,14 @@ class ServerManager {
 
     checkRequest(response);
 
-    return (response.data as List).map((e) => ShowcaseContentModel.fromJson(e)).toList();
+    var data = response.data as Map<String, dynamic>;
+    var contentList = (data['contents'] as List).map((e) => ShowcaseContentModel.fromJson(e)).toList();
+    var totalPages = data['total_pages'] as int;
+
+    return {
+      'contentList': contentList,
+      'totalPages': totalPages,
+    };
   }
 
   // // add genre
