@@ -25,35 +25,31 @@ class _ContentListState extends State<ContentList> {
         ? const Center(child: Text("Empty"))
         : Align(
             alignment: Alignment.topCenter,
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: SizedBox(
-                width: 0.44.sw,
-                child: GridView.builder(
-                  // TODO: ekranın boyutuna göre öğeler esniyor. sabit kalmasını istiyorum.
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 190,
-                    childAspectRatio: 0.63,
-                  ),
-                  shrinkWrap: true,
-                  itemCount: widget.contentList.length,
-                  itemBuilder: (context, index) {
-                    return ContentItem(
-                      showcaseContentModel: ShowcaseContentModel(
-                        contentId: widget.contentList[index].contentId,
-                        posterPath: widget.contentList[index].posterPath,
-                        contentType: widget.contentList[index].contentType,
-                        isFavorite: widget.contentList[index].isFavorite,
-                        isConsumed: widget.contentList[index].isConsumed,
-                        rating: widget.contentList[index].rating,
-                        isReviewed: widget.contentList[index].isReviewed,
-                        isConsumeLater: widget.contentList[index].isConsumeLater,
-                        trendIndex: index,
-                      ),
-                      showcaseType: widget.showcaseType,
-                    );
-                  },
+            child: SizedBox(
+              width: 0.45.sw,
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 200,
+                  childAspectRatio: 0.64,
                 ),
+                shrinkWrap: true,
+                itemCount: widget.contentList.length,
+                itemBuilder: (context, index) {
+                  return ContentItem(
+                    showcaseContentModel: ShowcaseContentModel(
+                      contentId: widget.contentList[index].contentId,
+                      posterPath: widget.contentList[index].posterPath,
+                      contentType: widget.contentList[index].contentType,
+                      isFavorite: widget.contentList[index].isFavorite,
+                      isConsumed: widget.contentList[index].isConsumed,
+                      rating: widget.contentList[index].rating,
+                      isReviewed: widget.contentList[index].isReviewed,
+                      isConsumeLater: widget.contentList[index].isConsumeLater,
+                      trendIndex: index,
+                    ),
+                    showcaseType: widget.showcaseType,
+                  );
+                },
               ),
             ),
           );

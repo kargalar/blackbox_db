@@ -1,5 +1,4 @@
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
-import 'package:blackbox_db/8%20Model/genre_model.dart';
 import 'package:flutter/material.dart';
 
 class PageProvider with ChangeNotifier {
@@ -16,13 +15,6 @@ class PageProvider with ChangeNotifier {
   String currentUserID = "";
   int contentID = 0;
   ContentTypeEnum contentPageContentTpye = ContentTypeEnum.MOVIE;
-
-  // Discover
-  int currentPageIndex = 1;
-  late int totalPageIndex;
-  // genre tmdb den veya igdb den alınacak
-  List<GenreModel> filteredGenreList = [];
-  List<GenreModel>? allGenres;
 
   void home() {
     currentIndex = 0;

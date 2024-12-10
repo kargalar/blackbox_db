@@ -17,9 +17,13 @@ class ContentCover extends StatelessWidget {
       children: [
         const SizedBox(height: 20),
         // poster
-        ContentPoster.contentPage(
-          posterPath: contentModel!.posterPath,
-          contentType: contentModel.contentType,
+        SizedBox(
+          height: 350,
+          child: ContentPoster(
+            posterPath: contentModel!.posterPath,
+            contentType: contentModel.contentType,
+            cacheSize: 2000,
+          ),
         ),
         // movie stats
         Container(

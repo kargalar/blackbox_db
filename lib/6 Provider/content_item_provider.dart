@@ -10,8 +10,41 @@ class ContentItemProvider with ChangeNotifier {
 
   ShowcaseContentModel showcaseContentModel;
 
+  // TODO:
   Future consume() async {
     showcaseContentModel.isConsumed = !showcaseContentModel.isConsumed;
+
+    await ContentPageProvider().contentUserAction(
+      movieId: showcaseContentModel.contentId,
+      contentType: showcaseContentModel.contentType,
+      contentStatus: showcaseContentModel.isConsumed ? ContentStatusEnum.CONSUMED : null,
+      rating: showcaseContentModel.rating,
+      isFavorite: showcaseContentModel.isFavorite,
+      isConsumeLater: showcaseContentModel.isConsumeLater,
+    );
+
+    notifyListeners();
+  }
+
+  // TODO:
+  Future favorite() async {
+    showcaseContentModel.isFavorite = !showcaseContentModel.isFavorite;
+
+    await ContentPageProvider().contentUserAction(
+      movieId: showcaseContentModel.contentId,
+      contentType: showcaseContentModel.contentType,
+      contentStatus: showcaseContentModel.isConsumed ? ContentStatusEnum.CONSUMED : null,
+      rating: showcaseContentModel.rating,
+      isFavorite: showcaseContentModel.isFavorite,
+      isConsumeLater: showcaseContentModel.isConsumeLater,
+    );
+
+    notifyListeners();
+  }
+
+  // TODO:
+  Future consumeLater() async {
+    showcaseContentModel.isConsumeLater = !showcaseContentModel.isConsumeLater;
 
     await ContentPageProvider().contentUserAction(
       movieId: showcaseContentModel.contentId,

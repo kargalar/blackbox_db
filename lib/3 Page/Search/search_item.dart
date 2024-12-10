@@ -31,6 +31,7 @@ class SearchItem extends StatelessWidget {
         children: [
           ContentItem(
             isSearch: true,
+            coverSize: 250,
             showcaseContentModel: ShowcaseContentModel(
               contentId: searchMovieModel.contentId,
               posterPath: searchMovieModel.contentPosterPath,

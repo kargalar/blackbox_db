@@ -1,6 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blackbox_db/2%20General/app_colors.dart';
-import 'package:blackbox_db/6%20Provider/page_provider.dart';
+import 'package:blackbox_db/6%20Provider/explore_provider.dart';
 import 'package:blackbox_db/8%20Model/genre_model.dart';
 import 'package:flutter/material.dart';
 
@@ -13,17 +13,13 @@ class SelectFilter extends StatefulWidget {
 
 class _SelectFilterState extends State<SelectFilter> {
   void _addItem(GenreModel item) {
-    if (!PageProvider().filteredGenreList.contains(item)) {
-      setState(() {
-        PageProvider().filteredGenreList.add(item);
-      });
-    }
+    ExploreProvider().filteredGenreList.add(item);
+    ExploreProvider().getContent();
   }
 
   void _removeItem(GenreModel item) {
-    setState(() {
-      PageProvider().filteredGenreList.remove(item);
-    });
+    ExploreProvider().filteredGenreList.remove(item);
+    ExploreProvider().getContent();
   }
 
   @override
@@ -33,15 +29,15 @@ class _SelectFilterState extends State<SelectFilter> {
       children: [
         // Genre Dropdown
         PopupMenuButton<GenreModel>(
-          onSelected: (value) => _addItem(value),
           color: AppColors.panelBackground2,
+          offset: const Offset(-95, 0),
           itemBuilder: (context) => [
             PopupMenuItem(
               enabled: false, // Allows customization with custom widget
               child: StatefulBuilder(builder: (context, setStateMenu) {
                 return SizedBox(
                   width: 300, // Adjust width
-                  child: PageProvider().allGenres!.length == PageProvider().filteredGenreList.length
+                  child: ExploreProvider().allGenres!.length == ExploreProvider().filteredGenreList.length
                       ? Center(
                           child: Text(
                             "Başka Seçenek Yok",
@@ -57,20 +53,14 @@ class _SelectFilterState extends State<SelectFilter> {
                           crossAxisCount: 3, // Number of columns
                           crossAxisSpacing: 10,
                           mainAxisSpacing: 10,
-                          childAspectRatio: PageProvider().allGenres!.length == PageProvider().filteredGenreList.length ? 2 : 2,
-                          children: PageProvider().allGenres!.where((genre) => !PageProvider().filteredGenreList.contains(genre)).map((genre) {
-                            final isSelected = PageProvider().filteredGenreList.contains(genre);
-
+                          childAspectRatio: ExploreProvider().allGenres!.length == ExploreProvider().filteredGenreList.length ? 2 : 2,
+                          children: ExploreProvider().allGenres!.where((genre) => !ExploreProvider().filteredGenreList.contains(genre)).map((genre) {
                             return InkWell(
                               borderRadius: AppColors.borderRadiusAll,
                               onTap: () {
                                 setState(() {
                                   setStateMenu(() {
-                                    if (isSelected) {
-                                      PageProvider().filteredGenreList.remove(genre);
-                                    } else {
-                                      PageProvider().filteredGenreList.add(genre);
-                                    }
+                                    _addItem(genre);
                                   });
                                 });
                               },
@@ -115,7 +105,7 @@ class _SelectFilterState extends State<SelectFilter> {
         ),
         const SizedBox(height: 5),
         Wrap(
-          children: PageProvider().filteredGenreList.map((genre) {
+          children: ExploreProvider().filteredGenreList.map((genre) {
             return InkWell(
               onTap: () {
                 _removeItem(genre);

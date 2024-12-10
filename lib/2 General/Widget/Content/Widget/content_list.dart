@@ -2,8 +2,8 @@ import 'package:blackbox_db/2%20General/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-class ContentList extends StatelessWidget {
-  const ContentList({
+class UserContentActivityBar extends StatelessWidget {
+  const UserContentActivityBar({
     super.key,
     required this.rating,
     required this.isFavorite,

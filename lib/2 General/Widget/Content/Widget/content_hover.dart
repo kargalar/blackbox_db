@@ -24,8 +24,8 @@ class ContentHover extends StatelessWidget {
                 ContentItemButton(
                   icon: Icons.favorite,
                   color: context.watch<ContentItemProvider>().showcaseContentModel.isFavorite ? AppColors.red : AppColors.white,
-                  onTap: () {
-                    // TODO: add to favorite
+                  onTap: () async {
+                    await context.read<ContentItemProvider>().favorite();
                   },
                 ),
                 ContentItemButton(
@@ -38,8 +38,8 @@ class ContentHover extends StatelessWidget {
                 ContentItemButton(
                   icon: Icons.watch_later,
                   color: context.watch<ContentItemProvider>().showcaseContentModel.isConsumeLater ? AppColors.red : AppColors.white,
-                  onTap: () {
-                    // TODO: add to watchlist
+                  onTap: () async {
+                    await context.read<ContentItemProvider>().consumeLater();
                   },
                 ),
                 ContentItemButton(

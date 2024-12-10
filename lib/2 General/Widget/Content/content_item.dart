@@ -16,11 +16,13 @@ class ContentItem extends StatefulWidget {
     required this.showcaseContentModel,
     required this.showcaseType,
     this.isSearch = false,
+    this.coverSize,
   });
 
   final ShowcaseContentModel showcaseContentModel;
   final ShowcaseTypeEnum showcaseType;
   final bool isSearch;
+  final double? coverSize;
 
   @override
   State<ContentItem> createState() => _ContentItemState();
@@ -34,7 +36,7 @@ class _ContentItemState extends State<ContentItem> {
     return ChangeNotifierProvider(
       create: (context) => ContentItemProvider(showcaseContentModel: widget.showcaseContentModel),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 7),
         child: MouseRegion(
           cursor: SystemMouseCursors.click,
           onEnter: (event) {
@@ -61,9 +63,13 @@ class _ContentItemState extends State<ContentItem> {
               children: [
                 Stack(
                   children: [
-                    ContentPoster.showcase(
-                      posterPath: widget.showcaseContentModel.posterPath,
-                      contentType: widget.showcaseContentModel.contentType,
+                    SizedBox(
+                      height: widget.coverSize,
+                      child: ContentPoster(
+                        posterPath: widget.showcaseContentModel.posterPath,
+                        contentType: widget.showcaseContentModel.contentType,
+                        cacheSize: 700,
+                      ),
                     ),
                     if (!onHover && widget.showcaseType == ShowcaseTypeEnum.ACTIVITY) const ContentActivity(),
                     if (onHover) ContentHover(),
@@ -71,7 +77,7 @@ class _ContentItemState extends State<ContentItem> {
                   ],
                 ),
                 if (widget.showcaseType == ShowcaseTypeEnum.EXPLORE)
-                  ContentList(
+                  UserContentActivityBar(
                     // TODO: normalde burası giriş yapan kullanıcıya göre değil profili gezilen kullanıcını veya giriş yapan kullanıcıya göre olacak
                     rating: widget.showcaseContentModel.rating,
                     isFavorite: widget.showcaseContentModel.isFavorite,

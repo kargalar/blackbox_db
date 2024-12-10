@@ -1,5 +1,5 @@
 import 'package:blackbox_db/2%20General/accessible.dart';
-import 'package:blackbox_db/6%20Provider/page_provider.dart';
+import 'package:blackbox_db/6%20Provider/explore_provider.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:blackbox_db/8%20Model/content_log_model.dart';
 import 'package:blackbox_db/8%20Model/content_model.dart';
@@ -34,35 +34,8 @@ class ServerManager {
 
   // ********************************************
 
-  // // get all genres
-  // Future<List<GenreModel>> getGenres() async {
-  //   var response = await dio.request(
-  //     "$_baseUrl/genre",
-  //     options: Options(
-  //       method: 'GET',
-  //     ),
-  //   );
-
-  //   checkRequest(response);
-
-  //   return (response.data as List).map((e) => GenreModel.fromJson(e)).toList();
-  // }
-
-  // // get all movie
-  // Future<List<ContentModel>> getAllMovie() async {
-  //   var response = await dio.request(
-  //     "$_baseUrl/movie",
-  //     options: Options(
-  //       method: 'GET',
-  //     ),
-  //   );
-
-  //   checkRequest(response);
-
-  //   return (response.data as List).map((e) => ContentModel.fromJson(e)).toList();
-  // }
-
   // get all movie for showcase with user id
+  // ? bu kullanıcının tüm logladığı içeriklerin listesi
   Future<List<ShowcaseContentModel>> getUserExploreContent({
     required ContentTypeEnum? contentType,
     required int userId,
@@ -84,7 +57,7 @@ class ServerManager {
     required int userId,
     int? yearFilter,
   }) async {
-    if (PageProvider().allGenres == null) {
+    if (ExploreProvider().allGenres == null) {
       var response = await dio.request(
         "$_baseUrl/getAllGenre",
         options: Options(
@@ -94,20 +67,20 @@ class ServerManager {
 
       checkRequest(response);
 
-      PageProvider().allGenres = (response.data as List).map((e) => GenreModel.fromJson(e)).toList();
+      ExploreProvider().allGenres = (response.data as List).map((e) => GenreModel.fromJson(e)).toList();
     }
 
     String url = "$_baseUrl/discoverMovie?user_id=$userId";
 
-    if (PageProvider().filteredGenreList.isNotEmpty) {
-      String genreIds = PageProvider().filteredGenreList.map((e) => e.id.toString()).join(',');
+    if (ExploreProvider().filteredGenreList.isNotEmpty) {
+      String genreIds = ExploreProvider().filteredGenreList.map((e) => e.id.toString()).join(',');
 
       url += "&genre=$genreIds";
     }
     if (yearFilter != null) {
       url += "&year=$yearFilter";
     }
-    url += "&page=${PageProvider().currentPageIndex}";
+    url += "&page=${ExploreProvider().currentPageIndex}";
 
     var response = await dio.request(
       url,
@@ -127,21 +100,6 @@ class ServerManager {
       'totalPages': totalPages,
     };
   }
-
-  // // add genre
-  // Future<void> addGenre(String name) async {
-  //   var response = await dio.request(
-  //     "$_baseUrl/genre",
-  //     data: {
-  //       'name': name,
-  //     },
-  //     options: Options(
-  //       method: 'POST',
-  //     ),
-  //   );
-
-  //   checkRequest(response);
-  // }
 
   //conent_user_action
   Future<void> contentUserAction({

@@ -9,38 +9,12 @@ class ContentPoster extends StatelessWidget {
     super.key,
     required this.posterPath,
     required this.contentType,
-    this.size = 150,
     this.cacheSize = 300,
   });
 
   final String? posterPath;
   final ContentTypeEnum contentType;
-  final double size;
   final int cacheSize;
-
-  const ContentPoster.showcase({
-    Key? key,
-    required String? posterPath,
-    required ContentTypeEnum contentType,
-  }) : this(
-          key: key,
-          contentType: contentType,
-          posterPath: posterPath,
-          size: 150,
-          cacheSize: 700,
-        );
-
-  const ContentPoster.contentPage({
-    Key? key,
-    required String? posterPath,
-    required ContentTypeEnum contentType,
-  }) : this(
-          key: key,
-          contentType: contentType,
-          posterPath: posterPath,
-          size: 230,
-          cacheSize: 2000,
-        );
 
   @override
   Widget build(BuildContext context) {
@@ -54,58 +28,59 @@ class ContentPoster extends StatelessWidget {
       imageURL = "https://images.igdb.com/igdb/image/upload/t_720p/$posterPath.jpg";
     }
 
-    return Container(
-      height: size * 1.5,
-      width: size,
-      decoration: BoxDecoration(
-        borderRadius: AppColors.borderRadiusAll / 2,
-        boxShadow: AppColors.bottomShadow,
-      ),
-      child: ClipRRect(
-        borderRadius: AppColors.borderRadiusAll / 2,
-        child: posterPath != null
-            ? CachedNetworkImage(
-                imageUrl: imageURL,
-                fit: BoxFit.cover,
-                fadeInDuration: const Duration(milliseconds: 150),
-                fadeOutDuration: const Duration(milliseconds: 150),
-                memCacheHeight: cacheSize,
-                placeholder: (context, url) {
-                  // shimmer
-                  return Shimmer.fromColors(
-                    baseColor: AppColors.deepBlack,
-                    highlightColor: AppColors.panelBackground,
-                    period: const Duration(seconds: 2),
-                    child: Container(
-                      color: AppColors.transparantBlack,
+    return AspectRatio(
+      aspectRatio: 2 / 3,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: AppColors.borderRadiusAll / 2,
+          boxShadow: AppColors.bottomShadow,
+        ),
+        child: ClipRRect(
+          borderRadius: AppColors.borderRadiusAll / 2,
+          child: posterPath != null
+              ? CachedNetworkImage(
+                  imageUrl: imageURL,
+                  fit: BoxFit.cover,
+                  fadeInDuration: const Duration(milliseconds: 150),
+                  fadeOutDuration: const Duration(milliseconds: 150),
+                  memCacheHeight: cacheSize,
+                  placeholder: (context, url) {
+                    // shimmer
+                    return Shimmer.fromColors(
+                      baseColor: AppColors.deepBlack,
+                      highlightColor: AppColors.panelBackground,
+                      period: const Duration(seconds: 2),
+                      child: Container(
+                        color: AppColors.transparantBlack,
+                      ),
+                    );
+                  },
+                  errorWidget: (context, url, error) => Container(
+                    color: AppColors.panelBackground,
+                    child: const Center(
+                      child: Text(
+                        "Something",
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
                     ),
-                  );
-                },
-                errorWidget: (context, url, error) => Container(
+                  ),
+                )
+              :
+              // not found
+              Container(
                   color: AppColors.panelBackground,
                   child: const Center(
                     child: Text(
-                      "Something",
+                      "Not Found",
                       style: TextStyle(
                         fontSize: 20,
                       ),
                     ),
                   ),
                 ),
-              )
-            :
-            // not found
-            Container(
-                color: AppColors.panelBackground,
-                child: const Center(
-                  child: Text(
-                    "Not Found",
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
-              ),
+        ),
       ),
     );
   }

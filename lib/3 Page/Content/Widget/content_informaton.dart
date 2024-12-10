@@ -12,6 +12,7 @@ class ContentInformation extends StatelessWidget {
     late final contentModel = context.read<ContentPageProvider>().contentModel;
 
     return Container(
+      width: 600,
       padding: const EdgeInsets.all(20),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -56,7 +57,6 @@ class ContentInformation extends StatelessWidget {
             ),
           const SizedBox(height: 20),
           SizedBox(
-            width: 500,
             child: Text(
               contentModel.description,
               style: const TextStyle(
@@ -83,7 +83,6 @@ class ContentInformation extends StatelessWidget {
           // TODO: buralar sadece isteyenler için açılacak şekilde olsun. tür, mod, actorler, platform falan. yani tasarımdaki gibi
           if (contentModel.cast != null) ...[
             SizedBox(
-              width: 500,
               height: 50,
               child: ListView.separated(
                 shrinkWrap: true,
