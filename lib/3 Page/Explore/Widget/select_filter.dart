@@ -116,7 +116,7 @@ class _SelectFilterState extends State<SelectFilter> {
         const SizedBox(height: 5),
         Wrap(
           children: PageProvider().filteredGenreList.map((genre) {
-            return GestureDetector(
+            return InkWell(
               onTap: () {
                 _removeItem(genre);
               },
