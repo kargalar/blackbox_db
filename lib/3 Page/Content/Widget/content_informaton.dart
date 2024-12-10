@@ -69,7 +69,7 @@ class ContentInformation extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  contentModel.genreList!.map((e) => e.title).join(", "),
+                  contentModel.genreList!.map((e) => e.name).join(", "),
                   style: const TextStyle(fontSize: 16),
                 ),
                 const SizedBox(width: 10),

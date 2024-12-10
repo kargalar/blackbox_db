@@ -1,5 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blackbox_db/2%20General/app_colors.dart';
+import 'package:blackbox_db/6%20Provider/page_provider.dart';
+import 'package:blackbox_db/8%20Model/genre_model.dart';
 import 'package:flutter/material.dart';
 
 class SelectFilter extends StatefulWidget {
@@ -10,21 +12,17 @@ class SelectFilter extends StatefulWidget {
 }
 
 class _SelectFilterState extends State<SelectFilter> {
-  // TODO: get all genre to tmdb api
-  final List<String> genres = ["Drama", "Action", "Comedy", "a1b2c3d4e5f6g7h8ı9i10", "Horror", "Sci-Fi"];
-  final List<String> selectedGenres = [];
-
-  void _addItem(String item) {
-    if (!selectedGenres.contains(item)) {
+  void _addItem(GenreModel item) {
+    if (!PageProvider().filteredGenreList.contains(item)) {
       setState(() {
-        selectedGenres.add(item);
+        PageProvider().filteredGenreList.add(item);
       });
     }
   }
 
-  void _removeItem(String item) {
+  void _removeItem(GenreModel item) {
     setState(() {
-      selectedGenres.remove(item);
+      PageProvider().filteredGenreList.remove(item);
     });
   }
 
@@ -34,7 +32,7 @@ class _SelectFilterState extends State<SelectFilter> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Genre Dropdown
-        PopupMenuButton<String>(
+        PopupMenuButton<GenreModel>(
           onSelected: (value) => _addItem(value),
           color: AppColors.panelBackground2,
           itemBuilder: (context) => [
@@ -43,7 +41,7 @@ class _SelectFilterState extends State<SelectFilter> {
               child: StatefulBuilder(builder: (context, setStateMenu) {
                 return SizedBox(
                   width: 300, // Adjust width
-                  child: genres.length == selectedGenres.length
+                  child: PageProvider().allGenres!.length == PageProvider().filteredGenreList.length
                       ? Center(
                           child: Text(
                             "Başka Seçenek Yok",
@@ -59,9 +57,9 @@ class _SelectFilterState extends State<SelectFilter> {
                           crossAxisCount: 3, // Number of columns
                           crossAxisSpacing: 10,
                           mainAxisSpacing: 10,
-                          childAspectRatio: genres.length == selectedGenres.length ? 2 : 2,
-                          children: genres.where((genre) => !selectedGenres.contains(genre)).map((genre) {
-                            final isSelected = selectedGenres.contains(genre);
+                          childAspectRatio: PageProvider().allGenres!.length == PageProvider().filteredGenreList.length ? 2 : 2,
+                          children: PageProvider().allGenres!.where((genre) => !PageProvider().filteredGenreList.contains(genre)).map((genre) {
+                            final isSelected = PageProvider().filteredGenreList.contains(genre);
 
                             return InkWell(
                               borderRadius: AppColors.borderRadiusAll,
@@ -69,9 +67,9 @@ class _SelectFilterState extends State<SelectFilter> {
                                 setState(() {
                                   setStateMenu(() {
                                     if (isSelected) {
-                                      selectedGenres.remove(genre);
+                                      PageProvider().filteredGenreList.remove(genre);
                                     } else {
-                                      selectedGenres.add(genre);
+                                      PageProvider().filteredGenreList.add(genre);
                                     }
                                   });
                                 });
@@ -84,7 +82,7 @@ class _SelectFilterState extends State<SelectFilter> {
                                   borderRadius: AppColors.borderRadiusAll,
                                 ),
                                 child: AutoSizeText(
-                                  genre,
+                                  genre.name,
                                   maxLines: 1,
                                 ),
                               ),
@@ -122,7 +120,7 @@ class _SelectFilterState extends State<SelectFilter> {
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,
           childAspectRatio: 1.7,
-          children: selectedGenres.map((genre) {
+          children: PageProvider().filteredGenreList.map((genre) {
             return InkWell(
               borderRadius: AppColors.borderRadiusAll,
               onTap: () {
@@ -136,7 +134,7 @@ class _SelectFilterState extends State<SelectFilter> {
                   borderRadius: AppColors.borderRadiusAll,
                 ),
                 child: AutoSizeText(
-                  genre,
+                  genre.name,
                   maxLines: 1,
                 ),
               ),

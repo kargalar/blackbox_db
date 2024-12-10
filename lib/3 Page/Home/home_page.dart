@@ -1,6 +1,3 @@
-import 'package:blackbox_db/3%20Page/Explore/Widget/content_list.dart';
-import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
-import 'package:blackbox_db/7%20Enum/showcase_type_enum.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -17,15 +14,16 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         children: [
           const Text("activity MOVIE"),
-          const ContentList(
-            contentType: ContentTypeEnum.MOVIE,
-            showcaseType: ShowcaseTypeEnum.EXPLORE,
-          ),
+          // TODO istekler contentlistte değil ilgili sayfada atıalcak.
+          // const ContentList(
+          //   contentType: ContentTypeEnum.MOVIE,
+          //   showcaseType: ShowcaseTypeEnum.EXPLORE,
+          // ),
           const Text("activity game"),
-          const ContentList(
-            contentType: ContentTypeEnum.GAME,
-            showcaseType: ShowcaseTypeEnum.EXPLORE,
-          ),
+          // const ContentList(
+          //   contentType: ContentTypeEnum.GAME,
+          //   showcaseType: ShowcaseTypeEnum.EXPLORE,
+          // ),
           // const Text("trend BOOK"),
           // const ContentList(
           //   contentType: ContentTypeEnum.BOOK,

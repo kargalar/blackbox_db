@@ -3,6 +3,7 @@ import 'package:blackbox_db/6%20Provider/page_provider.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:blackbox_db/8%20Model/content_log_model.dart';
 import 'package:blackbox_db/8%20Model/content_model.dart';
+import 'package:blackbox_db/8%20Model/genre_model.dart';
 import 'package:blackbox_db/8%20Model/showcase_movie_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -79,23 +80,32 @@ class ServerManager {
   }
 
   // get discover content
-  Future getDiscoverContent({
-    required ContentTypeEnum? contentType,
+  Future getDiscoverMovie({
     required int userId,
-    String? genreFilter,
     int? yearFilter,
   }) async {
+    if (PageProvider().allGenres == null) {
+      var response = await dio.request(
+        "$_baseUrl/getAllGenre",
+        options: Options(
+          method: 'GET',
+        ),
+      );
+
+      checkRequest(response);
+
+      PageProvider().allGenres = (response.data as List).map((e) => GenreModel.fromJson(e)).toList();
+    }
+
     String url = "$_baseUrl/discoverMovie?user_id=$userId";
 
-    // Add filters
-    // if (contentType != null) {
-    //   url += "&content_type_id=${contentType.index + 1}";
-    // }
-    if (genreFilter != null) {
-      url += "&with_genres=$genreFilter";
+    if (PageProvider().filteredGenreList.isNotEmpty) {
+      String genreIds = PageProvider().filteredGenreList.map((e) => e.id.toString()).join(',');
+
+      url += "&genre=$genreIds";
     }
     if (yearFilter != null) {
-      url += "&primary_release_year=$yearFilter";
+      url += "&year=$yearFilter";
     }
     url += "&page=${PageProvider().currentPageIndex}";
 

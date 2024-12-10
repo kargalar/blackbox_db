@@ -1,16 +1,16 @@
 class GenreModel {
   GenreModel({
     required this.id,
-    required this.title,
+    required this.name,
   });
 
   int id;
-  String title;
+  String name;
 
   factory GenreModel.fromJson(Map<String, dynamic> json) {
     return GenreModel(
       id: json['id'],
-      title: json['title'],
+      name: json['name'],
     );
   }
 
@@ -25,7 +25,7 @@ class GenreModel {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'name': title,
+      'name': name,
     };
   }
 }
