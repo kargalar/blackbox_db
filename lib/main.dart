@@ -9,8 +9,8 @@ import 'package:blackbox_db/2%20General/init_app.dart';
 import 'package:blackbox_db/3%20Page/appbar_manager.dart';
 import 'package:provider/provider.dart';
 
-void main() async {
-  await initApp();
+void main(List<String> args) async {
+  await initApp(args);
 
   runApp(
     MultiProvider(

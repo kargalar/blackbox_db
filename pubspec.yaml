@@ -70,6 +70,10 @@ dependencies:
   # shimmer
   shimmer: ^3.0.0
 
+  # Windows window manager
+  window_manager: ^0.4.3
+  windows_single_instance: ^1.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
