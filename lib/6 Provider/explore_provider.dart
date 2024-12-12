@@ -1,5 +1,6 @@
 import 'package:blackbox_db/2%20General/accessible.dart';
 import 'package:blackbox_db/5%20Service/server_manager.dart';
+import 'package:blackbox_db/6%20Provider/page_provider.dart';
 import 'package:blackbox_db/6%20Provider/profile_provider.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:blackbox_db/8%20Model/genre_model.dart';
@@ -31,7 +32,6 @@ class ExploreProvider with ChangeNotifier {
 
   void getContent({
     required BuildContext context,
-    ContentTypeEnum? contentType,
   }) async {
     try {
       // TODO: widget.showcaseType a göre farklı endpointlere istek atacak
@@ -50,11 +50,11 @@ class ExploreProvider with ChangeNotifier {
           userId: user.id,
         );
       } else {
-        if (contentType == ContentTypeEnum.MOVIE) {
+        if (context.read<GeneralProvider>().exploreContentType == ContentTypeEnum.MOVIE) {
           response = await ServerManager().getDiscoverMovie(
             userId: user.id,
           );
-        } else if (contentType == ContentTypeEnum.GAME) {
+        } else if (context.read<GeneralProvider>().exploreContentType == ContentTypeEnum.GAME) {
           response = await ServerManager().getDiscoverGame(
             userId: user.id,
           );

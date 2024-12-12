@@ -37,7 +37,7 @@ class GeneralProvider with ChangeNotifier {
     Provider.of<ExploreProvider>(context, listen: false).filteredGenreList = [];
     Provider.of<ExploreProvider>(context, listen: false).currentPageIndex = 1;
     Provider.of<ExploreProvider>(context, listen: false).isProfilePage = false;
-    Provider.of<ExploreProvider>(context, listen: false).getContent(context: context, contentType: contentType);
+    Provider.of<ExploreProvider>(context, listen: false).getContent(context: context);
 
     notifyListeners();
   }
