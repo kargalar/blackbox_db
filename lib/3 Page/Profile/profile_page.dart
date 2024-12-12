@@ -47,6 +47,13 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   @override
+  void dispose() {
+    profileProvider.currentPageIndex = 0;
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return exploreProvider.isLoadingPage
         ? const Center(child: CircularProgressIndicator())
