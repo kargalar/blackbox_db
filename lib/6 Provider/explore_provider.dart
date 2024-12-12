@@ -1,8 +1,10 @@
 import 'package:blackbox_db/2%20General/accessible.dart';
 import 'package:blackbox_db/5%20Service/server_manager.dart';
+import 'package:blackbox_db/6%20Provider/page_provider.dart';
 import 'package:blackbox_db/8%20Model/genre_model.dart';
 import 'package:blackbox_db/8%20Model/showcase_movie_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ExploreProvider with ChangeNotifier {
   ExploreProvider._privateConstructor();
@@ -22,7 +24,9 @@ class ExploreProvider with ChangeNotifier {
   bool isLoadingPage = true;
   bool isLoadingContents = true;
 
-  void getContent() async {
+  bool isProfilePage = false;
+
+  void getContent(BuildContext context) async {
     try {
       // TODO: widget.showcaseType a göre farklı endpointlere istek atacak
       // TODO: mesela trend ise sadece 5 tane getirecek. actviity ise contentlogmodel için de veri getirecek...
@@ -32,9 +36,19 @@ class ExploreProvider with ChangeNotifier {
         notifyListeners();
       }
 
-      var response = await ServerManager().getDiscoverMovie(
-        userId: userID,
-      );
+      late dynamic response;
+
+      if (isProfilePage) {
+        response = await ServerManager().getUserContents(
+          contentType: context.read<GeneralProvider>().exploreContentType,
+          userId: userID,
+        );
+      } else {
+        response = await ServerManager().getDiscoverMovie(
+          userId: userID,
+        );
+      }
+
       contentList = response['contentList'];
       totalPageIndex = response['totalPages'];
 

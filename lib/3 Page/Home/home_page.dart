@@ -1,8 +1,3 @@
-import 'package:blackbox_db/2%20General/accessible.dart';
-import 'package:blackbox_db/3%20Page/Explore/Widget/content_list.dart';
-import 'package:blackbox_db/5%20Service/server_manager.dart';
-import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
-import 'package:blackbox_db/7%20Enum/showcase_type_enum.dart';
 import 'package:blackbox_db/8%20Model/showcase_movie_model.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +9,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool isLoading = true;
+  bool isLoading = false;
 
   List<ShowcaseContentModel> contentList = [];
 
@@ -34,10 +29,10 @@ class _HomePageState extends State<HomePage> {
               children: [
                 const Text("activity MOVIE"),
                 // TODO istekler contentlistte değil ilgili sayfada atıalcak.
-                ContentList(
-                  contentList: contentList,
-                  showcaseType: ShowcaseTypeEnum.EXPLORE,
-                ),
+                // ContentList(
+                //   contentList: contentList,
+                //   showcaseType: ShowcaseTypeEnum.EXPLORE,
+                // ),
                 const Text("activity game"),
                 // const ContentList(
                 //   contentType: ContentTypeEnum.GAME,
@@ -71,24 +66,24 @@ class _HomePageState extends State<HomePage> {
   }
 
   void getContent() async {
-    try {
-      // TODO: widget.showcaseType a göre farklı endpointlere istek atacak
-      // TODO: mesela trend ise sadece 5 tane getirecek. actviity ise contentlogmodel için de veri getirecek...
-      // TODO: contentType null ise farklı istek atacak
-      if (!isLoading) {
-        isLoading = true;
-        setState(() {});
-      }
+    // try {
+    //   // TODO: widget.showcaseType a göre farklı endpointlere istek atacak
+    //   // TODO: mesela trend ise sadece 5 tane getirecek. actviity ise contentlogmodel için de veri getirecek...
+    //   // TODO: contentType null ise farklı istek atacak
+    //   if (!isLoading) {
+    //     isLoading = true;
+    //     setState(() {});
+    //   }
 
-      contentList = await ServerManager().getUserContents(
-        contentType: ContentTypeEnum.MOVIE,
-        userId: userID,
-      );
+    //   contentList = await ServerManager().getUserContents(
+    //     contentType: ContentTypeEnum.MOVIE,
+    //     userId: userID,
+    //   );
 
-      isLoading = false;
-      setState(() {});
-    } catch (e) {
-      debugPrint(e.toString());
-    }
+    //   isLoading = false;
+    //   setState(() {});
+    // } catch (e) {
+    //   debugPrint(e.toString());
+    // }
   }
 }

@@ -1,6 +1,5 @@
 import 'package:blackbox_db/2%20General/accessible.dart';
 import 'package:blackbox_db/6%20Provider/explore_provider.dart';
-import 'package:blackbox_db/6%20Provider/profile_provider.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:blackbox_db/8%20Model/content_log_model.dart';
 import 'package:blackbox_db/8%20Model/content_model.dart';
@@ -46,7 +45,7 @@ class ServerManager {
       queryParameters: {
         'user_id': userId,
         'content_type_id': contentType.index + 1,
-        'page': ProfileProvider().currentPageIndex,
+        'page': ExploreProvider().currentPageIndex,
       },
       options: Options(
         method: 'GET',

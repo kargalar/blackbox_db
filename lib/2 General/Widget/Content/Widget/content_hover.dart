@@ -22,6 +22,13 @@ class ContentHover extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ContentItemButton(
+                  icon: Icons.remove_red_eye,
+                  color: context.watch<ContentItemProvider>().showcaseContentModel.isConsumed ? AppColors.green : AppColors.white,
+                  onTap: () async {
+                    await context.read<ContentItemProvider>().consume();
+                  },
+                ),
+                ContentItemButton(
                   icon: Icons.favorite,
                   color: context.watch<ContentItemProvider>().showcaseContentModel.isFavorite ? AppColors.red : AppColors.white,
                   onTap: () async {
@@ -29,15 +36,8 @@ class ContentHover extends StatelessWidget {
                   },
                 ),
                 ContentItemButton(
-                  icon: Icons.remove_red_eye,
-                  color: context.watch<ContentItemProvider>().showcaseContentModel.isConsumed ? AppColors.red : AppColors.white,
-                  onTap: () async {
-                    await context.read<ContentItemProvider>().consume();
-                  },
-                ),
-                ContentItemButton(
                   icon: Icons.watch_later,
-                  color: context.watch<ContentItemProvider>().showcaseContentModel.isConsumeLater ? AppColors.red : AppColors.white,
+                  color: context.watch<ContentItemProvider>().showcaseContentModel.isConsumeLater ? AppColors.main : AppColors.white,
                   onTap: () async {
                     await context.read<ContentItemProvider>().consumeLater();
                   },
