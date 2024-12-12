@@ -40,16 +40,13 @@ class ServerManager {
     required ContentTypeEnum contentType,
     required int userId,
   }) async {
-    var response = await dio.request(
+    var response = await dio.get(
       "$_baseUrl/userContents",
       queryParameters: {
         'user_id': userId,
         'content_type_id': contentType.index + 1,
         'page': ExploreProvider().currentPageIndex,
       },
-      options: Options(
-        method: 'GET',
-      ),
     );
 
     checkRequest(response);
@@ -70,11 +67,8 @@ class ServerManager {
     int? yearFilter,
   }) async {
     if (ExploreProvider().allGenres == null) {
-      var response = await dio.request(
+      var response = await dio.get(
         "$_baseUrl/getAllGenre",
-        options: Options(
-          method: 'GET',
-        ),
       );
 
       checkRequest(response);
@@ -94,11 +88,8 @@ class ServerManager {
     }
     url += "&page=${ExploreProvider().currentPageIndex}";
 
-    var response = await dio.request(
+    var response = await dio.get(
       url,
-      options: Options(
-        method: 'GET',
-      ),
     );
 
     checkRequest(response);
@@ -117,7 +108,7 @@ class ServerManager {
   Future<void> contentUserAction({
     required ContentLogModel contentLogModel,
   }) async {
-    var response = await dio.request(
+    var response = await dio.post(
       "$_baseUrl/content_user_action",
       data: {
         'user_id': contentLogModel.userID,
@@ -129,9 +120,6 @@ class ServerManager {
         'is_consume_later': contentLogModel.isConsumeLater,
         'review': contentLogModel.review,
       },
-      options: Options(
-        method: 'POST',
-      ),
     );
 
     checkRequest(response);
@@ -142,15 +130,37 @@ class ServerManager {
     required ContentTypeEnum contentType,
     int? userId,
   }) async {
-    var response = await dio.request(
-      "$_baseUrl/content_detail?content_id=$contentId&user_id=${userId ?? user.id}&content_type_id=${contentType.index + 1}",
-      options: Options(
-        method: 'GET',
-      ),
+    var response = await dio.get(
+      "$_baseUrl/content_detail",
+      queryParameters: {
+        'user_id': userId ?? user.id,
+        'content_id': contentId,
+        'content_type_id': contentType.index + 1,
+      },
     );
 
     checkRequest(response);
 
     return ContentModel.fromJson(response.data);
   }
+
+  // get trend movies
+  Future<ShowcaseContentModel> getTrendMovie({
+    required int userId,
+  }) async {
+    var response = await dio.get(
+      "$_baseUrl/trendMovie",
+      queryParameters: {
+        'user_id': userId,
+      },
+    );
+
+    checkRequest(response);
+
+    return ShowcaseContentModel.fromJson(response.data);
+  }
+
+  // get friend last activites
+
+  // get recommended movies for user
 }
