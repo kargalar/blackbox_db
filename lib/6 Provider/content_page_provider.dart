@@ -29,7 +29,7 @@ class ContentPageProvider with ChangeNotifier {
   }) async {
     final ContentLogModel userLog = ContentLogModel(
       // TODO: id ve diğerleri. böyle ayrı ayrı olmak yerine 1 tane fonksiyon oluşturayım orada verilenlere göre mi loglayayım. ya da sadece log u dışarı çıkarayım.
-      userID: userID,
+      userID: user.id,
       // TODO: date postgresql tarafında yapılabilir.
       date: DateTime.now(),
       contentID: movieId ?? contentModel!.id,

@@ -1,4 +1,7 @@
+import 'package:blackbox_db/6%20Provider/explore_provider.dart';
+import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProfileProvider with ChangeNotifier {
   ProfileProvider._privateConstructor();
@@ -7,41 +10,68 @@ class ProfileProvider with ChangeNotifier {
     return _instance;
   }
 
-  // int currentPageIndex = 1;
-  // late int totalPageIndex;
+  ContentTypeEnum contentType = ContentTypeEnum.MOVIE;
 
-  // List<GenreModel> filteredGenreList = [];
-  // List<GenreModel>? allGenres;
+  int currentPageIndex = 0;
 
-  // List<ShowcaseContentModel> contentList = [];
+  void goHomePage(context) async {
+    {
+      currentPageIndex = 0;
+      notifyListeners();
+    }
+  }
 
-  // bool isLoadingPage = true;
-  // bool isLoadingContents = true;
+  void goMoviePage(BuildContext context) async {
+    {
+      currentPageIndex = 1;
+      contentType = ContentTypeEnum.MOVIE;
 
-  // void getContent(ContentTypeEnum contentType) async {
-  //   try {
-  //     // TODO: widget.showcaseType a göre farklı endpointlere istek atacak
-  //     // TODO: mesela trend ise sadece 5 tane getirecek. actviity ise contentlogmodel için de veri getirecek...
-  //     // TODO: contentType null ise farklı istek atacak
-  //     if (!isLoadingPage) {
-  //       isLoadingContents = true;
-  //       notifyListeners();
-  //     }
+      Provider.of<ExploreProvider>(context, listen: false).getContent(context);
 
-  //     var response = await ServerManager().getUserContents(
-  //       contentType: contentType,
-  //       userId: userID,
-  //     );
+      notifyListeners();
+    }
+  }
 
-  //     contentList = response['contentList'];
-  //     // totalPageIndex = response['totalPages'];
+  void goGamePage(context) async {
+    {
+      currentPageIndex = 2;
+      contentType = ContentTypeEnum.GAME;
 
-  //     isLoadingPage = false;
-  //     isLoadingContents = false;
+      Provider.of<ExploreProvider>(context, listen: false).getContent(context);
 
-  //     notifyListeners();
-  //   } catch (e) {
-  //     debugPrint(e.toString());
-  //   }
-  // }
+      notifyListeners();
+    }
+  }
+
+  void goReviewPage(context) async {
+    {
+      currentPageIndex = 3;
+
+      notifyListeners();
+    }
+  }
+
+  void goListPage(context) async {
+    {
+      currentPageIndex = 4;
+
+      notifyListeners();
+    }
+  }
+
+  void goNetworkPage(context) async {
+    {
+      currentPageIndex = 5;
+
+      notifyListeners();
+    }
+  }
+
+  void goActivityPage(context) async {
+    {
+      currentPageIndex = 6;
+
+      notifyListeners();
+    }
+  }
 }

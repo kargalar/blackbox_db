@@ -1,6 +1,6 @@
 import 'package:blackbox_db/2%20General/accessible.dart';
 import 'package:blackbox_db/5%20Service/server_manager.dart';
-import 'package:blackbox_db/6%20Provider/page_provider.dart';
+import 'package:blackbox_db/6%20Provider/profile_provider.dart';
 import 'package:blackbox_db/8%20Model/genre_model.dart';
 import 'package:blackbox_db/8%20Model/showcase_movie_model.dart';
 import 'package:flutter/material.dart';
@@ -40,12 +40,12 @@ class ExploreProvider with ChangeNotifier {
 
       if (isProfilePage) {
         response = await ServerManager().getUserContents(
-          contentType: context.read<GeneralProvider>().exploreContentType,
-          userId: userID,
+          contentType: context.read<ProfileProvider>().contentType,
+          userId: user.id,
         );
       } else {
         response = await ServerManager().getDiscoverMovie(
-          userId: userID,
+          userId: user.id,
         );
       }
 

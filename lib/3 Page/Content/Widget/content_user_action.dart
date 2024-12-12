@@ -160,8 +160,7 @@ class ContentUserAction extends StatelessWidget {
             InkWell(
               onTap: () {
                 final log = ContentLogModel(
-                  id: 0,
-                  userID: userID,
+                  userID: user.id,
                   date: DateTime.now(),
                   contentID: contentPageProvider.contentModel!.id,
                   contentType: contentPageProvider.contentModel!.contentType,

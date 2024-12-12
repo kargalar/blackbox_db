@@ -17,7 +17,7 @@ class ContentActivity extends StatelessWidget {
     // TODO: backendden gelecek
     final ContentLogModel userLog = ContentLogModel(
       id: 1,
-      userID: userID,
+      userID: user.id,
       date: DateTime.now(),
       contentID: 1,
       contentType: ContentTypeEnum.MOVIE,

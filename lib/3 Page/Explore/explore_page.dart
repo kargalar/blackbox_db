@@ -27,7 +27,8 @@ class _ExploreContentPageState extends State<ExploreContentPage> {
   void getContents() {
     Provider.of<ExploreProvider>(context, listen: false).isProfilePage = widget.isProfilePage;
 
-    Provider.of<ExploreProvider>(context, listen: false).getContent(context);
+    // eğer profil page de ise istek profile providerdan atılıyor
+    if (!widget.isProfilePage) Provider.of<ExploreProvider>(context, listen: false).getContent(context);
   }
 
   @override

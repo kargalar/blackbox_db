@@ -143,7 +143,7 @@ class ServerManager {
     int? userId,
   }) async {
     var response = await dio.request(
-      "$_baseUrl/content_detail?content_id=$contentId&user_id=${userId ?? userID}&content_type_id=${contentType.index + 1}",
+      "$_baseUrl/content_detail?content_id=$contentId&user_id=${userId ?? user.id}&content_type_id=${contentType.index + 1}",
       options: Options(
         method: 'GET',
       ),
