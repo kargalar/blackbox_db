@@ -21,7 +21,7 @@ class SearchItem extends StatelessWidget {
     return InkWell(
       borderRadius: AppColors.borderRadiusAll,
       onTap: () {
-        context.read<PageProvider>().content(
+        context.read<GeneralProvider>().content(
               searchMovieModel.contentId,
               searchMovieModel.contentType,
             );

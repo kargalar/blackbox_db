@@ -1,10 +1,10 @@
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:flutter/material.dart';
 
-class PageProvider with ChangeNotifier {
-  PageProvider._privateConstructor();
-  static final PageProvider _instance = PageProvider._privateConstructor();
-  factory PageProvider() {
+class GeneralProvider with ChangeNotifier {
+  GeneralProvider._privateConstructor();
+  static final GeneralProvider _instance = GeneralProvider._privateConstructor();
+  factory GeneralProvider() {
     return _instance;
   }
 

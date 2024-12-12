@@ -80,7 +80,7 @@ class _HomePageState extends State<HomePage> {
         setState(() {});
       }
 
-      contentList = await ServerManager().getUserExploreContent(
+      contentList = await ServerManager().getUserContents(
         contentType: ContentTypeEnum.MOVIE,
         userId: userID,
       );

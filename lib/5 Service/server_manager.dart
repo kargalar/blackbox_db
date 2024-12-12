@@ -1,5 +1,6 @@
 import 'package:blackbox_db/2%20General/accessible.dart';
 import 'package:blackbox_db/6%20Provider/explore_provider.dart';
+import 'package:blackbox_db/6%20Provider/profile_provider.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:blackbox_db/8%20Model/content_log_model.dart';
 import 'package:blackbox_db/8%20Model/content_model.dart';
@@ -36,12 +37,17 @@ class ServerManager {
 
   // get all movie for showcase with user id
   // ? bu kullanıcının tüm logladığı içeriklerin listesi
-  Future<List<ShowcaseContentModel>> getUserExploreContent({
-    required ContentTypeEnum? contentType,
+  Future getUserContents({
+    required ContentTypeEnum contentType,
     required int userId,
   }) async {
     var response = await dio.request(
-      "$_baseUrl/exploreUser?user_id=$userId${contentType != null ? "&content_type_id=${contentType.index + 1}" : ""}",
+      "$_baseUrl/userContents",
+      queryParameters: {
+        'user_id': userId,
+        'content_type_id': contentType.index + 1,
+        'page': ProfileProvider().currentPageIndex,
+      },
       options: Options(
         method: 'GET',
       ),
@@ -49,7 +55,14 @@ class ServerManager {
 
     checkRequest(response);
 
-    return (response.data as List).map((e) => ShowcaseContentModel.fromJson(e)).toList();
+    var data = response.data as Map<String, dynamic>;
+    var contentList = (data['contents'] as List).map((e) => ShowcaseContentModel.fromJson(e)).toList();
+    var totalPages = data['total_pages'] as int;
+
+    return {
+      'contentList': contentList,
+      'totalPages': totalPages,
+    };
   }
 
   // get discover content

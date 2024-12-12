@@ -14,7 +14,7 @@ class AppbarSearch extends StatefulWidget {
 }
 
 class _AppbarSearchState extends State<AppbarSearch> {
-  late final appbarProvider = context.read<PageProvider>();
+  late final appbarProvider = context.read<GeneralProvider>();
 
   TextEditingController controller = TextEditingController();
 

@@ -53,7 +53,7 @@ class _ContentItemState extends State<ContentItem> {
           },
           child: GestureDetector(
             onTap: () {
-              context.read<PageProvider>().content(
+              context.read<GeneralProvider>().content(
                     widget.showcaseContentModel.contentId,
                     widget.showcaseContentModel.contentType,
                   );

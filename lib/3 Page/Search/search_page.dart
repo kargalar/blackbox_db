@@ -16,7 +16,7 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  late final pageProvider = context.read<PageProvider>();
+  late final pageProvider = context.read<GeneralProvider>();
 
   bool isLoading = true;
 

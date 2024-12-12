@@ -33,7 +33,7 @@ class ProfileImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    late final appbarProvider = context.read<PageProvider>();
+    late final appbarProvider = context.read<GeneralProvider>();
 
     return InkWell(
       borderRadius: AppColors.borderRadiusCircular,

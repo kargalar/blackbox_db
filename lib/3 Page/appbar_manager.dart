@@ -28,7 +28,7 @@ class AppbarManagerState extends State<AppbarManager> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const MainAppbar(),
-      body: _pages[context.watch<PageProvider>().currentIndex],
+      body: _pages[context.watch<GeneralProvider>().currentIndex],
     );
   }
 }

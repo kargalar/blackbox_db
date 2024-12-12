@@ -14,7 +14,7 @@ class AppbarProfile extends StatefulWidget {
 }
 
 class _AppbarProfileState extends State<AppbarProfile> {
-  late final appbarProvider = context.read<PageProvider>();
+  late final appbarProvider = context.read<GeneralProvider>();
 
   OverlayEntry? _overlayEntry;
 

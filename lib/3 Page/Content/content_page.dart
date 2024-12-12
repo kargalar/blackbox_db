@@ -55,8 +55,8 @@ class _ContentPageState extends State<ContentPage> {
   void getContentDetail() async {
     try {
       provider.contentModel = await ServerManager().getContentDetail(
-        contentId: context.read<PageProvider>().contentID,
-        contentType: context.read<PageProvider>().contentPageContentTpye,
+        contentId: context.read<GeneralProvider>().contentID,
+        contentType: context.read<GeneralProvider>().contentPageContentTpye,
       );
     } catch (e) {
       provider.contentModel = null;
