@@ -1,5 +1,7 @@
+import 'package:blackbox_db/6%20Provider/explore_provider.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class GeneralProvider with ChangeNotifier {
   GeneralProvider._privateConstructor();
@@ -27,10 +29,16 @@ class GeneralProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void explore(ContentTypeEnum contentType) {
+  void explore(ContentTypeEnum contentType, BuildContext context) {
     // TODO: movie, book veya game e her tıkladığında tekrar yüklesin
     exploreContentType = contentType;
     currentIndex = 2;
+
+    Provider.of<ExploreProvider>(context, listen: false).filteredGenreList = [];
+    Provider.of<ExploreProvider>(context, listen: false).currentPageIndex = 1;
+    Provider.of<ExploreProvider>(context, listen: false).isProfilePage = false;
+    Provider.of<ExploreProvider>(context, listen: false).getContent(context: context, contentType: contentType);
+
     notifyListeners();
   }
 

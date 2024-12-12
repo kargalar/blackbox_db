@@ -28,7 +28,7 @@ class ProfileProvider with ChangeNotifier {
       Provider.of<ExploreProvider>(context, listen: false).currentPageIndex = 1;
 
       Provider.of<ExploreProvider>(context, listen: false).isProfilePage = true;
-      Provider.of<ExploreProvider>(context, listen: false).getContent(context);
+      Provider.of<ExploreProvider>(context, listen: false).getContent(context: context);
 
       notifyListeners();
     }
@@ -42,7 +42,7 @@ class ProfileProvider with ChangeNotifier {
       Provider.of<ExploreProvider>(context, listen: false).currentPageIndex = 1;
 
       Provider.of<ExploreProvider>(context, listen: false).isProfilePage = true;
-      Provider.of<ExploreProvider>(context, listen: false).getContent(context);
+      Provider.of<ExploreProvider>(context, listen: false).getContent(context: context);
 
       notifyListeners();
     }

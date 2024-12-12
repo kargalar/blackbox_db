@@ -1,6 +1,7 @@
 import 'package:blackbox_db/2%20General/accessible.dart';
 import 'package:blackbox_db/5%20Service/server_manager.dart';
 import 'package:blackbox_db/6%20Provider/profile_provider.dart';
+import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:blackbox_db/8%20Model/genre_model.dart';
 import 'package:blackbox_db/8%20Model/showcase_movie_model.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,10 @@ class ExploreProvider with ChangeNotifier {
 
   bool isProfilePage = false;
 
-  void getContent(BuildContext context) async {
+  void getContent({
+    required BuildContext context,
+    ContentTypeEnum? contentType,
+  }) async {
     try {
       // TODO: widget.showcaseType a göre farklı endpointlere istek atacak
       // TODO: mesela trend ise sadece 5 tane getirecek. actviity ise contentlogmodel için de veri getirecek...
@@ -46,9 +50,15 @@ class ExploreProvider with ChangeNotifier {
           userId: user.id,
         );
       } else {
-        response = await ServerManager().getDiscoverMovie(
-          userId: user.id,
-        );
+        if (contentType == ContentTypeEnum.MOVIE) {
+          response = await ServerManager().getDiscoverMovie(
+            userId: user.id,
+          );
+        } else if (contentType == ContentTypeEnum.GAME) {
+          response = await ServerManager().getDiscoverGame(
+            userId: user.id,
+          );
+        }
       }
 
       contentList = response['contentList'];

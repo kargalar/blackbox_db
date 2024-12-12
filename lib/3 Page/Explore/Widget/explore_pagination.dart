@@ -13,7 +13,7 @@ class ExplorePagination extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void getContents() {
-      Provider.of<ExploreProvider>(context, listen: false).getContent(context);
+      Provider.of<ExploreProvider>(context, listen: false).getContent(context: context);
     }
 
     return Row(

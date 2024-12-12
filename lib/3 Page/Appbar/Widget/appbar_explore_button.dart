@@ -32,7 +32,7 @@ class ExploreButton extends StatelessWidget {
     return InkWell(
       borderRadius: AppColors.borderRadiusAll,
       onTap: () {
-        appbarProvider.explore(contentType);
+        appbarProvider.explore(contentType, context);
       },
       child: Padding(
         padding: const EdgeInsets.all(8),

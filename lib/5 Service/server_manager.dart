@@ -104,6 +104,52 @@ class ServerManager {
     };
   }
 
+  // get discover Game
+  Future getDiscoverGame({
+    required int userId,
+    int? yearFilter,
+  }) async {
+    // TODO buradı film genre getiriyor. oyun geenre al
+    if (ExploreProvider().allGenres == null) {
+      var response = await dio.get(
+        "$_baseUrl/getAllGenre",
+      );
+
+      checkRequest(response);
+
+      ExploreProvider().allGenres = (response.data as List).map((e) => GenreModel.fromJson(e)).toList();
+    }
+
+    String url = "$_baseUrl/discoverGame?user_id=$userId";
+
+    if (ExploreProvider().filteredGenreList.isNotEmpty) {
+      String genreIds = ExploreProvider().filteredGenreList.map((e) => e.id.toString()).join(',');
+
+      url += "&genre=$genreIds";
+    }
+    if (yearFilter != null) {
+      url += "&year=$yearFilter";
+    }
+    url += "&offset=${ExploreProvider().currentPageIndex * 20}";
+
+    var response = await dio.get(
+      url,
+    );
+
+    checkRequest(response);
+
+    var data = response.data as Map<String, dynamic>;
+    var contentList = (data['contents'] as List).map((e) => ShowcaseContentModel.fromJson(e)).toList();
+    // TODO: ayrı istek atmadan kaç tane total sonuç olduğu alınabilyor mu
+    // var totalPages = data['total_pages'] as int;
+
+    return {
+      'contentList': contentList,
+      'totalPages': 50,
+      // 'totalPages': totalPages,
+    };
+  }
+
   //conent_user_action
   Future<void> contentUserAction({
     required ContentLogModel contentLogModel,

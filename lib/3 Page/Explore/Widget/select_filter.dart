@@ -14,12 +14,12 @@ class SelectFilter extends StatefulWidget {
 class _SelectFilterState extends State<SelectFilter> {
   void _addItem(GenreModel item) {
     ExploreProvider().filteredGenreList.add(item);
-    ExploreProvider().getContent(context);
+    ExploreProvider().getContent(context: context);
   }
 
   void _removeItem(GenreModel item) {
     ExploreProvider().filteredGenreList.remove(item);
-    ExploreProvider().getContent(context);
+    ExploreProvider().getContent(context: context);
   }
 
   @override

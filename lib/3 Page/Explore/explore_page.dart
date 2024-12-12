@@ -18,23 +18,6 @@ class ExploreContentPage extends StatefulWidget {
 
 class _ExploreContentPageState extends State<ExploreContentPage> {
   @override
-  void initState() {
-    super.initState();
-
-    getContents();
-  }
-
-  void getContents() {
-    // eğer profil page de ise istek profile providerdan atılıyor
-    if (!widget.isProfilePage) {
-      Provider.of<ExploreProvider>(context, listen: false).filteredGenreList = [];
-      Provider.of<ExploreProvider>(context, listen: false).currentPageIndex = 1;
-      Provider.of<ExploreProvider>(context, listen: false).isProfilePage = widget.isProfilePage;
-      Provider.of<ExploreProvider>(context, listen: false).getContent(context);
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     return context.watch<ExploreProvider>().isLoadingPage
         ? const Center(child: CircularProgressIndicator())
