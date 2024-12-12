@@ -26,10 +26,10 @@ class _ContentListState extends State<ContentList> {
         : Align(
             alignment: Alignment.topCenter,
             child: SizedBox(
-              width: 0.45.sw,
+              width: 0.4.sw,
               child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 200,
+                  maxCrossAxisExtent: 180,
                   childAspectRatio: 0.64,
                 ),
                 shrinkWrap: true,

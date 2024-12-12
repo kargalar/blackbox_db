@@ -25,6 +25,7 @@ class ProfileProvider with ChangeNotifier {
     {
       currentPageIndex = 1;
       contentType = ContentTypeEnum.MOVIE;
+      Provider.of<ExploreProvider>(context, listen: false).currentPageIndex = 1;
 
       Provider.of<ExploreProvider>(context, listen: false).isProfilePage = true;
       Provider.of<ExploreProvider>(context, listen: false).getContent(context);
@@ -36,7 +37,9 @@ class ProfileProvider with ChangeNotifier {
   void goGamePage(context) async {
     {
       currentPageIndex = 2;
+
       contentType = ContentTypeEnum.GAME;
+      Provider.of<ExploreProvider>(context, listen: false).currentPageIndex = 1;
 
       Provider.of<ExploreProvider>(context, listen: false).isProfilePage = true;
       Provider.of<ExploreProvider>(context, listen: false).getContent(context);

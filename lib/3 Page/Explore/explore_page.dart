@@ -21,14 +21,14 @@ class _ExploreContentPageState extends State<ExploreContentPage> {
   void initState() {
     super.initState();
 
-    Provider.of<ExploreProvider>(context, listen: false).filteredGenreList = [];
-
     getContents();
   }
 
   void getContents() {
     // eğer profil page de ise istek profile providerdan atılıyor
     if (!widget.isProfilePage) {
+      Provider.of<ExploreProvider>(context, listen: false).filteredGenreList = [];
+      Provider.of<ExploreProvider>(context, listen: false).currentPageIndex = 1;
       Provider.of<ExploreProvider>(context, listen: false).isProfilePage = widget.isProfilePage;
       Provider.of<ExploreProvider>(context, listen: false).getContent(context);
     }
