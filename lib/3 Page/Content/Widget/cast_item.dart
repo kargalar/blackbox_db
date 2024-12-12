@@ -18,6 +18,7 @@ class CastItem extends StatelessWidget {
         width: 120,
         color: AppColors.transparent,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // TODO:
             // Container(

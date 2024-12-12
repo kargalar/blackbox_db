@@ -83,17 +83,19 @@ class ContentInformation extends StatelessWidget {
           // TODO: buralar sadece isteyenler için açılacak şekilde olsun. tür, mod, actorler, platform falan. yani tasarımdaki gibi
           if (contentModel.cast != null) ...[
             SizedBox(
-              height: 50,
-              child: ListView.separated(
-                shrinkWrap: true,
-                separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 2),
-                scrollDirection: Axis.horizontal,
-                itemCount: contentModel.cast!.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return CastItem(
-                    crewModel: contentModel.cast![index],
-                  );
-                },
+              height: 40,
+              child: Center(
+                child: ListView.separated(
+                  shrinkWrap: true,
+                  separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 2),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: contentModel.cast!.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return CastItem(
+                      crewModel: contentModel.cast![index],
+                    );
+                  },
+                ),
               ),
             ),
           ],
