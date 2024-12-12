@@ -21,6 +21,8 @@ class _ExploreContentPageState extends State<ExploreContentPage> {
   void initState() {
     super.initState();
 
+    Provider.of<ExploreProvider>(context, listen: false).filteredGenreList = [];
+
     getContents();
   }
 

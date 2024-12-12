@@ -19,6 +19,8 @@ class ExploreProvider with ChangeNotifier {
   List<GenreModel> filteredGenreList = [];
   List<GenreModel>? allGenres;
 
+  // rating filter
+
   List<ShowcaseContentModel> contentList = [];
 
   bool isLoadingPage = true;
