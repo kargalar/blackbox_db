@@ -5,6 +5,7 @@ import 'package:blackbox_db/7%20Enum/content_status_enum.dart';
 import 'package:blackbox_db/8%20Model/content_log_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/route_manager.dart';
 import 'package:provider/provider.dart';
 
@@ -134,8 +135,60 @@ class ContentUserAction extends StatelessWidget {
             ),
             // add review
             InkWell(
-              onTap: () {
-                // add review
+              onTap: () async {
+                String? review;
+
+                await showDialog(
+                    context: context,
+                    builder: (context) {
+                      final TextEditingController reviewController = TextEditingController();
+
+                      return Dialog(
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Text("Add Review"),
+                              const SizedBox(height: 10),
+                              SizedBox(
+                                width: 0.4.sw,
+                                child: TextField(
+                                  controller: reviewController,
+                                  maxLines: 10,
+                                  minLines: 5,
+                                  keyboardType: TextInputType.multiline,
+                                  decoration: const InputDecoration(
+                                    hintText: "Review",
+                                    border: OutlineInputBorder(),
+                                    contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pop(context, "Review");
+                                  review = reviewController.text;
+                                },
+                                child: const Text("Send"),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    });
+
+                if (review != null) {
+                  contentPageProvider.contentUserAction(
+                    contentType: contentPageProvider.contentModel!.contentType,
+                    contentStatus: contentPageProvider.contentModel!.contentStatus,
+                    rating: contentPageProvider.contentModel!.rating,
+                    isFavorite: contentPageProvider.contentModel!.isFavorite,
+                    isConsumeLater: contentPageProvider.contentModel!.isConsumeLater,
+                    review: review,
+                  );
+                }
               },
               child: const Row(
                 children: [
@@ -158,7 +211,7 @@ class ContentUserAction extends StatelessWidget {
 
             // edit or add log
             InkWell(
-              onTap: () {
+              onTap: () async {
                 final log = ContentLogModel(
                   userID: user.id,
                   date: DateTime.now(),
@@ -172,7 +225,7 @@ class ContentUserAction extends StatelessWidget {
                 );
                 // add log
                 // open log dialog
-                Get.dialog(
+                await Get.dialog(
                   Dialog(
                     child:
                         // show log histroey

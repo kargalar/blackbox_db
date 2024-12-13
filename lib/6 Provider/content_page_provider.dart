@@ -26,6 +26,7 @@ class ContentPageProvider with ChangeNotifier {
     required double? rating,
     required bool isFavorite,
     required bool isConsumeLater,
+    String? review,
   }) async {
     final ContentLogModel userLog = ContentLogModel(
       // TODO: id ve diğerleri. böyle ayrı ayrı olmak yerine 1 tane fonksiyon oluşturayım orada verilenlere göre mi loglayayım. ya da sadece log u dışarı çıkarayım.
@@ -34,7 +35,7 @@ class ContentPageProvider with ChangeNotifier {
       date: DateTime.now(),
       contentID: movieId ?? contentModel!.id,
       contentType: contentType,
-      // review: "A chaotic family is on a road trip across a rugged landscape. In the back seat, Dad has a broken leg, Mom tries to laugh when she’s not holding back tears, and the youngest keeps",
+      review: review,
     );
 
     if (movieId == null) {
@@ -47,6 +48,7 @@ class ContentPageProvider with ChangeNotifier {
     userLog.rating = rating;
     userLog.isFavorite = isFavorite;
     userLog.isConsumeLater = isConsumeLater;
+    userLog.review = review;
 
     await ServerManager().contentUserAction(contentLogModel: userLog);
 
@@ -54,25 +56,4 @@ class ContentPageProvider with ChangeNotifier {
       notifyListeners();
     }
   }
-
-  // void favorite() {
-  //   contentModel!.isFavorite = !contentModel!.isFavorite;
-
-  //   notifyListeners();
-  // }
-
-  // void consumeLater() {
-  //   contentModel!.isConsumeLater = !contentModel!.isConsumeLater;
-
-  //   notifyListeners();
-  // }
-
-  // void rating(double rating) {
-  //   // kaydırırken her sefeirnde kaydetmemek için kullanıcı kaydırmayı bitirdiği zaman göderilsin.
-  //   contentModel!.rating = rating;
-
-  //   notifyListeners();
-  // }
-
-  // TODO: review
 }
