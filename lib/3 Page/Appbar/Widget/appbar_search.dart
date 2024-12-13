@@ -1,5 +1,5 @@
 import 'package:blackbox_db/2%20General/app_colors.dart';
-import 'package:blackbox_db/6%20Provider/page_provider.dart';
+import 'package:blackbox_db/6%20Provider/general_provider.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +14,7 @@ class AppbarSearch extends StatefulWidget {
 }
 
 class _AppbarSearchState extends State<AppbarSearch> {
-  late final appbarProvider = context.read<GeneralProvider>();
+  late final generalProvider = context.read<GeneralProvider>();
 
   TextEditingController controller = TextEditingController();
 
@@ -74,9 +74,9 @@ class _AppbarSearchState extends State<AppbarSearch> {
 
   DropdownButton<String> searchFilter() {
     return DropdownButton<String>(
-      value: appbarProvider.searchFilter == ContentTypeEnum.MOVIE
+      value: generalProvider.searchFilter == ContentTypeEnum.MOVIE
           ? "Movie"
-          : appbarProvider.searchFilter == ContentTypeEnum.GAME
+          : generalProvider.searchFilter == ContentTypeEnum.GAME
               ? "Game"
               : "Book",
       icon: const Icon(Icons.arrow_drop_down),
@@ -89,11 +89,11 @@ class _AppbarSearchState extends State<AppbarSearch> {
       ),
       onChanged: (String? newValue) {
         if (newValue == "Movie") {
-          appbarProvider.searchFilter = ContentTypeEnum.MOVIE;
+          generalProvider.searchFilter = ContentTypeEnum.MOVIE;
         } else if (newValue == "Game") {
-          appbarProvider.searchFilter = ContentTypeEnum.GAME;
+          generalProvider.searchFilter = ContentTypeEnum.GAME;
         } else {
-          appbarProvider.searchFilter = ContentTypeEnum.BOOK;
+          generalProvider.searchFilter = ContentTypeEnum.BOOK;
         }
 
         setState(() {});
@@ -109,7 +109,7 @@ class _AppbarSearchState extends State<AppbarSearch> {
 
   void search() {
     if (controller.text.isEmpty) return;
-    appbarProvider.search(controller.text);
+    generalProvider.search(controller.text);
     controller.clear();
   }
 }

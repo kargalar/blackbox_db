@@ -1,5 +1,5 @@
 import 'package:blackbox_db/2%20General/app_colors.dart';
-import 'package:blackbox_db/6%20Provider/page_provider.dart';
+import 'package:blackbox_db/6%20Provider/general_provider.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -27,12 +27,12 @@ class ExploreButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    late final appbarProvider = context.read<GeneralProvider>();
+    late final generalProvider = context.read<GeneralProvider>();
 
     return InkWell(
       borderRadius: AppColors.borderRadiusAll,
       onTap: () {
-        appbarProvider.explore(contentType, context);
+        generalProvider.explore(contentType, context);
       },
       child: Padding(
         padding: const EdgeInsets.all(8),

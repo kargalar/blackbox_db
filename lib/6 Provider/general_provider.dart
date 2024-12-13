@@ -1,3 +1,4 @@
+import 'package:blackbox_db/2%20General/accessible.dart';
 import 'package:blackbox_db/6%20Provider/explore_provider.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ class GeneralProvider with ChangeNotifier {
   String searchText = '';
   ContentTypeEnum searchFilter = ContentTypeEnum.MOVIE;
   ContentTypeEnum exploreContentType = ContentTypeEnum.MOVIE;
-  String currentUserID = "";
+  int currentUserID = user.id;
   int contentID = 0;
   ContentTypeEnum contentPageContentTpye = ContentTypeEnum.MOVIE;
 
@@ -42,7 +43,7 @@ class GeneralProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void profile(String userID) {
+  void profile(int userID) {
     currentUserID = userID;
     currentIndex = 3;
     notifyListeners();

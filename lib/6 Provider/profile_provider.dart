@@ -14,6 +14,10 @@ class ProfileProvider with ChangeNotifier {
 
   int currentPageIndex = 0;
 
+// !!!!!!!!!!!!!!!!!!!!
+// TODO:
+  // eğer profiline gidilen sayfakendinin değilse olacak olan usermodel burada tutulacak ve gerekli yerlede buradan kullanıalcak. bu sayfaded başka profiller ziyaret mümkün oalcak. sadece profile pictırelardan gidilior istek orad atıarbilir belki. veya normal profile page de atlsnı sa
+
   void goHomePage(context) async {
     {
       currentPageIndex = 0;

@@ -8,14 +8,16 @@ import 'package:blackbox_db/3%20Page/Profile/Sections/profile_reviews.dart';
 import 'package:blackbox_db/3%20Page/Profile/Widget/profile_section.dart';
 import 'package:blackbox_db/3%20Page/Profile/Widget/user_info.dart';
 import 'package:blackbox_db/6%20Provider/explore_provider.dart';
-import 'package:blackbox_db/6%20Provider/page_provider.dart';
+import 'package:blackbox_db/6%20Provider/general_provider.dart';
 import 'package:blackbox_db/6%20Provider/profile_provider.dart';
 import 'package:blackbox_db/8%20Model/showcase_movie_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  const ProfilePage({
+    super.key,
+  });
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -67,8 +69,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     // profile picture
                     // TODO:
-                    ProfileImage.profile(
+                    ProfilePicture.profile(
                       imageUrl: "https://images.pexels.com/photos/29191749/pexels-photo-29191749/free-photo-of-traditional-farmer-in-rural-vietnamese-setting.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                      userID: generalProvider.currentUserID,
                     ),
                     SizedBox(width: 10),
                     UserInfo(),

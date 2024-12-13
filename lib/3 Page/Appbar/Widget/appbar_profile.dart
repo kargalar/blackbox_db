@@ -1,6 +1,6 @@
 import 'package:blackbox_db/2%20General/Widget/profile_picture.dart';
 import 'package:blackbox_db/3%20Page/Appbar/Widget/profile_hover_menu.dart';
-import 'package:blackbox_db/6%20Provider/page_provider.dart';
+import 'package:blackbox_db/6%20Provider/general_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,8 +14,6 @@ class AppbarProfile extends StatefulWidget {
 }
 
 class _AppbarProfileState extends State<AppbarProfile> {
-  late final appbarProvider = context.read<GeneralProvider>();
-
   OverlayEntry? _overlayEntry;
 
   @override
@@ -23,8 +21,9 @@ class _AppbarProfileState extends State<AppbarProfile> {
     return MouseRegion(
       onEnter: (event) => _hoverCheck(true),
       onExit: (event) => _hoverCheck(false),
-      child: const ProfileImage.appBar(
+      child: ProfilePicture.appBar(
         imageUrl: "https://images.pexels.com/photos/29191749/pexels-photo-29191749/free-photo-of-traditional-farmer-in-rural-vietnamese-setting.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        userID: context.read<GeneralProvider>().currentUserID,
       ),
     );
   }

@@ -1,7 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blackbox_db/2%20General/Widget/Content/content_item.dart';
 import 'package:blackbox_db/2%20General/app_colors.dart';
-import 'package:blackbox_db/6%20Provider/page_provider.dart';
+import 'package:blackbox_db/6%20Provider/general_provider.dart';
 import 'package:blackbox_db/7%20Enum/showcase_type_enum.dart';
 import 'package:blackbox_db/8%20Model/search_movie_model.dart';
 import 'package:blackbox_db/8%20Model/showcase_movie_model.dart';

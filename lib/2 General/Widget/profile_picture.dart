@@ -1,61 +1,68 @@
 import 'package:blackbox_db/2%20General/app_colors.dart';
-import 'package:blackbox_db/6%20Provider/page_provider.dart';
+import 'package:blackbox_db/6%20Provider/general_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ProfileImage extends StatelessWidget {
+class ProfilePicture extends StatelessWidget {
   final String imageUrl;
   final double size;
+  final int userID;
 
-  const ProfileImage({
+  const ProfilePicture({
     super.key,
     required this.imageUrl,
     this.size = 50.0,
+    required this.userID,
   });
 
-  const ProfileImage.appBar({
+  const ProfilePicture.appBar({
     Key? key,
     required String imageUrl,
+    required int userID,
   }) : this(
           key: key,
           imageUrl: imageUrl,
           size: 40,
+          userID: userID,
         );
 
-  const ProfileImage.content({
+  const ProfilePicture.content({
     Key? key,
     required String imageUrl,
+    required int userID,
   }) : this(
           key: key,
           imageUrl: imageUrl,
           size: 30,
+          userID: userID,
         );
-  const ProfileImage.profile({
+  const ProfilePicture.profile({
     Key? key,
     required String imageUrl,
+    required int userID,
   }) : this(
           key: key,
           imageUrl: imageUrl,
           size: 80,
+          userID: userID,
         );
-  const ProfileImage.review({
+  const ProfilePicture.review({
     Key? key,
     required String imageUrl,
+    required int userID,
   }) : this(
           key: key,
           imageUrl: imageUrl,
           size: 60,
+          userID: userID,
         );
 
   @override
   Widget build(BuildContext context) {
-    late final appbarProvider = context.read<GeneralProvider>();
-
     return InkWell(
       borderRadius: AppColors.borderRadiusCircular,
       onTap: () {
-        // TODO: burada kullanıcının kendi id si verilecek
-        appbarProvider.profile("aq6tj5sxc");
+        context.read<GeneralProvider>().profile(userID);
       },
       child: Container(
         color: AppColors.transparent,

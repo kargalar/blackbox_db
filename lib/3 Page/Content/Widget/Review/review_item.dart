@@ -24,7 +24,10 @@ class _ReviewItemState extends State<ReviewItem> {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        ProfileImage.review(imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/220px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg"),
+        ProfilePicture.review(
+          imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/220px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg",
+          userID: widget.reviewModel.userID,
+        ),
         SizedBox(width: 10),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,12 +60,13 @@ class _ReviewItemState extends State<ReviewItem> {
                 ),
               ],
             ),
+            // TODO: 8 satırdan fazla ise  more butonu ile daha fazlası gösterilecek
             SizedBox(
               width: 0.36.sw,
               child: Text(
                 widget.reviewModel.text,
                 style: TextStyle(fontSize: 14),
-                maxLines: 2,
+                maxLines: 8,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
