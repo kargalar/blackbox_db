@@ -41,6 +41,7 @@ class ShowcaseContentModel {
       isFavorite: json['is_favorite'],
       isConsumed: json['is_consumed'],
       rating: json['rating'] != null ? double.parse(json['rating']) : null,
+      // TODO: burad aisreviewed yerine direkt review text gelse logmodel gerekmez sanırım. bu yeterli olur.
       isReviewed: json['is_reviewed'],
       isConsumeLater: json['is_consume_later'],
       // TODO: bunu kaldır onun yerine yukarıya review falana ne gerekiyorsa ekle ???
