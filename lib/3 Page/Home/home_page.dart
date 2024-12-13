@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> {
       contentList = response['contentList'];
 
       // sadece ilk 5 i al
-      contentList = contentList.sublist(0, 5);
+      contentList = contentList.length > 5 ? contentList.sublist(0, 5) : contentList;
 
       isLoading = false;
       setState(() {});
