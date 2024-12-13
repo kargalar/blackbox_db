@@ -1,6 +1,7 @@
 import 'package:blackbox_db/7%20Enum/content_status_enum.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 
+// TODO: BUNU NEREDE KULLANIYORUM
 class ContentLogModel {
   ContentLogModel({
     this.id,
@@ -29,19 +30,23 @@ class ContentLogModel {
   String? review;
   bool isConsumeLater;
 
+  // TODO:
   factory ContentLogModel.fromJson(Map<String, dynamic> json) {
     return ContentLogModel(
       id: json['id'],
       userID: json['user_id'],
-      contentID: json['movie_id'],
+      contentID: json['content_id'],
       date: DateTime.parse(json['date']),
       contentStatus: ContentStatusEnum.values[json['content_status_id'] - 1],
       rating: double.parse(json['rating']),
       isFavorite: json['is_favorite'],
       isConsumeLater: json['is_consume_later'],
-      review: json['review'],
-      contentTitle: json['movie_title'],
-      contentType: ContentTypeEnum.values[json['content_type_id'] - 1],
+      review: json['review_id'],
+      // TODO:
+      // review: json['review'],
+      // contentTitle: json['movie_title'],
+      // contentType: ContentTypeEnum.values[json['content_type_id'] - 1],
+      contentType: ContentTypeEnum.MOVIE,
     );
   }
 
@@ -53,7 +58,7 @@ class ContentLogModel {
     return {
       'id': id,
       'user_id': userID,
-      'movie_id': contentID,
+      'content_id': contentID,
       'date': date.toIso8601String(),
       'content_status_id': contentStatus!.index + 1,
       'rating': rating,

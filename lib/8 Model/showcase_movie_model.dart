@@ -43,7 +43,8 @@ class ShowcaseContentModel {
       rating: json['rating'] != null ? double.parse(json['rating']) : null,
       isReviewed: json['is_reviewed'],
       isConsumeLater: json['is_consume_later'],
-      contentLog: json['movie_log'] != null ? ContentLogModel.fromJson(json['movie_log']) : null,
+      // TODO: bunu kaldır onun yerine yukarıya review falana ne gerekiyorsa ekle ???
+      contentLog: json['userContentLogs'] != null ? ContentLogModel.fromJson(json['userContentLogs']) : null,
     );
   }
 
