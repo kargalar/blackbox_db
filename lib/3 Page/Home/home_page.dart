@@ -16,7 +16,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool isLoading = false;
 
-  List<ShowcaseContentModel> contentList = [];
+  List<ShowcaseContentModel> contentListMovie = [];
+  List<ShowcaseContentModel> contentListGame = [];
 
   @override
   void initState() {
@@ -40,12 +41,12 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Text("Trend Filmler", style: TextStyle(fontSize: 20)),
                     ContentList(
-                      contentList: contentList,
+                      contentList: contentListMovie,
                       showcaseType: ShowcaseTypeEnum.TREND,
                     ),
                     Text("Trend Oyunlar", style: TextStyle(fontSize: 20)),
                     ContentList(
-                      contentList: contentList,
+                      contentList: contentListGame,
                       showcaseType: ShowcaseTypeEnum.TREND,
                     ),
                   ],
@@ -56,12 +57,12 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Text("Arkaşlarının Aktiviteleri", style: TextStyle(fontSize: 20)),
                     ContentList(
-                      contentList: contentList,
+                      contentList: contentListMovie,
                       showcaseType: ShowcaseTypeEnum.ACTIVITY,
                     ),
                     Text("Önerilenler", style: TextStyle(fontSize: 20)),
                     ContentList(
-                      contentList: contentList,
+                      contentList: contentListMovie,
                       showcaseType: ShowcaseTypeEnum.FLAT,
                     ),
                     // çok beklenenler
@@ -83,15 +84,22 @@ class _HomePageState extends State<HomePage> {
         setState(() {});
       }
 
-      final response = await ServerManager().getUserContents(
+      final response1 = await ServerManager().getUserContents(
         contentType: ContentTypeEnum.MOVIE,
         userId: user.id,
       );
 
-      contentList = response['contentList'];
+      contentListMovie = response1['contentList'];
+
+      final response2 = await ServerManager().getUserContents(
+        contentType: ContentTypeEnum.GAME,
+        userId: user.id,
+      );
+
+      contentListGame = response2['contentList'];
 
       // sadece ilk 5 i al
-      contentList = contentList.length > 5 ? contentList.sublist(0, 5) : contentList;
+      contentListMovie = contentListMovie.length > 5 ? contentListMovie.sublist(0, 5) : contentListMovie;
 
       isLoading = false;
       setState(() {});

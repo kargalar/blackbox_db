@@ -22,7 +22,11 @@ class _ContentListState extends State<ContentList> {
   @override
   Widget build(BuildContext context) {
     return widget.contentList.isEmpty
-        ? const Center(child: Text("Empty"))
+        ? SizedBox(
+            width: 0.4.sw,
+            height: 150,
+            child: Center(child: Text("Empty")),
+          )
         : Align(
             alignment: Alignment.topCenter,
             child: SizedBox(

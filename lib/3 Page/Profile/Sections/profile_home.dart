@@ -45,7 +45,7 @@ class _ProfileHomeState extends State<ProfileHome> {
                   Text("Son Aktiviteler", style: TextStyle(fontSize: 20)),
                   ContentList(
                     contentList: contentList,
-                    showcaseType: ShowcaseTypeEnum.TREND,
+                    showcaseType: ShowcaseTypeEnum.FLAT,
                   ),
                 ],
               ),
