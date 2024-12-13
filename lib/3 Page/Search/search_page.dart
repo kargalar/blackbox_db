@@ -43,33 +43,35 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                 ),
               )
-            : Align(
-                alignment: Alignment.topCenter,
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: SizedBox(
-                    width: 0.4.sw,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: contentList.length,
-                      itemBuilder: (context, index) {
-                        return SearchItem(
-                          searchMovieModel: SearchContentModel(
-                            contentId: contentList[index].contentId,
-                            contentPosterPath: contentList[index].contentPosterPath,
-                            contentType: contentList[index].contentType,
-                            isFavorite: contentList[index].isFavorite,
-                            isConsumed: contentList[index].isConsumed,
-                            rating: contentList[index].rating,
-                            isReviewed: contentList[index].isReviewed,
-                            isConsumeLater: contentList[index].isConsumeLater,
-                            title: contentList[index].title,
-                            description: contentList[index].description,
-                            year: contentList[index].year,
-                            originalTitle: contentList[index].originalTitle,
-                          ),
-                        );
-                      },
+            : SingleChildScrollView(
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: SizedBox(
+                      width: 0.4.sw,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: contentList.length,
+                        itemBuilder: (context, index) {
+                          return SearchItem(
+                            searchMovieModel: SearchContentModel(
+                              contentId: contentList[index].contentId,
+                              contentPosterPath: contentList[index].contentPosterPath,
+                              contentType: contentList[index].contentType,
+                              isFavorite: contentList[index].isFavorite,
+                              isConsumed: contentList[index].isConsumed,
+                              rating: contentList[index].rating,
+                              isReviewed: contentList[index].isReviewed,
+                              isConsumeLater: contentList[index].isConsumeLater,
+                              title: contentList[index].title,
+                              description: contentList[index].description,
+                              year: contentList[index].year,
+                              originalTitle: contentList[index].originalTitle,
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),

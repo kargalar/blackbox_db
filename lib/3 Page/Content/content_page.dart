@@ -1,5 +1,6 @@
 import 'package:blackbox_db/3%20Page/Content/Widget/content_cover.dart';
 import 'package:blackbox_db/3%20Page/Content/Widget/content_informaton.dart';
+import 'package:blackbox_db/3%20Page/Content/Widget/Review/content_reviews.dart';
 import 'package:blackbox_db/3%20Page/Content/Widget/content_user_action.dart';
 import 'package:blackbox_db/5%20Service/server_manager.dart';
 import 'package:blackbox_db/6%20Provider/content_page_provider.dart';
@@ -41,14 +42,23 @@ class _ContentPageState extends State<ContentPage> {
         ? const Center(child: CircularProgressIndicator())
         : provider.contentModel == null
             ? const Center(child: Text("Content not found"))
-            : const Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ContentCover(),
-                  ContentInformation(),
-                  ContentUserAction(),
-                ],
+            : SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ContentCover(),
+                        ContentInformation(),
+                        ContentUserAction(),
+                      ],
+                    ),
+                    SizedBox(height: 40),
+                    ContentReviews(contentId: provider.contentModel!.id),
+                    SizedBox(height: 100),
+                  ],
+                ),
               );
   }
 

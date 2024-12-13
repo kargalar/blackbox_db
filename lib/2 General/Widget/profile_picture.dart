@@ -38,6 +38,14 @@ class ProfileImage extends StatelessWidget {
           imageUrl: imageUrl,
           size: 80,
         );
+  const ProfileImage.review({
+    Key? key,
+    required String imageUrl,
+  }) : this(
+          key: key,
+          imageUrl: imageUrl,
+          size: 60,
+        );
 
   @override
   Widget build(BuildContext context) {

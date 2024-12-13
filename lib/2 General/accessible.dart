@@ -14,3 +14,12 @@ UserModel user = UserModel(
   bio: "lrem ipstum ar ames litum",
   createdAt: DateTime.now(),
 );
+
+// UserModel user = UserModel(
+//   id: 2,
+//   username: "Karamazov",
+//   email: "kramazoval@gmail.com",
+//   password: "asdwadqwfqwf",
+//   bio: "Babam iyi adamdı ama hayat ona kötü davarandı.",
+//   createdAt: DateTime.now().subtract(const Duration(days: 20)),
+// );

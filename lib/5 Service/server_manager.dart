@@ -4,6 +4,7 @@ import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:blackbox_db/8%20Model/content_log_model.dart';
 import 'package:blackbox_db/8%20Model/content_model.dart';
 import 'package:blackbox_db/8%20Model/genre_model.dart';
+import 'package:blackbox_db/8%20Model/review_model.dart';
 import 'package:blackbox_db/8%20Model/showcase_movie_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -205,6 +206,22 @@ class ServerManager {
     checkRequest(response);
 
     return ShowcaseContentModel.fromJson(response.data);
+  }
+
+  // get content reviews
+  Future<List<ReviewModel>> getContentReviews({
+    required int contentId,
+  }) async {
+    var response = await dio.get(
+      "$_baseUrl/content_reviews",
+      queryParameters: {
+        'content_id': contentId,
+      },
+    );
+
+    checkRequest(response);
+
+    return (response.data as List).map((e) => ReviewModel.fromJson(e)).toList();
   }
 
   // get friend last activites

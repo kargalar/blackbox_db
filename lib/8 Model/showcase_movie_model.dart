@@ -38,12 +38,12 @@ class ShowcaseContentModel {
       contentId: json['content_id'],
       posterPath: json['poster_path'],
       contentType: ContentTypeEnum.values[json['content_type_id'] - 1],
-      isFavorite: json['is_favorite'],
+      isFavorite: json['is_favorite'] ?? false,
       isConsumed: json['is_consumed'],
       rating: json['rating'] != null ? double.parse(json['rating']) : null,
       // TODO: burad aisreviewed yerine direkt review text gelse logmodel gerekmez sanırım. bu yeterli olur.
       isReviewed: json['is_reviewed'],
-      isConsumeLater: json['is_consume_later'],
+      isConsumeLater: json['is_consume_later'] ?? false,
       // TODO: bunu kaldır onun yerine yukarıya review falana ne gerekiyorsa ekle ???
       contentLog: json['userContentLogs'] != null ? ContentLogModel.fromJson(json['userContentLogs']) : null,
     );
