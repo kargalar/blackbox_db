@@ -1,6 +1,7 @@
 import 'package:blackbox_db/2%20General/accessible.dart';
 import 'package:blackbox_db/3%20Page/Explore/Widget/content_list.dart';
 import 'package:blackbox_db/5%20Service/server_manager.dart';
+import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:blackbox_db/7%20Enum/showcase_type_enum.dart';
 import 'package:blackbox_db/8%20Model/showcase_movie_model.dart';
 import 'package:flutter/material.dart';
@@ -81,7 +82,9 @@ class _HomePageState extends State<HomePage> {
         isLoading = true;
         setState(() {});
       }
-      final response = await ServerManager().getDiscoverMovie(
+
+      final response = await ServerManager().getUserContents(
+        contentType: ContentTypeEnum.MOVIE,
         userId: user.id,
       );
 
