@@ -7,10 +7,10 @@ class ContentLogModel {
     this.id,
     required this.userID,
     required this.contentID,
-    required this.date,
+    this.date,
     this.contentStatus,
     this.rating,
-    this.isFavorite = false,
+    this.isFavorite,
     this.isConsumeLater = false,
     this.review,
     this.contentTitle,
@@ -21,14 +21,14 @@ class ContentLogModel {
   final int userID;
   final int contentID;
   ContentStatusEnum? contentStatus;
-  final DateTime date;
+  final DateTime? date;
   final String? contentTitle;
   final ContentTypeEnum contentType;
 
   double? rating;
-  bool isFavorite;
+  bool? isFavorite;
   String? review;
-  bool isConsumeLater;
+  bool? isConsumeLater;
 
   // TODO:
   factory ContentLogModel.fromJson(Map<String, dynamic> json) {
@@ -59,7 +59,6 @@ class ContentLogModel {
       'id': id,
       'user_id': userID,
       'content_id': contentID,
-      'date': date.toIso8601String(),
       'content_status_id': contentStatus!.index + 1,
       'rating': rating,
       'is_favorite': isFavorite,

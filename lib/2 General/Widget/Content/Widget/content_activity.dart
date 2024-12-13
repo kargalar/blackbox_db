@@ -68,7 +68,7 @@ class ContentActivity extends StatelessWidget {
                   Text(
                     // "13 Oct",
 // date show like "24 Oct"
-                    DateFormat.MMMd().format(userLog.date),
+                    DateFormat.MMMd().format(userLog.date!),
                     style: const TextStyle(
                       color: AppColors.white,
                       fontSize: 15,
@@ -106,7 +106,7 @@ class ContentActivity extends StatelessWidget {
                     ),
 
                   // if isAddWatchlist add to watchlist
-                  if (userLog.isConsumeLater)
+                  if (userLog.isConsumeLater!)
                     const Icon(
                       Icons.watch_later,
                       color: AppColors.white,

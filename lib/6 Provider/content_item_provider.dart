@@ -15,7 +15,7 @@ class ContentItemProvider with ChangeNotifier {
     showcaseContentModel.isConsumed = !showcaseContentModel.isConsumed;
 
     await ContentPageProvider().contentUserAction(
-      movieId: showcaseContentModel.contentId,
+      contentId: showcaseContentModel.contentId,
       contentType: showcaseContentModel.contentType,
       contentStatus: showcaseContentModel.isConsumed ? ContentStatusEnum.CONSUMED : null,
       rating: showcaseContentModel.rating,
@@ -31,7 +31,7 @@ class ContentItemProvider with ChangeNotifier {
     showcaseContentModel.isFavorite = !showcaseContentModel.isFavorite;
 
     await ContentPageProvider().contentUserAction(
-      movieId: showcaseContentModel.contentId,
+      contentId: showcaseContentModel.contentId,
       contentType: showcaseContentModel.contentType,
       contentStatus: showcaseContentModel.isConsumed ? ContentStatusEnum.CONSUMED : null,
       rating: showcaseContentModel.rating,
@@ -47,7 +47,7 @@ class ContentItemProvider with ChangeNotifier {
     showcaseContentModel.isConsumeLater = !showcaseContentModel.isConsumeLater;
 
     await ContentPageProvider().contentUserAction(
-      movieId: showcaseContentModel.contentId,
+      contentId: showcaseContentModel.contentId,
       contentType: showcaseContentModel.contentType,
       contentStatus: showcaseContentModel.isConsumed ? ContentStatusEnum.CONSUMED : null,
       rating: showcaseContentModel.rating,

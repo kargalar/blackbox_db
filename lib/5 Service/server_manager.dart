@@ -146,6 +146,7 @@ class ServerManager {
     return {
       'contentList': contentList,
       'totalPages': 50,
+      // TODO:
       // 'totalPages': totalPages,
     };
   }

@@ -20,40 +20,42 @@ class ContentPageProvider with ChangeNotifier {
   // ? contentId null ise contentPage de demek
 
   Future<void> contentUserAction({
-    int? movieId,
+    int? contentId,
     required ContentTypeEnum contentType,
-    required ContentStatusEnum? contentStatus,
-    required double? rating,
-    required bool isFavorite,
-    required bool isConsumeLater,
+    ContentStatusEnum? contentStatus,
+    double? rating,
+    bool? isFavorite,
+    bool? isConsumeLater,
     String? review,
   }) async {
     final ContentLogModel userLog = ContentLogModel(
-      // TODO: id ve diğerleri. böyle ayrı ayrı olmak yerine 1 tane fonksiyon oluşturayım orada verilenlere göre mi loglayayım. ya da sadece log u dışarı çıkarayım.
       userID: user.id,
-      // TODO: date postgresql tarafında yapılabilir.
-      date: DateTime.now(),
-      contentID: movieId ?? contentModel!.id,
+      contentID: contentId ?? contentModel!.id,
       contentType: contentType,
+      contentStatus: contentStatus,
+      rating: rating,
+      isFavorite: isFavorite,
+      isConsumeLater: isConsumeLater,
       review: review,
     );
 
-    if (movieId == null) {
-      contentModel!.contentStatus = contentStatus;
-      contentModel!.rating = rating;
-      contentModel!.isFavorite = isFavorite;
-      contentModel!.isConsumeLater = isConsumeLater;
-    }
-    userLog.contentStatus = contentStatus;
-    userLog.rating = rating;
-    userLog.isFavorite = isFavorite;
-    userLog.isConsumeLater = isConsumeLater;
-    userLog.review = review;
+    // eğer conentpage dışında gönderirse sanırım
+    if (contentId == null) {
+      if (contentStatus != null) {
+        contentModel!.contentStatus = contentStatus;
+      } else if (rating != null) {
+        contentModel!.rating = rating;
+      } else if (isFavorite != null) {
+        contentModel!.isFavorite = isFavorite;
+      } else if (isConsumeLater != null) {
+        contentModel!.isConsumeLater = isConsumeLater;
+      }
 
-    await ServerManager().contentUserAction(contentLogModel: userLog);
+      await ServerManager().contentUserAction(contentLogModel: userLog);
 
-    if (movieId == null) {
-      notifyListeners();
+      if (contentId == null) {
+        notifyListeners();
+      }
     }
   }
 }
