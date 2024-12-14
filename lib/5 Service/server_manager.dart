@@ -20,7 +20,7 @@ class ServerManager {
   }
 
   // static const String _baseUrl = 'http://localhost:3000';
-  static const String _baseUrl = 'https://blackboxdb-d42413898246.herokuapp.com/';
+  static const String _baseUrl = 'https://blackboxdb-d42413898246.herokuapp.com';
 
   var dio = Dio();
 
