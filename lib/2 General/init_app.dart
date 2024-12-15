@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,7 +23,7 @@ Future<void> initApp(List<String> args) async {
 
   // block multiple instances app
   // is windows
-  if (Platform.isWindows) {
+  if (!kIsWeb) {
     await WindowsSingleInstance.ensureSingleInstance(args, "multiple_timer", onSecondWindow: (args) {
       debugPrint(args.toString());
     });
