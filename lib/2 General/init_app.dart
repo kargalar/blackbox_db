@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,7 +23,8 @@ Future<void> initApp(List<String> args) async {
   // isFirstLogin = prefs.getBool('isFirstLogin') ?? true;
 
   // block multiple instances app
-  if (!kIsWeb) {
+  // is windows
+  if (Platform.isWindows) {
     await WindowsSingleInstance.ensureSingleInstance(args, "multiple_timer", onSecondWindow: (args) {
       debugPrint(args.toString());
     });
