@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:blackbox_db/1%20Core/helper.dart';
@@ -21,26 +22,28 @@ Future<void> initApp(List<String> args) async {
   // isFirstLogin = prefs.getBool('isFirstLogin') ?? true;
 
   // block multiple instances app
-  await WindowsSingleInstance.ensureSingleInstance(args, "multiple_timer", onSecondWindow: (args) {
-    debugPrint(args.toString());
-  });
+  if (!kIsWeb) {
+    await WindowsSingleInstance.ensureSingleInstance(args, "multiple_timer", onSecondWindow: (args) {
+      debugPrint(args.toString());
+    });
 
-  // Must add this line.
-  await windowManager.ensureInitialized();
+    // Must add this line.
+    await windowManager.ensureInitialized();
 
-  WindowOptions windowOptions = WindowOptions(
-    size: Size(1920 * 0.8, 1080 * 0.8),
-    maximumSize: Size(9999, 9999),
-    minimumSize: Size(1200, 800),
-    // center: true,
-    backgroundColor: Colors.transparent,
-    // skipTaskbar: false,
-    // titleBarStyle: TitleBarStyle.hidden,
-  );
-  windowManager.waitUntilReadyToShow(windowOptions, () async {
-    await windowManager.show();
-    await windowManager.focus();
-  });
+    WindowOptions windowOptions = WindowOptions(
+      size: Size(1920 * 0.8, 1080 * 0.8),
+      maximumSize: Size(9999, 9999),
+      minimumSize: Size(1200, 800),
+      // center: true,
+      backgroundColor: Colors.transparent,
+      // skipTaskbar: false,
+      // titleBarStyle: TitleBarStyle.hidden,
+    );
+    windowManager.waitUntilReadyToShow(windowOptions, () async {
+      await windowManager.show();
+      await windowManager.focus();
+    });
+  }
 
   // Custom Error
   ErrorWidget.builder = (FlutterErrorDetails details) {
