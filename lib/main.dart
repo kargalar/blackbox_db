@@ -39,7 +39,7 @@ class Main extends StatelessWidget {
       splitScreenMode: true,
       builder: (context, child) {
         return GetMaterialApp(
-          title: 'Facelog',
+          title: 'BlackBox DB',
           theme: AppColors().appTheme,
           debugShowCheckedModeBanner: false,
           showPerformanceOverlay: false,
