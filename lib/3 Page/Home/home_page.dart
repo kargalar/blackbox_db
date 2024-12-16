@@ -21,7 +21,8 @@ class _HomePageState extends State<HomePage> {
   List<ShowcaseContentModel> contentListGame = [];
   List<ShowcaseContentModel> trendMovieList = [];
   List<ShowcaseContentModel> trendGameList = [];
-  List<ShowcaseContentModel> friendsLastActivities = [];
+  List<ShowcaseContentModel> friendsLastMovieActivities = [];
+  List<ShowcaseContentModel> friendsLastGameActivities = [];
 
   @override
   void initState() {
@@ -59,9 +60,14 @@ class _HomePageState extends State<HomePage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Arkaşlarının Aktiviteleri", style: TextStyle(fontSize: 20)),
+                    Text("Arkaşlarının Film Aktiviteleri", style: TextStyle(fontSize: 20)),
                     ContentList(
-                      contentList: friendsLastActivities,
+                      contentList: friendsLastMovieActivities,
+                      showcaseType: ShowcaseTypeEnum.ACTIVITY,
+                    ),
+                    Text("Arkaşlarının Film Aktiviteleri", style: TextStyle(fontSize: 20)),
+                    ContentList(
+                      contentList: friendsLastGameActivities,
                       showcaseType: ShowcaseTypeEnum.ACTIVITY,
                     ),
                     Text("Önerilen Filmler", style: TextStyle(fontSize: 20)),
@@ -96,12 +102,6 @@ class _HomePageState extends State<HomePage> {
       );
       recommendedMovieList = response1['contentList'];
 
-      final response2 = await ServerManager().getUserContents(
-        contentType: ContentTypeEnum.GAME,
-        userId: user.id,
-      );
-      contentListGame = response2['contentList'];
-
       final response3 = await ServerManager().getTrendContents(
         contentType: ContentTypeEnum.MOVIE,
       );
@@ -112,8 +112,11 @@ class _HomePageState extends State<HomePage> {
       );
       trendGameList = response4['contentList'];
 
-      final response5 = await ServerManager().getFriendActivities();
-      friendsLastActivities = response5['contentList'];
+      final response5 = await ServerManager().getFriendActivities(contentType: ContentTypeEnum.MOVIE);
+      friendsLastMovieActivities = response5['contentList'];
+
+      final response6 = await ServerManager().getFriendActivities(contentType: ContentTypeEnum.GAME);
+      friendsLastGameActivities = response6['contentList'];
 
       isLoading = false;
       setState(() {});

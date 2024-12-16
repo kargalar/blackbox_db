@@ -260,10 +260,13 @@ class ServerManager {
   }
 
   // get friend last activites
-  Future getFriendActivities() async {
+  Future getFriendActivities({
+    required ContentTypeEnum contentType,
+  }) async {
     var response = await dio.get(
       "$_baseUrl/friendsActivity",
       queryParameters: {
+        'content_type_id': contentType.index + 1,
         'user_id': user.id,
       },
     );
