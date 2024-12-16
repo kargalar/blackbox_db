@@ -42,11 +42,12 @@ class _ProfileHomeState extends State<ProfileHome> {
                     contentList: contentList,
                     showcaseType: ShowcaseTypeEnum.TREND,
                   ),
-                  Text("Son Aktiviteler", style: TextStyle(fontSize: 20)),
-                  ContentList(
-                    contentList: contentList,
-                    showcaseType: ShowcaseTypeEnum.FLAT,
-                  ),
+                  // TODO: önce istek at
+                  // Text("Son Aktiviteler", style: TextStyle(fontSize: 20)),
+                  // ContentList(
+                  //   contentList: contentList,
+                  //   showcaseType: ShowcaseTypeEnum.FLAT,
+                  // ),
                 ],
               ),
               SizedBox(width: 60),
@@ -56,7 +57,7 @@ class _ProfileHomeState extends State<ProfileHome> {
                   Text("Öne Çıkarılanlar", style: TextStyle(fontSize: 20)),
                   ContentList(
                     contentList: contentList,
-                    showcaseType: ShowcaseTypeEnum.ACTIVITY,
+                    showcaseType: ShowcaseTypeEnum.FLAT,
                   ),
                 ],
               ),

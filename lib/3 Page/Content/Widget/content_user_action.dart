@@ -206,7 +206,6 @@ class ContentUserAction extends StatelessWidget {
                   contentStatus: contentPageProvider.contentModel!.contentStatus,
                   rating: contentPageProvider.contentModel!.rating,
                   isFavorite: contentPageProvider.contentModel!.isFavorite,
-                  contentTitle: contentPageProvider.contentModel!.title,
                   isConsumeLater: contentPageProvider.contentModel!.isConsumeLater,
                 );
                 // add log
@@ -223,10 +222,11 @@ class ContentUserAction extends StatelessWidget {
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text(log.contentTitle!),
-                              const SizedBox(width: 10),
-                              Text("${log.contentStatus}"),
-                              const SizedBox(width: 10),
+                              // TODO:
+                              // Text(log.contentTitle!),
+                              // const SizedBox(width: 10),
+                              // Text("${log.contentStatus}"),
+                              // const SizedBox(width: 10),
                               Text("${log.rating}"),
                               const SizedBox(width: 10),
                               Text("${log.isFavorite}"),

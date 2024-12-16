@@ -39,8 +39,6 @@ class SearchItem extends StatelessWidget {
               isFavorite: searchMovieModel.isFavorite,
               isConsumed: searchMovieModel.isConsumed,
               isConsumeLater: searchMovieModel.isConsumeLater,
-              rating: searchMovieModel.rating,
-              isReviewed: searchMovieModel.isReviewed,
             ),
             showcaseType: ShowcaseTypeEnum.FLAT,
           ),

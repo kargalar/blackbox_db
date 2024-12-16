@@ -18,16 +18,17 @@ class UserContentActivityBar extends StatelessWidget {
         width: 150,
         child: Row(
           children: [
-            RatingBarIndicator(
-              rating: showcaseContentModel.rating ?? 0,
-              itemSize: 15,
-              itemCount: 5,
-              unratedColor: AppColors.transparent,
-              itemBuilder: (context, _) => Icon(
-                Icons.star,
-                color: AppColors.main,
+            if (showcaseContentModel.contentLog?.rating != null)
+              RatingBarIndicator(
+                rating: showcaseContentModel.contentLog!.rating!,
+                itemSize: 15,
+                itemCount: 5,
+                unratedColor: AppColors.transparent,
+                itemBuilder: (context, _) => Icon(
+                  Icons.star,
+                  color: AppColors.main,
+                ),
               ),
-            ),
             const Spacer(),
             if (showcaseContentModel.isFavorite)
               const Icon(
@@ -36,7 +37,7 @@ class UserContentActivityBar extends StatelessWidget {
                 size: 15,
               ),
             const SizedBox(width: 5),
-            if (showcaseContentModel.isReviewed)
+            if (showcaseContentModel.contentLog?.review != null)
               const Icon(
                 Icons.comment,
                 color: AppColors.white,

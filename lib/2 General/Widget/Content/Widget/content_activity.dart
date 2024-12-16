@@ -12,7 +12,7 @@ class ContentActivity extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    late final showcaseContentModel = context.read<ContentItemProvider>().showcaseContentModel;
+    late final contentLog = context.read<ContentItemProvider>().showcaseContentModel.contentLog;
 
     return Positioned(
       bottom: 0,
@@ -24,14 +24,14 @@ class ContentActivity extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (showcaseContentModel.reviewText != null)
+              if (contentLog!.review != null)
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 2,
                     vertical: 4,
                   ),
                   child: Text(
-                    showcaseContentModel.reviewText!,
+                    contentLog.review!,
                     maxLines: 4,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -45,13 +45,13 @@ class ContentActivity extends StatelessWidget {
                     // TODO:
                     // imageUrl: "asd/cover/${userLog.userID}",
                     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/220px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg",
-                    userID: showcaseContentModel.userID!,
+                    userID: contentLog.userID,
                   ),
                   const SizedBox(
                     width: 5,
                   ),
                   Text(
-                    DateFormat.MMMd().format(showcaseContentModel.date!),
+                    DateFormat.MMMd().format(contentLog.date!),
                     style: const TextStyle(
                       color: AppColors.white,
                       fontSize: 13,
@@ -59,11 +59,11 @@ class ContentActivity extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                  if (showcaseContentModel.rating != null && showcaseContentModel.rating! != 0)
+                  if (contentLog.rating != null && contentLog.rating! != 0)
                     Row(
                       children: [
                         Text(
-                          showcaseContentModel.rating!.toStringAsFixed(showcaseContentModel.rating! % 1 == 0 ? 0 : 1),
+                          contentLog.rating!.toStringAsFixed(contentLog.rating! % 1 == 0 ? 0 : 1),
                           style: const TextStyle(
                             color: AppColors.white,
                             fontSize: 13,
@@ -79,7 +79,7 @@ class ContentActivity extends StatelessWidget {
                       ],
                     ),
                   SizedBox(width: 4),
-                  if (showcaseContentModel.isFavorite)
+                  if (contentLog.isFavorite != null)
                     const Icon(
                       Icons.favorite,
                       color: AppColors.red,

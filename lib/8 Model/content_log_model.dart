@@ -1,7 +1,7 @@
+// TODO: BUNU NEREDE KULLANIYORUM
 import 'package:blackbox_db/7%20Enum/content_status_enum.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 
-// TODO: BUNU NEREDE KULLANIYORUM
 class ContentLogModel {
   ContentLogModel({
     this.id,
@@ -13,7 +13,7 @@ class ContentLogModel {
     this.isFavorite,
     this.isConsumeLater = false,
     this.review,
-    this.contentTitle,
+    // this.contentTitle,
     required this.contentType,
   });
 
@@ -22,13 +22,15 @@ class ContentLogModel {
   final int contentID;
   ContentStatusEnum? contentStatus;
   final DateTime? date;
-  final String? contentTitle;
+  // final String? contentTitle;
   final ContentTypeEnum contentType;
 
   double? rating;
   bool? isFavorite;
   String? review;
   bool? isConsumeLater;
+
+  //   is_consumed: row.is_consumed,
 
   // TODO:
   factory ContentLogModel.fromJson(Map<String, dynamic> json) {
@@ -37,13 +39,11 @@ class ContentLogModel {
       userID: json['user_id'],
       contentID: json['content_id'],
       date: DateTime.parse(json['date']),
-      contentStatus: ContentStatusEnum.values[json['content_status_id'] - 1],
-      rating: double.parse(json['rating']),
+      contentStatus: json['content_status_id'] == null ? null : ContentStatusEnum.values[json['content_status_id'] - 1],
+      rating: json['rating'] != null ? double.parse(json['rating']) : null,
       isFavorite: json['is_favorite'],
       isConsumeLater: json['is_consume_later'],
-      review: json['review_id'],
-      // TODO:
-      // review: json['review'],
+      review: json['review_text'],
       // contentTitle: json['movie_title'],
       // contentType: ContentTypeEnum.values[json['content_type_id'] - 1],
       contentType: ContentTypeEnum.MOVIE,
@@ -60,7 +60,7 @@ class ContentLogModel {
       'user_id': userID,
       'content_id': contentID,
       'content_status_id': contentStatus!.index + 1,
-      'rating': rating,
+      'review_text': rating,
       'is_favorite': isFavorite,
       'is_consume_later': isConsumeLater,
       'review': review,

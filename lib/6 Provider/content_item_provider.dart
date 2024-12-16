@@ -18,7 +18,7 @@ class ContentItemProvider with ChangeNotifier {
       contentId: showcaseContentModel.contentId,
       contentType: showcaseContentModel.contentType,
       contentStatus: showcaseContentModel.isConsumed ? ContentStatusEnum.CONSUMED : null,
-      rating: showcaseContentModel.rating,
+      rating: showcaseContentModel.contentLog!.rating,
       isFavorite: showcaseContentModel.isFavorite,
       isConsumeLater: showcaseContentModel.isConsumeLater,
     );
@@ -34,7 +34,7 @@ class ContentItemProvider with ChangeNotifier {
       contentId: showcaseContentModel.contentId,
       contentType: showcaseContentModel.contentType,
       contentStatus: showcaseContentModel.isConsumed ? ContentStatusEnum.CONSUMED : null,
-      rating: showcaseContentModel.rating,
+      rating: showcaseContentModel.contentLog!.rating,
       isFavorite: showcaseContentModel.isFavorite,
       isConsumeLater: showcaseContentModel.isConsumeLater,
     );
@@ -50,7 +50,7 @@ class ContentItemProvider with ChangeNotifier {
       contentId: showcaseContentModel.contentId,
       contentType: showcaseContentModel.contentType,
       contentStatus: showcaseContentModel.isConsumed ? ContentStatusEnum.CONSUMED : null,
-      rating: showcaseContentModel.rating,
+      rating: showcaseContentModel.contentLog!.rating,
       isFavorite: showcaseContentModel.isFavorite,
       isConsumeLater: showcaseContentModel.isConsumeLater,
     );
