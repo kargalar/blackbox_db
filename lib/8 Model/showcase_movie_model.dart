@@ -11,6 +11,7 @@ class ShowcaseContentModel {
     required this.isConsumeLater,
     required this.rating,
     required this.isReviewed,
+    this.reviewText,
     this.contentLog,
     this.trendIndex,
   });
@@ -26,7 +27,9 @@ class ShowcaseContentModel {
   //
   // final bool isFavorite;
   double? rating;
+
   bool isReviewed;
+  String? reviewText;
   // TODO: yukarıdaki üçünü kapsayan bir model yapısı movieLog gibi
   //
   final ContentLogModel? contentLog;
@@ -41,8 +44,10 @@ class ShowcaseContentModel {
       isFavorite: json['is_favorite'] ?? false,
       isConsumed: json['is_consumed'],
       rating: json['rating'] != null ? double.parse(json['rating']) : null,
-      // TODO: burad aisreviewed yerine direkt review text gelse logmodel gerekmez sanırım. bu yeterli olur.
-      isReviewed: json['is_reviewed'],
+      // !!!!!!!
+      // TODO: burad aisreviewed yerine direkt review text gelse logmodel gerekmez sanırım. bu yeterli olur. !!!!!!!
+      isReviewed: json['is_reviewed'] ?? false,
+      reviewText: json['review_text'],
       isConsumeLater: json['is_consume_later'] ?? false,
       // TODO: bunu kaldır onun yerine yukarıya review falana ne gerekiyorsa ekle ???
       contentLog: json['userContentLogs'] != null ? ContentLogModel.fromJson(json['userContentLogs']) : null,

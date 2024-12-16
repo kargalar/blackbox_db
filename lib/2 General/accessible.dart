@@ -11,7 +11,7 @@ UserModel user = UserModel(
   username: "kargalar",
   email: "m.islam0422@gmail.com",
   password: "islam0422",
-  bio: "lrem ipstum ar ames litum",
+  bio: "alrem ipstum ar ames litum",
   createdAt: DateTime.now(),
 );
 
