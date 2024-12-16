@@ -40,17 +40,7 @@ class _ContentListState extends State<ContentList> {
                 itemCount: widget.contentList.length,
                 itemBuilder: (context, index) {
                   return ContentItem(
-                    showcaseContentModel: ShowcaseContentModel(
-                      contentId: widget.contentList[index].contentId,
-                      posterPath: widget.contentList[index].posterPath,
-                      contentType: widget.contentList[index].contentType,
-                      isFavorite: widget.contentList[index].isFavorite,
-                      isConsumed: widget.contentList[index].isConsumed,
-                      rating: widget.contentList[index].rating,
-                      isReviewed: widget.contentList[index].isReviewed,
-                      isConsumeLater: widget.contentList[index].isConsumeLater,
-                      trendIndex: index,
-                    ),
+                    showcaseContentModel: widget.contentList[index]..trendIndex = index,
                     showcaseType: widget.showcaseType,
                   );
                 },

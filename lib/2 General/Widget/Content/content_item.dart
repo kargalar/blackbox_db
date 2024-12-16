@@ -1,6 +1,6 @@
 import 'package:blackbox_db/2%20General/Widget/Content/Widget/content_activity.dart';
 import 'package:blackbox_db/2%20General/Widget/Content/Widget/content_hover.dart';
-import 'package:blackbox_db/2%20General/Widget/Content/Widget/content_list.dart';
+import 'package:blackbox_db/2%20General/Widget/Content/Widget/content_activity_bar.dart';
 import 'package:blackbox_db/2%20General/Widget/Content/Widget/content_poster.dart';
 import 'package:blackbox_db/2%20General/Widget/Content/Widget/content_trend.dart';
 import 'package:blackbox_db/6%20Provider/content_item_provider.dart';
@@ -73,16 +73,10 @@ class _ContentItemState extends State<ContentItem> {
                     ),
                     if (!onHover && widget.showcaseType == ShowcaseTypeEnum.ACTIVITY) const ContentActivity(),
                     if (onHover) ContentHover(),
-                    if (widget.showcaseType == ShowcaseTypeEnum.TREND) ContentTrend(index: widget.showcaseContentModel.trendIndex! + 1),
+                    if (widget.showcaseType == ShowcaseTypeEnum.TREND) ContentTrend(),
                   ],
                 ),
-                if (widget.showcaseType == ShowcaseTypeEnum.EXPLORE)
-                  UserContentActivityBar(
-                    // TODO: normalde burası giriş yapan kullanıcıya göre değil profili gezilen kullanıcını veya giriş yapan kullanıcıya göre olacak
-                    rating: widget.showcaseContentModel.rating,
-                    isFavorite: widget.showcaseContentModel.isFavorite,
-                    isReviewed: widget.showcaseContentModel.isReviewed,
-                  ),
+                if (widget.showcaseType == ShowcaseTypeEnum.EXPLORE) UserContentActivityBar(),
               ],
             ),
           ),

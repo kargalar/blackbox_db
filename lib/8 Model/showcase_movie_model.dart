@@ -1,8 +1,8 @@
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
-import 'package:blackbox_db/8%20Model/content_log_model.dart';
 
 class ShowcaseContentModel {
   ShowcaseContentModel({
+    this.userID,
     required this.contentId,
     required this.posterPath,
     required this.contentType,
@@ -12,10 +12,12 @@ class ShowcaseContentModel {
     required this.rating,
     required this.isReviewed,
     this.reviewText,
-    this.contentLog,
+    // this.contentLog,
     this.trendIndex,
+    this.date,
   });
 
+  final int? userID;
   final int contentId;
   final String? posterPath;
   final ContentTypeEnum contentType;
@@ -30,14 +32,17 @@ class ShowcaseContentModel {
 
   bool isReviewed;
   String? reviewText;
+
+  DateTime? date;
   // TODO: yukarıdaki üçünü kapsayan bir model yapısı movieLog gibi
   //
-  final ContentLogModel? contentLog;
+  // final ContentLogModel? contentLog;
 
-  final int? trendIndex;
+  int? trendIndex;
 
   factory ShowcaseContentModel.fromJson(Map<String, dynamic> json) {
     return ShowcaseContentModel(
+      userID: json['user_id'],
       contentId: json['content_id'],
       posterPath: json['poster_path'],
       contentType: ContentTypeEnum.values[json['content_type_id'] - 1],
@@ -48,9 +53,10 @@ class ShowcaseContentModel {
       // TODO: burad aisreviewed yerine direkt review text gelse logmodel gerekmez sanırım. bu yeterli olur. !!!!!!!
       isReviewed: json['is_reviewed'] ?? false,
       reviewText: json['review_text'],
+      date: json['date'] != null ? DateTime.parse(json['date']) : null,
       isConsumeLater: json['is_consume_later'] ?? false,
       // TODO: bunu kaldır onun yerine yukarıya review falana ne gerekiyorsa ekle ???
-      contentLog: json['userContentLogs'] != null ? ContentLogModel.fromJson(json['userContentLogs']) : null,
+      // contentLog: json['userContentLogs'] != null ? ContentLogModel.fromJson(json['userContentLogs']) : null,
     );
   }
 

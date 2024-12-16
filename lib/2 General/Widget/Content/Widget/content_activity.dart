@@ -1,11 +1,9 @@
 import 'package:blackbox_db/2%20General/Widget/profile_picture.dart';
-import 'package:blackbox_db/2%20General/accessible.dart';
 import 'package:blackbox_db/2%20General/app_colors.dart';
-import 'package:blackbox_db/7%20Enum/content_status_enum.dart';
-import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
-import 'package:blackbox_db/8%20Model/content_log_model.dart';
-import 'package:intl/intl.dart';
+import 'package:blackbox_db/6%20Provider/content_item_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class ContentActivity extends StatelessWidget {
   const ContentActivity({
@@ -14,20 +12,7 @@ class ContentActivity extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: backendden gelecek
-    final ContentLogModel userLog = ContentLogModel(
-      id: 1,
-      userID: user.id,
-      date: DateTime.now(),
-      contentID: 1,
-      contentType: ContentTypeEnum.MOVIE,
-      contentStatus: ContentStatusEnum.CONSUMED,
-      rating: 3.5,
-      isFavorite: false,
-      isConsumeLater: false,
-      contentTitle: "The Road",
-      review: "A chaotic family is on a road trip across a rugged landscape. In the back seat, Dad has a broken leg, Mom tries to laugh when she’s not holding back tears, and the youngest keeps",
-    );
+    late final showcaseContentModel = context.read<ContentItemProvider>().showcaseContentModel;
 
     return Positioned(
       bottom: 0,
@@ -38,38 +23,34 @@ class ContentActivity extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 5),
           child: Column(
             children: [
-              // if isReview review
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 2,
-                  vertical: 4,
-                ),
-                child: Text(
-                  userLog.review!,
-                  maxLines: 4,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 10,
+              if (showcaseContentModel.reviewText != null)
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 2,
+                    vertical: 4,
+                  ),
+                  child: Text(
+                    showcaseContentModel.reviewText!,
+                    maxLines: 4,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 10,
+                    ),
                   ),
                 ),
-              ),
               Row(
                 children: [
-                  // profile picture
                   ProfilePicture.content(
                     // TODO:
                     // imageUrl: "asd/cover/${userLog.userID}",
                     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/220px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg",
-                    userID: userLog.userID,
+                    userID: showcaseContentModel.userID!,
                   ),
                   const SizedBox(
                     width: 5,
                   ),
-                  // date
                   Text(
-                    // "13 Oct",
-// date show like "24 Oct"
-                    DateFormat.MMMd().format(userLog.date!),
+                    DateFormat.MMMd().format(showcaseContentModel.date!),
                     style: const TextStyle(
                       color: AppColors.white,
                       fontSize: 15,
@@ -77,12 +58,11 @@ class ContentActivity extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                  // if isRate
-                  if (userLog.rating != null)
+                  if (showcaseContentModel.rating != null)
                     Row(
                       children: [
                         Text(
-                          userLog.rating.toString(),
+                          showcaseContentModel.rating.toString(),
                           style: const TextStyle(
                             color: AppColors.white,
                             fontSize: 15,
@@ -97,17 +77,13 @@ class ContentActivity extends StatelessWidget {
                         ),
                       ],
                     ),
-
-                  // if isWatch watch (if notRated)
-                  if (userLog.rating == null && userLog.contentStatus == ContentStatusEnum.CONSUMED)
+                  if (showcaseContentModel.rating == null && showcaseContentModel.isConsumed)
                     const Icon(
                       Icons.remove_red_eye,
                       color: AppColors.white,
                       size: 20,
                     ),
-
-                  // if isAddWatchlist add to watchlist
-                  if (userLog.isConsumeLater!)
+                  if (showcaseContentModel.isConsumeLater)
                     const Icon(
                       Icons.watch_later,
                       color: AppColors.white,

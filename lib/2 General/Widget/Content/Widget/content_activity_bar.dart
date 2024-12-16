@@ -1,21 +1,17 @@
 import 'package:blackbox_db/2%20General/app_colors.dart';
+import 'package:blackbox_db/6%20Provider/content_item_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:provider/provider.dart';
 
 class UserContentActivityBar extends StatelessWidget {
   const UserContentActivityBar({
     super.key,
-    required this.rating,
-    required this.isFavorite,
-    required this.isReviewed,
   });
-
-  final double? rating;
-  final bool isFavorite;
-  final bool isReviewed;
 
   @override
   Widget build(BuildContext context) {
+    late final showcaseContentModel = context.read<ContentItemProvider>().showcaseContentModel;
     return Padding(
       padding: const EdgeInsets.only(top: 5),
       child: SizedBox(
@@ -23,7 +19,7 @@ class UserContentActivityBar extends StatelessWidget {
         child: Row(
           children: [
             RatingBarIndicator(
-              rating: rating ?? 0,
+              rating: showcaseContentModel.rating ?? 0,
               itemSize: 15,
               itemCount: 5,
               unratedColor: AppColors.transparent,
@@ -33,14 +29,14 @@ class UserContentActivityBar extends StatelessWidget {
               ),
             ),
             const Spacer(),
-            if (isFavorite)
+            if (showcaseContentModel.isFavorite)
               const Icon(
                 Icons.favorite,
                 color: AppColors.white,
                 size: 15,
               ),
             const SizedBox(width: 5),
-            if (isReviewed)
+            if (showcaseContentModel.isReviewed)
               const Icon(
                 Icons.comment,
                 color: AppColors.white,
