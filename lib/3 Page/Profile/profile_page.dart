@@ -11,7 +11,7 @@ import 'package:blackbox_db/3%20Page/Profile/Widget/user_info.dart';
 import 'package:blackbox_db/6%20Provider/explore_provider.dart';
 import 'package:blackbox_db/6%20Provider/general_provider.dart';
 import 'package:blackbox_db/6%20Provider/profile_provider.dart';
-import 'package:blackbox_db/8%20Model/showcase_movie_model.dart';
+import 'package:blackbox_db/8%20Model/showcase_content_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

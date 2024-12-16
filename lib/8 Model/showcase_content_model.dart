@@ -1,4 +1,5 @@
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
+import 'package:blackbox_db/8%20Model/content_log_model.dart';
 
 class ShowcaseContentModel {
   ShowcaseContentModel({
@@ -12,7 +13,7 @@ class ShowcaseContentModel {
     required this.rating,
     required this.isReviewed,
     this.reviewText,
-    // this.contentLog,
+    this.contentLog,
     this.trendIndex,
     this.date,
   });
@@ -36,7 +37,7 @@ class ShowcaseContentModel {
   DateTime? date;
   // TODO: yukarıdaki üçünü kapsayan bir model yapısı movieLog gibi
   //
-  // final ContentLogModel? contentLog;
+  final ContentLogModel? contentLog;
 
   int? trendIndex;
 

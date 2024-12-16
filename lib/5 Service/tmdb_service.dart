@@ -1,4 +1,4 @@
-import 'package:blackbox_db/8%20Model/search_movie_model.dart';
+import 'package:blackbox_db/8%20Model/search_content_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 

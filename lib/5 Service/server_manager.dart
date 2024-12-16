@@ -6,7 +6,7 @@ import 'package:blackbox_db/8%20Model/content_model.dart';
 import 'package:blackbox_db/8%20Model/genre_model.dart';
 import 'package:blackbox_db/8%20Model/user_review_model.dart';
 import 'package:blackbox_db/8%20Model/review_model.dart';
-import 'package:blackbox_db/8%20Model/showcase_movie_model.dart';
+import 'package:blackbox_db/8%20Model/showcase_content_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
