@@ -20,6 +20,7 @@ class _HomePageState extends State<HomePage> {
   List<ShowcaseContentModel> contentListMovie = [];
   List<ShowcaseContentModel> contentListGame = [];
   List<ShowcaseContentModel> trendMovieList = [];
+  List<ShowcaseContentModel> trendGameList = [];
   List<ShowcaseContentModel> friendsLastActivities = [];
 
   @override
@@ -93,7 +94,6 @@ class _HomePageState extends State<HomePage> {
         contentType: ContentTypeEnum.MOVIE,
         userId: user.id,
       );
-
       contentListMovie = response1['contentList'];
       // sadece ilk 5 i al
       contentListMovie = contentListMovie.length > 5 ? contentListMovie.sublist(0, 5) : contentListMovie;
@@ -102,18 +102,20 @@ class _HomePageState extends State<HomePage> {
         contentType: ContentTypeEnum.GAME,
         userId: user.id,
       );
-
       contentListGame = response2['contentList'];
 
-      final response3 = await ServerManager().getTrendMovies(
+      final response3 = await ServerManager().getTrendContents(
         contentType: ContentTypeEnum.MOVIE,
       );
-
       trendMovieList = response3['contentList'];
 
-      final response4 = await ServerManager().getFriendActivities();
+      final response4 = await ServerManager().getTrendContents(
+        contentType: ContentTypeEnum.GAME,
+      );
+      trendGameList = response4['contentList'];
 
-      friendsLastActivities = response4['contentList'];
+      final response5 = await ServerManager().getFriendActivities();
+      friendsLastActivities = response5['contentList'];
 
       isLoading = false;
       setState(() {});

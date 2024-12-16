@@ -240,11 +240,14 @@ class ServerManager {
     return (response.data as List).map((e) => UserReviewModel.fromJson(e)).toList();
   }
 
-  Future getTrendMovies({
+  Future getTrendContents({
     required ContentTypeEnum contentType,
   }) async {
     var response = await dio.get(
-      "$_baseUrl/trendMovies",
+      "$_baseUrl/getTrendContent",
+      queryParameters: {
+        'content_type_id': contentType.index + 1,
+      },
     );
 
     checkRequest(response);
