@@ -17,11 +17,12 @@ class ContentActivity extends StatelessWidget {
     return Positioned(
       bottom: 0,
       child: Container(
-        width: 150,
+        width: 140,
         color: AppColors.black.withOpacity(0.7),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 5),
+          padding: const EdgeInsets.symmetric(horizontal: 1),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (showcaseContentModel.reviewText != null)
                 Padding(
@@ -34,7 +35,7 @@ class ContentActivity extends StatelessWidget {
                     maxLines: 4,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                      fontSize: 10,
+                      fontSize: 11,
                     ),
                   ),
                 ),
@@ -53,19 +54,19 @@ class ContentActivity extends StatelessWidget {
                     DateFormat.MMMd().format(showcaseContentModel.date!),
                     style: const TextStyle(
                       color: AppColors.white,
-                      fontSize: 15,
+                      fontSize: 13,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const Spacer(),
-                  if (showcaseContentModel.rating != null)
+                  if (showcaseContentModel.rating != null && showcaseContentModel.rating! != 0)
                     Row(
                       children: [
                         Text(
-                          showcaseContentModel.rating.toString(),
+                          showcaseContentModel.rating!.toStringAsFixed(showcaseContentModel.rating! % 1 == 0 ? 0 : 1),
                           style: const TextStyle(
                             color: AppColors.white,
-                            fontSize: 15,
+                            fontSize: 13,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -73,21 +74,16 @@ class ContentActivity extends StatelessWidget {
                         const Icon(
                           Icons.star,
                           color: AppColors.white,
-                          size: 17,
+                          size: 15,
                         ),
                       ],
                     ),
-                  if (showcaseContentModel.rating == null && showcaseContentModel.isConsumed)
+                  SizedBox(width: 4),
+                  if (showcaseContentModel.isFavorite)
                     const Icon(
-                      Icons.remove_red_eye,
-                      color: AppColors.white,
-                      size: 20,
-                    ),
-                  if (showcaseContentModel.isConsumeLater)
-                    const Icon(
-                      Icons.watch_later,
-                      color: AppColors.white,
-                      size: 20,
+                      Icons.favorite,
+                      color: AppColors.red,
+                      size: 15,
                     ),
                 ],
               ),
