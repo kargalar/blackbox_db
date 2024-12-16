@@ -19,6 +19,7 @@ class _HomePageState extends State<HomePage> {
 
   List<ShowcaseContentModel> contentListMovie = [];
   List<ShowcaseContentModel> contentListGame = [];
+  List<ShowcaseContentModel> trendMovieList = [];
 
   @override
   void initState() {
@@ -42,7 +43,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Text("Trend Filmler", style: TextStyle(fontSize: 20)),
                     ContentList(
-                      contentList: contentListMovie,
+                      contentList: trendMovieList,
                       showcaseType: ShowcaseTypeEnum.TREND,
                     ),
                     Text("Trend Oyunlar", style: TextStyle(fontSize: 20)),
@@ -100,6 +101,12 @@ class _HomePageState extends State<HomePage> {
       );
 
       contentListGame = response2['contentList'];
+
+      final response3 = await ServerManager().getTrendMovies(
+        contentType: ContentTypeEnum.MOVIE,
+      );
+
+      trendMovieList = response3['contentList'];
 
       // sadece ilk 5 i al
       contentListMovie = contentListMovie.length > 5 ? contentListMovie.sublist(0, 5) : contentListMovie;

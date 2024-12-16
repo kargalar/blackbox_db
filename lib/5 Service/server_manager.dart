@@ -240,6 +240,22 @@ class ServerManager {
     return (response.data as List).map((e) => UserReviewModel.fromJson(e)).toList();
   }
 
+  Future getTrendMovies({
+    required ContentTypeEnum contentType,
+  }) async {
+    var response = await dio.get(
+      "$_baseUrl/trendMovies",
+    );
+
+    checkRequest(response);
+
+    var contentList = (response.data as List).map((e) => ShowcaseContentModel.fromJson(e)).toList();
+
+    return {
+      'contentList': contentList,
+    };
+  }
+
   // get friend last activites
 
   // get recommended movies for user
