@@ -256,7 +256,25 @@ class ServerManager {
     };
   }
 
+  // get userProfile
+
   // get friend last activites
+  Future getFriendActivities() async {
+    var response = await dio.get(
+      "$_baseUrl/friendsActivity",
+      queryParameters: {
+        'user_id': user.id,
+      },
+    );
+
+    checkRequest(response);
+
+    var contentList = (response.data as List).map((e) => ShowcaseContentModel.fromJson(e)).toList();
+
+    return {
+      'contentList': contentList,
+    };
+  }
 
   // get recommended movies for user
 }

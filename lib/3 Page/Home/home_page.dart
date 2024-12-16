@@ -20,6 +20,7 @@ class _HomePageState extends State<HomePage> {
   List<ShowcaseContentModel> contentListMovie = [];
   List<ShowcaseContentModel> contentListGame = [];
   List<ShowcaseContentModel> trendMovieList = [];
+  List<ShowcaseContentModel> friendsLastActivities = [];
 
   @override
   void initState() {
@@ -59,7 +60,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Text("Arkaşlarının Aktiviteleri", style: TextStyle(fontSize: 20)),
                     ContentList(
-                      contentList: contentListMovie,
+                      contentList: friendsLastActivities,
                       showcaseType: ShowcaseTypeEnum.ACTIVITY,
                     ),
                     Text("Önerilenler", style: TextStyle(fontSize: 20)),
@@ -94,6 +95,8 @@ class _HomePageState extends State<HomePage> {
       );
 
       contentListMovie = response1['contentList'];
+      // sadece ilk 5 i al
+      contentListMovie = contentListMovie.length > 5 ? contentListMovie.sublist(0, 5) : contentListMovie;
 
       final response2 = await ServerManager().getUserContents(
         contentType: ContentTypeEnum.GAME,
@@ -108,8 +111,9 @@ class _HomePageState extends State<HomePage> {
 
       trendMovieList = response3['contentList'];
 
-      // sadece ilk 5 i al
-      contentListMovie = contentListMovie.length > 5 ? contentListMovie.sublist(0, 5) : contentListMovie;
+      final response4 = await ServerManager().getFriendActivities();
+
+      friendsLastActivities = response4['contentList'];
 
       isLoading = false;
       setState(() {});

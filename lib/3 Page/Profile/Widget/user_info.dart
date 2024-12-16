@@ -1,10 +1,13 @@
-import 'package:blackbox_db/2%20General/accessible.dart';
+import 'package:blackbox_db/8%20Model/user_model.dart';
 import 'package:flutter/material.dart';
 
 class UserInfo extends StatelessWidget {
   const UserInfo({
     super.key,
+    required this.user,
   });
+
+  final UserModel user;
 
   @override
   Widget build(BuildContext context) {
