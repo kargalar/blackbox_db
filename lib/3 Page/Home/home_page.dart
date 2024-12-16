@@ -17,7 +17,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool isLoading = false;
 
-  List<ShowcaseContentModel> contentListMovie = [];
+  List<ShowcaseContentModel> recommendedMovieList = [];
   List<ShowcaseContentModel> contentListGame = [];
   List<ShowcaseContentModel> trendMovieList = [];
   List<ShowcaseContentModel> trendGameList = [];
@@ -64,9 +64,9 @@ class _HomePageState extends State<HomePage> {
                       contentList: friendsLastActivities,
                       showcaseType: ShowcaseTypeEnum.ACTIVITY,
                     ),
-                    Text("Önerilenler", style: TextStyle(fontSize: 20)),
+                    Text("Önerilen Filmler", style: TextStyle(fontSize: 20)),
                     ContentList(
-                      contentList: contentListMovie,
+                      contentList: recommendedMovieList,
                       showcaseType: ShowcaseTypeEnum.FLAT,
                     ),
                     // çok beklenenler
@@ -90,13 +90,11 @@ class _HomePageState extends State<HomePage> {
         setState(() {});
       }
 
-      final response1 = await ServerManager().getUserContents(
+      final response1 = await ServerManager().getRecommendedContents(
         contentType: ContentTypeEnum.MOVIE,
         userId: user.id,
       );
-      contentListMovie = response1['contentList'];
-      // sadece ilk 5 i al
-      contentListMovie = contentListMovie.length > 5 ? contentListMovie.sublist(0, 5) : contentListMovie;
+      recommendedMovieList = response1['contentList'];
 
       final response2 = await ServerManager().getUserContents(
         contentType: ContentTypeEnum.GAME,

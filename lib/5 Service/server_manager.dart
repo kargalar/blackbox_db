@@ -259,8 +259,6 @@ class ServerManager {
     };
   }
 
-  // get userProfile
-
   // get friend last activites
   Future getFriendActivities() async {
     var response = await dio.get(
@@ -280,4 +278,26 @@ class ServerManager {
   }
 
   // get recommended movies for user
+  Future getRecommendedContents({
+    required int userId,
+    required ContentTypeEnum contentType,
+  }) async {
+    var response = await dio.get(
+      "$_baseUrl/recommendContent",
+      queryParameters: {
+        'content_type_id': contentType.index + 1,
+        'user_id': userId,
+      },
+    );
+
+    checkRequest(response);
+
+    var contentList = (response.data as List).map((e) => ShowcaseContentModel.fromJson(e)).toList();
+
+    return {
+      'contentList': contentList,
+    };
+  }
+
+  // get userProfile
 }
