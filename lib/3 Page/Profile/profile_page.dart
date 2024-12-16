@@ -57,9 +57,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return exploreProvider.isLoadingPage
-        ? const Center(child: CircularProgressIndicator())
-        : SingleChildScrollView(
+    return  SingleChildScrollView(
             child: Column(
               children: [
                 // row profile picture - profile sections (home, movie, game, reviews, lists, network, activity)
