@@ -53,9 +53,7 @@ class ContentActivity extends StatelessWidget {
                   Text(
                     DateFormat.MMMd().format(contentLog.date!),
                     style: const TextStyle(
-                      color: AppColors.white,
                       fontSize: 13,
-                      fontWeight: FontWeight.bold,
                     ),
                   ),
                   const Spacer(),
@@ -65,7 +63,6 @@ class ContentActivity extends StatelessWidget {
                         Text(
                           contentLog.rating!.toStringAsFixed(contentLog.rating! % 1 == 0 ? 0 : 1),
                           style: const TextStyle(
-                            color: AppColors.white,
                             fontSize: 13,
                             fontWeight: FontWeight.bold,
                           ),
@@ -73,7 +70,6 @@ class ContentActivity extends StatelessWidget {
                         const SizedBox(width: 2),
                         const Icon(
                           Icons.star,
-                          color: AppColors.white,
                           size: 15,
                         ),
                       ],
