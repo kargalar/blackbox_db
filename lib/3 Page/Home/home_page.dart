@@ -43,14 +43,14 @@ class _HomePageState extends State<HomePage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (showMovie) ...[
-                      Text("Trend Filmler", style: TextStyle(fontSize: 20)),
+                    if (showMovie && trendMovieList.isNotEmpty) ...[
+                      Text("Trending Movies", style: TextStyle(fontSize: 20)),
                       ContentList(
                         contentList: trendMovieList,
                         showcaseType: ShowcaseTypeEnum.TREND,
                       ),
                     ],
-                    if (showGame) ...[
+                    if (showGame && trendGameList.isNotEmpty) ...[
                       Text("Trending Games", style: TextStyle(fontSize: 20)),
                       ContentList(
                         contentList: trendGameList,
@@ -63,22 +63,22 @@ class _HomePageState extends State<HomePage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (showMovie) ...[
+                    if (showMovie && friendsLastMovieActivities.isNotEmpty) ...[
                       Text("Friends' Movie Activities", style: TextStyle(fontSize: 20)),
                       ContentList(
                         contentList: friendsLastMovieActivities,
                         showcaseType: ShowcaseTypeEnum.ACTIVITY,
                       ),
                     ],
-                    if (showGame) ...[
+                    if (showGame && friendsLastGameActivities.isNotEmpty) ...[
                       Text("Friends' Game Activities", style: TextStyle(fontSize: 20)),
                       ContentList(
                         contentList: friendsLastGameActivities,
                         showcaseType: ShowcaseTypeEnum.ACTIVITY,
                       ),
                     ],
-                    if (showMovie) ...[
-                      if (showMovie) Text("Recommended Movies", style: TextStyle(fontSize: 20)),
+                    if (showMovie && recommendedMovieList.isNotEmpty) ...[
+                      Text("Recommended Movies", style: TextStyle(fontSize: 20)),
                       ContentList(
                         contentList: recommendedMovieList,
                         showcaseType: ShowcaseTypeEnum.FLAT,
