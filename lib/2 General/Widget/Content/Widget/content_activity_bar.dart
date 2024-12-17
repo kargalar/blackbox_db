@@ -18,6 +18,7 @@ class UserContentActivityBar extends StatelessWidget {
         width: 150,
         child: Row(
           children: [
+            // TODO: en son backendden user content alırken log gelmiyordu log gelince düzelecek
             if (showcaseContentModel.contentLog?.rating != null)
               RatingBarIndicator(
                 rating: showcaseContentModel.contentLog!.rating!,
@@ -30,6 +31,7 @@ class UserContentActivityBar extends StatelessWidget {
                 ),
               ),
             const Spacer(),
+            // TODO: burası da logdan gelecek
             if (showcaseContentModel.isFavorite)
               const Icon(
                 Icons.favorite,

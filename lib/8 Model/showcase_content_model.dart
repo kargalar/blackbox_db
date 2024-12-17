@@ -1,3 +1,4 @@
+import 'package:blackbox_db/7%20Enum/content_status_enum.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:blackbox_db/8%20Model/content_log_model.dart';
 
@@ -8,7 +9,7 @@ class ShowcaseContentModel {
     required this.posterPath,
     required this.contentType,
     required this.isFavorite,
-    required this.isConsumed,
+    required this.contentStatus,
     required this.isConsumeLater,
     this.contentLog,
     this.trendIndex,
@@ -19,7 +20,7 @@ class ShowcaseContentModel {
   final String? posterPath;
   final ContentTypeEnum contentType;
   bool isFavorite;
-  bool isConsumed;
+  ContentStatusEnum? contentStatus;
   bool isConsumeLater;
 
   final ContentLogModel? contentLog;
@@ -33,7 +34,7 @@ class ShowcaseContentModel {
       posterPath: json['poster_path'],
       contentType: ContentTypeEnum.values[json['content_type_id'] - 1],
       isFavorite: json['is_favorite'] ?? false,
-      isConsumed: json['is_consumed'],
+      contentStatus: json['content_status_id'] != null ? ContentStatusEnum.values[json['content_status_id'] - 1] : null,
       isConsumeLater: json['is_consume_later'] ?? false,
       contentLog: json['userLog'] != null ? ContentLogModel.fromJson(json['userLog']) : null,
     );

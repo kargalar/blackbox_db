@@ -54,6 +54,8 @@ class ContentUserAction extends StatelessWidget {
                     contentType: contentPageProvider.contentModel!.contentType,
                     contentStatus: ContentStatusEnum.CONSUMED,
                     rating: userRating,
+                    isFavorite: contentPageProvider.contentModel!.isFavorite,
+                    isConsumeLater: contentPageProvider.contentModel!.isConsumeLater,
                   );
                 },
               ),
@@ -70,6 +72,9 @@ class ContentUserAction extends StatelessWidget {
                     contentPageProvider.contentUserAction(
                       contentType: contentPageProvider.contentModel!.contentType,
                       contentStatus: contentPageProvider.contentModel!.contentStatus,
+                      rating: contentPageProvider.contentModel!.rating,
+                      isFavorite: contentPageProvider.contentModel!.isFavorite,
+                      isConsumeLater: contentPageProvider.contentModel!.isConsumeLater,
                     );
                   },
                   child: Padding(
@@ -89,7 +94,10 @@ class ContentUserAction extends StatelessWidget {
 
                     contentPageProvider.contentUserAction(
                       contentType: contentPageProvider.contentModel!.contentType,
+                      contentStatus: contentPageProvider.contentModel!.contentStatus,
+                      rating: contentPageProvider.contentModel!.rating,
                       isFavorite: contentPageProvider.contentModel!.isFavorite,
+                      isConsumeLater: contentPageProvider.contentModel!.isConsumeLater,
                     );
                   },
                   child: Padding(
@@ -108,6 +116,9 @@ class ContentUserAction extends StatelessWidget {
 
                     contentPageProvider.contentUserAction(
                       contentType: contentPageProvider.contentModel!.contentType,
+                      contentStatus: contentPageProvider.contentModel!.contentStatus,
+                      rating: contentPageProvider.contentModel!.rating,
+                      isFavorite: contentPageProvider.contentModel!.isFavorite,
                       isConsumeLater: contentPageProvider.contentModel!.isConsumeLater,
                     );
                   },
@@ -171,6 +182,10 @@ class ContentUserAction extends StatelessWidget {
                 if (review != null) {
                   contentPageProvider.contentUserAction(
                     contentType: contentPageProvider.contentModel!.contentType,
+                    contentStatus: contentPageProvider.contentModel!.contentStatus,
+                    rating: contentPageProvider.contentModel!.rating,
+                    isFavorite: contentPageProvider.contentModel!.isFavorite,
+                    isConsumeLater: contentPageProvider.contentModel!.isConsumeLater,
                     review: review,
                   );
                 }

@@ -1,6 +1,7 @@
 import 'package:blackbox_db/2%20General/Widget/Content/Widget/content_item_button.dart';
 import 'package:blackbox_db/2%20General/app_colors.dart';
 import 'package:blackbox_db/6%20Provider/content_item_provider.dart';
+import 'package:blackbox_db/7%20Enum/content_status_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +24,7 @@ class ContentHover extends StatelessWidget {
               children: [
                 ContentItemButton(
                   icon: Icons.remove_red_eye,
-                  color: context.watch<ContentItemProvider>().showcaseContentModel.isConsumed ? AppColors.green : AppColors.white,
+                  color: context.watch<ContentItemProvider>().showcaseContentModel.contentStatus == ContentStatusEnum.CONSUMED ? AppColors.green : AppColors.white,
                   onTap: () async {
                     await context.read<ContentItemProvider>().consume();
                   },

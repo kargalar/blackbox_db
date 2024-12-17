@@ -20,12 +20,12 @@ class ContentPageProvider with ChangeNotifier {
   // ? contentId null ise contentPage de demek
 
   Future<void> contentUserAction({
-    int? contentId,
     required ContentTypeEnum contentType,
-    ContentStatusEnum? contentStatus,
-    double? rating,
-    bool? isFavorite,
-    bool? isConsumeLater,
+    int? contentId,
+    required ContentStatusEnum? contentStatus,
+    required double? rating,
+    required bool isFavorite,
+    required bool isConsumeLater,
     String? review,
   }) async {
     final ContentLogModel userLog = ContentLogModel(
@@ -39,23 +39,15 @@ class ContentPageProvider with ChangeNotifier {
       review: review,
     );
 
-    // eğer conentpage dışında gönderirse sanırım
+    // eğer content page de ise değişiklikleri kullanıcıya göstermek için
     if (contentId == null) {
-      if (contentStatus != null) {
-        contentModel!.contentStatus = contentStatus;
-      } else if (rating != null) {
-        contentModel!.rating = rating;
-      } else if (isFavorite != null) {
-        contentModel!.isFavorite = isFavorite;
-      } else if (isConsumeLater != null) {
-        contentModel!.isConsumeLater = isConsumeLater;
-      }
-
-      await ServerManager().contentUserAction(contentLogModel: userLog);
-
-      if (contentId == null) {
-        notifyListeners();
-      }
+      contentModel!.isConsumeLater = isConsumeLater;
+      contentModel!.isFavorite = isFavorite;
+      contentModel!.contentStatus = contentStatus;
+      contentModel!.rating = rating;
+      notifyListeners();
     }
+
+    await ServerManager().contentUserAction(contentLogModel: userLog);
   }
 }

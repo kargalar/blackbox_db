@@ -12,13 +12,13 @@ class ContentItemProvider with ChangeNotifier {
 
   // TODO:
   Future consume() async {
-    showcaseContentModel.isConsumed = !showcaseContentModel.isConsumed;
+    showcaseContentModel.contentStatus = showcaseContentModel.contentStatus == ContentStatusEnum.CONSUMED ? null : ContentStatusEnum.CONSUMED;
 
     await ContentPageProvider().contentUserAction(
       contentId: showcaseContentModel.contentId,
       contentType: showcaseContentModel.contentType,
-      contentStatus: showcaseContentModel.isConsumed ? ContentStatusEnum.CONSUMED : null,
-      rating: showcaseContentModel.contentLog!.rating,
+      contentStatus: showcaseContentModel.contentStatus,
+      rating: showcaseContentModel.contentLog?.rating,
       isFavorite: showcaseContentModel.isFavorite,
       isConsumeLater: showcaseContentModel.isConsumeLater,
     );
@@ -33,8 +33,8 @@ class ContentItemProvider with ChangeNotifier {
     await ContentPageProvider().contentUserAction(
       contentId: showcaseContentModel.contentId,
       contentType: showcaseContentModel.contentType,
-      contentStatus: showcaseContentModel.isConsumed ? ContentStatusEnum.CONSUMED : null,
-      rating: showcaseContentModel.contentLog!.rating,
+      contentStatus: showcaseContentModel.contentStatus,
+      rating: showcaseContentModel.contentLog?.rating,
       isFavorite: showcaseContentModel.isFavorite,
       isConsumeLater: showcaseContentModel.isConsumeLater,
     );
@@ -49,8 +49,8 @@ class ContentItemProvider with ChangeNotifier {
     await ContentPageProvider().contentUserAction(
       contentId: showcaseContentModel.contentId,
       contentType: showcaseContentModel.contentType,
-      contentStatus: showcaseContentModel.isConsumed ? ContentStatusEnum.CONSUMED : null,
-      rating: showcaseContentModel.contentLog!.rating,
+      contentStatus: showcaseContentModel.contentStatus,
+      rating: showcaseContentModel.contentLog?.rating,
       isFavorite: showcaseContentModel.isFavorite,
       isConsumeLater: showcaseContentModel.isConsumeLater,
     );
