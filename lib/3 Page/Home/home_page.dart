@@ -96,27 +96,30 @@ class _HomePageState extends State<HomePage> {
         setState(() {});
       }
 
-      final response1 = await ServerManager().getRecommendedContents(
-        contentType: ContentTypeEnum.MOVIE,
-        userId: user.id,
-      );
-      recommendedMovieList = response1['contentList'];
+      final results = await Future.wait([
+        ServerManager().getRecommendedContents(
+          contentType: ContentTypeEnum.MOVIE,
+          userId: user.id,
+        ),
+        ServerManager().getTrendContents(
+          contentType: ContentTypeEnum.MOVIE,
+        ),
+        ServerManager().getTrendContents(
+          contentType: ContentTypeEnum.GAME,
+        ),
+        ServerManager().getFriendActivities(
+          contentType: ContentTypeEnum.MOVIE,
+        ),
+        ServerManager().getFriendActivities(
+          contentType: ContentTypeEnum.GAME,
+        ),
+      ]);
 
-      final response3 = await ServerManager().getTrendContents(
-        contentType: ContentTypeEnum.MOVIE,
-      );
-      trendMovieList = response3['contentList'];
-
-      final response4 = await ServerManager().getTrendContents(
-        contentType: ContentTypeEnum.GAME,
-      );
-      trendGameList = response4['contentList'];
-
-      final response5 = await ServerManager().getFriendActivities(contentType: ContentTypeEnum.MOVIE);
-      friendsLastMovieActivities = response5['contentList'];
-
-      final response6 = await ServerManager().getFriendActivities(contentType: ContentTypeEnum.GAME);
-      friendsLastGameActivities = response6['contentList'];
+      recommendedMovieList = results[0]['contentList'];
+      trendMovieList = results[1]['contentList'];
+      trendGameList = results[2]['contentList'];
+      friendsLastMovieActivities = results[3]['contentList'];
+      friendsLastGameActivities = results[4]['contentList'];
 
       isLoading = false;
       setState(() {});
