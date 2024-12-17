@@ -16,7 +16,7 @@ class AppbarManager extends StatefulWidget {
 }
 
 class AppbarManagerState extends State<AppbarManager> {
-  final List<Widget> _pages = const [
+  final List<Widget> _pages = [
     HomePage(),
     SearchPage(),
     ExploreContentPage(),

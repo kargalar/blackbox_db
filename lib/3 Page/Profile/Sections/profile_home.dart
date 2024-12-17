@@ -1,10 +1,11 @@
-import 'package:blackbox_db/2%20General/accessible.dart';
 import 'package:blackbox_db/3%20Page/Explore/Widget/content_list.dart';
 import 'package:blackbox_db/5%20Service/server_manager.dart';
+import 'package:blackbox_db/6%20Provider/profile_provider.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:blackbox_db/7%20Enum/showcase_type_enum.dart';
 import 'package:blackbox_db/8%20Model/showcase_content_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProfileHome extends StatefulWidget {
   const ProfileHome({super.key});
@@ -37,24 +38,26 @@ class _ProfileHomeState extends State<ProfileHome> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Devam Edilenler", style: TextStyle(fontSize: 20)),
+                  // TODO:
+                  Text("In Progress", style: TextStyle(fontSize: 20)),
                   ContentList(
                     contentList: contentList,
                     showcaseType: ShowcaseTypeEnum.TREND,
                   ),
                   // TODO: önce istek at
-                  // Text("Son Aktiviteler", style: TextStyle(fontSize: 20)),
-                  // ContentList(
-                  //   contentList: contentList,
-                  //   showcaseType: ShowcaseTypeEnum.FLAT,
-                  // ),
+                  Text("Last Activites", style: TextStyle(fontSize: 20)),
+                  ContentList(
+                    contentList: contentList,
+                    showcaseType: ShowcaseTypeEnum.FLAT,
+                  ),
                 ],
               ),
               SizedBox(width: 60),
+              // TODO:
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Öne Çıkarılanlar", style: TextStyle(fontSize: 20)),
+                  Text("Highlights", style: TextStyle(fontSize: 20)),
                   ContentList(
                     contentList: contentList,
                     showcaseType: ShowcaseTypeEnum.FLAT,
@@ -67,21 +70,19 @@ class _ProfileHomeState extends State<ProfileHome> {
 
   void getContent() async {
     try {
-      // TODO: widget.showcaseType a göre farklı endpointlere istek atacak
-      // TODO: mesela trend ise sadece 5 tane getirecek. actviity ise contentlogmodel için de veri getirecek...
-      // TODO: contentType null ise farklı istek atacak
       if (!isLoading) {
         isLoading = true;
         setState(() {});
       }
+
+      // TODO: devam edilenlere ve önce çıkarıalnlara istek atılacak onlar getirliecek
       final response = await ServerManager().getUserContents(
         contentType: ContentTypeEnum.MOVIE,
-        userId: user.id,
+        userId: Provider.of<ProfileProvider>(context, listen: false).user!.id,
       );
 
       contentList = response['contentList'];
-
-      // sadece ilk 5 i al
+      // sadece ilk 5 i al. burası normalde olmayacak. çünkü zaten buna istek atmayacağız
       contentList = contentList.length > 5 ? contentList.sublist(0, 5) : contentList;
 
       isLoading = false;

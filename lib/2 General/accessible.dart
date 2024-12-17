@@ -6,8 +6,8 @@ bool showMovie = true;
 bool showBook = false;
 bool showGame = true;
 
-UserModel user = UserModel(
-  id: 1,
+UserModel loginUser = UserModel(
+  id: 2,
   username: "kargalar",
   email: "m.islam0422@gmail.com",
   password: "islam0422",

@@ -1,5 +1,7 @@
+import 'package:blackbox_db/5%20Service/server_manager.dart';
 import 'package:blackbox_db/6%20Provider/explore_provider.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
+import 'package:blackbox_db/8%20Model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -10,16 +12,27 @@ class ProfileProvider with ChangeNotifier {
     return _instance;
   }
 
+  UserModel? user;
+
   ContentTypeEnum contentType = ContentTypeEnum.MOVIE;
 
   int currentPageIndex = 0;
 
-// !!!!!!!!!!!!!!!!!!!!
-// TODO:
-  // eğer profiline gidilen sayfakendinin değilse olacak olan usermodel burada tutulacak ve gerekli yerlede buradan kullanıalcak. bu sayfaded başka profiller ziyaret mümkün oalcak. sadece profile pictırelardan gidilior istek orad atıarbilir belki. veya normal profile page de atlsnı sa
+  bool isLoading = true;
+
+  void getUserInfo(int userID) async {
+    isLoading = true;
+    notifyListeners();
+
+    user = await ServerManager().getUserInfo(userId: userID);
+
+    isLoading = false;
+    notifyListeners();
+  }
 
   void goHomePage(context) async {
     {
+      Provider.of<ExploreProvider>(context, listen: false).profileUserID = user!.id;
       currentPageIndex = 0;
       notifyListeners();
     }
@@ -31,7 +44,7 @@ class ProfileProvider with ChangeNotifier {
       contentType = ContentTypeEnum.MOVIE;
       Provider.of<ExploreProvider>(context, listen: false).currentPageIndex = 1;
 
-      Provider.of<ExploreProvider>(context, listen: false).isProfilePage = true;
+      Provider.of<ExploreProvider>(context, listen: false).profileUserID = user!.id;
       Provider.of<ExploreProvider>(context, listen: false).getContent(context: context);
 
       notifyListeners();
@@ -45,7 +58,7 @@ class ProfileProvider with ChangeNotifier {
       contentType = ContentTypeEnum.GAME;
       Provider.of<ExploreProvider>(context, listen: false).currentPageIndex = 1;
 
-      Provider.of<ExploreProvider>(context, listen: false).isProfilePage = true;
+      Provider.of<ExploreProvider>(context, listen: false).profileUserID = user!.id;
       Provider.of<ExploreProvider>(context, listen: false).getContent(context: context);
 
       notifyListeners();

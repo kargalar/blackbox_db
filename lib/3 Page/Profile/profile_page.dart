@@ -1,5 +1,4 @@
 import 'package:blackbox_db/2%20General/Widget/profile_picture.dart';
-import 'package:blackbox_db/2%20General/accessible.dart';
 import 'package:blackbox_db/3%20Page/Explore/explore_page.dart';
 import 'package:blackbox_db/3%20Page/Profile/Sections/profile_activity.dart';
 import 'package:blackbox_db/3%20Page/Profile/Sections/profile_home.dart';
@@ -43,13 +42,6 @@ class _ProfilePageState extends State<ProfilePage> {
   ];
 
   @override
-  void initState() {
-    super.initState();
-//TODO: içerikler ve loglar profile ait olacak ama hover kullanıcıya ait olacak
-// generalProvider.currentUserID
-  }
-
-  @override
   void dispose() {
     profileProvider.currentPageIndex = 0;
 
@@ -58,31 +50,38 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          SizedBox(height: 100),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // TODO:
-              ProfilePicture.profile(
-                imageUrl: "https://images.pexels.com/photos/29191749/pexels-photo-29191749/free-photo-of-traditional-farmer-in-rural-vietnamese-setting.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-                userID: generalProvider.currentUserID,
-              ),
-              SizedBox(width: 10),
-              // TODO: eğer başka bir kullanıcıya ait profil ise veritabanından gelecek. şuan direk accessible
-              UserInfo(
-                user: user,
-              ),
-              SizedBox(width: 80),
-              ProfileSections()
-            ],
-          ),
-          SizedBox(height: 30),
-          profilePages[profileProvider.currentPageIndex],
-        ],
-      ),
-    );
+    return context.watch<ProfileProvider>().isLoading
+        ? Center(
+            child: CircularProgressIndicator(),
+          )
+        : context.watch<ProfileProvider>().user == null
+            ? Center(
+                child: Text("User not found"),
+              )
+            : SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(height: 100),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // TODO:
+                        ProfilePicture.profile(
+                          imageUrl: "https://images.pexels.com/photos/29191749/pexels-photo-29191749/free-photo-of-traditional-farmer-in-rural-vietnamese-setting.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                          userID: ProfileProvider().user!.id,
+                        ),
+                        SizedBox(width: 10),
+                        UserInfo(
+                          user: ProfileProvider().user!,
+                        ),
+                        SizedBox(width: 80),
+                        ProfileSections()
+                      ],
+                    ),
+                    SizedBox(height: 30),
+                    profilePages[profileProvider.currentPageIndex],
+                  ],
+                ),
+              );
   }
 }

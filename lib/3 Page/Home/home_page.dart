@@ -109,7 +109,7 @@ class _HomePageState extends State<HomePage> {
       final results = await Future.wait([
         ServerManager().getRecommendedContents(
           contentType: ContentTypeEnum.MOVIE,
-          userId: user.id,
+          userId: loginUser.id,
         ),
         ServerManager().getTrendContents(
           contentType: ContentTypeEnum.MOVIE,

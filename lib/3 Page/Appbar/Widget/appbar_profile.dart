@@ -1,8 +1,7 @@
 import 'package:blackbox_db/2%20General/Widget/profile_picture.dart';
+import 'package:blackbox_db/2%20General/accessible.dart';
 import 'package:blackbox_db/3%20Page/Appbar/Widget/profile_hover_menu.dart';
-import 'package:blackbox_db/6%20Provider/general_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class AppbarProfile extends StatefulWidget {
   const AppbarProfile({
@@ -23,7 +22,7 @@ class _AppbarProfileState extends State<AppbarProfile> {
       onExit: (event) => _hoverCheck(false),
       child: ProfilePicture.appBar(
         imageUrl: "https://images.pexels.com/photos/29191749/pexels-photo-29191749/free-photo-of-traditional-farmer-in-rural-vietnamese-setting.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-        userID: context.read<GeneralProvider>().currentUserID,
+        userID: loginUser.id,
       ),
     );
   }

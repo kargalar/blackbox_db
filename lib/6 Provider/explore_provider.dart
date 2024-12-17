@@ -28,11 +28,9 @@ class ExploreProvider with ChangeNotifier {
   bool isLoadingPage = true;
   bool isLoadingContents = true;
 
-  bool isProfilePage = false;
+  int? profileUserID;
 
-  void getContent({
-    required BuildContext context,
-  }) async {
+  void getContent({required BuildContext context}) async {
     try {
       // TODO: widget.showcaseType a göre farklı endpointlere istek atacak
       // TODO: mesela trend ise sadece 5 tane getirecek. actviity ise contentlogmodel için de veri getirecek...
@@ -44,19 +42,19 @@ class ExploreProvider with ChangeNotifier {
 
       late dynamic response;
 
-      if (isProfilePage) {
+      if (profileUserID != null) {
         response = await ServerManager().getUserContents(
           contentType: context.read<ProfileProvider>().contentType,
-          userId: user.id,
+          userId: profileUserID!,
         );
       } else {
         if (context.read<GeneralProvider>().exploreContentType == ContentTypeEnum.MOVIE) {
           response = await ServerManager().getDiscoverMovie(
-            userId: user.id,
+            userId: loginUser.id,
           );
         } else if (context.read<GeneralProvider>().exploreContentType == ContentTypeEnum.GAME) {
           response = await ServerManager().getDiscoverGame(
-            userId: user.id,
+            userId: loginUser.id,
           );
         }
       }

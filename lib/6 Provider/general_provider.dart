@@ -1,5 +1,5 @@
-import 'package:blackbox_db/2%20General/accessible.dart';
 import 'package:blackbox_db/6%20Provider/explore_provider.dart';
+import 'package:blackbox_db/6%20Provider/profile_provider.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +15,6 @@ class GeneralProvider with ChangeNotifier {
   String searchText = '';
   ContentTypeEnum searchFilter = ContentTypeEnum.MOVIE;
   ContentTypeEnum exploreContentType = ContentTypeEnum.MOVIE;
-  int currentUserID = user.id;
   int contentID = 0;
   ContentTypeEnum contentPageContentTpye = ContentTypeEnum.MOVIE;
 
@@ -37,14 +36,14 @@ class GeneralProvider with ChangeNotifier {
 
     Provider.of<ExploreProvider>(context, listen: false).filteredGenreList = [];
     Provider.of<ExploreProvider>(context, listen: false).currentPageIndex = 1;
-    Provider.of<ExploreProvider>(context, listen: false).isProfilePage = false;
+    Provider.of<ExploreProvider>(context, listen: false).profileUserID = null;
     Provider.of<ExploreProvider>(context, listen: false).getContent(context: context);
 
     notifyListeners();
   }
 
-  void profile(int userID) {
-    currentUserID = userID;
+  void profile(int userID) async {
+    ProfileProvider().getUserInfo(userID);
     currentIndex = 3;
     notifyListeners();
   }

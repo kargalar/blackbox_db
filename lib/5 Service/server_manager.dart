@@ -4,6 +4,7 @@ import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:blackbox_db/8%20Model/content_log_model.dart';
 import 'package:blackbox_db/8%20Model/content_model.dart';
 import 'package:blackbox_db/8%20Model/genre_model.dart';
+import 'package:blackbox_db/8%20Model/user_model.dart';
 import 'package:blackbox_db/8%20Model/user_review_model.dart';
 import 'package:blackbox_db/8%20Model/review_model.dart';
 import 'package:blackbox_db/8%20Model/showcase_content_model.dart';
@@ -36,6 +37,21 @@ class ServerManager {
   }
 
   // ********************************************
+
+  Future getUserInfo({
+    required int userId,
+  }) async {
+    var response = await dio.get(
+      "$_baseUrl/getUserInfo",
+      queryParameters: {
+        'user_id': userId,
+      },
+    );
+
+    checkRequest(response);
+
+    return UserModel.fromJson(response.data);
+  }
 
   // get all movie for showcase with user id
   // ? bu kullanıcının tüm logladığı içeriklerin listesi
@@ -183,7 +199,7 @@ class ServerManager {
     var response = await dio.get(
       "$_baseUrl/content_detail",
       queryParameters: {
-        'user_id': userId ?? user.id,
+        'user_id': userId ?? loginUser.id,
         'content_id': contentId,
         'content_type_id': contentType.index + 1,
       },
@@ -267,7 +283,7 @@ class ServerManager {
       "$_baseUrl/friendsActivity",
       queryParameters: {
         'content_type_id': contentType.index + 1,
-        'user_id': user.id,
+        'user_id': loginUser.id,
       },
     );
 
