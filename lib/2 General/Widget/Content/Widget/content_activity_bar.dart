@@ -32,7 +32,7 @@ class UserContentActivityBar extends StatelessWidget {
               ),
             const Spacer(),
             // TODO: burası da logdan gelecek
-            if (showcaseContentModel.isFavorite)
+            if (showcaseContentModel.contentLog?.isFavorite != null && showcaseContentModel.contentLog!.isFavorite!)
               const Icon(
                 Icons.favorite,
                 color: AppColors.white,

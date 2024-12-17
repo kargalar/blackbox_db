@@ -18,7 +18,8 @@ class ContentItemProvider with ChangeNotifier {
       contentId: showcaseContentModel.contentId,
       contentType: showcaseContentModel.contentType,
       contentStatus: showcaseContentModel.contentStatus,
-      rating: showcaseContentModel.contentLog?.rating,
+      // ??? showcase de loglarken rating olmadığı için güncellemiyoruz  bu yüzden -1
+      rating: -1,
       isFavorite: showcaseContentModel.isFavorite,
       isConsumeLater: showcaseContentModel.isConsumeLater,
     );
@@ -34,7 +35,7 @@ class ContentItemProvider with ChangeNotifier {
       contentId: showcaseContentModel.contentId,
       contentType: showcaseContentModel.contentType,
       contentStatus: showcaseContentModel.contentStatus,
-      rating: showcaseContentModel.contentLog?.rating,
+      rating: -1,
       isFavorite: showcaseContentModel.isFavorite,
       isConsumeLater: showcaseContentModel.isConsumeLater,
     );
@@ -50,7 +51,7 @@ class ContentItemProvider with ChangeNotifier {
       contentId: showcaseContentModel.contentId,
       contentType: showcaseContentModel.contentType,
       contentStatus: showcaseContentModel.contentStatus,
-      rating: showcaseContentModel.contentLog?.rating,
+      rating: -1,
       isFavorite: showcaseContentModel.isFavorite,
       isConsumeLater: showcaseContentModel.isConsumeLater,
     );

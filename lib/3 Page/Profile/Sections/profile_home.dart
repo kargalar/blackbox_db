@@ -78,7 +78,7 @@ class _ProfileHomeState extends State<ProfileHome> {
       // TODO: devam edilenlere ve önce çıkarıalnlara istek atılacak onlar getirliecek
       final response = await ServerManager().getUserContents(
         contentType: ContentTypeEnum.MOVIE,
-        userId: Provider.of<ProfileProvider>(context, listen: false).user!.id,
+        logUserId: Provider.of<ProfileProvider>(context, listen: false).user!.id,
       );
 
       contentList = response['contentList'];

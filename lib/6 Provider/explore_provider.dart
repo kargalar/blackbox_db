@@ -45,7 +45,7 @@ class ExploreProvider with ChangeNotifier {
       if (profileUserID != null) {
         response = await ServerManager().getUserContents(
           contentType: context.read<ProfileProvider>().contentType,
-          userId: profileUserID!,
+          logUserId: profileUserID!,
         );
       } else {
         if (context.read<GeneralProvider>().exploreContentType == ContentTypeEnum.MOVIE) {

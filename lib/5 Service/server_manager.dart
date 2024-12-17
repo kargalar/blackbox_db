@@ -57,12 +57,13 @@ class ServerManager {
   // ? bu kullanıcının tüm logladığı içeriklerin listesi
   Future getUserContents({
     required ContentTypeEnum contentType,
-    required int userId,
+    required int logUserId,
   }) async {
     var response = await dio.get(
       "$_baseUrl/userContents",
       queryParameters: {
-        'user_id': userId,
+        'user_id': loginUser.id,
+        'log_user_id': logUserId,
         'content_type_id': contentType.index + 1,
         'page': ExploreProvider().currentPageIndex,
       },
@@ -210,22 +211,6 @@ class ServerManager {
     return ContentModel.fromJson(response.data);
   }
 
-  // get trend movies
-  Future<ShowcaseContentModel> getTrendMovie({
-    required int userId,
-  }) async {
-    var response = await dio.get(
-      "$_baseUrl/trendMovie",
-      queryParameters: {
-        'user_id': userId,
-      },
-    );
-
-    checkRequest(response);
-
-    return ShowcaseContentModel.fromJson(response.data);
-  }
-
   Future<List<ReviewModel>> getContentReviews({
     required int contentId,
   }) async {
@@ -263,6 +248,7 @@ class ServerManager {
       "$_baseUrl/getTrendContent",
       queryParameters: {
         'content_type_id': contentType.index + 1,
+        'user_id': loginUser.id,
       },
     );
 
