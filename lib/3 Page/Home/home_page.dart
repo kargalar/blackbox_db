@@ -18,7 +18,6 @@ class _HomePageState extends State<HomePage> {
   bool isLoading = false;
 
   List<ShowcaseContentModel> recommendedMovieList = [];
-  List<ShowcaseContentModel> contentListGame = [];
   List<ShowcaseContentModel> trendMovieList = [];
   List<ShowcaseContentModel> trendGameList = [];
   List<ShowcaseContentModel> friendsLastMovieActivities = [];
@@ -44,37 +43,48 @@ class _HomePageState extends State<HomePage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Trend Filmler", style: TextStyle(fontSize: 20)),
-                    ContentList(
-                      contentList: trendMovieList,
-                      showcaseType: ShowcaseTypeEnum.TREND,
-                    ),
-                    Text("Trend Oyunlar", style: TextStyle(fontSize: 20)),
-                    ContentList(
-                      contentList: contentListGame,
-                      showcaseType: ShowcaseTypeEnum.TREND,
-                    ),
+                    if (showMovie) ...[
+                      Text("Trend Filmler", style: TextStyle(fontSize: 20)),
+                      ContentList(
+                        contentList: trendMovieList,
+                        showcaseType: ShowcaseTypeEnum.TREND,
+                      ),
+                    ],
+                    if (showGame) ...[
+                      Text("Trending Games", style: TextStyle(fontSize: 20)),
+                      ContentList(
+                        contentList: trendGameList,
+                        showcaseType: ShowcaseTypeEnum.TREND,
+                      ),
+                    ],
                   ],
                 ),
                 SizedBox(width: 60),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Arkaşlarının Film Aktiviteleri", style: TextStyle(fontSize: 20)),
-                    ContentList(
-                      contentList: friendsLastMovieActivities,
-                      showcaseType: ShowcaseTypeEnum.ACTIVITY,
-                    ),
-                    Text("Arkaşlarının Film Aktiviteleri", style: TextStyle(fontSize: 20)),
-                    ContentList(
-                      contentList: friendsLastGameActivities,
-                      showcaseType: ShowcaseTypeEnum.ACTIVITY,
-                    ),
-                    Text("Önerilen Filmler", style: TextStyle(fontSize: 20)),
-                    ContentList(
-                      contentList: recommendedMovieList,
-                      showcaseType: ShowcaseTypeEnum.FLAT,
-                    ),
+                    if (showMovie) ...[
+                      Text("Friends' Movie Activities", style: TextStyle(fontSize: 20)),
+                      ContentList(
+                        contentList: friendsLastMovieActivities,
+                        showcaseType: ShowcaseTypeEnum.ACTIVITY,
+                      ),
+                    ],
+                    if (showGame) ...[
+                      Text("Friends' Game Activities", style: TextStyle(fontSize: 20)),
+                      ContentList(
+                        contentList: friendsLastGameActivities,
+                        showcaseType: ShowcaseTypeEnum.ACTIVITY,
+                      ),
+                    ],
+                    if (showMovie) ...[
+                      if (showMovie) Text("Recommended Movies", style: TextStyle(fontSize: 20)),
+                      ContentList(
+                        contentList: recommendedMovieList,
+                        showcaseType: ShowcaseTypeEnum.FLAT,
+                      ),
+                    ],
+
                     // çok beklenenler
                     // sana benzer kullanıcılar
                   ],
