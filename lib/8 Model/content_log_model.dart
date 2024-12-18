@@ -40,7 +40,13 @@ class ContentLogModel {
       contentID: json['content_id'],
       date: DateTime.parse(json['date']),
       contentStatus: json['content_status_id'] == null ? null : ContentStatusEnum.values[json['content_status_id'] - 1],
-      rating: json['rating'] != null ? double.parse(json['rating']) : null,
+      rating: json['rating'] != null
+          ? (json['rating'] is int
+              ? json['rating'].toDouble()
+              : json['rating'] is String
+                  ? double.parse(json['rating'])
+                  : json['rating'])
+          : 0,
       isFavorite: json['is_favorite'],
       isConsumeLater: json['is_consume_later'],
       review: json['review_text'],

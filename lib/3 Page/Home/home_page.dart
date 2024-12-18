@@ -131,6 +131,10 @@ class _HomePageState extends State<HomePage> {
       friendsLastMovieActivities = results[3]['contentList'];
       friendsLastGameActivities = results[4]['contentList'];
 
+      if (recommendedMovieList.length > 5) {
+        recommendedMovieList = recommendedMovieList.sublist(0, 5);
+      }
+
       isLoading = false;
       setState(() {});
     } catch (e) {

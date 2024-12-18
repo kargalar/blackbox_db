@@ -13,6 +13,7 @@ class ContentItemProvider with ChangeNotifier {
   // TODO:
   Future consume() async {
     showcaseContentModel.contentStatus = showcaseContentModel.contentStatus == ContentStatusEnum.CONSUMED ? null : ContentStatusEnum.CONSUMED;
+    notifyListeners();
 
     await ContentPageProvider().contentUserAction(
       contentId: showcaseContentModel.contentId,
@@ -23,13 +24,12 @@ class ContentItemProvider with ChangeNotifier {
       isFavorite: showcaseContentModel.isFavorite,
       isConsumeLater: showcaseContentModel.isConsumeLater,
     );
-
-    notifyListeners();
   }
 
   // TODO:
   Future favorite() async {
     showcaseContentModel.isFavorite = !showcaseContentModel.isFavorite;
+    notifyListeners();
 
     await ContentPageProvider().contentUserAction(
       contentId: showcaseContentModel.contentId,
@@ -39,13 +39,12 @@ class ContentItemProvider with ChangeNotifier {
       isFavorite: showcaseContentModel.isFavorite,
       isConsumeLater: showcaseContentModel.isConsumeLater,
     );
-
-    notifyListeners();
   }
 
   // TODO:
   Future consumeLater() async {
     showcaseContentModel.isConsumeLater = !showcaseContentModel.isConsumeLater;
+    notifyListeners();
 
     await ContentPageProvider().contentUserAction(
       contentId: showcaseContentModel.contentId,
@@ -55,7 +54,5 @@ class ContentItemProvider with ChangeNotifier {
       isFavorite: showcaseContentModel.isFavorite,
       isConsumeLater: showcaseContentModel.isConsumeLater,
     );
-
-    notifyListeners();
   }
 }
