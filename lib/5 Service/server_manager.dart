@@ -304,5 +304,27 @@ class ServerManager {
     };
   }
 
-  // get userProfile
+  Future getAllContent({
+    required ContentTypeEnum contentType,
+    required int page,
+  }) async {
+    var response = await dio.get(
+      "$_baseUrl/allContent",
+      queryParameters: {
+        'content_type_id': contentType.index + 1,
+        'page': page,
+      },
+    );
+
+    checkRequest(response);
+
+    var data = response.data as Map<String, dynamic>;
+    var contentList = (data['contents'] as List).map((e) => ContentModel.fromJson(e)).toList();
+    var totalPages = data['total_pages'] as int;
+
+    return {
+      'contentList': contentList,
+      'totalPages': totalPages,
+    };
+  }
 }

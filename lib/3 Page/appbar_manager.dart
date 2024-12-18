@@ -2,6 +2,7 @@ import 'package:blackbox_db/3%20Page/Content/content_page.dart';
 import 'package:blackbox_db/3%20Page/Explore/explore_page.dart';
 import 'package:blackbox_db/3%20Page/Appbar/main_appbar.dart';
 import 'package:blackbox_db/3%20Page/Home/home_page.dart';
+import 'package:blackbox_db/3%20Page/ManagerPanel/manager_panel.dart';
 import 'package:blackbox_db/3%20Page/Profile/profile_page.dart';
 import 'package:blackbox_db/3%20Page/Search/search_page.dart';
 import 'package:blackbox_db/6%20Provider/general_provider.dart';
@@ -22,6 +23,7 @@ class AppbarManagerState extends State<AppbarManager> {
     ExploreContentPage(),
     ProfilePage(),
     ContentPage(),
+    ManagerPanel(),
   ];
 
   @override

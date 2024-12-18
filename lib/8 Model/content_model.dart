@@ -64,10 +64,10 @@ class ContentModel {
       // TODO: game timestamp fix
       length: json['length'],
       cast: json['cast_list'] != null ? (json['cast_list'] as List).map((i) => CastModel.fromJson(i)).toList() : null,
-      consumeCount: json['consume_count'],
-      favoriCount: json['favori_count'],
-      listCount: json['list_count'],
-      reviewCount: json['review_count'],
+      consumeCount: json['consume_count'] ?? 0,
+      favoriCount: json['favori_count'] ?? 0,
+      listCount: json['list_count'] ?? 0,
+      reviewCount: json['review_count'] ?? 0,
       ratingDistribution: json['rating_distribution'] != null ? (json['rating_distribution'] as List).map((i) => i as int).toList() : [],
       contentStatus: json['content_status_id'] != null ? ContentStatusEnum.values[json['content_status_id'] - 1] : null,
       rating: json['rating'] != null

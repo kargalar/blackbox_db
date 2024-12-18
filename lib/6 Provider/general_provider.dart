@@ -54,4 +54,9 @@ class GeneralProvider with ChangeNotifier {
     currentIndex = 4;
     notifyListeners();
   }
+
+  void managerPanel() {
+    currentIndex = 5;
+    notifyListeners();
+  }
 }
