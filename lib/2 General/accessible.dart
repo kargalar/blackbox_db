@@ -1,5 +1,3 @@
-// TODO: filter content type list
-
 import 'package:blackbox_db/8%20Model/user_model.dart';
 
 bool showMovie = true;
