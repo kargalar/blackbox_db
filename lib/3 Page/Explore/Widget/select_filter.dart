@@ -1,34 +1,37 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blackbox_db/2%20General/app_colors.dart';
-import 'package:blackbox_db/6%20Provider/explore_provider.dart';
-import 'package:blackbox_db/8%20Model/genre_model.dart';
 import 'package:flutter/material.dart';
 
 class SelectFilter extends StatefulWidget {
-  const SelectFilter({super.key});
+  const SelectFilter({
+    super.key,
+    required this.title,
+    required this.allItemList,
+    this.selectedItem,
+    this.filteredItemList,
+    required this.addItem,
+    required this.removeItem,
+  });
+
+  final String title;
+  final List<dynamic> allItemList;
+  final dynamic selectedItem;
+  final List<dynamic>? filteredItemList;
+  final Function? addItem;
+  final Function? removeItem;
 
   @override
   State<SelectFilter> createState() => _SelectFilterState();
 }
 
 class _SelectFilterState extends State<SelectFilter> {
-  void _addItem(GenreModel item) {
-    ExploreProvider().filteredGenreList.add(item);
-    ExploreProvider().getContent(context: context);
-  }
-
-  void _removeItem(GenreModel item) {
-    ExploreProvider().filteredGenreList.remove(item);
-    ExploreProvider().getContent(context: context);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Genre Dropdown
-        PopupMenuButton<GenreModel>(
+        // Dropdown
+        PopupMenuButton<dynamic>(
           color: AppColors.panelBackground2,
           offset: const Offset(-95, 0),
           itemBuilder: (context) => [
@@ -37,10 +40,10 @@ class _SelectFilterState extends State<SelectFilter> {
               child: StatefulBuilder(builder: (context, setStateMenu) {
                 return SizedBox(
                   width: 300, // Adjust width
-                  child: ExploreProvider().allGenres!.length == ExploreProvider().filteredGenreList.length
+                  child: widget.filteredItemList != null && widget.allItemList.length == widget.filteredItemList!.length
                       ? Center(
                           child: Text(
-                            "Başka Seçenek Yok",
+                            "No Other Options",
                             style: TextStyle(
                               color: AppColors.dirtyWhite,
                               fontWeight: FontWeight.bold,
@@ -53,14 +56,14 @@ class _SelectFilterState extends State<SelectFilter> {
                           crossAxisCount: 3, // Number of columns
                           crossAxisSpacing: 10,
                           mainAxisSpacing: 10,
-                          childAspectRatio: ExploreProvider().allGenres!.length == ExploreProvider().filteredGenreList.length ? 2 : 2,
-                          children: ExploreProvider().allGenres!.where((genre) => !ExploreProvider().filteredGenreList.contains(genre)).map((genre) {
+                          childAspectRatio: widget.filteredItemList != null && widget.allItemList.length == widget.filteredItemList!.length ? 2 : 2,
+                          children: widget.allItemList.where((item) => widget.filteredItemList != null ? !widget.filteredItemList!.contains(item) : true).map((item) {
                             return InkWell(
                               borderRadius: AppColors.borderRadiusAll,
                               onTap: () {
                                 setState(() {
                                   setStateMenu(() {
-                                    _addItem(genre);
+                                    widget.addItem!(item);
                                   });
                                 });
                               },
@@ -72,7 +75,7 @@ class _SelectFilterState extends State<SelectFilter> {
                                   borderRadius: AppColors.borderRadiusAll,
                                 ),
                                 child: AutoSizeText(
-                                  genre.name,
+                                  item.name,
                                   maxLines: 1,
                                 ),
                               ),
@@ -92,7 +95,7 @@ class _SelectFilterState extends State<SelectFilter> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  "Genre",
+                  widget.title,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 15,
@@ -104,31 +107,55 @@ class _SelectFilterState extends State<SelectFilter> {
           ),
         ),
         const SizedBox(height: 5),
-        Wrap(
-          children: ExploreProvider().filteredGenreList.map((genre) {
-            return InkWell(
-              onTap: () {
-                _removeItem(genre);
-              },
-              child: Container(
-                margin: const EdgeInsets.only(right: 5, bottom: 5),
-                padding: const EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  color: AppColors.panelBackground2,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    AutoSizeText(
-                      genre.name,
+        widget.filteredItemList != null
+            ? Wrap(
+                children: widget.filteredItemList!.map((item) {
+                  return InkWell(
+                    onTap: () {
+                      widget.removeItem!(item);
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(right: 5, bottom: 5),
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        color: AppColors.panelBackground2,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          AutoSizeText(
+                            item.name,
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
-              ),
-            );
-          }).toList(),
-        ),
+                  );
+                }).toList(),
+              )
+            : widget.selectedItem == null
+                ? Container()
+                : InkWell(
+                    onTap: () {
+                      widget.removeItem!(widget.selectedItem);
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(right: 5, bottom: 5),
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        color: AppColors.panelBackground2,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          AutoSizeText(
+                            widget.selectedItem.name,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
       ],
     );
   }

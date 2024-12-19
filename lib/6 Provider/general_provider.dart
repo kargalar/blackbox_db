@@ -34,7 +34,8 @@ class GeneralProvider with ChangeNotifier {
     exploreContentType = contentType;
     currentIndex = 2;
 
-    Provider.of<ExploreProvider>(context, listen: false).filteredGenreList = [];
+    Provider.of<ExploreProvider>(context, listen: false).languageFilter = null;
+    Provider.of<ExploreProvider>(context, listen: false).genreFilteredList = [];
     Provider.of<ExploreProvider>(context, listen: false).currentPageIndex = 1;
     Provider.of<ExploreProvider>(context, listen: false).profileUserID = null;
     Provider.of<ExploreProvider>(context, listen: false).getContent(context: context);

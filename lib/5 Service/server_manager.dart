@@ -4,6 +4,7 @@ import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:blackbox_db/8%20Model/content_log_model.dart';
 import 'package:blackbox_db/8%20Model/content_model.dart';
 import 'package:blackbox_db/8%20Model/genre_model.dart';
+import 'package:blackbox_db/8%20Model/language_model.dart';
 import 'package:blackbox_db/8%20Model/user_model.dart';
 import 'package:blackbox_db/8%20Model/user_review_model.dart';
 import 'package:blackbox_db/8%20Model/review_model.dart';
@@ -81,28 +82,49 @@ class ServerManager {
     };
   }
 
+  // get all language
+  Future<List<LanguageModel>> getAllLanguage() async {
+    var response = await dio.get(
+      "$_baseUrl/getAllLanguage",
+    );
+
+    checkRequest(response);
+
+    return (response.data as List).map((e) => LanguageModel.fromJson(e)).toList();
+  }
+
+  // get all genre
+  Future<List<GenreModel>> getAllGenre() async {
+    var response = await dio.get(
+      "$_baseUrl/getAllGenre",
+    );
+
+    checkRequest(response);
+
+    return (response.data as List).map((e) => GenreModel.fromJson(e)).toList();
+  }
+
   // get discover content
   Future getDiscoverMovie({
     required int userId,
     int? yearFilter,
   }) async {
-    if (ExploreProvider().allGenres == null) {
-      var response = await dio.get(
-        "$_baseUrl/getAllGenre",
-      );
-
-      checkRequest(response);
-
-      ExploreProvider().allGenres = (response.data as List).map((e) => GenreModel.fromJson(e)).toList();
-    }
+    if (ExploreProvider().allGenres == null) ExploreProvider().allGenres = await getAllGenre();
+    if (ExploreProvider().allLanguage == null) ExploreProvider().allLanguage = await getAllLanguage();
 
     String url = "$_baseUrl/discoverMovie?user_id=$userId";
 
-    if (ExploreProvider().filteredGenreList.isNotEmpty) {
-      String genreIds = ExploreProvider().filteredGenreList.map((e) => e.id.toString()).join(',');
+    if (ExploreProvider().genreFilteredList.isNotEmpty) {
+      String genreIds = ExploreProvider().genreFilteredList.map((e) => e.id.toString()).join(',');
 
-      url += "&genre=$genreIds";
+      url += "&with_genres=$genreIds";
     }
+    if (ExploreProvider().languageFilter != null) {
+      String languageISO = ExploreProvider().languageFilter!.iso;
+
+      url += "&with_original_language=$languageISO";
+    }
+
     if (yearFilter != null) {
       url += "&year=$yearFilter";
     }
@@ -142,8 +164,8 @@ class ServerManager {
 
     String url = "$_baseUrl/discoverGame?user_id=$userId";
 
-    if (ExploreProvider().filteredGenreList.isNotEmpty) {
-      String genreIds = ExploreProvider().filteredGenreList.map((e) => e.id.toString()).join(',');
+    if (ExploreProvider().genreFilteredList.isNotEmpty) {
+      String genreIds = ExploreProvider().genreFilteredList.map((e) => e.id.toString()).join(',');
 
       url += "&genre=$genreIds";
     }

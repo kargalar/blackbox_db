@@ -1,5 +1,6 @@
 import 'package:blackbox_db/2%20General/app_colors.dart';
 import 'package:blackbox_db/3%20Page/Explore/Widget/select_filter.dart';
+import 'package:blackbox_db/6%20Provider/explore_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -58,7 +59,34 @@ class _ExploreFilterState extends State<ExploreFilter> {
                 },
               ),
             ),
-            SelectFilter(),
+            if (ExploreProvider().allGenres != null)
+              SelectFilter(
+                title: "Genre",
+                addItem: (item) {
+                  ExploreProvider().genreFilteredList.add(item);
+                  ExploreProvider().getContent(context: context);
+                },
+                removeItem: (item) {
+                  ExploreProvider().genreFilteredList.remove(item);
+                  ExploreProvider().getContent(context: context);
+                },
+                allItemList: ExploreProvider().allGenres!,
+                filteredItemList: ExploreProvider().genreFilteredList,
+              ),
+            if (ExploreProvider().allLanguage != null)
+              SelectFilter(
+                title: "Language",
+                addItem: (item) {
+                  ExploreProvider().languageFilter = item;
+                  ExploreProvider().getContent(context: context);
+                },
+                removeItem: (item) {
+                  ExploreProvider().languageFilter = null;
+                  ExploreProvider().getContent(context: context);
+                },
+                allItemList: ExploreProvider().allLanguage!,
+                selectedItem: ExploreProvider().languageFilter,
+              ),
           ],
         ),
       ),
