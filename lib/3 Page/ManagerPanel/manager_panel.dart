@@ -27,6 +27,7 @@ class _ManagerPanelState extends State<ManagerPanel> {
         : managerPanelProvider.contentList.isEmpty
             ? const Center(child: Text('No Data'))
             : ListView.builder(
+                shrinkWrap: true,
                 itemCount: managerPanelProvider.contentList.length,
                 itemBuilder: (context, index) {
                   // TODO: burada içeriğin bilgileri gösterilecek ve düzenlenebilecek veya silinebilecek. yapıaln değişikliklere göre güncellenmesi gerekenler güncellenecek

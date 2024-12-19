@@ -15,8 +15,8 @@ class PanelContentWidget extends StatefulWidget {
 }
 
 class _PanelContentWidgetState extends State<PanelContentWidget> {
-  late final TextEditingController titleController;
-  late final TextEditingController descriptionController;
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
 
   @override
   void initState() {
@@ -43,49 +43,51 @@ class _PanelContentWidgetState extends State<PanelContentWidget> {
             ),
           ),
           const SizedBox(height: 10),
-          // Column(
-          //   mainAxisSize: MainAxisSize.min,
-          //   children: [
-          //     Padding(
-          //       padding: const EdgeInsets.symmetric(horizontal: 10),
-          //       child: SizedBox(
-          //         width: 300,
-          //         child: TextField(
-          //           decoration: InputDecoration(
-          //             hintText: 'Title',
-          //             border: InputBorder.none,
-          //             disabledBorder: InputBorder.none,
-          //             enabledBorder: InputBorder.none,
-          //             errorBorder: InputBorder.none,
-          //             focusedBorder: InputBorder.none,
-          //             focusedErrorBorder: InputBorder.none,
-          //           ),
-          //           controller: titleController,
-          //           style: TextStyle(fontSize: 20),
-          //         ),
-          //       ),
-          //     ),
-          //     Padding(
-          //       padding: const EdgeInsets.symmetric(horizontal: 10),
-          //       child: SizedBox(
-          //         width: 300,
-          //         child: TextField(
-          //           decoration: InputDecoration(
-          //             hintText: 'Description',
-          //             border: InputBorder.none,
-          //             disabledBorder: InputBorder.none,
-          //             enabledBorder: InputBorder.none,
-          //             errorBorder: InputBorder.none,
-          //             focusedBorder: InputBorder.none,
-          //             focusedErrorBorder: InputBorder.none,
-          //           ),
-          //           controller: descriptionController,
-          //           style: TextStyle(fontSize: 20),
-          //         ),
-          //       ),
-          //     ),
-          //   ],
-          // ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: SizedBox(
+                  width: 300,
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Title',
+                      border: InputBorder.none,
+                      disabledBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      focusedErrorBorder: InputBorder.none,
+                    ),
+                    controller: titleController,
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: SizedBox(
+                  width: 1000,
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Description',
+                      border: InputBorder.none,
+                      disabledBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      focusedErrorBorder: InputBorder.none,
+                    ),
+                    maxLines: 7,
+                    controller: descriptionController,
+                    style: TextStyle(fontSize: 15),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
