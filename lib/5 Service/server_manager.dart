@@ -326,13 +326,16 @@ class ServerManager {
     };
   }
 
-  Future getAllContent({
+  // search content
+  Future searchContent({
+    required String query,
     required ContentTypeEnum contentType,
     required int page,
   }) async {
     var response = await dio.get(
-      "$_baseUrl/allContent",
+      "$_baseUrl/searchContent",
       queryParameters: {
+        'query': query,
         'content_type_id': contentType.index + 1,
         'page': page,
       },

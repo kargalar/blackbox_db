@@ -19,18 +19,15 @@ class ManagerPanelProvider with ChangeNotifier {
 
   // ? contentId null ise contentPage de demek
 
-  Future getAllContent({
-    required ContentTypeEnum contentType,
-    required int page,
-  }) async {
-    if (!isLoading) return;
-    {
+  Future searchContent({String? searchText, required ContentTypeEnum contentType}) async {
+    if (!isLoading) {
       isLoading = true;
       notifyListeners();
     }
 
-    final response = await ServerManager().getAllContent(
-      contentType: ContentTypeEnum.MOVIE,
+    final response = await ServerManager().searchContent(
+      query: searchText ?? "",
+      contentType: contentType,
       page: currentPageIndex,
     );
 

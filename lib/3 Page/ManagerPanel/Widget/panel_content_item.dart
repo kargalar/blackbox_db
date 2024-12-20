@@ -2,8 +2,8 @@ import 'package:blackbox_db/2%20General/Widget/Content/Widget/content_poster.dar
 import 'package:blackbox_db/8%20Model/content_model.dart';
 import 'package:flutter/material.dart';
 
-class PanelContentWidget extends StatefulWidget {
-  const PanelContentWidget({
+class PanelContentItem extends StatefulWidget {
+  const PanelContentItem({
     super.key,
     required this.contentModel,
   });
@@ -11,10 +11,10 @@ class PanelContentWidget extends StatefulWidget {
   final ContentModel contentModel;
 
   @override
-  State<PanelContentWidget> createState() => _PanelContentWidgetState();
+  State<PanelContentItem> createState() => _PanelContentItemState();
 }
 
-class _PanelContentWidgetState extends State<PanelContentWidget> {
+class _PanelContentItemState extends State<PanelContentItem> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
 
