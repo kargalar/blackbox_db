@@ -31,7 +31,7 @@ class ContentModel {
   final String? posterPath;
   final ContentTypeEnum contentType;
   final String title;
-  final String description;
+  final String? description;
   final DateTime? releaseDate;
   final List<CastModel>? creatorList;
   final List<GenreModel>? genreList;

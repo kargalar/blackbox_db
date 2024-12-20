@@ -1,6 +1,8 @@
 import 'package:blackbox_db/2%20General/app_colors.dart';
 import 'package:blackbox_db/3%20Page/Explore/Widget/select_filter.dart';
 import 'package:blackbox_db/6%20Provider/explore_provider.dart';
+import 'package:blackbox_db/6%20Provider/general_provider.dart';
+import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -59,7 +61,7 @@ class _ExploreFilterState extends State<ExploreFilter> {
                 },
               ),
             ),
-            if (ExploreProvider().allGenres != null)
+            if (GeneralProvider().exploreContentType == ContentTypeEnum.MOVIE ? ExploreProvider().allMovieGenres != null : ExploreProvider().allGameGenres != null)
               SelectFilter(
                 title: "Genre",
                 addItem: (item) {
@@ -70,10 +72,10 @@ class _ExploreFilterState extends State<ExploreFilter> {
                   ExploreProvider().genreFilteredList.remove(item);
                   ExploreProvider().getContent(context: context);
                 },
-                allItemList: ExploreProvider().allGenres!,
+                allItemList: GeneralProvider().exploreContentType == ContentTypeEnum.MOVIE ? ExploreProvider().allMovieGenres! : ExploreProvider().allGameGenres!,
                 filteredItemList: ExploreProvider().genreFilteredList,
               ),
-            if (ExploreProvider().allLanguage != null)
+            if (GeneralProvider().exploreContentType == ContentTypeEnum.MOVIE ? ExploreProvider().allMovieLanguage != null : ExploreProvider().allGameLanguage != null)
               SelectFilter(
                 title: "Language",
                 addItem: (item) {
@@ -84,7 +86,7 @@ class _ExploreFilterState extends State<ExploreFilter> {
                   ExploreProvider().languageFilter = null;
                   ExploreProvider().getContent(context: context);
                 },
-                allItemList: ExploreProvider().allLanguage!,
+                allItemList: GeneralProvider().exploreContentType == ContentTypeEnum.MOVIE ? ExploreProvider().allMovieLanguage! : ExploreProvider().allGameLanguage!,
                 selectedItem: ExploreProvider().languageFilter,
               ),
           ],

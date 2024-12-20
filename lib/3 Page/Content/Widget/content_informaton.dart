@@ -61,14 +61,15 @@ class ContentInformation extends StatelessWidget {
               ],
             ),
           const SizedBox(height: 20),
-          SizedBox(
-            child: Text(
-              contentModel.description,
-              style: const TextStyle(
-                fontSize: 16,
+          if (contentModel.description != null)
+            SizedBox(
+              child: Text(
+                contentModel.description!,
+                style: const TextStyle(
+                  fontSize: 16,
+                ),
               ),
             ),
-          ),
           const Divider(),
           if (contentModel.genreList != null)
             Row(
@@ -78,10 +79,11 @@ class ContentInformation extends StatelessWidget {
                   style: const TextStyle(fontSize: 16),
                 ),
                 const SizedBox(width: 10),
-                Text(
-                  "${contentModel.length} min",
-                  style: const TextStyle(fontSize: 16),
-                ),
+                if (contentModel.length != null)
+                  Text(
+                    "${contentModel.length} min",
+                    style: const TextStyle(fontSize: 16),
+                  ),
               ],
             ),
           const SizedBox(height: 20),

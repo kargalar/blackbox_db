@@ -23,7 +23,7 @@ class _PanelContentItemState extends State<PanelContentItem> {
     super.initState();
 
     titleController.text = widget.contentModel.title;
-    descriptionController.text = widget.contentModel.description;
+    descriptionController.text = widget.contentModel.description ?? "";
   }
 
   @override

@@ -1,16 +1,19 @@
 class LanguageModel {
   LanguageModel({
+    required this.id,
     required this.iso,
     required this.name,
   });
 
-  String iso;
-  String name;
+  int? id;
+  String? iso;
+  String? name;
 
   factory LanguageModel.fromJson(Map<String, dynamic> json) {
     return LanguageModel(
+      id: json['id'],
       iso: json['iso_639_1'],
-      name: json['english_name'],
+      name: json['english_name'] ?? json['name'],
     );
   }
 
@@ -20,12 +23,5 @@ class LanguageModel {
       list.add(LanguageModel.fromJson(json));
     }
     return list;
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'iso_639_1': iso,
-      'english_name': name,
-    };
   }
 }

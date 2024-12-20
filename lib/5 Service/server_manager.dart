@@ -83,9 +83,12 @@ class ServerManager {
   }
 
   // get all language
-  Future<List<LanguageModel>> getAllLanguage() async {
+  Future<List<LanguageModel>> getAllLanguage(ContentTypeEnum contentType) async {
     var response = await dio.get(
       "$_baseUrl/getAllLanguage",
+      queryParameters: {
+        'content_type_id': contentType.index + 1,
+      },
     );
 
     checkRequest(response);
@@ -94,9 +97,12 @@ class ServerManager {
   }
 
   // get all genre
-  Future<List<GenreModel>> getAllGenre() async {
+  Future<List<GenreModel>> getAllGenre(ContentTypeEnum contentType) async {
     var response = await dio.get(
       "$_baseUrl/getAllGenre",
+      queryParameters: {
+        'content_type_id': contentType.index + 1,
+      },
     );
 
     checkRequest(response);
@@ -107,10 +113,11 @@ class ServerManager {
   // get discover content
   Future getDiscoverMovie({
     required int userId,
-    int? yearFilter,
   }) async {
-    if (ExploreProvider().allGenres == null) ExploreProvider().allGenres = await getAllGenre();
-    if (ExploreProvider().allLanguage == null) ExploreProvider().allLanguage = await getAllLanguage();
+    if (ExploreProvider().allMovieGenres == null || ExploreProvider().allMovieLanguage == null) {
+      ExploreProvider().allMovieGenres = await getAllGenre(ContentTypeEnum.MOVIE);
+      ExploreProvider().allMovieLanguage = await getAllLanguage(ContentTypeEnum.MOVIE);
+    }
 
     String url = "$_baseUrl/discoverMovie?user_id=$userId";
 
@@ -120,14 +127,14 @@ class ServerManager {
       url += "&with_genres=$genreIds";
     }
     if (ExploreProvider().languageFilter != null) {
-      String languageISO = ExploreProvider().languageFilter!.iso;
+      String languageISO = ExploreProvider().languageFilter!.iso!;
 
       url += "&with_original_language=$languageISO";
     }
 
-    if (yearFilter != null) {
-      url += "&year=$yearFilter";
-    }
+    // if (yearFilter != null) {
+    //   url += "&year=$yearFilter";
+    // }
     url += "&page=${ExploreProvider().currentPageIndex}";
 
     var response = await dio.get(
@@ -149,17 +156,10 @@ class ServerManager {
   // get discover Game
   Future getDiscoverGame({
     required int userId,
-    int? yearFilter,
   }) async {
-    // TODO buradı film genre getiriyor. oyun geenre al
-    if (ExploreProvider().allGenres == null) {
-      var response = await dio.get(
-        "$_baseUrl/getAllGenre",
-      );
-
-      checkRequest(response);
-
-      ExploreProvider().allGenres = (response.data as List).map((e) => GenreModel.fromJson(e)).toList();
+    if (ExploreProvider().allGameGenres == null || ExploreProvider().allGameLanguage == null) {
+      ExploreProvider().allGameGenres = await getAllGenre(ContentTypeEnum.GAME);
+      ExploreProvider().allGameLanguage = await getAllLanguage(ContentTypeEnum.GAME);
     }
 
     String url = "$_baseUrl/discoverGame?user_id=$userId";
@@ -169,27 +169,28 @@ class ServerManager {
 
       url += "&genre=$genreIds";
     }
-    if (yearFilter != null) {
-      url += "&year=$yearFilter";
+
+    if (ExploreProvider().languageFilter != null) {
+      url += "&language=${ExploreProvider().languageFilter!.id}";
     }
+    // if (yearFilter != null) {
+    //   url += "&year=$yearFilter";
+    // }
+
     url += "&offset=${ExploreProvider().currentPageIndex * 20}";
 
     var response = await dio.get(
       url,
     );
-
     checkRequest(response);
 
     var data = response.data as Map<String, dynamic>;
     var contentList = (data['contents'] as List).map((e) => ShowcaseContentModel.fromJson(e)).toList();
-    // TODO: ayrı istek atmadan kaç tane total sonuç olduğu alınabilyor mu
-    // var totalPages = data['total_pages'] as int;
+    var totalPages = data['total_pages'] as int;
 
     return {
       'contentList': contentList,
-      'totalPages': 50,
-      // TODO:
-      // 'totalPages': totalPages,
+      'totalPages': totalPages,
     };
   }
 
