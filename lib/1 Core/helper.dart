@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:blackbox_db/1%20Core/Enums/status_enum.dart';
 import 'package:blackbox_db/1%20Core/Widgets/sure_dialog.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -47,6 +49,7 @@ class Helper {
       animationDuration: const Duration(milliseconds: 500),
       duration: duration ?? (status == StatusEnum.WARNING ? const Duration(seconds: 4) : const Duration(seconds: 2)),
       dismissDirection: DismissDirection.horizontal,
+      maxWidth: Platform.isWindows ? 500 : null,
       icon: icon != null
           ? Icon(icon)
           : (status == StatusEnum.WARNING

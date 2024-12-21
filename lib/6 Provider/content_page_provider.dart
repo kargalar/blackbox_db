@@ -29,7 +29,7 @@ class ContentPageProvider with ChangeNotifier {
     String? review,
   }) async {
     final ContentLogModel userLog = ContentLogModel(
-      userID: loginUser.id,
+      userID: loginUser!.id,
       contentID: contentId ?? contentModel!.id,
       contentType: contentType,
       contentStatus: contentStatus,

@@ -1,9 +1,12 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:blackbox_db/2%20General/accessible.dart';
+import 'package:blackbox_db/5%20Service/server_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:blackbox_db/1%20Core/helper.dart';
 import 'package:blackbox_db/2%20General/app_colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:windows_single_instance/windows_single_instance.dart';
 
@@ -43,6 +46,14 @@ Future<void> initApp(List<String> args) async {
       await windowManager.show();
       await windowManager.focus();
     });
+  }
+
+  // auto login
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final String? email = prefs.getString('email');
+  final String? password = prefs.getString('password');
+  if (email != null && password != null) {
+    loginUser = await ServerManager().login(email: email, password: password);
   }
 
   // Custom Error

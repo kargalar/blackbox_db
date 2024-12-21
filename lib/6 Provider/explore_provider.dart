@@ -56,11 +56,11 @@ class ExploreProvider with ChangeNotifier {
       } else {
         if (context.read<GeneralProvider>().exploreContentType == ContentTypeEnum.MOVIE) {
           response = await ServerManager().getDiscoverMovie(
-            userId: loginUser.id,
+            userId: loginUser!.id,
           );
         } else if (context.read<GeneralProvider>().exploreContentType == ContentTypeEnum.GAME) {
           response = await ServerManager().getDiscoverGame(
-            userId: loginUser.id,
+            userId: loginUser!.id,
           );
         }
       }

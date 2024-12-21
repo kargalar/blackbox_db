@@ -214,7 +214,7 @@ class ContentUserAction extends StatelessWidget {
               onTap: () async {
                 // TODO: get backend
                 final log = ContentLogModel(
-                  userID: loginUser.id,
+                  userID: loginUser!.id,
                   date: DateTime.now(),
                   contentID: contentPageProvider.contentModel!.id,
                   contentType: contentPageProvider.contentModel!.contentType,

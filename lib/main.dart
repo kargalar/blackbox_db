@@ -1,3 +1,5 @@
+import 'package:blackbox_db/2%20General/accessible.dart';
+import 'package:blackbox_db/3%20Page/Login/login_page.dart';
 import 'package:blackbox_db/6%20Provider/content_page_provider.dart';
 import 'package:blackbox_db/6%20Provider/explore_provider.dart';
 import 'package:blackbox_db/6%20Provider/general_provider.dart';
@@ -45,7 +47,7 @@ class Main extends StatelessWidget {
           theme: AppColors().appTheme,
           debugShowCheckedModeBanner: false,
           showPerformanceOverlay: false,
-          home: const AppbarManager(),
+          home: loginUser != null ? const AppbarManager() : const LoginPage(),
         );
       },
     );

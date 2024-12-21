@@ -19,10 +19,11 @@ class UserInfo extends StatelessWidget {
               fontSize: 25,
               fontWeight: FontWeight.bold,
             )),
-        Text(user.bio,
-            style: const TextStyle(
-              fontSize: 15,
-            )),
+        if (user.bio != null)
+          Text(user.bio!,
+              style: const TextStyle(
+                fontSize: 15,
+              )),
       ],
     );
   }

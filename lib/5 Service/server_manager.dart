@@ -1,3 +1,5 @@
+import 'package:blackbox_db/1%20Core/Enums/status_enum.dart';
+import 'package:blackbox_db/1%20Core/helper.dart';
 import 'package:blackbox_db/2%20General/accessible.dart';
 import 'package:blackbox_db/6%20Provider/explore_provider.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
@@ -39,6 +41,78 @@ class ServerManager {
 
   // ********************************************
 
+  Future<UserModel?> login({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      var response = await dio.post(
+        "$_baseUrl/login",
+        data: {
+          'email': email,
+          'password': password,
+        },
+      );
+
+      return UserModel.fromJson(response.data);
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 404) {
+        // Show error message to the user
+        Helper().getMessage(
+          status: StatusEnum.WARNING,
+          message: 'Email not found',
+        );
+      } else if (e.response?.statusCode == 401) {
+        // Show error message to the user
+        Helper().getMessage(
+          status: StatusEnum.WARNING,
+          message: 'Incorrect password',
+        );
+      } else {
+        // Handle other errors
+        Helper().getMessage(
+          status: StatusEnum.WARNING,
+          message: 'An error occurred: ${e.message}',
+        );
+      }
+      return null;
+    }
+  }
+
+  Future<UserModel?> register({
+    required String username,
+    required String email,
+    required String password,
+  }) async {
+    try {
+      var response = await dio.post(
+        "$_baseUrl/register",
+        data: {
+          'username': username,
+          'email': email,
+          'password': password,
+        },
+      );
+
+      checkRequest(response);
+
+      return UserModel.fromJson(response.data);
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 409) {
+        Helper().getMessage(
+          status: StatusEnum.WARNING,
+          message: 'User already exists',
+        );
+      } else {
+        Helper().getMessage(
+          status: StatusEnum.WARNING,
+          message: 'An error occurred: ${e.message}',
+        );
+      }
+      return null;
+    }
+  }
+
   Future getUserInfo({
     required int userId,
   }) async {
@@ -63,7 +137,7 @@ class ServerManager {
     var response = await dio.get(
       "$_baseUrl/userContents",
       queryParameters: {
-        'user_id': loginUser.id,
+        'user_id': loginUser!.id,
         'log_user_id': logUserId,
         'content_type_id': contentType.index + 1,
         'page': ExploreProvider().currentPageIndex,
@@ -225,7 +299,7 @@ class ServerManager {
     var response = await dio.get(
       "$_baseUrl/content_detail",
       queryParameters: {
-        'user_id': userId ?? loginUser.id,
+        'user_id': userId ?? loginUser!.id,
         'content_id': contentId,
         'content_type_id': contentType.index + 1,
       },
@@ -273,7 +347,7 @@ class ServerManager {
       "$_baseUrl/getTrendContent",
       queryParameters: {
         'content_type_id': contentType.index + 1,
-        'user_id': loginUser.id,
+        'user_id': loginUser!.id,
       },
     );
 
@@ -294,7 +368,7 @@ class ServerManager {
       "$_baseUrl/friendsActivity",
       queryParameters: {
         'content_type_id': contentType.index + 1,
-        'user_id': loginUser.id,
+        'user_id': loginUser!.id,
       },
     );
 

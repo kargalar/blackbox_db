@@ -11,7 +11,7 @@ class UserModel {
   int id;
   String username;
   String password;
-  String bio;
+  String? bio;
   String email;
   DateTime createdAt;
 

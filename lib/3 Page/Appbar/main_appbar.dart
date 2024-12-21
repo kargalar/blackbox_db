@@ -25,7 +25,7 @@ class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
         SizedBox(width: 10),
         AppbarProfile(),
         SizedBox(width: 10),
-        if (loginUser.id < 0)
+        if (loginUser!.id < 0)
           InkWell(
             borderRadius: AppColors.borderRadiusAll,
             onTap: () {
