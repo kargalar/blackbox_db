@@ -56,26 +56,30 @@ class ServerManager {
 
       return UserModel.fromJson(response.data);
     } on DioException catch (e) {
-      if (e.response?.statusCode == 404) {
-        // Show error message to the user
-        Helper().getMessage(
-          status: StatusEnum.WARNING,
-          message: 'Email not found',
-        );
-      } else if (e.response?.statusCode == 401) {
-        // Show error message to the user
-        Helper().getMessage(
-          status: StatusEnum.WARNING,
-          message: 'Incorrect password',
-        );
-      } else {
-        // Handle other errors
-        Helper().getMessage(
-          status: StatusEnum.WARNING,
-          message: 'An error occurred: ${e.message}',
-        );
+      try {
+        if (e.response?.statusCode == 404) {
+          // Show error message to the user
+          Helper().getMessage(
+            status: StatusEnum.WARNING,
+            message: 'Email not found',
+          );
+        } else if (e.response?.statusCode == 401) {
+          // Show error message to the user
+          Helper().getMessage(
+            status: StatusEnum.WARNING,
+            message: 'Incorrect password',
+          );
+        } else {
+          // Handle other errors
+          Helper().getMessage(
+            status: StatusEnum.WARNING,
+            message: 'An error occurred: ${e.message}',
+          );
+        }
+        return null;
+      } catch (_) {
+        return null;
       }
-      return null;
     }
   }
 
@@ -126,6 +130,21 @@ class ServerManager {
     checkRequest(response);
 
     return UserModel.fromJson(response.data);
+  }
+
+  Future followUnfollow({
+    required int userId,
+    required int followingUserID,
+  }) async {
+    var response = await dio.post(
+      "$_baseUrl/followUnfollow",
+      data: {
+        'user_id': userId,
+        'following_user_id': followingUserID,
+      },
+    );
+
+    checkRequest(response);
   }
 
   // get all movie for showcase with user id

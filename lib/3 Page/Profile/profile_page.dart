@@ -1,4 +1,5 @@
 import 'package:blackbox_db/2%20General/Widget/profile_picture.dart';
+import 'package:blackbox_db/2%20General/accessible.dart';
 import 'package:blackbox_db/3%20Page/Explore/explore_page.dart';
 import 'package:blackbox_db/3%20Page/Profile/Sections/profile_activity.dart';
 import 'package:blackbox_db/3%20Page/Profile/Sections/profile_home.dart';
@@ -7,6 +8,7 @@ import 'package:blackbox_db/3%20Page/Profile/Sections/profile_networks.dart';
 import 'package:blackbox_db/3%20Page/Profile/Sections/profile_reviews.dart';
 import 'package:blackbox_db/3%20Page/Profile/Widget/profile_section.dart';
 import 'package:blackbox_db/3%20Page/Profile/Widget/user_info.dart';
+import 'package:blackbox_db/5%20Service/server_manager.dart';
 import 'package:blackbox_db/6%20Provider/explore_provider.dart';
 import 'package:blackbox_db/6%20Provider/general_provider.dart';
 import 'package:blackbox_db/6%20Provider/profile_provider.dart';
@@ -65,6 +67,23 @@ class _ProfilePageState extends State<ProfilePage> {
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
+                        if (context.watch<ProfileProvider>().user!.id != loginUser!.id)
+                          TextButton(
+                            onPressed: () async {
+                              await ServerManager().followUnfollow(
+                                userId: loginUser!.id,
+                                followingUserID: context.read<ProfileProvider>().user!.id,
+                              );
+
+                              setState(() {
+                                context.read<ProfileProvider>().user!.isFollowed = !context.read<ProfileProvider>().user!.isFollowed!;
+                              });
+                            },
+                            child: Text(
+                              context.watch<ProfileProvider>().user!.isFollowed! ? "Unfollow" : "Follow",
+                            ),
+                          ),
+                        SizedBox(width: 10),
                         // TODO:
                         ProfilePicture.profile(
                           imageUrl: "https://images.pexels.com/photos/29191749/pexels-photo-29191749/free-photo-of-traditional-farmer-in-rural-vietnamese-setting.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",

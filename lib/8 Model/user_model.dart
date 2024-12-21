@@ -6,14 +6,16 @@ class UserModel {
     required this.bio,
     required this.email,
     required this.createdAt,
+    this.isFollowed,
   });
 
   int id;
   String username;
-  String password;
+  String? password;
   String? bio;
-  String email;
+  String? email;
   DateTime createdAt;
+  bool? isFollowed;
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         id: json["id"],
@@ -22,6 +24,7 @@ class UserModel {
         bio: json["bio"],
         email: json["email"],
         createdAt: DateTime.parse(json["created_at"]),
+        isFollowed: json["is_followed"],
       );
 
   Map<String, dynamic> toJson() => {

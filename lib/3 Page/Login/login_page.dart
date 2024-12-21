@@ -126,7 +126,7 @@ class _LoginPageState extends State<LoginPage> {
                         prefs.setString('email', _emailController.text);
                         prefs.setString('password', _passwordController.text);
 
-                        GeneralProvider().currentIndex = 1;
+                        GeneralProvider().currentIndex = 0;
 
                         await Get.offUntil(
                           GetPageRoute(
