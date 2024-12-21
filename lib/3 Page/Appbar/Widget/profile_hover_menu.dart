@@ -17,8 +17,8 @@ class ProfileHoverMenu extends StatelessWidget {
           child: Column(
             children: [
               HoverMenuFilterItem(contentType: ContentTypeEnum.MOVIE),
-              HoverMenuFilterItem(contentType: ContentTypeEnum.BOOK),
               HoverMenuFilterItem(contentType: ContentTypeEnum.GAME),
+              // HoverMenuFilterItem(contentType: ContentTypeEnum.BOOK),
             ],
           ),
         ),

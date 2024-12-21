@@ -12,7 +12,7 @@ class AppbarExploreButtons extends StatelessWidget {
     return const Row(children: [
       ExploreButton(contentType: ContentTypeEnum.MOVIE),
       ExploreButton(contentType: ContentTypeEnum.GAME),
-      ExploreButton(contentType: ContentTypeEnum.BOOK),
+      // ExploreButton(contentType: ContentTypeEnum.BOOK),
     ]);
   }
 }
@@ -36,11 +36,13 @@ class ExploreButton extends StatelessWidget {
       },
       child: Padding(
         padding: const EdgeInsets.all(8),
-        child: Text(contentType == ContentTypeEnum.MOVIE
-            ? "Movies"
-            : contentType == ContentTypeEnum.GAME
-                ? "Games"
-                : "Books"),
+        child: Text(
+          contentType == ContentTypeEnum.MOVIE
+              ? "Movies"
+              : contentType == ContentTypeEnum.GAME
+                  ? "Games"
+                  : "Books",
+        ),
       ),
     );
   }
