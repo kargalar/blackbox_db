@@ -123,7 +123,8 @@ class ServerManager {
     var response = await dio.get(
       "$_baseUrl/getUserInfo",
       queryParameters: {
-        'user_id': userId,
+        'user_id': loginUser!.id,
+        'profile_user_id': userId,
       },
     );
 
