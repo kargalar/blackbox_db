@@ -75,7 +75,11 @@ class _ExploreFilterState extends State<ExploreFilter> {
                 allItemList: GeneralProvider().exploreContentType == ContentTypeEnum.MOVIE ? ExploreProvider().allMovieGenres! : ExploreProvider().allGameGenres!,
                 filteredItemList: ExploreProvider().genreFilteredList,
               ),
-            if (GeneralProvider().exploreContentType == ContentTypeEnum.MOVIE ? ExploreProvider().allMovieLanguage != null : ExploreProvider().allGameLanguage != null)
+            if (GeneralProvider().exploreContentType == ContentTypeEnum.MOVIE
+                ? ExploreProvider().allMovieLanguage != null
+                :
+                //  ExploreProvider().allGameLanguage != null
+                false)
               SelectFilter(
                 title: "Language",
                 addItem: (item) {
@@ -86,7 +90,8 @@ class _ExploreFilterState extends State<ExploreFilter> {
                   ExploreProvider().languageFilter = null;
                   ExploreProvider().getContent(context: context);
                 },
-                allItemList: GeneralProvider().exploreContentType == ContentTypeEnum.MOVIE ? ExploreProvider().allMovieLanguage! : ExploreProvider().allGameLanguage!,
+                // allItemList: GeneralProvider().exploreContentType == ContentTypeEnum.MOVIE ? ExploreProvider().allMovieLanguage! : ExploreProvider().allGameLanguage!,
+                allItemList: ExploreProvider().allMovieLanguage!,
                 selectedItem: ExploreProvider().languageFilter,
               ),
           ],

@@ -157,9 +157,11 @@ class ServerManager {
   Future getDiscoverGame({
     required int userId,
   }) async {
-    if (ExploreProvider().allGameGenres == null || ExploreProvider().allGameLanguage == null) {
+    if (ExploreProvider().allGameGenres == null
+        //  || ExploreProvider().allGameLanguage == null
+        ) {
       ExploreProvider().allGameGenres = await getAllGenre(ContentTypeEnum.GAME);
-      ExploreProvider().allGameLanguage = await getAllLanguage(ContentTypeEnum.GAME);
+      // ExploreProvider().allGameLanguage = await getAllLanguage(ContentTypeEnum.GAME);
     }
 
     String url = "$_baseUrl/discoverGame?user_id=$userId";
@@ -170,9 +172,9 @@ class ServerManager {
       url += "&genre=$genreIds";
     }
 
-    if (ExploreProvider().languageFilter != null) {
-      url += "&language=${ExploreProvider().languageFilter!.id}";
-    }
+    // if (ExploreProvider().languageFilter != null) {
+    //   url += "&language=${ExploreProvider().languageFilter!.id}";
+    // }
     // if (yearFilter != null) {
     //   url += "&year=$yearFilter";
     // }

@@ -25,7 +25,7 @@ class ExploreProvider with ChangeNotifier {
   List<GenreModel>? allMovieGenres;
   List<GenreModel>? allGameGenres;
   List<LanguageModel>? allMovieLanguage;
-  List<LanguageModel>? allGameLanguage;
+  // List<LanguageModel>? allGameLanguage;
 
   // rating filter
 
