@@ -8,7 +8,6 @@ import 'package:blackbox_db/1%20Core/helper.dart';
 import 'package:blackbox_db/2%20General/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:window_manager/window_manager.dart';
-import 'package:windows_single_instance/windows_single_instance.dart';
 
 // args for singlw window instance
 Future<void> initApp(List<String> args) async {
@@ -27,9 +26,6 @@ Future<void> initApp(List<String> args) async {
   // block multiple instances app
   // is windows
   if (Platform.isWindows) {
-    await WindowsSingleInstance.ensureSingleInstance(args, "multiple_timer", onSecondWindow: (args) {
-      debugPrint(args.toString());
-    });
     // Must add this line.
     await windowManager.ensureInitialized();
 
