@@ -1,16 +1,16 @@
-import 'package:blackbox_db/2%20General/accessible.dart';
-import 'package:blackbox_db/3%20Page/Login/login_page.dart';
-import 'package:blackbox_db/6%20Provider/content_page_provider.dart';
-import 'package:blackbox_db/6%20Provider/explore_provider.dart';
-import 'package:blackbox_db/6%20Provider/general_provider.dart';
-import 'package:blackbox_db/6%20Provider/manager_panel_provider.dart';
-import 'package:blackbox_db/6%20Provider/profile_provider.dart';
+import 'package:blackbox_db/2_General/accessible.dart';
+import 'package:blackbox_db/3_Page/Login/login_page.dart';
+import 'package:blackbox_db/6_Provider/content_page_provider.dart';
+import 'package:blackbox_db/6_Provider/explore_provider.dart';
+import 'package:blackbox_db/6_Provider/general_provider.dart';
+import 'package:blackbox_db/6_Provider/manager_panel_provider.dart';
+import 'package:blackbox_db/6_Provider/profile_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:blackbox_db/2%20General/app_colors.dart';
+import 'package:blackbox_db/2_General/app_colors.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:blackbox_db/2%20General/init_app.dart';
-import 'package:blackbox_db/3%20Page/appbar_manager.dart';
+import 'package:blackbox_db/2_General/init_app.dart';
+import 'package:blackbox_db/3_Page/appbar_manager.dart';
 import 'package:provider/provider.dart';
 
 void main(List<String> args) async {
