@@ -55,12 +55,12 @@ class ManagerPanelProvider with ChangeNotifier {
     try {
       // TODO: veriler paginationa ve intervala ygun hazırlandı düzenlenebilir
       topActorsByMovieCount = await ServerManager().getTopActorsByMovieCount();
-      mostWatchedMovies = await ServerManager().getMostWatchedMovies();
+      mostWatchedMovies = await ServerManager().getMostWatchedMovies(); //
       averageMovieRatingsByGenre = await ServerManager().getAverageMovieRatingsByGenre();
       averageMovieRatingsByYear = await ServerManager().getAverageMovieRatingsByYear();
       topMovieGenres = await ServerManager().getTopMovieGenres();
       topContentTypes = await ServerManager().getTopContentTypes();
-      weeklyContentLogs = await ServerManager().getWeeklyContentLogs();
+      weeklyContentLogs = await ServerManager().getWeeklyContentLogs(); //
     } finally {
       isLoading = false;
       notifyListeners();

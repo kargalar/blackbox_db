@@ -1,6 +1,6 @@
-import 'package:blackbox_db/3_Page/ManagerPanel/Widget/most_watched_statistics.dart';
+import 'package:blackbox_db/3_Page/ManagerPanel/Widget/Statistics/most_watched_statistics.dart';
 import 'package:blackbox_db/3_Page/ManagerPanel/Widget/panel_content_item.dart';
-import 'package:blackbox_db/3_Page/ManagerPanel/Widget/weekday_watch_count_statistics.dart';
+import 'package:blackbox_db/3_Page/ManagerPanel/Widget/Statistics/weekday_watch_count_statistics.dart';
 import 'package:blackbox_db/6_Provider/manager_panel_provider.dart';
 import 'package:blackbox_db/7_Enum/content_type_enum.dart';
 import 'package:flutter/material.dart';
