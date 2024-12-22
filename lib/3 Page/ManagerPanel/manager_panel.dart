@@ -29,32 +29,49 @@ class _ManagerPanelState extends State<ManagerPanel> {
         : managerPanelProvider.contentList.isEmpty
             ? const Center(child: Text('No Data'))
             : SingleChildScrollView(
-                child: Column(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    TextField(
-                      controller: textController,
-                      decoration: const InputDecoration(
-                        hintText: 'Search Content',
+                    SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              width: 300,
+                              child: TextField(
+                                controller: textController,
+                                decoration: const InputDecoration(
+                                  hintText: 'Search Content',
+                                ),
+                                onEditingComplete: () async {
+                                  await managerPanelProvider.searchContent(
+                                    searchText: textController.text,
+                                    contentType: ContentTypeEnum.MOVIE,
+                                  );
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              width: 620,
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: managerPanelProvider.contentList.length,
+                                itemBuilder: (context, index) {
+                                  // TODO: burada içeriğin bilgileri gösterilecek ve düzenlenebilecek veya silinebilecek. yapıaln değişikliklere göre güncellenmesi gerekenler güncellenecek
+                                  return PanelContentItem(
+                                    contentModel: managerPanelProvider.contentList[index],
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      onEditingComplete: () async {
-                        await managerPanelProvider.searchContent(
-                          searchText: textController.text,
-                          contentType: ContentTypeEnum.MOVIE,
-                        );
-                      },
                     ),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: managerPanelProvider.contentList.length,
-                      itemBuilder: (context, index) {
-                        // TODO: burada içeriğin bilgileri gösterilecek ve düzenlenebilecek veya silinebilecek. yapıaln değişikliklere göre güncellenmesi gerekenler güncellenecek
-                        return PanelContentItem(
-                          contentModel: managerPanelProvider.contentList[index],
-                        );
-                      },
-                    ),
+                    // charts
                   ],
                 ),
               );

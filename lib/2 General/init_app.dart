@@ -49,7 +49,11 @@ Future<void> initApp(List<String> args) async {
   final String? email = prefs.getString('email');
   final String? password = prefs.getString('password');
   if (email != null && password != null) {
-    loginUser = await ServerManager().login(email: email, password: password);
+    loginUser = await ServerManager().login(
+      email: email,
+      password: password,
+      isAutoLogin: true,
+    );
   }
 
   // Custom Error

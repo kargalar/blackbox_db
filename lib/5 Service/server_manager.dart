@@ -44,6 +44,7 @@ class ServerManager {
   Future<UserModel?> login({
     required String email,
     required String password,
+    bool isAutoLogin = false,
   }) async {
     try {
       var response = await dio.post(
@@ -56,6 +57,7 @@ class ServerManager {
 
       return UserModel.fromJson(response.data);
     } on DioException catch (e) {
+      if (isAutoLogin) return null;
       try {
         if (e.response?.statusCode == 404) {
           // Show error message to the user

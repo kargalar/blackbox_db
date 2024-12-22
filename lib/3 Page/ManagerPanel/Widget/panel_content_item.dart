@@ -29,28 +29,26 @@ class _PanelContentItemState extends State<PanelContentItem> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox(
-            width: 150,
+            width: 100,
             child: ContentPoster(
               posterPath: widget.contentModel.posterPath,
               contentType: widget.contentModel.contentType,
             ),
           ),
           const SizedBox(height: 10),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: SizedBox(
-                  width: 300,
+          SizedBox(
+            width: 500,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: TextField(
                     decoration: InputDecoration(
                       hintText: 'Title',
@@ -62,14 +60,11 @@ class _PanelContentItemState extends State<PanelContentItem> {
                       focusedErrorBorder: InputBorder.none,
                     ),
                     controller: titleController,
-                    style: TextStyle(fontSize: 20),
+                    style: TextStyle(fontSize: 18),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: SizedBox(
-                  width: 1000,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: TextField(
                     decoration: InputDecoration(
                       hintText: 'Description',
@@ -80,13 +75,13 @@ class _PanelContentItemState extends State<PanelContentItem> {
                       focusedBorder: InputBorder.none,
                       focusedErrorBorder: InputBorder.none,
                     ),
-                    maxLines: 7,
+                    maxLines: 5,
                     controller: descriptionController,
-                    style: TextStyle(fontSize: 15),
+                    style: TextStyle(fontSize: 13),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),

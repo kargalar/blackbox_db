@@ -35,7 +35,7 @@ class ContentActivity extends StatelessWidget {
                     maxLines: 4,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                      fontSize: 11,
+                      fontSize: 12,
                     ),
                   ),
                 ),
