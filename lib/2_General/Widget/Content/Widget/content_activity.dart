@@ -18,7 +18,7 @@ class ContentActivity extends StatelessWidget {
       bottom: 0,
       child: Container(
         width: 140,
-        color: AppColors.black.withOpacity(0.7),
+        color: AppColors.black.withValues(alpha: 0.7),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 1),
           child: Column(

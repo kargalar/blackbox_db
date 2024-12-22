@@ -176,7 +176,7 @@ class AppColors {
       backgroundColor: panelBackground,
       elevation: 0,
       unselectedIconTheme: IconThemeData(
-        color: white.withOpacity(0.7),
+        color: white.withValues(alpha: 0.7),
         size: 27,
       ),
       unselectedLabelStyle: const TextStyle(
@@ -411,7 +411,7 @@ class AppColors {
     textButtonTheme: TextButtonThemeData(
       style: ButtonStyle(
         foregroundColor: WidgetStateProperty.all<Color>(text),
-        overlayColor: WidgetStateProperty.all<Color>(text.withOpacity(0.1)),
+        overlayColor: WidgetStateProperty.all<Color>(text.withValues(alpha: 0.1)),
         shape: WidgetStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
             borderRadius: borderRadiusAll,

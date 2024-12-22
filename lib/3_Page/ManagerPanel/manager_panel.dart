@@ -1,4 +1,6 @@
+import 'package:blackbox_db/3_Page/ManagerPanel/Widget/most_watched_statistics.dart';
 import 'package:blackbox_db/3_Page/ManagerPanel/Widget/panel_content_item.dart';
+import 'package:blackbox_db/3_Page/ManagerPanel/Widget/weekday_watch_count_statistics.dart';
 import 'package:blackbox_db/6_Provider/manager_panel_provider.dart';
 import 'package:blackbox_db/7_Enum/content_type_enum.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +33,7 @@ class _ManagerPanelState extends State<ManagerPanel> {
             : SingleChildScrollView(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     SingleChildScrollView(
                       child: Padding(
@@ -71,7 +73,14 @@ class _ManagerPanelState extends State<ManagerPanel> {
                         ),
                       ),
                     ),
-                    // charts
+                    Column(
+                      children: [
+                        SizedBox(height: 50),
+                        MostWatchedStatistics(),
+                        SizedBox(height: 50),
+                        WeekdayWatchCountStatistics(),
+                      ],
+                    ),
                   ],
                 ),
               );
@@ -81,5 +90,6 @@ class _ManagerPanelState extends State<ManagerPanel> {
     await managerPanelProvider.searchContent(
       contentType: ContentTypeEnum.MOVIE,
     );
+    await managerPanelProvider.getStatistics();
   }
 }

@@ -14,7 +14,7 @@ class ContentHover extends StatelessWidget {
   Widget build(BuildContext context) {
     return Positioned.fill(
       child: Container(
-        color: AppColors.black.withOpacity(0.3),
+        color: AppColors.black.withValues(alpha: 0.3),
         child: Align(
           alignment: Alignment.bottomCenter,
           child: Padding(

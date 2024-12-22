@@ -20,7 +20,7 @@ class ContentTrend extends StatelessWidget {
           vertical: 2,
         ),
         decoration: BoxDecoration(
-          color: AppColors.black.withOpacity(0.8),
+          color: AppColors.black.withValues(alpha: 0.8),
           borderRadius: AppColors.borderRadiusAll / 2,
         ),
         child: Text(

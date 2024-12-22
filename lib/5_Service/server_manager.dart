@@ -474,4 +474,47 @@ class ServerManager {
       'totalPages': totalPages,
     };
   }
+
+  // statistics
+  Future<List<Map<String, dynamic>>> getTopActorsByMovieCount() async {
+    var response = await dio.get("$_baseUrl/getTopActorsByMovieCount");
+    checkRequest(response);
+    return (response.data as List).map((e) => e as Map<String, dynamic>).toList();
+  }
+
+  Future<List<Map<String, dynamic>>> getMostWatchedMovies() async {
+    var response = await dio.get("$_baseUrl/getMostWatchedMovies");
+    checkRequest(response);
+    return (response.data as List).map((e) => e as Map<String, dynamic>).toList();
+  }
+
+  Future<List<Map<String, dynamic>>> getAverageMovieRatingsByGenre() async {
+    var response = await dio.get("$_baseUrl/getAverageMovieRatingsByGenre");
+    checkRequest(response);
+    return (response.data as List).map((e) => e as Map<String, dynamic>).toList();
+  }
+
+  Future<List<Map<String, dynamic>>> getAverageMovieRatingsByYear() async {
+    var response = await dio.get("$_baseUrl/getAverageMovieRatingsByYear");
+    checkRequest(response);
+    return (response.data as List).map((e) => e as Map<String, dynamic>).toList();
+  }
+
+  Future<List<Map<String, dynamic>>> getTopMovieGenres() async {
+    var response = await dio.get("$_baseUrl/getTopMovieGenres");
+    checkRequest(response);
+    return (response.data as List).map((e) => e as Map<String, dynamic>).toList();
+  }
+
+  Future<List<Map<String, dynamic>>> getTopContentTypes() async {
+    var response = await dio.get("$_baseUrl/getTopContentTypes");
+    checkRequest(response);
+    return (response.data as List).map((e) => e as Map<String, dynamic>).toList();
+  }
+
+  Future<List<Map<String, dynamic>>> getWeeklyContentLogs() async {
+    var response = await dio.get("$_baseUrl/getWeeklyContentLogs");
+    checkRequest(response);
+    return (response.data as List).map((e) => e as Map<String, dynamic>).toList();
+  }
 }

@@ -17,6 +17,14 @@ class ManagerPanelProvider with ChangeNotifier {
 
   List<ContentModel> contentList = [];
 
+  List<Map<String, dynamic>> topActorsByMovieCount = [];
+  List<Map<String, dynamic>> mostWatchedMovies = [];
+  List<Map<String, dynamic>> averageMovieRatingsByGenre = [];
+  List<Map<String, dynamic>> averageMovieRatingsByYear = [];
+  List<Map<String, dynamic>> topMovieGenres = [];
+  List<Map<String, dynamic>> topContentTypes = [];
+  List<Map<String, dynamic>> weeklyContentLogs = [];
+
   // ? contentId null ise contentPage de demek
 
   Future searchContent({String? searchText, required ContentTypeEnum contentType}) async {
@@ -36,5 +44,26 @@ class ManagerPanelProvider with ChangeNotifier {
 
     isLoading = false;
     notifyListeners();
+  }
+
+  Future getStatistics() async {
+    if (!isLoading) {
+      isLoading = true;
+      notifyListeners();
+    }
+
+    try {
+      // TODO: veriler paginationa ve intervala ygun hazırlandı düzenlenebilir
+      topActorsByMovieCount = await ServerManager().getTopActorsByMovieCount();
+      mostWatchedMovies = await ServerManager().getMostWatchedMovies();
+      averageMovieRatingsByGenre = await ServerManager().getAverageMovieRatingsByGenre();
+      averageMovieRatingsByYear = await ServerManager().getAverageMovieRatingsByYear();
+      topMovieGenres = await ServerManager().getTopMovieGenres();
+      topContentTypes = await ServerManager().getTopContentTypes();
+      weeklyContentLogs = await ServerManager().getWeeklyContentLogs();
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
   }
 }

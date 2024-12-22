@@ -41,7 +41,7 @@ class ContentInformation extends StatelessWidget {
                   contentModel.releaseDate!.year.toString(),
                   style: TextStyle(
                     fontSize: 24,
-                    color: AppColors.text.withOpacity(0.6),
+                    color: AppColors.text.withValues(alpha: 0.6),
                   ),
                 ),
             ],

@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                         hintText: 'Username',
                         hintStyle: const TextStyle(color: AppColors.grey),
                         filled: true,
-                        fillColor: AppColors.white.withOpacity(0.1),
+                        fillColor: AppColors.white.withValues(alpha: 0.1),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8.0),
                           borderSide: BorderSide.none,
@@ -72,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
                       hintText: 'E-mail',
                       hintStyle: const TextStyle(color: AppColors.grey),
                       filled: true,
-                      fillColor: AppColors.white.withOpacity(0.1),
+                      fillColor: AppColors.white.withValues(alpha: 0.1),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8.0),
                         borderSide: BorderSide.none,
@@ -90,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                       hintText: 'Password',
                       hintStyle: const TextStyle(color: AppColors.grey),
                       filled: true,
-                      fillColor: AppColors.white.withOpacity(0.1),
+                      fillColor: AppColors.white.withValues(alpha: 0.1),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8.0),
                         borderSide: BorderSide.none,

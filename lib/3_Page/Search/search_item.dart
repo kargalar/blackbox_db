@@ -67,7 +67,7 @@ class SearchItem extends StatelessWidget {
                         searchMovieModel.year!,
                         style: TextStyle(
                           fontSize: 20,
-                          color: AppColors.text.withOpacity(0.6),
+                          color: AppColors.text.withValues(alpha: 0.6),
                         ),
                       ),
                   ],
@@ -77,7 +77,7 @@ class SearchItem extends StatelessWidget {
                     searchMovieModel.originalTitle!,
                     style: TextStyle(
                       fontSize: 15,
-                      color: AppColors.text.withOpacity(0.6),
+                      color: AppColors.text.withValues(alpha: 0.6),
                     ),
                   ),
                 // TODO: director
