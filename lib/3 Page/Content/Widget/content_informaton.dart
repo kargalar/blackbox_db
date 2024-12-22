@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blackbox_db/2%20General/app_colors.dart';
 import 'package:blackbox_db/3%20Page/Content/Widget/cast_item.dart';
 import 'package:blackbox_db/6%20Provider/content_page_provider.dart';
+import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -78,13 +79,13 @@ class ContentInformation extends StatelessWidget {
                   contentModel.genreList!.map((e) => e.name).join(", "),
                   style: const TextStyle(fontSize: 16),
                 ),
-                const SizedBox(width: 10),
-                if (contentModel.length != null)
-                  Text(
-                    "${contentModel.length} min",
-                    style: const TextStyle(fontSize: 16),
-                  ),
               ],
+            ),
+          const SizedBox(height: 20),
+          if (contentModel.length != null)
+            Text(
+              "${contentModel.length} ${contentModel.contentType == ContentTypeEnum.MOVIE ? "mins" : "hours"}",
+              style: const TextStyle(fontSize: 16),
             ),
           const SizedBox(height: 20),
           // TODO: buralar sadece isteyenler için açılacak şekilde olsun. tür, mod, actorler, platform falan. yani tasarımdaki gibi

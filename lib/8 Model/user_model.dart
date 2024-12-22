@@ -7,6 +7,10 @@ class UserModel {
     required this.email,
     required this.createdAt,
     this.isFollowed,
+    this.totalWatchMovies,
+    this.totalWatchTime,
+    this.totalPlayedGames,
+    this.totalPlayedTime,
   });
 
   int id;
@@ -16,6 +20,12 @@ class UserModel {
   String? email;
   DateTime createdAt;
   bool? isFollowed;
+  // movie statistics
+  int? totalWatchMovies;
+  int? totalWatchTime;
+  // game statistics
+  int? totalPlayedGames;
+  int? totalPlayedTime;
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         id: json["id"],
@@ -25,6 +35,10 @@ class UserModel {
         email: json["email"],
         createdAt: DateTime.parse(json["created_at"]),
         isFollowed: json["is_followed"],
+        totalWatchMovies: json["total_watched_movies"] != null ? int.parse(json["total_watched_movies"]) : null,
+        totalWatchTime: json["total_watch_time"] != null ? int.parse(json["total_watch_time"]) : null,
+        totalPlayedGames: json["total_played_games"] != null ? int.parse(json["total_played_games"]) : null,
+        totalPlayedTime: json["total_game_time"] != null ? int.parse(json["total_game_time"]) : null,
       );
 
   Map<String, dynamic> toJson() => {

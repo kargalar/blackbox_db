@@ -1,4 +1,5 @@
 import 'package:blackbox_db/3%20Page/Explore/Widget/content_list.dart';
+import 'package:blackbox_db/3%20Page/Profile/Widget/profile_statistics.dart';
 import 'package:blackbox_db/5%20Service/server_manager.dart';
 import 'package:blackbox_db/6%20Provider/profile_provider.dart';
 import 'package:blackbox_db/7%20Enum/content_type_enum.dart';
@@ -39,6 +40,8 @@ class _ProfileHomeState extends State<ProfileHome> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  ProfileStatistics(),
+                  SizedBox(height: 40),
                   // TODO:
                   Text("In Progress", style: TextStyle(fontSize: 20)),
                   // ContentList(
@@ -61,12 +64,12 @@ class _ProfileHomeState extends State<ProfileHome> {
                   Text("Last Game Activities", style: TextStyle(fontSize: 20)),
                   ContentList(
                     contentList: lastGameActivitiyContentList,
-                    showcaseType: ShowcaseTypeEnum.FLAT,
+                    showcaseType: ShowcaseTypeEnum.ACTIVITY,
                   ),
                   Text("Last Movie Activities", style: TextStyle(fontSize: 20)),
                   ContentList(
                     contentList: lastMovieActivitiyContentList,
-                    showcaseType: ShowcaseTypeEnum.FLAT,
+                    showcaseType: ShowcaseTypeEnum.ACTIVITY,
                   ),
                 ],
               ),
