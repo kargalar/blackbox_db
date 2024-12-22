@@ -31,15 +31,18 @@ Future<void> initApp(List<String> args) async {
     await windowManager.ensureInitialized();
 
     WindowOptions windowOptions = WindowOptions(
+      title: "BlackBox DB",
       size: Size(1920 * 0.8, 1080 * 0.8),
       maximumSize: Size(9999, 9999),
       minimumSize: Size(1200, 800),
-      // center: true,
       backgroundColor: Colors.transparent,
+      // fullScreen: false,
       // skipTaskbar: false,
+      // center: true,
       // titleBarStyle: TitleBarStyle.hidden,
     );
     windowManager.waitUntilReadyToShow(windowOptions, () async {
+      await windowManager.maximize();
       await windowManager.show();
       await windowManager.focus();
     });
