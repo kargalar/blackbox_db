@@ -1,4 +1,6 @@
+import 'package:blackbox_db/3_Page/ManagerPanel/Widget/Statistics/content_types_statistics.dart';
 import 'package:blackbox_db/3_Page/ManagerPanel/Widget/Statistics/most_watched_statistics.dart';
+import 'package:blackbox_db/3_Page/ManagerPanel/Widget/Statistics/movie_genres_statistics.dart';
 import 'package:blackbox_db/3_Page/ManagerPanel/Widget/panel_content_item.dart';
 import 'package:blackbox_db/3_Page/ManagerPanel/Widget/Statistics/weekday_watch_count_statistics.dart';
 import 'package:blackbox_db/6_Provider/manager_panel_provider.dart';
@@ -79,6 +81,11 @@ class _ManagerPanelState extends State<ManagerPanel> {
                         MostWatchedStatistics(),
                         SizedBox(height: 50),
                         WeekdayWatchCountStatistics(),
+                        SizedBox(height: 50),
+                        ContentTypeStatistics(),
+                        SizedBox(height: 50),
+                        MovieGenreStatistics(),
+                        SizedBox(height: 50),
                       ],
                     ),
                   ],

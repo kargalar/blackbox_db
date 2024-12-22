@@ -18,12 +18,8 @@ class ManagerPanelProvider with ChangeNotifier {
   List<ContentModel> contentList = [];
 
   List<Map<String, dynamic>> topActorsByMovieCount = [];
-  List<Map<String, dynamic>> mostWatchedMovies = [];
   List<Map<String, dynamic>> averageMovieRatingsByGenre = [];
   List<Map<String, dynamic>> averageMovieRatingsByYear = [];
-  List<Map<String, dynamic>> topMovieGenres = [];
-  List<Map<String, dynamic>> topContentTypes = [];
-  List<Map<String, dynamic>> weeklyContentLogs = [];
 
   // ? contentId null ise contentPage de demek
 
@@ -54,13 +50,22 @@ class ManagerPanelProvider with ChangeNotifier {
 
     try {
       // TODO: veriler paginationa ve intervala ygun hazırlandı düzenlenebilir
-      topActorsByMovieCount = await ServerManager().getTopActorsByMovieCount();
-      mostWatchedMovies = await ServerManager().getMostWatchedMovies(); //
-      averageMovieRatingsByGenre = await ServerManager().getAverageMovieRatingsByGenre();
-      averageMovieRatingsByYear = await ServerManager().getAverageMovieRatingsByYear();
-      topMovieGenres = await ServerManager().getTopMovieGenres();
-      topContentTypes = await ServerManager().getTopContentTypes();
-      weeklyContentLogs = await ServerManager().getWeeklyContentLogs(); //
+      topActorsByMovieCount = await ServerManager().getTopActorsByMovieCount(
+        page: 1,
+        limit: 10,
+        interval: "1 week",
+      );
+
+      averageMovieRatingsByGenre = await ServerManager().getAverageMovieRatingsByGenre(
+        page: 1,
+        limit: 10,
+        interval: "1 week",
+      );
+      averageMovieRatingsByYear = await ServerManager().getAverageMovieRatingsByYear(
+        page: 1,
+        limit: 10,
+        interval: "1 week",
+      );
     } finally {
       isLoading = false;
       notifyListeners();

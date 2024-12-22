@@ -1,23 +1,36 @@
-import 'package:blackbox_db/6_Provider/manager_panel_provider.dart';
+import 'package:blackbox_db/3_Page/ManagerPanel/Widget/select_interval.dart';
+import 'package:blackbox_db/5_Service/server_manager.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-class MostWatchedStatistics extends StatelessWidget {
+class MostWatchedStatistics extends StatefulWidget {
   const MostWatchedStatistics({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final managerPanelProvider = Provider.of<ManagerPanelProvider>(context);
+  State<MostWatchedStatistics> createState() => _MostWatchedStatisticsState();
+}
 
+class _MostWatchedStatisticsState extends State<MostWatchedStatistics> {
+  List<Map<String, dynamic>> mostWatchedMovies = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    getData();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       children: [
-        const Text(
-          "Most watched movies",
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-          ),
+        SelectInterval(
+          title: "Most watched movies",
+          onSelected: (interval) async {
+            await getData(interval: interval);
+
+            setState(() {});
+          },
         ),
         SizedBox(
           width: 800,
@@ -29,13 +42,11 @@ class MostWatchedStatistics extends StatelessWidget {
               ),
             ),
             primaryYAxis: NumericAxis(
-              interval: 1,
-              decimalPlaces: 0,
               isVisible: false,
             ),
             series: <CartesianSeries>[
               BarSeries<Map<String, dynamic>, String>(
-                dataSource: managerPanelProvider.mostWatchedMovies,
+                dataSource: mostWatchedMovies,
                 xValueMapper: (data, _) => data["title"] ?? "",
                 yValueMapper: (data, _) => double.tryParse("${data["watch_count"]}") ?? 0,
                 dataLabelSettings: DataLabelSettings(isVisible: true),
@@ -46,5 +57,14 @@ class MostWatchedStatistics extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Future getData({String? interval}) async {
+    mostWatchedMovies = await ServerManager().getMostWatchedMovies(
+      page: 1,
+      limit: 10,
+      interval: interval ?? "1 weeks",
+    );
+    setState(() {});
   }
 }

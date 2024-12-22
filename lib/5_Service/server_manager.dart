@@ -475,45 +475,94 @@ class ServerManager {
     };
   }
 
-  // statistics
-  Future<List<Map<String, dynamic>>> getTopActorsByMovieCount() async {
-    var response = await dio.get("$_baseUrl/getTopActorsByMovieCount");
+// statistics
+  Future<List<Map<String, dynamic>>> getTopActorsByMovieCount({required int page, required int limit, required String interval}) async {
+    var response = await dio.get(
+      "$_baseUrl/getTopActorsByMovieCount",
+      queryParameters: {
+        'page': page,
+        'limit': limit,
+        'interval': interval,
+      },
+    );
     checkRequest(response);
     return (response.data as List).map((e) => e as Map<String, dynamic>).toList();
   }
 
-  Future<List<Map<String, dynamic>>> getMostWatchedMovies() async {
-    var response = await dio.get("$_baseUrl/getMostWatchedMovies");
+  Future<List<Map<String, dynamic>>> getMostWatchedMovies({required int page, required int limit, required String interval}) async {
+    var response = await dio.get(
+      "$_baseUrl/getMostWatchedMovies",
+      queryParameters: {
+        'page': page,
+        'limit': limit,
+        'interval': interval,
+      },
+    );
     checkRequest(response);
     return (response.data as List).map((e) => e as Map<String, dynamic>).toList();
   }
 
-  Future<List<Map<String, dynamic>>> getAverageMovieRatingsByGenre() async {
-    var response = await dio.get("$_baseUrl/getAverageMovieRatingsByGenre");
+  Future<List<Map<String, dynamic>>> getAverageMovieRatingsByGenre({required int page, required int limit, required String interval}) async {
+    var response = await dio.get(
+      "$_baseUrl/getAverageMovieRatingsByGenre",
+      queryParameters: {
+        'page': page,
+        'limit': limit,
+        'interval': interval,
+      },
+    );
     checkRequest(response);
     return (response.data as List).map((e) => e as Map<String, dynamic>).toList();
   }
 
-  Future<List<Map<String, dynamic>>> getAverageMovieRatingsByYear() async {
-    var response = await dio.get("$_baseUrl/getAverageMovieRatingsByYear");
+  Future<List<Map<String, dynamic>>> getAverageMovieRatingsByYear({required int page, required int limit, required String interval}) async {
+    var response = await dio.get(
+      "$_baseUrl/getAverageMovieRatingsByYear",
+      queryParameters: {
+        'page': page,
+        'limit': limit,
+        'interval': interval,
+      },
+    );
     checkRequest(response);
     return (response.data as List).map((e) => e as Map<String, dynamic>).toList();
   }
 
-  Future<List<Map<String, dynamic>>> getTopMovieGenres() async {
-    var response = await dio.get("$_baseUrl/getTopMovieGenres");
+  Future<List<Map<String, dynamic>>> getTopMovieGenres({required int page, required int limit, required String interval}) async {
+    var response = await dio.get(
+      "$_baseUrl/getTopMovieGenres",
+      queryParameters: {
+        'page': page,
+        'limit': limit,
+        'interval': interval,
+      },
+    );
     checkRequest(response);
     return (response.data as List).map((e) => e as Map<String, dynamic>).toList();
   }
 
-  Future<List<Map<String, dynamic>>> getTopContentTypes() async {
-    var response = await dio.get("$_baseUrl/getTopContentTypes");
+  Future<List<Map<String, dynamic>>> getTopContentTypes({required int page, required int limit, required String interval}) async {
+    var response = await dio.get(
+      "$_baseUrl/getTopContentTypes",
+      queryParameters: {
+        'page': page,
+        'limit': limit,
+        'interval': interval,
+      },
+    );
     checkRequest(response);
     return (response.data as List).map((e) => e as Map<String, dynamic>).toList();
   }
 
-  Future<List<Map<String, dynamic>>> getWeeklyContentLogs() async {
-    var response = await dio.get("$_baseUrl/getWeeklyContentLogs");
+  Future<List<Map<String, dynamic>>> getWeeklyContentLogs({required int page, required int limit, required String interval}) async {
+    var response = await dio.get(
+      "$_baseUrl/getWeeklyContentLogs",
+      queryParameters: {
+        'page': page,
+        'limit': limit,
+        'interval': interval,
+      },
+    );
     checkRequest(response);
     return (response.data as List).map((e) => e as Map<String, dynamic>).toList();
   }

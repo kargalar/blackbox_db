@@ -1,32 +1,36 @@
+import 'package:blackbox_db/3_Page/ManagerPanel/Widget/select_interval.dart';
+import 'package:blackbox_db/5_Service/server_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:blackbox_db/6_Provider/manager_panel_provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class WeekdayWatchCountStatistics extends StatelessWidget {
+class WeekdayWatchCountStatistics extends StatefulWidget {
   const WeekdayWatchCountStatistics({super.key});
 
   @override
+  State<WeekdayWatchCountStatistics> createState() => _WeekdayWatchCountStatisticsState();
+}
+
+class _WeekdayWatchCountStatisticsState extends State<WeekdayWatchCountStatistics> {
+  List<Map<String, dynamic>> weeklyContentLogs = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    getData();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final managerPanelProvider = Provider.of<ManagerPanelProvider>(context);
-
-    // Verileri işleyerek her gün için bir değer olduğundan emin olun
-    final List<Map<String, dynamic>> weeklyContentLogs = List.generate(7, (index) {
-      final dayLog = managerPanelProvider.weeklyContentLogs.firstWhere(
-        (log) => log["day_of_week"] == index,
-        orElse: () => {"day_of_week": index, "log_count": "0"},
-      );
-      return dayLog;
-    });
-
     return Column(
       children: [
-        const Text(
-          "Movie views by day",
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-          ),
+        SelectInterval(
+          title: "Movie views",
+          onSelected: (interval) async {
+            await getData(interval: interval);
+
+            setState(() {});
+          },
         ),
         SizedBox(
           width: 500,
@@ -44,14 +48,30 @@ class WeekdayWatchCountStatistics extends StatelessWidget {
                   return weekdays[log["day_of_week"]];
                 },
                 yValueMapper: (log, _) => int.tryParse(log["log_count"]) ?? 0,
-                color: Colors.blue,
                 dataLabelSettings: DataLabelSettings(isVisible: true),
-                enableTooltip: true,
+                color: Colors.blue,
               ),
             ],
           ),
         ),
       ],
     );
+  }
+
+  Future getData({String? interval}) async {
+    weeklyContentLogs = await ServerManager().getWeeklyContentLogs(
+      page: 1,
+      limit: 10,
+      interval: interval ?? "1 weeks",
+    );
+
+    weeklyContentLogs = List.generate(7, (index) {
+      final dayLog = weeklyContentLogs.firstWhere(
+        (log) => log["day_of_week"] == index,
+        orElse: () => {"day_of_week": index, "log_count": "0"},
+      );
+      return dayLog;
+    });
+    setState(() {});
   }
 }
