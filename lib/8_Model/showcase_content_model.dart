@@ -11,6 +11,7 @@ class ShowcaseContentModel {
     required this.isFavorite,
     required this.contentStatus,
     required this.isConsumeLater,
+    this.rating,
     this.contentLog,
     this.trendIndex,
   });
@@ -22,6 +23,7 @@ class ShowcaseContentModel {
   bool isFavorite;
   ContentStatusEnum? contentStatus;
   bool isConsumeLater;
+  double? rating;
 
   final ContentLogModel? contentLog;
 
@@ -36,6 +38,13 @@ class ShowcaseContentModel {
       isFavorite: json['is_favorite'] ?? false,
       contentStatus: json['content_status_id'] != null ? ContentStatusEnum.values[json['content_status_id'] - 1] : null,
       isConsumeLater: json['is_consume_later'] ?? false,
+      rating: json['rating'] != null
+          ? (json['rating'] is int
+              ? json['rating'].toDouble()
+              : json['rating'] is String
+                  ? double.parse(json['rating'])
+                  : json['rating'])
+          : null,
       contentLog: json['userLog'] != null ? ContentLogModel.fromJson(json['userLog']) : null,
     );
   }

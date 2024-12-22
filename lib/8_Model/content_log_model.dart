@@ -46,7 +46,7 @@ class ContentLogModel {
               : json['rating'] is String
                   ? double.parse(json['rating'])
                   : json['rating'])
-          : 0,
+          : null,
       isFavorite: json['is_favorite'],
       isConsumeLater: json['is_consume_later'],
       review: json['review_text'],

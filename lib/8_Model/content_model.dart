@@ -76,7 +76,7 @@ class ContentModel {
               : json['rating'] is String
                   ? double.parse(json['rating'])
                   : json['rating'])
-          : 0,
+          : null,
       isFavorite: json['is_favorite'] ?? false,
       isConsumeLater: json['is_consume_later'] ?? false,
     );

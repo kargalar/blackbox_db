@@ -57,7 +57,7 @@ class ContentActivity extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                  if (contentLog.rating != null && contentLog.rating! != 0)
+                  if (contentLog.rating != null)
                     Row(
                       children: [
                         Text(
