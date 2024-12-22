@@ -44,16 +44,24 @@ class _ActorStatisticsState extends State<ActorStatistics> {
                     ),
                   ))
                 : SizedBox(
-                    width: 500,
-                    height: 300,
-                    child: SfCircularChart(
-                      legend: Legend(isVisible: true),
-                      series: <CircularSeries>[
-                        DoughnutSeries<Map<String, dynamic>, String>(
+                    width: 800,
+                    height: 350,
+                    child: SfCartesianChart(
+                      primaryXAxis: CategoryAxis(
+                        labelStyle: const TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                      primaryYAxis: NumericAxis(
+                        isVisible: false,
+                      ),
+                      series: <CartesianSeries>[
+                        BarSeries<Map<String, dynamic>, String>(
                           dataSource: topActorsByMovieCount,
                           xValueMapper: (data, _) => data["actor_name"] ?? "",
                           yValueMapper: (data, _) => double.tryParse("${data["movie_count"]}") ?? 0,
                           dataLabelSettings: DataLabelSettings(isVisible: true),
+                          color: Colors.blue,
                         ),
                       ],
                     ),

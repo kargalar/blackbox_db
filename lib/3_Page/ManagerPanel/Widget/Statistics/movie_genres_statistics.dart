@@ -44,16 +44,22 @@ class _MovieGenreStatisticsState extends State<MovieGenreStatistics> {
                     ),
                   ))
                 : SizedBox(
-                    width: 500,
+                    width: 650,
                     height: 300,
-                    child: SfCircularChart(
-                      legend: Legend(isVisible: true),
-                      series: <CircularSeries>[
-                        DoughnutSeries<Map<String, dynamic>, String>(
+                    child: SfCartesianChart(
+                      primaryXAxis: CategoryAxis(),
+                      primaryYAxis: NumericAxis(
+                        isVisible: false,
+                      ),
+                      series: <CartesianSeries>[
+                        ColumnSeries<Map<String, dynamic>, String>(
                           dataSource: topMovieGenres,
-                          xValueMapper: (data, _) => data["genre"] ?? "",
-                          yValueMapper: (data, _) => double.tryParse("${data["log_count"]}") ?? 0,
+                          xValueMapper: (log, _) {
+                            return log["genre"];
+                          },
+                          yValueMapper: (log, _) => int.tryParse(log["log_count"]) ?? 0,
                           dataLabelSettings: DataLabelSettings(isVisible: true),
+                          color: Colors.blue,
                         ),
                       ],
                     ),
@@ -65,7 +71,7 @@ class _MovieGenreStatisticsState extends State<MovieGenreStatistics> {
   Future getData({String? interval}) async {
     topMovieGenres = await ServerManager().getTopMovieGenres(
       page: 1,
-      limit: 10,
+      limit: 20,
       interval: interval ?? "1 weeks",
     );
 
