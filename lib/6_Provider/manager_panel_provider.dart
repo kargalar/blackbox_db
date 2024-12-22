@@ -17,12 +17,6 @@ class ManagerPanelProvider with ChangeNotifier {
 
   List<ContentModel> contentList = [];
 
-  List<Map<String, dynamic>> topActorsByMovieCount = [];
-  List<Map<String, dynamic>> averageMovieRatingsByGenre = [];
-  List<Map<String, dynamic>> averageMovieRatingsByYear = [];
-
-  // ? contentId null ise contentPage de demek
-
   Future searchContent({String? searchText, required ContentTypeEnum contentType}) async {
     if (!isLoading) {
       isLoading = true;
@@ -40,35 +34,5 @@ class ManagerPanelProvider with ChangeNotifier {
 
     isLoading = false;
     notifyListeners();
-  }
-
-  Future getStatistics() async {
-    if (!isLoading) {
-      isLoading = true;
-      notifyListeners();
-    }
-
-    try {
-      // TODO: veriler paginationa ve intervala ygun hazırlandı düzenlenebilir
-      topActorsByMovieCount = await ServerManager().getTopActorsByMovieCount(
-        page: 1,
-        limit: 10,
-        interval: "1 week",
-      );
-
-      averageMovieRatingsByGenre = await ServerManager().getAverageMovieRatingsByGenre(
-        page: 1,
-        limit: 10,
-        interval: "1 week",
-      );
-      averageMovieRatingsByYear = await ServerManager().getAverageMovieRatingsByYear(
-        page: 1,
-        limit: 10,
-        interval: "1 week",
-      );
-    } finally {
-      isLoading = false;
-      notifyListeners();
-    }
   }
 }

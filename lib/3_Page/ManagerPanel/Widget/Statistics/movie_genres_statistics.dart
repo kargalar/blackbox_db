@@ -11,7 +11,7 @@ class MovieGenreStatistics extends StatefulWidget {
 }
 
 class _MovieGenreStatisticsState extends State<MovieGenreStatistics> {
-  List<Map<String, dynamic>> topMovieGenres = [];
+  List<Map<String, dynamic>>? topMovieGenres;
 
   @override
   void initState() {
@@ -32,21 +32,32 @@ class _MovieGenreStatisticsState extends State<MovieGenreStatistics> {
             setState(() {});
           },
         ),
-        SizedBox(
-          width: 500,
-          height: 300,
-          child: SfCircularChart(
-            legend: Legend(isVisible: true),
-            series: <CircularSeries>[
-              DoughnutSeries<Map<String, dynamic>, String>(
-                dataSource: topMovieGenres,
-                xValueMapper: (data, _) => data["genre"] ?? "",
-                yValueMapper: (data, _) => double.tryParse("${data["log_count"]}") ?? 0,
-                dataLabelSettings: DataLabelSettings(isVisible: true),
-              ),
-            ],
-          ),
-        ),
+        topMovieGenres == null
+            ? const Center(child: CircularProgressIndicator())
+            : topMovieGenres!.isEmpty
+                ? const Center(
+                    child: Padding(
+                    padding: EdgeInsets.all(20),
+                    child: Text(
+                      'No Data',
+                      style: TextStyle(fontSize: 15),
+                    ),
+                  ))
+                : SizedBox(
+                    width: 500,
+                    height: 300,
+                    child: SfCircularChart(
+                      legend: Legend(isVisible: true),
+                      series: <CircularSeries>[
+                        DoughnutSeries<Map<String, dynamic>, String>(
+                          dataSource: topMovieGenres,
+                          xValueMapper: (data, _) => data["genre"] ?? "",
+                          yValueMapper: (data, _) => double.tryParse("${data["log_count"]}") ?? 0,
+                          dataLabelSettings: DataLabelSettings(isVisible: true),
+                        ),
+                      ],
+                    ),
+                  ),
       ],
     );
   }

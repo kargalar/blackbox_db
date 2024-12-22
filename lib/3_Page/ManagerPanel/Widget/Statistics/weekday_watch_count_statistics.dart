@@ -11,7 +11,7 @@ class WeekdayWatchCountStatistics extends StatefulWidget {
 }
 
 class _WeekdayWatchCountStatisticsState extends State<WeekdayWatchCountStatistics> {
-  List<Map<String, dynamic>> weeklyContentLogs = [];
+  List<Map<String, dynamic>>? weeklyContentLogs;
 
   @override
   void initState() {
@@ -32,28 +32,39 @@ class _WeekdayWatchCountStatisticsState extends State<WeekdayWatchCountStatistic
             setState(() {});
           },
         ),
-        SizedBox(
-          width: 500,
-          height: 300,
-          child: SfCartesianChart(
-            primaryXAxis: CategoryAxis(),
-            primaryYAxis: NumericAxis(
-              isVisible: false,
-            ),
-            series: <CartesianSeries>[
-              ColumnSeries<Map<String, dynamic>, String>(
-                dataSource: weeklyContentLogs,
-                xValueMapper: (log, _) {
-                  const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-                  return weekdays[log["day_of_week"]];
-                },
-                yValueMapper: (log, _) => int.tryParse(log["log_count"]) ?? 0,
-                dataLabelSettings: DataLabelSettings(isVisible: true),
-                color: Colors.blue,
-              ),
-            ],
-          ),
-        ),
+        weeklyContentLogs == null
+            ? const Center(child: CircularProgressIndicator())
+            : weeklyContentLogs!.isEmpty
+                ? const Center(
+                    child: Padding(
+                    padding: EdgeInsets.all(20),
+                    child: Text(
+                      'No Data',
+                      style: TextStyle(fontSize: 15),
+                    ),
+                  ))
+                : SizedBox(
+                    width: 500,
+                    height: 300,
+                    child: SfCartesianChart(
+                      primaryXAxis: CategoryAxis(),
+                      primaryYAxis: NumericAxis(
+                        isVisible: false,
+                      ),
+                      series: <CartesianSeries>[
+                        ColumnSeries<Map<String, dynamic>, String>(
+                          dataSource: weeklyContentLogs,
+                          xValueMapper: (log, _) {
+                            const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+                            return weekdays[log["day_of_week"]];
+                          },
+                          yValueMapper: (log, _) => int.tryParse(log["log_count"]) ?? 0,
+                          dataLabelSettings: DataLabelSettings(isVisible: true),
+                          color: Colors.blue,
+                        ),
+                      ],
+                    ),
+                  ),
       ],
     );
   }
@@ -65,13 +76,15 @@ class _WeekdayWatchCountStatisticsState extends State<WeekdayWatchCountStatistic
       interval: interval ?? "1 weeks",
     );
 
-    weeklyContentLogs = List.generate(7, (index) {
-      final dayLog = weeklyContentLogs.firstWhere(
-        (log) => log["day_of_week"] == index,
-        orElse: () => {"day_of_week": index, "log_count": "0"},
-      );
-      return dayLog;
-    });
-    setState(() {});
+    if (weeklyContentLogs != null) {
+      weeklyContentLogs = List.generate(7, (index) {
+        final dayLog = weeklyContentLogs!.firstWhere(
+          (log) => log["day_of_week"] == index,
+          orElse: () => {"day_of_week": index, "log_count": "0"},
+        );
+        return dayLog;
+      });
+      setState(() {});
+    }
   }
 }

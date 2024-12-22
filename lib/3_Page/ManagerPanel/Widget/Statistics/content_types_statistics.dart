@@ -11,7 +11,7 @@ class ContentTypeStatistics extends StatefulWidget {
 }
 
 class _ContentTypeStatisticsState extends State<ContentTypeStatistics> {
-  List<Map<String, dynamic>> topContentTypes = [];
+  List<Map<String, dynamic>>? topContentTypes;
 
   @override
   void initState() {
@@ -28,26 +28,36 @@ class _ContentTypeStatisticsState extends State<ContentTypeStatistics> {
           title: "Most consumed content types",
           onSelected: (interval) async {
             await getData(interval: interval);
-            await getData();
 
             setState(() {});
           },
         ),
-        SizedBox(
-          width: 400,
-          height: 300,
-          child: SfCircularChart(
-            legend: Legend(isVisible: true),
-            series: <CircularSeries>[
-              DoughnutSeries<Map<String, dynamic>, String>(
-                dataSource: topContentTypes,
-                xValueMapper: (data, _) => data["content_type"] ?? "",
-                yValueMapper: (data, _) => double.tryParse("${data["log_count"]}") ?? 0,
-                dataLabelSettings: DataLabelSettings(isVisible: true),
-              ),
-            ],
-          ),
-        ),
+        topContentTypes == null
+            ? const Center(child: CircularProgressIndicator())
+            : topContentTypes!.isEmpty
+                ? const Center(
+                    child: Padding(
+                    padding: EdgeInsets.all(20),
+                    child: Text(
+                      'No Data',
+                      style: TextStyle(fontSize: 15),
+                    ),
+                  ))
+                : SizedBox(
+                    width: 400,
+                    height: 300,
+                    child: SfCircularChart(
+                      legend: Legend(isVisible: true),
+                      series: <CircularSeries>[
+                        DoughnutSeries<Map<String, dynamic>, String>(
+                          dataSource: topContentTypes,
+                          xValueMapper: (data, _) => data["content_type"] ?? "",
+                          yValueMapper: (data, _) => double.tryParse("${data["log_count"]}") ?? 0,
+                          dataLabelSettings: DataLabelSettings(isVisible: true),
+                        ),
+                      ],
+                    ),
+                  ),
       ],
     );
   }

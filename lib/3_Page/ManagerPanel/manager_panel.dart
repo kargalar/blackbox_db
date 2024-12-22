@@ -1,6 +1,9 @@
+import 'package:blackbox_db/3_Page/ManagerPanel/Widget/Statistics/actor_statistics.dart';
 import 'package:blackbox_db/3_Page/ManagerPanel/Widget/Statistics/content_types_statistics.dart';
 import 'package:blackbox_db/3_Page/ManagerPanel/Widget/Statistics/most_watched_statistics.dart';
 import 'package:blackbox_db/3_Page/ManagerPanel/Widget/Statistics/movie_genres_statistics.dart';
+import 'package:blackbox_db/3_Page/ManagerPanel/Widget/Statistics/movie_rating_by_genre_statistics.dart';
+import 'package:blackbox_db/3_Page/ManagerPanel/Widget/Statistics/movie_rating_by_year_statistics.dart';
 import 'package:blackbox_db/3_Page/ManagerPanel/Widget/panel_content_item.dart';
 import 'package:blackbox_db/3_Page/ManagerPanel/Widget/Statistics/weekday_watch_count_statistics.dart';
 import 'package:blackbox_db/6_Provider/manager_panel_provider.dart';
@@ -86,6 +89,11 @@ class _ManagerPanelState extends State<ManagerPanel> {
                         SizedBox(height: 50),
                         MovieGenreStatistics(),
                         SizedBox(height: 50),
+                        ActorStatistics(),
+                        SizedBox(height: 50),
+                        ActorStatisticss(),
+                        SizedBox(height: 50),
+                        MovieYearStatistics()
                       ],
                     ),
                   ],
@@ -97,6 +105,5 @@ class _ManagerPanelState extends State<ManagerPanel> {
     await managerPanelProvider.searchContent(
       contentType: ContentTypeEnum.MOVIE,
     );
-    await managerPanelProvider.getStatistics();
   }
 }
