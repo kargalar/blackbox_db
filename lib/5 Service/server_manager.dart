@@ -403,6 +403,29 @@ class ServerManager {
     };
   }
 
+  // get user last activites
+  Future getUserActivities({
+    required int profileUserID,
+    required ContentTypeEnum contentType,
+  }) async {
+    var response = await dio.get(
+      "$_baseUrl/userActivity",
+      queryParameters: {
+        'content_type_id': contentType.index + 1,
+        'profile_user_id': profileUserID,
+        'user_id': loginUser!.id,
+      },
+    );
+
+    checkRequest(response);
+
+    var contentList = (response.data as List).map((e) => ShowcaseContentModel.fromJson(e)).toList();
+
+    return {
+      'contentList': contentList,
+    };
+  }
+
   // get recommended movies for user
   Future getRecommendedContents({
     required int userId,

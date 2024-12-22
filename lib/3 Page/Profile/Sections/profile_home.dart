@@ -17,7 +17,8 @@ class ProfileHome extends StatefulWidget {
 class _ProfileHomeState extends State<ProfileHome> {
   bool isLoading = false;
 
-  List<ShowcaseContentModel> contentList = [];
+  List<ShowcaseContentModel> lastMovieActivitiyContentList = [];
+  List<ShowcaseContentModel> lastGameActivitiyContentList = [];
 
   @override
   void initState() {
@@ -40,16 +41,16 @@ class _ProfileHomeState extends State<ProfileHome> {
                 children: [
                   // TODO:
                   Text("In Progress", style: TextStyle(fontSize: 20)),
-                  ContentList(
-                    contentList: contentList,
-                    showcaseType: ShowcaseTypeEnum.TREND,
-                  ),
+                  // ContentList(
+                  //   contentList: lastMovieActivitiyContentList,
+                  //   showcaseType: ShowcaseTypeEnum.TREND,
+                  // ),
                   // TODO: önce istek at
-                  Text("Last Activites", style: TextStyle(fontSize: 20)),
-                  ContentList(
-                    contentList: contentList,
-                    showcaseType: ShowcaseTypeEnum.FLAT,
-                  ),
+                  Text("Highlights", style: TextStyle(fontSize: 20)),
+                  // ContentList(
+                  //   contentList: lastMovieActivitiyContentList,
+                  //   showcaseType: ShowcaseTypeEnum.FLAT,
+                  // ),
                 ],
               ),
               SizedBox(width: 60),
@@ -57,9 +58,14 @@ class _ProfileHomeState extends State<ProfileHome> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Highlights", style: TextStyle(fontSize: 20)),
+                  Text("Last Game Activities", style: TextStyle(fontSize: 20)),
                   ContentList(
-                    contentList: contentList,
+                    contentList: lastGameActivitiyContentList,
+                    showcaseType: ShowcaseTypeEnum.FLAT,
+                  ),
+                  Text("Last Movie Activities", style: TextStyle(fontSize: 20)),
+                  ContentList(
+                    contentList: lastMovieActivitiyContentList,
                     showcaseType: ShowcaseTypeEnum.FLAT,
                   ),
                 ],
@@ -76,14 +82,24 @@ class _ProfileHomeState extends State<ProfileHome> {
       }
 
       // TODO: devam edilenlere ve önce çıkarıalnlara istek atılacak onlar getirliecek
-      final response = await ServerManager().getUserContents(
+      final response = await ServerManager().getUserActivities(
+        profileUserID: context.read<ProfileProvider>().user!.id,
         contentType: ContentTypeEnum.MOVIE,
-        logUserId: Provider.of<ProfileProvider>(context, listen: false).user!.id,
       );
 
-      contentList = response['contentList'];
+      lastMovieActivitiyContentList = response['contentList'];
       // sadece ilk 5 i al. burası normalde olmayacak. çünkü zaten buna istek atmayacağız
-      contentList = contentList.length > 5 ? contentList.sublist(0, 5) : contentList;
+      lastMovieActivitiyContentList = lastMovieActivitiyContentList.length > 5 ? lastMovieActivitiyContentList.sublist(0, 5) : lastMovieActivitiyContentList;
+
+      final response2 = await ServerManager().getUserActivities(
+        // ignore: use_build_context_synchronously
+        profileUserID: context.read<ProfileProvider>().user!.id,
+        contentType: ContentTypeEnum.GAME,
+      );
+
+      lastGameActivitiyContentList = response2['contentList'];
+      // sadece ilk 5 i al. burası normalde olmayacak. çünkü zaten buna istek atmayacağız
+      lastGameActivitiyContentList = lastGameActivitiyContentList.length > 5 ? lastGameActivitiyContentList.sublist(0, 5) : lastGameActivitiyContentList;
 
       isLoading = false;
       setState(() {});
