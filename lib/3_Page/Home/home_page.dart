@@ -107,7 +107,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     ],
-
+                    SizedBox(height: 100),
                     // çok beklenenler
                     // sana benzer kullanıcılar
                   ],
