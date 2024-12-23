@@ -349,11 +349,13 @@ class ServerManager {
 
   Future<List<UserReviewModel>> getUserReviews({
     required int userID,
+    ContentTypeEnum? contentType,
   }) async {
     var response = await dio.get(
       "$_baseUrl/user_reviews",
       queryParameters: {
         'user_id': userID,
+        'content_type_id': contentType == null ? null : contentType.index + 1,
       },
     );
 
@@ -364,18 +366,20 @@ class ServerManager {
 
   // top reviews
   Future getTopReviews({
-    required ContentTypeEnum contentType,
+    ContentTypeEnum? contentType,
   }) async {
     var response = await dio.get(
       "$_baseUrl/getTopReviews",
       queryParameters: {
-        'content_type_id': contentType.index + 1,
+        'page': 1,
+        'limit': 5,
+        'interval': '1 week',
+        'content_type_id': contentType == null ? null : contentType.index + 1,
       },
     );
-
     checkRequest(response);
 
-    return (response.data as List).map((e) => ReviewModel.fromJson(e)).toList();
+    return (response.data as List).map((e) => UserReviewModel.fromJson(e)).toList();
   }
 
   Future getTrendContents({

@@ -1,11 +1,16 @@
 import 'package:blackbox_db/2_General/accessible.dart';
 import 'package:blackbox_db/3_Page/Explore/Widget/content_list.dart';
+import 'package:blackbox_db/3_Page/ManagerPanel/Widget/Statistics/content_types_statistics.dart';
+import 'package:blackbox_db/3_Page/ManagerPanel/Widget/Statistics/movie_genres_statistics.dart';
+import 'package:blackbox_db/3_Page/Profile/Sections/profile_reviews.dart';
 import 'package:blackbox_db/5_Service/server_manager.dart';
 import 'package:blackbox_db/6_Provider/explore_provider.dart';
 import 'package:blackbox_db/7_Enum/content_type_enum.dart';
 import 'package:blackbox_db/7_Enum/showcase_type_enum.dart';
 import 'package:blackbox_db/8_Model/showcase_content_model.dart';
+import 'package:blackbox_db/8_Model/user_review_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -22,6 +27,7 @@ class _HomePageState extends State<HomePage> {
   List<ShowcaseContentModel> trendGameList = [];
   List<ShowcaseContentModel> friendsLastMovieActivities = [];
   List<ShowcaseContentModel> friendsLastGameActivities = [];
+  List<UserReviewModel> topReviews = [];
 
   @override
   void initState() {
@@ -45,6 +51,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     if (showMovie && trendMovieList.isNotEmpty) ...[
                       Text("Trending Movies", style: TextStyle(fontSize: 20)),
+                      SizedBox(height: 5),
                       ContentList(
                         contentList: trendMovieList,
                         showcaseType: ShowcaseTypeEnum.TREND,
@@ -52,11 +59,14 @@ class _HomePageState extends State<HomePage> {
                     ],
                     if (showGame && trendGameList.isNotEmpty) ...[
                       Text("Trending Games", style: TextStyle(fontSize: 20)),
+                      SizedBox(height: 5),
                       ContentList(
                         contentList: trendGameList,
                         showcaseType: ShowcaseTypeEnum.TREND,
                       ),
                     ],
+                    ContentTypeStatistics(),
+                    MovieGenreStatistics(),
                   ],
                 ),
                 SizedBox(width: 60),
@@ -65,6 +75,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     if (showMovie && friendsLastMovieActivities.isNotEmpty) ...[
                       Text("Friends' Movie Activities", style: TextStyle(fontSize: 20)),
+                      SizedBox(height: 5),
                       ContentList(
                         contentList: friendsLastMovieActivities,
                         showcaseType: ShowcaseTypeEnum.ACTIVITY,
@@ -72,6 +83,7 @@ class _HomePageState extends State<HomePage> {
                     ],
                     if (showGame && friendsLastGameActivities.isNotEmpty) ...[
                       Text("Friends' Game Activities", style: TextStyle(fontSize: 20)),
+                      SizedBox(height: 5),
                       ContentList(
                         contentList: friendsLastGameActivities,
                         showcaseType: ShowcaseTypeEnum.ACTIVITY,
@@ -79,9 +91,20 @@ class _HomePageState extends State<HomePage> {
                     ],
                     if (showMovie && recommendedMovieList.isNotEmpty) ...[
                       Text("Recommended Movies", style: TextStyle(fontSize: 20)),
+                      SizedBox(height: 5),
                       ContentList(
                         contentList: recommendedMovieList,
                         showcaseType: ShowcaseTypeEnum.FLAT,
+                      ),
+                    ],
+                    if (topReviews.isNotEmpty) ...[
+                      Text("Top Reviews", style: TextStyle(fontSize: 20)),
+                      SizedBox(height: 5),
+                      SizedBox(
+                        width: 0.5.sw,
+                        child: ProfileReviews(
+                          reviewList: topReviews,
+                        ),
                       ),
                     ],
 
@@ -123,6 +146,7 @@ class _HomePageState extends State<HomePage> {
         ServerManager().getFriendActivities(
           contentType: ContentTypeEnum.GAME,
         ),
+        ServerManager().getTopReviews(),
       ]);
 
       recommendedMovieList = results[0]['contentList'];
@@ -130,6 +154,7 @@ class _HomePageState extends State<HomePage> {
       trendGameList = results[2]['contentList'];
       friendsLastMovieActivities = results[3]['contentList'];
       friendsLastGameActivities = results[4]['contentList'];
+      topReviews = results[5];
 
       if (recommendedMovieList.length > 5) {
         recommendedMovieList = recommendedMovieList.sublist(0, 5);

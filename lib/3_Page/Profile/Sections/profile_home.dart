@@ -41,15 +41,15 @@ class _ProfileHomeState extends State<ProfileHome> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ProfileStatistics(),
-                  SizedBox(height: 40),
+                  // SizedBox(height: 40),
                   // TODO:
-                  Text("In Progress", style: TextStyle(fontSize: 20)),
+                  // Text("In Progress", style: TextStyle(fontSize: 20)),
                   // ContentList(
                   //   contentList: lastMovieActivitiyContentList,
                   //   showcaseType: ShowcaseTypeEnum.TREND,
                   // ),
                   // TODO: önce istek at
-                  Text("Highlights", style: TextStyle(fontSize: 20)),
+                  // Text("Highlights", style: TextStyle(fontSize: 20)),
                   // ContentList(
                   //   contentList: lastMovieActivitiyContentList,
                   //   showcaseType: ShowcaseTypeEnum.FLAT,
