@@ -1,6 +1,9 @@
+import 'package:blackbox_db/5_Service/igdb_service.dart';
+import 'package:blackbox_db/5_Service/tmdb_service.dart';
 import 'package:blackbox_db/6_Provider/explore_provider.dart';
 import 'package:blackbox_db/6_Provider/profile_provider.dart';
 import 'package:blackbox_db/7_Enum/content_type_enum.dart';
+import 'package:blackbox_db/8_Model/search_content_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,21 +15,44 @@ class GeneralProvider with ChangeNotifier {
   }
 
   int currentIndex = 0;
-  String searchText = '';
   ContentTypeEnum searchFilter = ContentTypeEnum.MOVIE;
   ContentTypeEnum exploreContentType = ContentTypeEnum.MOVIE;
   int contentID = 0;
   ContentTypeEnum contentPageContentTpye = ContentTypeEnum.MOVIE;
+
+  // serach
+  bool searchIsLoading = true;
+  late List<SearchContentModel> searchContentList;
 
   void home() {
     currentIndex = 0;
     notifyListeners();
   }
 
-  void search(String text) {
-    searchText = text;
+  Future search(String searchText) async {
+    if (!searchIsLoading) {
+      searchIsLoading = true;
+      notifyListeners();
+    }
+
     currentIndex = 1;
     notifyListeners();
+
+    try {
+      if (searchFilter == ContentTypeEnum.MOVIE) {
+        searchContentList = await TMDBService().search(searchText);
+      } else if (searchFilter == ContentTypeEnum.GAME) {
+        searchContentList = await IGDBService().search(searchText);
+      } else {
+        // contentList = bookapi;
+      }
+
+      searchIsLoading = false;
+
+      notifyListeners();
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   void explore(ContentTypeEnum contentType, BuildContext context) {

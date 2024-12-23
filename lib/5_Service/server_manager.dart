@@ -348,18 +348,34 @@ class ServerManager {
   }
 
   Future<List<UserReviewModel>> getUserReviews({
-    required int contentId,
+    required int userID,
   }) async {
     var response = await dio.get(
       "$_baseUrl/user_reviews",
       queryParameters: {
-        'content_id': contentId,
+        'user_id': userID,
       },
     );
 
     checkRequest(response);
 
     return (response.data as List).map((e) => UserReviewModel.fromJson(e)).toList();
+  }
+
+  // top reviews
+  Future getTopReviews({
+    required ContentTypeEnum contentType,
+  }) async {
+    var response = await dio.get(
+      "$_baseUrl/getTopReviews",
+      queryParameters: {
+        'content_type_id': contentType.index + 1,
+      },
+    );
+
+    checkRequest(response);
+
+    return (response.data as List).map((e) => ReviewModel.fromJson(e)).toList();
   }
 
   Future getTrendContents({

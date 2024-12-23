@@ -1,8 +1,5 @@
 import 'package:blackbox_db/3_Page/Search/search_item.dart';
-import 'package:blackbox_db/5_Service/igdb_service.dart';
-import 'package:blackbox_db/5_Service/tmdb_service.dart';
 import 'package:blackbox_db/6_Provider/general_provider.dart';
-import 'package:blackbox_db/7_Enum/content_type_enum.dart';
 import 'package:blackbox_db/8_Model/search_content_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,24 +13,13 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  late final pageProvider = context.read<GeneralProvider>();
-
-  bool isLoading = true;
-
-  late List<SearchContentModel> contentList;
-
-  @override
-  void initState() {
-    super.initState();
-
-    search();
-  }
+  late final generalProvider = context.read<GeneralProvider>();
 
   @override
   Widget build(BuildContext context) {
-    return isLoading
+    return context.watch<GeneralProvider>().searchIsLoading
         ? const Center(child: CircularProgressIndicator())
-        : contentList.isEmpty
+        : generalProvider.searchContentList.isEmpty
             ? const Center(
                 child: Text(
                   'No content found',
@@ -52,22 +38,22 @@ class _SearchPageState extends State<SearchPage> {
                       width: 0.4.sw,
                       child: ListView.builder(
                         shrinkWrap: true,
-                        itemCount: contentList.length,
+                        itemCount: generalProvider.searchContentList.length,
                         itemBuilder: (context, index) {
                           return SearchItem(
                             searchMovieModel: SearchContentModel(
-                              contentId: contentList[index].contentId,
-                              contentPosterPath: contentList[index].contentPosterPath,
-                              contentType: contentList[index].contentType,
-                              isFavorite: contentList[index].isFavorite,
-                              isConsumed: contentList[index].isConsumed,
-                              rating: contentList[index].rating,
-                              isReviewed: contentList[index].isReviewed,
-                              isConsumeLater: contentList[index].isConsumeLater,
-                              title: contentList[index].title,
-                              description: contentList[index].description,
-                              year: contentList[index].year,
-                              originalTitle: contentList[index].originalTitle,
+                              contentId: generalProvider.searchContentList[index].contentId,
+                              contentPosterPath: generalProvider.searchContentList[index].contentPosterPath,
+                              contentType: generalProvider.searchContentList[index].contentType,
+                              isFavorite: generalProvider.searchContentList[index].isFavorite,
+                              isConsumed: generalProvider.searchContentList[index].isConsumed,
+                              rating: generalProvider.searchContentList[index].rating,
+                              isReviewed: generalProvider.searchContentList[index].isReviewed,
+                              isConsumeLater: generalProvider.searchContentList[index].isConsumeLater,
+                              title: generalProvider.searchContentList[index].title,
+                              description: generalProvider.searchContentList[index].description,
+                              year: generalProvider.searchContentList[index].year,
+                              originalTitle: generalProvider.searchContentList[index].originalTitle,
                             ),
                           );
                         },
@@ -76,23 +62,5 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                 ),
               );
-  }
-
-  Future<void> search() async {
-    try {
-      if (pageProvider.searchFilter == ContentTypeEnum.MOVIE) {
-        contentList = await TMDBService().search(pageProvider.searchText);
-      } else if (pageProvider.searchFilter == ContentTypeEnum.GAME) {
-        contentList = await IGDBService().search(pageProvider.searchText);
-      } else {
-        // contentList = bookapi;
-      }
-
-      setState(() {
-        isLoading = false;
-      });
-    } catch (e) {
-      debugPrint(e.toString());
-    }
   }
 }

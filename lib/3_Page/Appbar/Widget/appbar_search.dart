@@ -107,9 +107,9 @@ class _AppbarSearchState extends State<AppbarSearch> {
     );
   }
 
-  void search() {
+  void search() async {
     if (controller.text.isEmpty) return;
-    generalProvider.search(controller.text);
+    await generalProvider.search(controller.text);
     controller.clear();
   }
 }
