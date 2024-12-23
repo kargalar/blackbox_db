@@ -39,9 +39,10 @@ class _ProfileNetworksState extends State<ProfileNetworks> {
             SizedBox(height: 20),
             SizedBox(
               width: 350,
-              child: ListView.builder(
+              child: ListView.separated(
                 shrinkWrap: true,
                 itemCount: following.length,
+                separatorBuilder: (context, index) => SizedBox(height: 10),
                 itemBuilder: (context, index) {
                   return Row(
                     children: [
@@ -81,7 +82,11 @@ class _ProfileNetworksState extends State<ProfileNetworks> {
                         imageUrl: followers[index]['picture_path'],
                         userID: followers[index]['id'],
                       ),
-                      Text(followers[index]['username']),
+                      SizedBox(width: 10),
+                      Text(
+                        followers[index]['username'],
+                        style: TextStyle(fontSize: 18),
+                      ),
                     ],
                   );
                 },

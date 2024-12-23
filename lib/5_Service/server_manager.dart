@@ -487,7 +487,13 @@ class ServerManager {
 
     checkRequest(response);
 
-    return (response.data as List).map((e) => UserModel.fromJson(e)).toList();
+    return (response.data as List)
+        .map((e) => {
+              'id': e['id'],
+              'username': e['username'],
+              'picture_path': e['picture_path'],
+            })
+        .toList();
   }
 
   Future getFollowing({
