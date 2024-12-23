@@ -25,61 +25,76 @@ class _ProfileNetworksState extends State<ProfileNetworks> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: following.length,
-      itemBuilder: (context, index) {
-        return Row(
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            ProfilePicture(
-              imageUrl: following[index]['picture_path'],
-              userID: following[index]['id'],
+            Text(
+              'Followed',
+              style: TextStyle(fontSize: 20),
             ),
-            Text(following[index]['username']),
+            SizedBox(height: 20),
+            SizedBox(
+              width: 350,
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: following.length,
+                itemBuilder: (context, index) {
+                  return Row(
+                    children: [
+                      ProfilePicture(
+                        imageUrl: following[index]['picture_path'],
+                        userID: following[index]['id'],
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        following[index]['username'],
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
           ],
-        );
-      },
+        ),
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Followers',
+              style: TextStyle(fontSize: 20),
+            ),
+            SizedBox(height: 20),
+            SizedBox(
+              width: 350,
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: followers.length,
+                itemBuilder: (context, index) {
+                  return Row(
+                    children: [
+                      ProfilePicture(
+                        imageUrl: followers[index]['picture_path'],
+                        userID: followers[index]['id'],
+                      ),
+                      Text(followers[index]['username']),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ],
     );
-    // Row(
-    //   children: [
-    //     // followers
-    //     Column(
-    //       children: [
-    //         Text('Followers'),
-    //         ListView.builder(
-    //           shrinkWrap: true,
-    //           itemCount: followers.length,
-    //           itemBuilder: (context, index) {
-    //             return ListTile(
-    //               title: Text(followers[index]['id']),
-    //               subtitle: Text(followers[index]['username']),
-    //             );
-    //           },
-    //         ),
-    //       ],
-    //     ),
-    //     // following
-    //     Column(
-    //       children: [
-    //         Text('Following'),
-    //         ListView.builder(
-    //           shrinkWrap: true,
-    //           itemCount: following.length,
-    //           itemBuilder: (context, index) {
-    //             return ListTile(
-    //               title: Text(following[index]['id']),
-    //               subtitle: Text(following[index]['username']),
-    //             );
-    //           },
-    //         ),
-    //       ],
-    //     ),
-    //   ],
-    // );
   }
 
   void getData() async {
-    // followers = await ServerManager().getFollowers(userId: ProfileProvider().user!.id);
+    followers = await ServerManager().getFollowers(userId: ProfileProvider().user!.id);
     following = await ServerManager().getFollowing(userId: ProfileProvider().user!.id);
 
     setState(() {});
