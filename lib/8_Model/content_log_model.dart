@@ -6,6 +6,7 @@ class ContentLogModel {
   ContentLogModel({
     this.id,
     required this.userID,
+    this.picutrePath,
     required this.contentID,
     this.date,
     this.contentStatus,
@@ -19,6 +20,7 @@ class ContentLogModel {
 
   final int? id;
   final int userID;
+  final String? picutrePath;
   final int contentID;
   ContentStatusEnum? contentStatus;
   final DateTime? date;
@@ -37,6 +39,7 @@ class ContentLogModel {
     return ContentLogModel(
       id: json['id'],
       userID: json['user_id'],
+      picutrePath: json['picture_path'],
       contentID: json['content_id'],
       date: DateTime.parse(json['date']),
       contentStatus: json['content_status_id'] == null ? null : ContentStatusEnum.values[json['content_status_id'] - 1],

@@ -21,6 +21,8 @@ class ProfileProvider with ChangeNotifier {
   bool isLoading = true;
 
   void getUserInfo(int userID) async {
+    currentPageIndex = 0;
+
     isLoading = true;
     notifyListeners();
 

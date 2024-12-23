@@ -21,7 +21,7 @@ class _AppbarProfileState extends State<AppbarProfile> {
       onEnter: (event) => _hoverCheck(true),
       onExit: (event) => _hoverCheck(false),
       child: ProfilePicture.appBar(
-        imageUrl: "https://images.pexels.com/photos/29191749/pexels-photo-29191749/free-photo-of-traditional-farmer-in-rural-vietnamese-setting.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        imageUrl: loginUser!.picturePath,
         userID: loginUser!.id,
       ),
     );

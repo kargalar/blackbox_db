@@ -1,6 +1,7 @@
 class ReviewModel {
   ReviewModel({
     required this.id,
+    required this.picturePath,
     required this.userID,
     required this.userName,
     required this.text,
@@ -8,6 +9,7 @@ class ReviewModel {
   });
 
   int id;
+  String? picturePath;
   int userID;
   String userName;
   String text;
@@ -16,6 +18,7 @@ class ReviewModel {
   factory ReviewModel.fromJson(Map<String, dynamic> json) {
     return ReviewModel(
       id: json['id'],
+      picturePath: json['picture_path'],
       userID: json['user_id'],
       userName: json['username'],
       text: json['text'],

@@ -475,6 +475,42 @@ class ServerManager {
     };
   }
 
+  Future getFollowers({
+    required int userId,
+  }) async {
+    var response = await dio.get(
+      "$_baseUrl/getFollowers",
+      queryParameters: {
+        'user_id': userId,
+      },
+    );
+
+    checkRequest(response);
+
+    return (response.data as List).map((e) => UserModel.fromJson(e)).toList();
+  }
+
+  Future getFollowing({
+    required int userId,
+  }) async {
+    var response = await dio.get(
+      "$_baseUrl/getFollowing",
+      queryParameters: {
+        'user_id': userId,
+      },
+    );
+
+    checkRequest(response);
+
+    return (response.data as List)
+        .map((e) => {
+              'id': e['id'],
+              'username': e['username'],
+              'picture_path': e['picture_path'],
+            })
+        .toList();
+  }
+
 // statistics
   Future<List<Map<String, dynamic>>> getTopActorsByMovieCount({required int page, required int limit, required String interval}) async {
     var response = await dio.get(

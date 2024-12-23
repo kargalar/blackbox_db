@@ -1,6 +1,7 @@
 class UserModel {
   UserModel({
     required this.id,
+    required this.picturePath,
     required this.username,
     required this.password,
     required this.bio,
@@ -14,6 +15,7 @@ class UserModel {
   });
 
   int id;
+  String? picturePath;
   String username;
   String? password;
   String? bio;
@@ -30,6 +32,7 @@ class UserModel {
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         id: json["id"],
         username: json["username"],
+        picturePath: json["picture_path"],
         password: json["user_password"],
         bio: json["bio"],
         email: json["email"],

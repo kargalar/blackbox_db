@@ -98,7 +98,7 @@ class _AppbarSearchState extends State<AppbarSearch> {
 
         setState(() {});
       },
-      items: <String>['Movie', 'Game', 'Book'].map<DropdownMenuItem<String>>((String value) {
+      items: <String>['Movie', 'Game'].map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
           value: value,
           child: Text(value),

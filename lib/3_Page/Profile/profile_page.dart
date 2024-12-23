@@ -44,13 +44,6 @@ class _ProfilePageState extends State<ProfilePage> {
   ];
 
   @override
-  void dispose() {
-    profileProvider.currentPageIndex = 0;
-
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return context.watch<ProfileProvider>().isLoading
         ? Center(
@@ -86,7 +79,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         SizedBox(width: 10),
                         // TODO:
                         ProfilePicture.profile(
-                          imageUrl: "https://images.pexels.com/photos/29191749/pexels-photo-29191749/free-photo-of-traditional-farmer-in-rural-vietnamese-setting.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                          imageUrl: context.read<ProfileProvider>().user!.picturePath,
                           userID: ProfileProvider().user!.id,
                         ),
                         SizedBox(width: 10),
