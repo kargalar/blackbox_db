@@ -1,6 +1,7 @@
 import 'package:blackbox_db/8_Model/search_content_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class IGDBService {
   IGDBService._privateConstructor();
@@ -14,8 +15,8 @@ class IGDBService {
 
   final headers = {
     'accept': 'application/json',
-    'Client-ID': 'bq60331ycb0t8lvffnmhwkoooqzecp',
-    'Authorization': 'Bearer pbac2y2iap5wlb8f49cpfmcmqal6lu',
+    'Client-ID': dotenv.env['IGDB_Client_id'],
+    'Authorization': dotenv.env['IGDB_Authorization'],
   };
 
   // check request

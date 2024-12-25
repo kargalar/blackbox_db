@@ -1,6 +1,7 @@
 import 'package:blackbox_db/8_Model/search_content_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class TMDBService {
   TMDBService._privateConstructor();
@@ -12,10 +13,7 @@ class TMDBService {
   }
   var dio = Dio();
 
-  final headers = {
-    'accept': 'application/json',
-    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlZTU0MDMxOWU1NTNhODYxZTJmOWQwYmQxMzdmMmY4MiIsIm5iZiI6MTczMTA5MDI3NC43OTYzNTI2LCJzdWIiOiI2NzEzYmI5Y2Q1Yjc5MjZlOTQ2ZmMxMmEiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.FSK1_wcmID-PYmf6ufz7_ZQYA7tyz_Xi396lg5G3Hds'
-  };
+  final headers = {'accept': 'application/json', 'Authorization': dotenv.env['TMDB_Authorization']};
 
   // check request
   void checkRequest(Response response) {

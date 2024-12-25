@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:blackbox_db/1_Core/helper.dart';
 import 'package:blackbox_db/2_General/app_colors.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -16,6 +17,12 @@ Future<void> initApp(List<String> args) async {
 
   // Lock Orientation to Portrait
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+  try {
+    await dotenv.load(fileName: ".env"); // Load environment variables
+  } catch (e) {
+    throw Exception('Error loading .env file: $e'); // Print error if any
+  }
 
   Helper().registerAdapters();
 
