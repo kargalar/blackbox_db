@@ -5,3 +5,7 @@ bool showBook = false;
 bool showGame = true;
 
 UserModel? loginUser;
+
+// screen witdh
+bool isFirst = true;
+late final double screenWidth;

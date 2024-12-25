@@ -40,81 +40,89 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return isLoading
         ? const Center(child: CircularProgressIndicator())
-        : SingleChildScrollView(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 40),
-                Column(
+        : LayoutBuilder(builder: (screenContext, constraints) {
+            if (screenWidth < 600) {
+              // Mobile UI
+              return SizedBox();
+            } else {
+              // Desktop UI
+              return SingleChildScrollView(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (showMovie && trendMovieList.isNotEmpty) ...[
-                      Text("Trending Movies", style: TextStyle(fontSize: 20)),
-                      SizedBox(height: 5),
-                      ContentList(
-                        contentList: trendMovieList,
-                        showcaseType: ShowcaseTypeEnum.TREND,
-                      ),
-                    ],
-                    if (showGame && trendGameList.isNotEmpty) ...[
-                      Text("Trending Games", style: TextStyle(fontSize: 20)),
-                      SizedBox(height: 5),
-                      ContentList(
-                        contentList: trendGameList,
-                        showcaseType: ShowcaseTypeEnum.TREND,
-                      ),
-                    ],
-                    ContentTypeStatistics(),
-                    MovieGenreStatistics(),
+                    SizedBox(height: 40),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (showMovie && trendMovieList.isNotEmpty) ...[
+                          Text("Trending Movies", style: TextStyle(fontSize: 20)),
+                          SizedBox(height: 5),
+                          ContentList(
+                            contentList: trendMovieList,
+                            showcaseType: ShowcaseTypeEnum.TREND,
+                          ),
+                        ],
+                        if (showGame && trendGameList.isNotEmpty) ...[
+                          Text("Trending Games", style: TextStyle(fontSize: 20)),
+                          SizedBox(height: 5),
+                          ContentList(
+                            contentList: trendGameList,
+                            showcaseType: ShowcaseTypeEnum.TREND,
+                          ),
+                        ],
+                        ContentTypeStatistics(),
+                        MovieGenreStatistics(),
+                      ],
+                    ),
+                    SizedBox(width: 60),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (showMovie && friendsLastMovieActivities.isNotEmpty) ...[
+                          Text("Friends' Movie Activities", style: TextStyle(fontSize: 20)),
+                          SizedBox(height: 5),
+                          ContentList(
+                            contentList: friendsLastMovieActivities,
+                            showcaseType: ShowcaseTypeEnum.ACTIVITY,
+                          ),
+                        ],
+                        if (showGame && friendsLastGameActivities.isNotEmpty) ...[
+                          Text("Friends' Game Activities", style: TextStyle(fontSize: 20)),
+                          SizedBox(height: 5),
+                          ContentList(
+                            contentList: friendsLastGameActivities,
+                            showcaseType: ShowcaseTypeEnum.ACTIVITY,
+                          ),
+                        ],
+                        if (showMovie && recommendedMovieList.isNotEmpty) ...[
+                          Text("Recommended Movies", style: TextStyle(fontSize: 20)),
+                          SizedBox(height: 5),
+                          ContentList(
+                            contentList: recommendedMovieList,
+                            showcaseType: ShowcaseTypeEnum.FLAT,
+                          ),
+                        ],
+                        if (topReviews.isNotEmpty) ...[
+                          Text("Top Reviews", style: TextStyle(fontSize: 20)),
+                          SizedBox(height: 5),
+                          SizedBox(
+                            width: 0.5.sw,
+                            child: ProfileReviews(
+                              reviewList: topReviews,
+                            ),
+                          ),
+                        ],
+                        SizedBox(height: 100),
+                        // çok beklenenler
+                        // sana benzer kullanıcılar
+                      ],
+                    ),
                   ],
                 ),
-                SizedBox(width: 60),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (showMovie && friendsLastMovieActivities.isNotEmpty) ...[
-                      Text("Friends' Movie Activities", style: TextStyle(fontSize: 20)),
-                      SizedBox(height: 5),
-                      ContentList(
-                        contentList: friendsLastMovieActivities,
-                        showcaseType: ShowcaseTypeEnum.ACTIVITY,
-                      ),
-                    ],
-                    if (showGame && friendsLastGameActivities.isNotEmpty) ...[
-                      Text("Friends' Game Activities", style: TextStyle(fontSize: 20)),
-                      SizedBox(height: 5),
-                      ContentList(
-                        contentList: friendsLastGameActivities,
-                        showcaseType: ShowcaseTypeEnum.ACTIVITY,
-                      ),
-                    ],
-                    if (showMovie && recommendedMovieList.isNotEmpty) ...[
-                      Text("Recommended Movies", style: TextStyle(fontSize: 20)),
-                      SizedBox(height: 5),
-                      ContentList(
-                        contentList: recommendedMovieList,
-                        showcaseType: ShowcaseTypeEnum.FLAT,
-                      ),
-                    ],
-                    if (topReviews.isNotEmpty) ...[
-                      Text("Top Reviews", style: TextStyle(fontSize: 20)),
-                      SizedBox(height: 5),
-                      SizedBox(
-                        width: 0.5.sw,
-                        child: ProfileReviews(
-                          reviewList: topReviews,
-                        ),
-                      ),
-                    ],
-                    SizedBox(height: 100),
-                    // çok beklenenler
-                    // sana benzer kullanıcılar
-                  ],
-                ),
-              ],
-            ),
-          );
+              );
+            }
+          });
   }
 
   void getContent() async {
