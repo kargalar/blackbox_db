@@ -73,7 +73,7 @@ class ContentActivity extends StatelessWidget {
                       ],
                     ),
                   SizedBox(width: 4),
-                  if (contentLog.isFavorite != null)
+                  if (contentLog.isFavorite != null && contentLog.isFavorite!)
                     const Icon(
                       Icons.favorite,
                       color: AppColors.red,
