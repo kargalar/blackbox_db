@@ -1,5 +1,26 @@
-# blackbox_db
+# BlackBox DB
 
-Film, kitap ve oyun için arşiv ve sosyal medya platformu.
+Archive and social media platform for movies, books and games.
 
-https://drive.google.com/drive/folders/10MJsvFB4Lc7Z_QT80LbhxSoJIcasBOG9?usp=sharing
+[Download for Windows](https://drive.google.com/file/d/14pbLIwEehS967YAvmSbpLxqquwUa0TkX/view?usp=sharing)
+
+
+
+
+### Home
+![home](images/Home.svg)
+
+### Content Page
+![Content_page](images/Content_Page.svg)
+
+### Discover
+![Discover](images/Discover.png)
+
+### Profile
+![Profile](images/Profile.svg)
+
+### Search Movie
+![search_movie](images/search_movie.png)
+
+### Search Game
+![search_game](images/search_game.png)
