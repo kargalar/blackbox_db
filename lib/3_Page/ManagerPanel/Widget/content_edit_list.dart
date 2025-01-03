@@ -19,35 +19,52 @@ class ContentEditList extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
-          SizedBox(
-            width: 300,
-            child: TextField(
-              controller: textController,
-              decoration: const InputDecoration(
-                hintText: 'Search Content',
+          Row(
+            children: [
+              SizedBox(
+                width: 300,
+                child: TextField(
+                  controller: textController,
+                  decoration: const InputDecoration(
+                    hintText: 'Search Content',
+                  ),
+                  onEditingComplete: () async {
+                    await managerPanelProvider.searchContent(
+                      searchText: textController.text,
+                      contentType: ContentTypeEnum.MOVIE,
+                    );
+                  },
+                ),
               ),
-              onEditingComplete: () async {
-                await managerPanelProvider.searchContent(
-                  searchText: textController.text,
-                  contentType: ContentTypeEnum.MOVIE,
-                );
-              },
-            ),
+              const SizedBox(width: 10),
+              IconButton(
+                onPressed: () {
+                  managerPanelProvider.addContentItem();
+                },
+                icon: const Icon(Icons.add),
+              ),
+            ],
           ),
-          SizedBox(
-            width: 620,
-            child: ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: managerPanelProvider.contentList.length,
-              itemBuilder: (context, index) {
-                // TODO: burada içeriğin bilgileri gösterilecek ve düzenlenebilecek veya silinebilecek. yapıaln değişikliklere göre güncellenmesi gerekenler güncellenecek
-                return ManagerPanelContentItem(
-                  contentModel: managerPanelProvider.contentList[index],
-                );
-              },
-            ),
-          ),
+          managerPanelProvider.contentList.isEmpty
+              ? const Center(
+                  child: Padding(
+                  padding: EdgeInsets.all(15),
+                  child: Text('No Data'),
+                ))
+              : SizedBox(
+                  width: 620,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: context.watch<ManagerPanelProvider>().contentList.length,
+                    itemBuilder: (context, index) {
+                      return ManagerPanelContentItem(
+                        key: ValueKey(managerPanelProvider.contentList[index].id),
+                        contentModel: managerPanelProvider.contentList[index],
+                      );
+                    },
+                  ),
+                ),
         ],
       ),
     );

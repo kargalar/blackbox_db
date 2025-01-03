@@ -32,37 +32,35 @@ class _ManagerPanelState extends State<ManagerPanel> {
   Widget build(BuildContext context) {
     return context.watch<ManagerPanelProvider>().isLoading
         ? const Center(child: CircularProgressIndicator())
-        : managerPanelProvider.contentList.isEmpty
-            ? const Center(child: Text('No Data'))
-            : SingleChildScrollView(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        : SingleChildScrollView(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ContentEditList(),
+                Column(
                   children: [
-                    ContentEditList(),
-                    Column(
-                      children: [
-                        SizedBox(height: 50),
-                        MostWatchedStatistics(),
-                        SizedBox(height: 50),
-                        WeekdayWatchCountStatistics(),
-                        SizedBox(height: 50),
-                        ContentTypeStatistics(),
-                        SizedBox(height: 50),
-                        MovieGenreStatistics(),
-                        SizedBox(height: 50),
-                        ActorStatistics(),
-                        SizedBox(height: 50),
-                        ActorStatisticss(),
-                        SizedBox(height: 50),
-                        MovieYearStatistics(),
-                        SizedBox(height: 50),
-                        UserEditList(),
-                      ],
-                    ),
+                    SizedBox(height: 50),
+                    MostWatchedStatistics(),
+                    SizedBox(height: 50),
+                    WeekdayWatchCountStatistics(),
+                    SizedBox(height: 50),
+                    ContentTypeStatistics(),
+                    SizedBox(height: 50),
+                    MovieGenreStatistics(),
+                    SizedBox(height: 50),
+                    ActorStatistics(),
+                    SizedBox(height: 50),
+                    ActorStatisticss(),
+                    SizedBox(height: 50),
+                    MovieYearStatistics(),
+                    SizedBox(height: 50),
+                    UserEditList(),
                   ],
                 ),
-              );
+              ],
+            ),
+          );
   }
 
   void getAllData() async {

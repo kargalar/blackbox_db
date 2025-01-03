@@ -7,27 +7,27 @@ import 'package:intl/intl.dart';
 class ContentModel {
   ContentModel({
     required this.id,
-    required this.posterPath,
+    this.posterPath,
     required this.title,
     required this.contentType,
-    required this.releaseDate,
-    required this.creatorList,
-    required this.description,
-    required this.genreList,
-    required this.length,
-    required this.cast,
-    required this.consumeCount,
-    required this.favoriCount,
-    required this.listCount,
-    required this.reviewCount,
-    required this.ratingDistribution,
-    required this.contentStatus,
-    required this.rating,
-    required this.isFavorite,
-    required this.isConsumeLater,
+    this.releaseDate,
+    this.creatorList,
+    this.description,
+    this.genreList,
+    this.length,
+    this.cast,
+    this.consumeCount,
+    this.favoriCount,
+    this.listCount,
+    this.reviewCount,
+    this.ratingDistribution,
+    this.contentStatus,
+    this.rating,
+    this.isFavorite,
+    this.isConsumeLater,
   });
 
-  final int id;
+  int? id;
   final String? posterPath;
   final ContentTypeEnum contentType;
   final String title;
@@ -39,16 +39,16 @@ class ContentModel {
   final List<CastModel>? cast;
 
   // TODO: filmin bilgileri, istatistikleri ve kullanıcı logu ayrı modelde mi tutulsa
-  int consumeCount;
-  int favoriCount;
-  int listCount;
-  int reviewCount;
-  List<int> ratingDistribution;
+  int? consumeCount;
+  int? favoriCount;
+  int? listCount;
+  int? reviewCount;
+  List<int>? ratingDistribution;
 
   double? rating;
   ContentStatusEnum? contentStatus;
-  bool isFavorite;
-  bool isConsumeLater;
+  bool? isFavorite;
+  bool? isConsumeLater;
 
   factory ContentModel.fromJson(Map<String, dynamic> json) {
     return ContentModel(
@@ -91,19 +91,19 @@ class ContentModel {
       'id': id,
       'poster_path': posterPath,
       'title': title,
-      'content_type_id': contentType.index,
+      'content_type_id': contentType.index + 1,
       'release_date': releaseDate != null ? DateFormat('yyyy-MM-dd').format(releaseDate!) : null,
       'creator_list': creatorList?.map((i) => i.toJson()).toList(),
       'description': description,
       'genre_list': genreList?.map((i) => i.toJson()).toList(),
       'length': length,
-      'cast_list': cast!.map((i) => i.toJson()).toList(),
+      'cast_list': cast?.map((i) => i.toJson()).toList(),
       'consume_count': consumeCount,
       'favori_count': favoriCount,
       'list_count': listCount,
       'review_count': reviewCount,
       'rating_distribution': ratingDistribution,
-      'content_status_id': contentStatus!.index,
+      'content_status_id': contentStatus?.index,
       'rating': rating,
       'is_favorite': isFavorite,
       'is_consume_later': isConsumeLater,

@@ -54,8 +54,8 @@ class ContentUserAction extends StatelessWidget {
                     contentType: contentPageProvider.contentModel!.contentType,
                     contentStatus: ContentStatusEnum.CONSUMED,
                     rating: userRating,
-                    isFavorite: contentPageProvider.contentModel!.isFavorite,
-                    isConsumeLater: contentPageProvider.contentModel!.isConsumeLater,
+                    isFavorite: contentPageProvider.contentModel!.isFavorite!,
+                    isConsumeLater: contentPageProvider.contentModel!.isConsumeLater!,
                   );
                 },
               ),
@@ -73,8 +73,8 @@ class ContentUserAction extends StatelessWidget {
                       contentType: contentPageProvider.contentModel!.contentType,
                       contentStatus: contentPageProvider.contentModel!.contentStatus,
                       rating: contentPageProvider.contentModel!.rating,
-                      isFavorite: contentPageProvider.contentModel!.isFavorite,
-                      isConsumeLater: contentPageProvider.contentModel!.isConsumeLater,
+                      isFavorite: contentPageProvider.contentModel!.isFavorite!,
+                      isConsumeLater: contentPageProvider.contentModel!.isConsumeLater!,
                     );
                   },
                   child: Padding(
@@ -90,21 +90,21 @@ class ContentUserAction extends StatelessWidget {
                 // favori
                 InkWell(
                   onTap: () {
-                    contentPageProvider.contentModel!.isFavorite = !contentPageProvider.contentModel!.isFavorite;
+                    contentPageProvider.contentModel!.isFavorite = !contentPageProvider.contentModel!.isFavorite!;
 
                     contentPageProvider.contentUserAction(
                       contentType: contentPageProvider.contentModel!.contentType,
                       contentStatus: contentPageProvider.contentModel!.contentStatus,
                       rating: contentPageProvider.contentModel!.rating,
-                      isFavorite: contentPageProvider.contentModel!.isFavorite,
-                      isConsumeLater: contentPageProvider.contentModel!.isConsumeLater,
+                      isFavorite: contentPageProvider.contentModel!.isFavorite!,
+                      isConsumeLater: contentPageProvider.contentModel!.isConsumeLater!,
                     );
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(5),
                     child: Icon(
                       Icons.favorite,
-                      color: contentPageProvider.contentModel!.isFavorite ? AppColors.dirtyRed : null,
+                      color: contentPageProvider.contentModel!.isFavorite! ? AppColors.dirtyRed : null,
                       size: 30,
                     ),
                   ),
@@ -112,21 +112,21 @@ class ContentUserAction extends StatelessWidget {
                 // watchlater
                 InkWell(
                   onTap: () {
-                    contentPageProvider.contentModel!.isConsumeLater = !contentPageProvider.contentModel!.isConsumeLater;
+                    contentPageProvider.contentModel!.isConsumeLater = !contentPageProvider.contentModel!.isConsumeLater!;
 
                     contentPageProvider.contentUserAction(
                       contentType: contentPageProvider.contentModel!.contentType,
                       contentStatus: contentPageProvider.contentModel!.contentStatus,
                       rating: contentPageProvider.contentModel!.rating,
-                      isFavorite: contentPageProvider.contentModel!.isFavorite,
-                      isConsumeLater: contentPageProvider.contentModel!.isConsumeLater,
+                      isFavorite: contentPageProvider.contentModel!.isFavorite!,
+                      isConsumeLater: contentPageProvider.contentModel!.isConsumeLater!,
                     );
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(5),
                     child: Icon(
                       Icons.watch_later,
-                      color: contentPageProvider.contentModel!.isConsumeLater ? AppColors.main : null,
+                      color: contentPageProvider.contentModel!.isConsumeLater! ? AppColors.main : null,
                       size: 30,
                     ),
                   ),
@@ -184,8 +184,8 @@ class ContentUserAction extends StatelessWidget {
                     contentType: contentPageProvider.contentModel!.contentType,
                     contentStatus: contentPageProvider.contentModel!.contentStatus,
                     rating: contentPageProvider.contentModel!.rating,
-                    isFavorite: contentPageProvider.contentModel!.isFavorite,
-                    isConsumeLater: contentPageProvider.contentModel!.isConsumeLater,
+                    isFavorite: contentPageProvider.contentModel!.isFavorite!,
+                    isConsumeLater: contentPageProvider.contentModel!.isConsumeLater!,
                     review: review,
                   );
                 }
@@ -216,7 +216,7 @@ class ContentUserAction extends StatelessWidget {
                 final log = ContentLogModel(
                   userID: loginUser!.id,
                   date: DateTime.now(),
-                  contentID: contentPageProvider.contentModel!.id,
+                  contentID: contentPageProvider.contentModel!.id!,
                   contentType: contentPageProvider.contentModel!.contentType,
                   contentStatus: contentPageProvider.contentModel!.contentStatus,
                   rating: contentPageProvider.contentModel!.rating,

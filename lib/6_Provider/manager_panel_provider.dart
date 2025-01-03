@@ -40,7 +40,63 @@ class ManagerPanelProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // get all user
+  Future addContentItem() async {
+    contentList.insert(
+      0,
+      ContentModel(
+        id: DateTime.now().millisecondsSinceEpoch,
+        title: "",
+        contentType: ContentTypeEnum.MOVIE,
+        favoriCount: -999, // bu sayede yeni öğe mi onu kontrol ediyorum
+      ),
+    );
+
+    notifyListeners();
+  }
+
+  Future addContent({required ContentModel contentModel}) async {
+    int newContentID = await ServerManager().addContent(contentModel: contentModel);
+
+    int index = contentList.indexWhere((element) => element.id == contentModel.id);
+
+    contentList.removeWhere((element) => element.id == contentModel.id);
+
+    contentList.insert(
+      index,
+      ContentModel(
+        id: newContentID,
+        title: contentModel.title,
+        contentType: contentModel.contentType,
+        favoriCount: contentModel.favoriCount,
+      ),
+    );
+
+    notifyListeners();
+  }
+
+  Future updateContent({required ContentModel contentModel}) async {
+    Helper().getDialog(
+      message: "Are you sure? This content will be updated.",
+      onAccept: () async {
+        await ServerManager().updateContent(contentModel: contentModel);
+
+        notifyListeners();
+      },
+    );
+  }
+
+  Future deleteContent({required int contentID}) async {
+    Helper().getDialog(
+      message: "Are you sure? This content will be deleted.",
+      onAccept: () async {
+        await ServerManager().deleteContent(contentID: contentID);
+        contentList.removeWhere((element) => element.id == contentID);
+
+        notifyListeners();
+      },
+    );
+  }
+
   Future getAllUser() async {
     if (!isLoading) {
       isLoading = true;
@@ -55,7 +111,6 @@ class ManagerPanelProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // delete user
   Future deleteUser({required int userID}) async {
     // TODO: are you sure dialog
     Helper().getDialog(

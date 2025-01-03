@@ -158,6 +158,43 @@ class ServerManager {
     checkRequest(response);
   }
 
+  Future deleteContent({
+    required int contentID,
+  }) async {
+    var response = await dio.delete(
+      "$_baseUrl/deleteContent",
+      queryParameters: {
+        'content_id': contentID,
+      },
+    );
+
+    checkRequest(response);
+  }
+
+  Future updateContent({
+    required ContentModel contentModel,
+  }) async {
+    var response = await dio.put(
+      "$_baseUrl/updateContent",
+      data: contentModel.toJson(),
+    );
+
+    checkRequest(response);
+  }
+
+  Future<int> addContent({
+    required ContentModel contentModel,
+  }) async {
+    var response = await dio.post(
+      "$_baseUrl/addContent",
+      data: contentModel.toJson(),
+    );
+
+    checkRequest(response);
+
+    return response.data['id'];
+  }
+
   Future followUnfollow({
     required int userId,
     required int followingUserID,

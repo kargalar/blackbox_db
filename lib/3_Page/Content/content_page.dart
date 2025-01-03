@@ -55,7 +55,7 @@ class _ContentPageState extends State<ContentPage> {
                       ],
                     ),
                     SizedBox(height: 40),
-                    ContentReviews(contentId: provider.contentModel!.id),
+                    ContentReviews(contentId: provider.contentModel!.id!),
                     SizedBox(height: 100),
                   ],
                 ),

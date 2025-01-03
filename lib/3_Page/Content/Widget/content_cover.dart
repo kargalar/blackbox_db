@@ -76,11 +76,11 @@ class ContentCover extends StatelessWidget {
               const SizedBox(height: 20),
               Row(
                 children: [
-                  for (var i = 0; i < contentModel.ratingDistribution.length; i++)
+                  for (var i = 0; i < contentModel.ratingDistribution!.length; i++)
                     Column(
                       children: [
                         Text(
-                          "${contentModel.ratingDistribution[i]} ",
+                          "${contentModel.ratingDistribution![i]} ",
                           style: const TextStyle(fontSize: 18),
                         ),
                         Text("${i + 1}"),
