@@ -23,8 +23,8 @@ class ServerManager {
     return _instance;
   }
 
-  // static const String _baseUrl = 'http://localhost:3000';
-  static const String _baseUrl = 'https://blackboxdb-d42413898246.herokuapp.com';
+  static const String _baseUrl = 'http://localhost:3000';
+  // static const String _baseUrl = 'https://blackboxdb-d42413898246.herokuapp.com';
 
   var dio = Dio();
 
@@ -133,6 +133,29 @@ class ServerManager {
     checkRequest(response);
 
     return UserModel.fromJson(response.data);
+  }
+
+  Future<List<UserModel>> getAllUser() async {
+    var response = await dio.get(
+      "$_baseUrl/getAllUser",
+    );
+
+    checkRequest(response);
+
+    return (response.data as List).map((e) => UserModel.fromJson(e)).toList();
+  }
+
+  Future deleteUser({
+    required int userID,
+  }) async {
+    var response = await dio.delete(
+      "$_baseUrl/deleteUser",
+      queryParameters: {
+        'user_id': userID,
+      },
+    );
+
+    checkRequest(response);
   }
 
   Future followUnfollow({

@@ -4,8 +4,9 @@ import 'package:blackbox_db/3_Page/ManagerPanel/Widget/Statistics/most_watched_s
 import 'package:blackbox_db/3_Page/ManagerPanel/Widget/Statistics/movie_genres_statistics.dart';
 import 'package:blackbox_db/3_Page/ManagerPanel/Widget/Statistics/movie_rating_by_genre_statistics.dart';
 import 'package:blackbox_db/3_Page/ManagerPanel/Widget/Statistics/movie_rating_by_year_statistics.dart';
-import 'package:blackbox_db/3_Page/ManagerPanel/Widget/panel_content_item.dart';
+import 'package:blackbox_db/3_Page/ManagerPanel/Widget/content_edit_list.dart';
 import 'package:blackbox_db/3_Page/ManagerPanel/Widget/Statistics/weekday_watch_count_statistics.dart';
+import 'package:blackbox_db/3_Page/ManagerPanel/Widget/user_edit_list.dart';
 import 'package:blackbox_db/6_Provider/manager_panel_provider.dart';
 import 'package:blackbox_db/7_Enum/content_type_enum.dart';
 import 'package:flutter/material.dart';
@@ -20,8 +21,6 @@ class ManagerPanel extends StatefulWidget {
 
 class _ManagerPanelState extends State<ManagerPanel> {
   late final managerPanelProvider = context.read<ManagerPanelProvider>();
-
-  final TextEditingController textController = TextEditingController();
 
   @override
   void initState() {
@@ -40,44 +39,7 @@ class _ManagerPanelState extends State<ManagerPanel> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    SingleChildScrollView(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              width: 300,
-                              child: TextField(
-                                controller: textController,
-                                decoration: const InputDecoration(
-                                  hintText: 'Search Content',
-                                ),
-                                onEditingComplete: () async {
-                                  await managerPanelProvider.searchContent(
-                                    searchText: textController.text,
-                                    contentType: ContentTypeEnum.MOVIE,
-                                  );
-                                },
-                              ),
-                            ),
-                            SizedBox(
-                              width: 620,
-                              child: ListView.builder(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: managerPanelProvider.contentList.length,
-                                itemBuilder: (context, index) {
-                                  // TODO: burada içeriğin bilgileri gösterilecek ve düzenlenebilecek veya silinebilecek. yapıaln değişikliklere göre güncellenmesi gerekenler güncellenecek
-                                  return PanelContentItem(
-                                    contentModel: managerPanelProvider.contentList[index],
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                    ContentEditList(),
                     Column(
                       children: [
                         SizedBox(height: 50),
@@ -93,7 +55,9 @@ class _ManagerPanelState extends State<ManagerPanel> {
                         SizedBox(height: 50),
                         ActorStatisticss(),
                         SizedBox(height: 50),
-                        MovieYearStatistics()
+                        MovieYearStatistics(),
+                        SizedBox(height: 50),
+                        UserEditList(),
                       ],
                     ),
                   ],
@@ -105,5 +69,7 @@ class _ManagerPanelState extends State<ManagerPanel> {
     await managerPanelProvider.searchContent(
       contentType: ContentTypeEnum.MOVIE,
     );
+
+    await managerPanelProvider.getAllUser();
   }
 }

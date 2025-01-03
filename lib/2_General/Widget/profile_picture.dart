@@ -37,6 +37,7 @@ class ProfilePicture extends StatelessWidget {
           size: 30,
           userID: userID,
         );
+
   const ProfilePicture.profile({
     Key? key,
     required String? imageUrl,
@@ -47,6 +48,7 @@ class ProfilePicture extends StatelessWidget {
           size: 80,
           userID: userID,
         );
+
   const ProfilePicture.review({
     Key? key,
     required String? imageUrl,
@@ -55,6 +57,17 @@ class ProfilePicture extends StatelessWidget {
           key: key,
           imageUrl: imageUrl,
           size: 60,
+          userID: userID,
+        );
+
+  const ProfilePicture.manager({
+    Key? key,
+    required String? imageUrl,
+    required int userID,
+  }) : this(
+          key: key,
+          imageUrl: imageUrl,
+          size: 50,
           userID: userID,
         );
 
