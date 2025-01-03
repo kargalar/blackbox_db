@@ -33,7 +33,7 @@ class _ContentReviewsState extends State<ContentReviews> {
   Widget build(BuildContext context) {
     return isLoading
         ? const Center(child: CircularProgressIndicator())
-        : ContentPageProvider().reviewList.isEmpty
+        : context.watch<ContentPageProvider>().reviewList.isEmpty
             ? const Center(
                 child: Text(
                   'No reviews found',
@@ -112,7 +112,7 @@ class _ContentReviewsState extends State<ContentReviews> {
                     width: 0.4.sw,
                     child: ListView.builder(
                       shrinkWrap: true,
-                      itemCount: context.watch<ContentPageProvider>().reviewList.length,
+                      itemCount: ContentPageProvider().reviewList.length,
                       itemBuilder: (context, index) {
                         return ReviewItem(
                           reviewModel: ContentPageProvider().reviewList[index],
