@@ -139,45 +139,64 @@ class ContentUserAction extends StatelessWidget {
                 String? review;
 
                 await showDialog(
-                    context: context,
-                    builder: (context) {
-                      final TextEditingController reviewController = TextEditingController();
+                  context: context,
+                  builder: (context) {
+                    final TextEditingController reviewController = TextEditingController();
+                    String? errorMessage;
 
-                      return Dialog(
-                        child: Padding(
-                          padding: const EdgeInsets.all(20),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Text("Add Review"),
-                              const SizedBox(height: 10),
-                              SizedBox(
-                                width: 0.4.sw,
-                                child: TextField(
-                                  controller: reviewController,
-                                  maxLines: 10,
-                                  minLines: 5,
-                                  keyboardType: TextInputType.multiline,
-                                  decoration: const InputDecoration(
-                                    hintText: "Review",
-                                    border: OutlineInputBorder(),
-                                    contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                    return StatefulBuilder(
+                      builder: (context, setState) {
+                        return Dialog(
+                          child: Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Text("Add Review"),
+                                const SizedBox(height: 10),
+                                SizedBox(
+                                  width: 0.4.sw,
+                                  child: TextField(
+                                    controller: reviewController,
+                                    maxLines: 10,
+                                    minLines: 5,
+                                    keyboardType: TextInputType.multiline,
+                                    decoration: const InputDecoration(
+                                      hintText: "Review",
+                                      border: OutlineInputBorder(),
+                                      contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(height: 10),
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pop(context, "Review");
-                                  review = reviewController.text;
-                                },
-                                child: const Text("Send"),
-                              ),
-                            ],
+                                if (errorMessage != null) ...[
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    errorMessage!,
+                                    style: const TextStyle(color: Colors.red),
+                                  ),
+                                ],
+                                const SizedBox(height: 10),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    if (reviewController.text.trim().isEmpty) {
+                                      setState(() {
+                                        errorMessage = "Review cannot be empty";
+                                      });
+                                    } else {
+                                      Navigator.pop(context, "Review");
+                                      review = reviewController.text;
+                                    }
+                                  },
+                                  child: const Text("Send"),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    });
+                        );
+                      },
+                    );
+                  },
+                );
 
                 if (review != null) {
                   contentPageProvider.contentUserAction(
