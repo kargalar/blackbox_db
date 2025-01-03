@@ -1,9 +1,10 @@
 import 'package:blackbox_db/2_General/app_colors.dart';
 import 'package:blackbox_db/3_Page/Content/Widget/Review/review_item.dart';
 import 'package:blackbox_db/5_Service/server_manager.dart';
-import 'package:blackbox_db/8_Model/review_model.dart';
+import 'package:blackbox_db/6_Provider/content_page_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class ContentReviews extends StatefulWidget {
   const ContentReviews({
@@ -20,8 +21,6 @@ class ContentReviews extends StatefulWidget {
 class _ContentReviewsState extends State<ContentReviews> {
   bool isLoading = true;
 
-  List<ReviewModel> reviewList = [];
-
   @override
   void initState() {
     super.initState();
@@ -34,7 +33,7 @@ class _ContentReviewsState extends State<ContentReviews> {
   Widget build(BuildContext context) {
     return isLoading
         ? const Center(child: CircularProgressIndicator())
-        : reviewList.isEmpty
+        : ContentPageProvider().reviewList.isEmpty
             ? const Center(
                 child: Text(
                   'No reviews found',
@@ -113,10 +112,10 @@ class _ContentReviewsState extends State<ContentReviews> {
                     width: 0.4.sw,
                     child: ListView.builder(
                       shrinkWrap: true,
-                      itemCount: reviewList.length,
+                      itemCount: context.watch<ContentPageProvider>().reviewList.length,
                       itemBuilder: (context, index) {
                         return ReviewItem(
-                          reviewModel: reviewList[index],
+                          reviewModel: ContentPageProvider().reviewList[index],
                         );
                       },
                     ),
@@ -126,11 +125,10 @@ class _ContentReviewsState extends State<ContentReviews> {
   }
 
   void getReviews() async {
-    reviewList = await ServerManager().getContentReviews(contentId: widget.contentId);
+    ContentPageProvider().reviewList = await ServerManager().getContentReviews(contentId: widget.contentId);
 
     setState(() {
       isLoading = false;
     });
-    // get reviews
   }
 }
