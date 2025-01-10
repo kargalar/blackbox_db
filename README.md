@@ -4,8 +4,6 @@ Archive and social media platform for movies, books and games.
 
 Flutter, Node.js, PostgreSQL, Figma, Postman, Heroku, Notion.
 
-[Download for Windows](https://drive.google.com/file/d/14pbLIwEehS967YAvmSbpLxqquwUa0TkX/view?usp=sharing)
-
 
 
 
