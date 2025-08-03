@@ -32,7 +32,7 @@ class ProfileProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void goHomePage(context) async {
+  void goHomePage(BuildContext context) async {
     {
       Provider.of<ExploreProvider>(context, listen: false).profileUserID = user!.id;
       currentPageIndex = 0;
@@ -53,7 +53,7 @@ class ProfileProvider with ChangeNotifier {
     }
   }
 
-  void goGamePage(context) async {
+  void goGamePage(BuildContext context) async {
     {
       currentPageIndex = 2;
 
@@ -67,7 +67,7 @@ class ProfileProvider with ChangeNotifier {
     }
   }
 
-  void goReviewPage(context) async {
+  void goReviewPage(BuildContext context) async {
     {
       currentPageIndex = 3;
 
@@ -75,7 +75,7 @@ class ProfileProvider with ChangeNotifier {
     }
   }
 
-  void goListPage(context) async {
+  void goListPage(BuildContext context) async {
     {
       currentPageIndex = 4;
 
@@ -83,7 +83,7 @@ class ProfileProvider with ChangeNotifier {
     }
   }
 
-  void goNetworkPage(context) async {
+  void goNetworkPage(BuildContext context) async {
     {
       currentPageIndex = 5;
 
@@ -91,7 +91,7 @@ class ProfileProvider with ChangeNotifier {
     }
   }
 
-  void goActivityPage(context) async {
+  void goActivityPage(BuildContext context) async {
     {
       currentPageIndex = 6;
 

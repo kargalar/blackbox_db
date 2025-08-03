@@ -24,7 +24,7 @@ class TMDBService {
     }
   }
 
-  Future<List<SearchContentModel>> search(searchText) async {
+  Future<List<SearchContentModel>> search(String? searchText) async {
     final url = 'https://api.themoviedb.org/3/search/movie?query=$searchText&include_adult=false&language=en-US&page=1';
 
     final response = await Dio().get(

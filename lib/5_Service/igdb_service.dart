@@ -29,7 +29,7 @@ class IGDBService {
   }
 
   // get all genres
-  Future<List<SearchContentModel>> search(searchText) async {
+  Future<List<SearchContentModel>> search(String? searchText) async {
     final url = 'https://api.igdb.com/v4/games';
 
     final response = await Dio().post(

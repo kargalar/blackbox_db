@@ -237,7 +237,7 @@ class AppColors {
       color: text,
     ),
     // Dialog
-    dialogTheme: DialogTheme(
+    dialogTheme: DialogThemeData(
       backgroundColor: background,
       surfaceTintColor: background,
       shape: RoundedRectangleBorder(
@@ -475,7 +475,7 @@ class AppColors {
       ),
     ),
     // card
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       color: background,
       shadowColor: black,
       elevation: 0,
