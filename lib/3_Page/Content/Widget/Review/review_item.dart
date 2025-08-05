@@ -26,7 +26,7 @@ class _ReviewItemState extends State<ReviewItem> {
       children: [
         ProfilePicture.review(
           imageUrl: widget.reviewModel.picturePath,
-          userID: widget.reviewModel.userID,
+          userId: widget.reviewModel.userId,
         ),
         SizedBox(width: 10),
         Column(

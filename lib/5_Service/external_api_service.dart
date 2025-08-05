@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:blackbox_db/8_Model/content_model.dart';
 import 'package:blackbox_db/7_Enum/content_type_enum.dart';
 import 'package:blackbox_db/5_Service/migration_service.dart';
@@ -48,7 +49,7 @@ class ExternalApiService {
   Future<ContentModel?> getContentDetail({
     required int contentId,
     required int contentTypeId,
-    int? userId,
+    String? userId,
   }) async {
     try {
       // ADIM 1: Önce Supabase'de var mı kontrol et
@@ -84,7 +85,7 @@ class ExternalApiService {
   // ********************************************
 
   /// TMDB'den film detayını çek, user logs ile birleştir ve Supabase'e kaydet
-  Future<ContentModel?> _fetchAndSaveMovieFromTMDB(int movieId, int? userId) async {
+  Future<ContentModel?> _fetchAndSaveMovieFromTMDB(int movieId, String? userId) async {
     try {
       debugPrint('🎬 Fetching movie from TMDB: $movieId');
 
@@ -101,7 +102,27 @@ class ExternalApiService {
 
       final movieData = json.decode(movieResponse.body);
 
-      // ContentModel'e dönüştür
+      // ADIM 3: Supabase'e sadece temel alanları kaydet (cast_list, genre_list hariç)
+      try {
+        final basicMovieData = {
+          'id': movieData['id'],
+          'title': movieData['title'],
+          'description': movieData['overview'],
+          'poster_path': movieData['poster_path'],
+          'release_date': movieData['release_date'],
+          'content_type_id': 1, // Movie
+          'length': movieData['runtime'],
+          // Complex fields skip edildi: cast_list, creator_list, genre_list
+        };
+
+        await _migrationService.client.from('content').insert(basicMovieData);
+        debugPrint('✅ Movie saved to Supabase: ${movieData['id']}');
+      } catch (e) {
+        debugPrint('⚠️ Error saving movie to Supabase: $e');
+        // Kaydetme hatası olsa bile content'i döndür
+      }
+
+      // ADIM 4: ContentModel oluştur (response için)
       final content = ContentModel(
         id: movieData['id'],
         title: movieData['title'],
@@ -110,20 +131,22 @@ class ExternalApiService {
         releaseDate: movieData['release_date'] != null ? DateTime.parse(movieData['release_date']) : null,
         contentType: ContentTypeEnum.MOVIE,
         length: movieData['runtime'],
+        // Complex fields null
+        cast: null,
+        creatorList: null,
+        genreList: null,
+        ratingDistribution: null, // Null olarak bırak, UI'da handle edilecek
+        // Stats fields default
         consumeCount: 0,
         favoriCount: 0,
         listCount: 0,
         reviewCount: 0,
+        // User fields default
+        contentStatus: null,
+        rating: null,
+        isFavorite: false, // Default false
+        isConsumeLater: false, // Default false
       );
-
-      // ADIM 3: Supabase'e kaydet
-      try {
-        await _migrationService.addContent(contentModel: content);
-        debugPrint('✅ Movie saved to Supabase: ${content.id}');
-      } catch (e) {
-        debugPrint('⚠️ Error saving movie to Supabase: $e');
-        // Kaydetme hatası olsa bile content'i döndür
-      }
 
       // ADIM 4: Eğer userId varsa, user logs ile birleştir
       if (userId != null) {
@@ -147,7 +170,7 @@ class ExternalApiService {
   }
 
   /// IGDB'den oyun detayını çek, user logs ile birleştir ve Supabase'e kaydet
-  Future<ContentModel?> _fetchAndSaveGameFromIGDB(int gameId, int? userId) async {
+  Future<ContentModel?> _fetchAndSaveGameFromIGDB(int gameId, String? userId) async {
     try {
       debugPrint('🎮 Fetching game from IGDB: $gameId');
 
@@ -169,7 +192,25 @@ class ExternalApiService {
 
       final game = data[0];
 
-      // ContentModel'e dönüştür
+      // ADIM 3: Supabase'e sadece temel alanları kaydet
+      try {
+        final basicGameData = {
+          'id': game['id'],
+          'title': game['name'],
+          'description': game['summary'] ?? game['storyline'],
+          'poster_path': game['cover']?['image_id'] != null ? 'https://images.igdb.com/igdb/image/upload/t_cover_big/${game['cover']['image_id']}.jpg' : null,
+          'release_date': game['first_release_date'] != null ? DateFormat('yyyy-MM-dd').format(DateTime.fromMillisecondsSinceEpoch(game['first_release_date'] * 1000)) : null,
+          'content_type_id': 2, // Game
+          // Complex fields skip edildi: cast_list, creator_list, genre_list
+        };
+
+        await _migrationService.client.from('content').insert(basicGameData);
+        debugPrint('✅ Game saved to Supabase: ${game['id']}');
+      } catch (e) {
+        debugPrint('⚠️ Error saving game to Supabase: $e');
+      }
+
+      // ADIM 4: ContentModel oluştur (response için)
       final content = ContentModel(
         id: game['id'],
         title: game['name'],
@@ -177,19 +218,22 @@ class ExternalApiService {
         posterPath: game['cover']?['image_id'] != null ? 'https://images.igdb.com/igdb/image/upload/t_cover_big/${game['cover']['image_id']}.jpg' : null,
         releaseDate: game['first_release_date'] != null ? DateTime.fromMillisecondsSinceEpoch(game['first_release_date'] * 1000) : null,
         contentType: ContentTypeEnum.GAME,
+        // Complex fields null
+        cast: null,
+        creatorList: null,
+        genreList: null,
+        ratingDistribution: null, // Null olarak bırak, UI'da handle edilecek
+        // Stats fields default
         consumeCount: 0,
         favoriCount: 0,
         listCount: 0,
         reviewCount: 0,
+        // User fields default
+        contentStatus: null,
+        rating: null,
+        isFavorite: false, // Default false
+        isConsumeLater: false, // Default false
       );
-
-      // Supabase'e kaydet
-      try {
-        await _migrationService.addContent(contentModel: content);
-        debugPrint('✅ Game saved to Supabase: ${content.id}');
-      } catch (e) {
-        debugPrint('⚠️ Error saving game to Supabase: $e');
-      }
 
       // Eğer userId varsa, user logs ile birleştir
       if (userId != null) {
@@ -222,7 +266,7 @@ class ExternalApiService {
     String? withOriginalLanguage,
     String? year,
     int page = 1,
-    int? userId,
+    String? userId,
   }) async {
     try {
       String url = '$_tmdbBaseUrl/discover/movie?include_adult=false&include_video=false&page=$page';
@@ -272,7 +316,7 @@ class ExternalApiService {
     String? genre,
     String? year,
     int offset = 0,
-    int? userId,
+    String? userId,
   }) async {
     try {
       String filters = 'where version_parent = null & category = 0 & platforms = (6)';
@@ -332,7 +376,7 @@ class ExternalApiService {
 
   /// Film önerileri - Backend'teki logic'i taklit eder
   Future<List<Map<String, dynamic>>> getMovieRecommendations({
-    required int userId,
+    required String userId,
   }) async {
     try {
       // Kullanıcının yüksek rating verdiği filmleri al
@@ -459,7 +503,7 @@ class ExternalApiService {
 
   /// User logs'ları al - Backend'teki user logs query'sini taklit eder
   Future<Map<int, Map<String, dynamic>>> _getUserLogsForContents(
-    int userId,
+    String userId,
     List<int> contentIds,
   ) async {
     try {
@@ -489,7 +533,7 @@ class ExternalApiService {
     required String query,
     required int contentTypeId,
     int page = 1,
-    int? userId,
+    String? userId,
   }) async {
     try {
       if (contentTypeId == 1) {

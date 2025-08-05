@@ -78,11 +78,10 @@ class _ContentPageState extends State<ContentPage> {
         contentTypeId = 1; // Default to movie
       }
 
-      // Current user'ın integer ID'sini al
-      int? currentUserIntId;
+      String? currentUserId;
       try {
         final currentUser = await MigrationService().getCurrentUserProfile();
-        currentUserIntId = currentUser?.id;
+        currentUserId = currentUser?.id;
       } catch (e) {
         debugPrint('Current user ID alınamadı: $e');
       }
@@ -91,7 +90,7 @@ class _ContentPageState extends State<ContentPage> {
       provider.contentModel = await ExternalApiService().getContentDetail(
         contentId: contentId,
         contentTypeId: contentTypeId,
-        userId: currentUserIntId, // User logs için gerekli
+        userId: currentUserId, // User logs için gerekli
       );
     } catch (e) {
       provider.contentModel = null;

@@ -40,7 +40,7 @@ class GeneralProvider with ChangeNotifier {
 
     try {
       // Current user ID'sini al
-      int? currentUserId;
+      String? currentUserId;
       try {
         final currentUser = await MigrationService().getCurrentUserProfile();
         currentUserId = currentUser?.id;
@@ -153,8 +153,8 @@ class GeneralProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void profile(int userID) async {
-    ProfileProvider().getUserInfo(userID);
+  void profile(String userId) async {
+    ProfileProvider().getUserInfo(userId);
     currentIndex = 3;
     notifyListeners();
   }

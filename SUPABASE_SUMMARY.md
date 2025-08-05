@@ -109,7 +109,7 @@ final searchResult = await migrationService.searchContent(
 ```dart
 await migrationService.contentUserAction(
   contentLogModel: ContentLogModel(
-    userID: currentUserId,
+    userId: currentUserId,
     contentID: movieId,
     contentType: ContentTypeEnum.MOVIE,
     rating: 4.5,

@@ -14,7 +14,7 @@ class UserModel {
     this.totalPlayedTime,
   });
 
-  int id;
+  String id;
   String? picturePath;
   String username;
   String? password;
@@ -30,7 +30,7 @@ class UserModel {
   int? totalPlayedTime;
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-        id: json["id"],
+        id: json["id"].toString(),
         username: json["username"],
         picturePath: json["picture_path"],
         password: json["user_password"],

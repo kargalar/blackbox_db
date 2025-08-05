@@ -20,13 +20,13 @@ class ProfileProvider with ChangeNotifier {
 
   bool isLoading = true;
 
-  void getUserInfo(int userID) async {
+  void getUserInfo(String userId) async {
     currentPageIndex = 0;
 
     isLoading = true;
     notifyListeners();
 
-    user = await MigrationService().getUserInfo(userId: userID);
+    user = await MigrationService().getUserInfo(userId: userId);
 
     isLoading = false;
     notifyListeners();
@@ -42,7 +42,6 @@ class ProfileProvider with ChangeNotifier {
 
   void goMoviePage(BuildContext context) async {
     {
-      currentPageIndex = 1;
       contentType = ContentTypeEnum.MOVIE;
       Provider.of<ExploreProvider>(context, listen: false).currentPageIndex = 1;
 

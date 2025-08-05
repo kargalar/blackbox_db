@@ -169,7 +169,7 @@ class _ProfileReviewsState extends State<ProfileReviews> {
 
   void getReviews() async {
     reviews = await MigrationService().getUserReviews(
-      userID: ProfileProvider().user!.id,
+      userId: ProfileProvider().user!.id,
     );
 
     setState(() {

@@ -28,7 +28,7 @@ class _UserItemState extends State<UserItem> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           ProfilePicture.manager(
-            userID: widget.userModel.id,
+            userId: widget.userModel.id,
             imageUrl: widget.userModel.picturePath,
           ),
           const SizedBox(width: 10),
@@ -39,7 +39,7 @@ class _UserItemState extends State<UserItem> {
           const SizedBox(width: 10),
           IconButton(
             onPressed: () async {
-              await managerPanelProvider.deleteUser(userID: widget.userModel.id);
+              await managerPanelProvider.deleteUser(userId: widget.userModel.id);
             },
             icon: const Icon(Icons.delete),
           ),

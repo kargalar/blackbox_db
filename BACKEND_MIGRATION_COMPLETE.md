@@ -41,10 +41,8 @@
 - ❌ `discover_page_example.dart`
 - ❌ `search_page_example.dart`
 - ❌ `recommendations_page_example.dart`
-
-### Korunan Dosyalar:
-- ✅ `content_detail_page_example.dart` - Test için korundu
-- ✅ `api_test_page.dart` - Test için korundu
+- ❌ `content_detail_page_example.dart
+- ❌ `api_test_page.dart`
 
 ## 🎯 BACKEND KARŞILAŞTIRMASI
 

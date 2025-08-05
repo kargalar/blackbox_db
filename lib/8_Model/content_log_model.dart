@@ -5,7 +5,7 @@ import 'package:blackbox_db/7_Enum/content_type_enum.dart';
 class ContentLogModel {
   ContentLogModel({
     this.id,
-    required this.userID,
+    required this.userId,
     this.picutrePath,
     required this.contentID,
     this.date,
@@ -19,7 +19,7 @@ class ContentLogModel {
   });
 
   final int? id;
-  final int userID;
+  final String userId;
   final String? picutrePath;
   final int contentID;
   ContentStatusEnum? contentStatus;
@@ -38,7 +38,7 @@ class ContentLogModel {
   factory ContentLogModel.fromJson(Map<String, dynamic> json) {
     return ContentLogModel(
       id: json['id'],
-      userID: json['user_id'],
+      userId: json['user_id'],
       picutrePath: json['picture_path'],
       contentID: json['content_id'],
       date: DateTime.parse(json['date']),
@@ -66,7 +66,7 @@ class ContentLogModel {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'user_id': userID,
+      'user_id': userId,
       'content_id': contentID,
       'content_status_id': contentStatus!.index + 1,
       'review_text': rating,

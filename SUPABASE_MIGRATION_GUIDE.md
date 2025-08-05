@@ -96,7 +96,7 @@ final searchResult = await SupabaseService().searchContent(
 // Kullanıcı eylem kaydı
 await SupabaseService().contentUserAction(
   contentLogModel: ContentLogModel(
-    userID: currentUserId,
+    userId: currentUserId,
     contentID: contentId,
     contentType: ContentTypeEnum.MOVIE,
     rating: 4.5,

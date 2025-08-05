@@ -22,7 +22,7 @@ class _AppbarProfileState extends State<AppbarProfile> {
       onExit: (event) => _hoverCheck(false),
       child: ProfilePicture.appBar(
         imageUrl: loginUser!.picturePath,
-        userID: loginUser!.id,
+        userId: loginUser!.id,
       ),
     );
   }

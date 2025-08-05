@@ -111,13 +111,13 @@ class ManagerPanelProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future deleteUser({required int userID}) async {
+  Future deleteUser({required String userId}) async {
     // TODO: are you sure dialog
     Helper().getDialog(
       message: "Are you sure? This user will be deleted.",
       onAccept: () async {
-        await MigrationService().deleteUser(userID: userID);
-        userList.removeWhere((element) => element.id == userID);
+        await MigrationService().deleteUser(userId: userId);
+        userList.removeWhere((element) => element.id == userId);
 
         notifyListeners();
       },

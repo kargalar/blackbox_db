@@ -80,7 +80,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         // TODO:
                         ProfilePicture.profile(
                           imageUrl: context.read<ProfileProvider>().user!.picturePath,
-                          userID: ProfileProvider().user!.id,
+                          userId: ProfileProvider().user!.id,
                         ),
                         SizedBox(width: 10),
                         UserInfo(

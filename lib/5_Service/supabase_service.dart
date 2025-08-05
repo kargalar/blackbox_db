@@ -261,7 +261,7 @@ class SupabaseService {
   }) async {
     try {
       final data = {
-        'user_id': contentLogModel.userID,
+        'user_id': contentLogModel.userId,
         'content_id': contentLogModel.contentID,
         'content_status_id': contentLogModel.contentStatus?.index != null ? contentLogModel.contentStatus!.index + 1 : null,
         'rating': contentLogModel.rating == 0 ? null : contentLogModel.rating,
@@ -275,7 +275,7 @@ class SupabaseService {
         final reviewResponse = await _client
             .from('review')
             .upsert({
-              'user_id': contentLogModel.userID,
+              'user_id': contentLogModel.userId,
               'content_id': contentLogModel.contentID,
               'text': contentLogModel.review,
             })

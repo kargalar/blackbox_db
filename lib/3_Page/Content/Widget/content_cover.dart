@@ -35,7 +35,7 @@ class ContentCover extends StatelessWidget {
                   Column(
                     children: [
                       Text(
-                        contentModel.consumeCount.toString(),
+                        (contentModel.consumeCount ?? 0).toString(),
                         style: const TextStyle(fontSize: 18),
                       ),
                       const Text("Watch"),
@@ -45,7 +45,7 @@ class ContentCover extends StatelessWidget {
                   Column(
                     children: [
                       Text(
-                        contentModel.favoriCount.toString(),
+                        (contentModel.favoriCount ?? 0).toString(),
                         style: const TextStyle(fontSize: 18),
                       ),
                       const Text("Favori"),
@@ -55,7 +55,7 @@ class ContentCover extends StatelessWidget {
                   Column(
                     children: [
                       Text(
-                        contentModel.listCount.toString(),
+                        (contentModel.listCount ?? 0).toString(),
                         style: const TextStyle(fontSize: 18),
                       ),
                       const Text("List"),
@@ -65,7 +65,7 @@ class ContentCover extends StatelessWidget {
                   Column(
                     children: [
                       Text(
-                        contentModel.reviewCount.toString(),
+                        (contentModel.reviewCount ?? 0).toString(),
                         style: const TextStyle(fontSize: 18),
                       ),
                       const Text("Review"),
@@ -76,21 +76,35 @@ class ContentCover extends StatelessWidget {
               const SizedBox(height: 20),
               Row(
                 children: [
-                  for (var i = 0; i < contentModel.ratingDistribution!.length; i++)
-                    Column(
-                      children: [
-                        Text(
-                          "${contentModel.ratingDistribution![i]} ",
-                          style: const TextStyle(fontSize: 18),
-                        ),
-                        Text("${i + 1}"),
-                      ],
-                    ),
+                  // Rating distribution null check
+                  if (contentModel.ratingDistribution != null)
+                    for (var i = 0; i < contentModel.ratingDistribution!.length; i++)
+                      Column(
+                        children: [
+                          Text(
+                            "${contentModel.ratingDistribution![i]} ",
+                            style: const TextStyle(fontSize: 18),
+                          ),
+                          Text("${i + 1}"),
+                        ],
+                      ),
+                  // Default rating distribution if null
+                  if (contentModel.ratingDistribution == null)
+                    for (var i = 0; i < 5; i++)
+                      Column(
+                        children: [
+                          Text(
+                            "0 ",
+                            style: const TextStyle(fontSize: 18),
+                          ),
+                          Text("${i + 1}"),
+                        ],
+                      ),
                   const SizedBox(width: 20),
                   Column(
                     children: [
                       Text(
-                        contentModel.rating.toString(),
+                        (contentModel.rating ?? 0.0).toString(),
                         style: const TextStyle(fontSize: 18),
                       ),
                       const Text("Rating"),

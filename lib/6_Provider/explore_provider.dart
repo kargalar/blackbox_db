@@ -35,7 +35,7 @@ class ExploreProvider with ChangeNotifier {
   bool isLoadingPage = true;
   bool isLoadingContents = true;
 
-  int? profileUserID;
+  String? profileUserID;
 
   void getContent({required BuildContext context}) async {
     try {
@@ -54,7 +54,7 @@ class ExploreProvider with ChangeNotifier {
         );
       } else {
         // Explore sayfası - ExternalApiService kullan (discover functionality)
-        int? currentUserId;
+        String? currentUserId;
         try {
           final currentUser = await MigrationService().getCurrentUserProfile();
           currentUserId = currentUser?.id;
@@ -62,6 +62,7 @@ class ExploreProvider with ChangeNotifier {
           debugPrint('Current user ID alınamadı: $e');
         }
 
+        // ignore: use_build_context_synchronously
         if (context.read<GeneralProvider>().exploreContentType == ContentTypeEnum.MOVIE) {
           // Film keşfet - ExternalApiService ile
           final result = await ExternalApiService().discoverMovies(
@@ -74,6 +75,7 @@ class ExploreProvider with ChangeNotifier {
             'contentList': _convertToShowcaseContentModel(result['contents'] ?? [], true),
             'totalPages': result['total_pages'] ?? 0,
           };
+          // ignore: use_build_context_synchronously
         } else if (context.read<GeneralProvider>().exploreContentType == ContentTypeEnum.GAME) {
           // Oyun keşfet - ExternalApiService ile
           final result = await ExternalApiService().discoverGames(

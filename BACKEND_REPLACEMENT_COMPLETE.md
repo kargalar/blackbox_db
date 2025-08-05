@@ -162,7 +162,6 @@ lib/
 │   ├── external_api_service.dart      # 🔥 YENİ: Tam backend replacement
 │   └── migration_service.dart         # Supabase operations
 ├── 3_Page/Content/
-│   ├── content_detail_page_example.dart
 │   ├── discover_page_example.dart     # 🔥 YENİ: Discover endpoint
 │   ├── search_page_example.dart       # 🔥 YENİ: Search endpoint  
 │   ├── recommendations_page_example.dart # 🔥 YENİ: Recommendations

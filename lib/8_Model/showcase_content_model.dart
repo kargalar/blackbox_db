@@ -4,7 +4,7 @@ import 'package:blackbox_db/8_Model/content_log_model.dart';
 
 class ShowcaseContentModel {
   ShowcaseContentModel({
-    this.userID,
+    this.userId,
     required this.contentId,
     required this.posterPath,
     required this.contentType,
@@ -16,7 +16,7 @@ class ShowcaseContentModel {
     this.trendIndex,
   });
 
-  final int? userID;
+  final int? userId;
   final int contentId;
   final String? posterPath;
   final ContentTypeEnum contentType;
@@ -31,7 +31,7 @@ class ShowcaseContentModel {
 
   factory ShowcaseContentModel.fromJson(Map<String, dynamic> json) {
     return ShowcaseContentModel(
-      userID: json['user_id'],
+      userId: json['user_id'],
       contentId: json['content_id'],
       posterPath: json['poster_path'],
       contentType: ContentTypeEnum.values[json['content_type_id'] - 1],

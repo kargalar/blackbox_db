@@ -48,7 +48,7 @@ class _ProfileNetworksState extends State<ProfileNetworks> {
                     children: [
                       ProfilePicture(
                         imageUrl: following[index]['picture_path'],
-                        userID: following[index]['id'],
+                        userId: following[index]['id'],
                       ),
                       SizedBox(width: 10),
                       Text(
@@ -80,7 +80,7 @@ class _ProfileNetworksState extends State<ProfileNetworks> {
                     children: [
                       ProfilePicture(
                         imageUrl: followers[index]['picture_path'],
-                        userID: followers[index]['id'],
+                        userId: followers[index]['id'],
                       ),
                       SizedBox(width: 10),
                       Text(

@@ -43,7 +43,7 @@ class ContentActivity extends StatelessWidget {
                 children: [
                   ProfilePicture.content(
                     imageUrl: contentLog.picutrePath,
-                    userID: contentLog.userID,
+                    userId: contentLog.userId,
                   ),
                   const SizedBox(
                     width: 5,

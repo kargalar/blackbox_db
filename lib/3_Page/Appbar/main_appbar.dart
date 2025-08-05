@@ -4,7 +4,6 @@ import 'package:blackbox_db/3_Page/Appbar/Widget/appbar_explore_button.dart';
 import 'package:blackbox_db/3_Page/Appbar/Widget/appbar_logo.dart';
 import 'package:blackbox_db/3_Page/Appbar/Widget/appbar_profile.dart';
 import 'package:blackbox_db/3_Page/Appbar/Widget/appbar_search.dart';
-import 'package:blackbox_db/3_Page/Content/api_test_page.dart';
 import 'package:blackbox_db/6_Provider/general_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -24,27 +23,9 @@ class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         AppbarExploreButtons(),
         SizedBox(width: 10),
-        // Test butto
-        // if (loginUser!.id < 0)
-        InkWell(
-          borderRadius: AppColors.borderRadiusAll,
-          onTap: () {
-            // go to
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ApiTestPage(),
-              ),
-            );
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(8),
-            child: Text("API Test"),
-          ),
-        ),
         AppbarProfile(),
         SizedBox(width: 10),
-        if (loginUser!.id < 0)
+        if (loginUser!.id == 'admin' || loginUser!.id.startsWith('admin'))
           InkWell(
             borderRadius: AppColors.borderRadiusAll,
             onTap: () {

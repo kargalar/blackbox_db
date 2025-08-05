@@ -7,68 +7,68 @@ import 'package:provider/provider.dart';
 class ProfilePicture extends StatelessWidget {
   final String? imageUrl;
   final double size;
-  final int userID;
+  final String userId;
 
   const ProfilePicture({
     super.key,
     required this.imageUrl,
     this.size = 50.0,
-    required this.userID,
+    required this.userId,
   });
 
   const ProfilePicture.appBar({
     Key? key,
     required String? imageUrl,
-    required int userID,
+    required String userId,
   }) : this(
           key: key,
           imageUrl: imageUrl,
           size: 40,
-          userID: userID,
+          userId: userId,
         );
 
   const ProfilePicture.content({
     Key? key,
     required String? imageUrl,
-    required int userID,
+    required String userId,
   }) : this(
           key: key,
           imageUrl: imageUrl,
           size: 30,
-          userID: userID,
+          userId: userId,
         );
 
   const ProfilePicture.profile({
     Key? key,
     required String? imageUrl,
-    required int userID,
+    required String userId,
   }) : this(
           key: key,
           imageUrl: imageUrl,
           size: 80,
-          userID: userID,
+          userId: userId,
         );
 
   const ProfilePicture.review({
     Key? key,
     required String? imageUrl,
-    required int userID,
+    required String userId,
   }) : this(
           key: key,
           imageUrl: imageUrl,
           size: 60,
-          userID: userID,
+          userId: userId,
         );
 
   const ProfilePicture.manager({
     Key? key,
     required String? imageUrl,
-    required int userID,
+    required String userId,
   }) : this(
           key: key,
           imageUrl: imageUrl,
           size: 50,
-          userID: userID,
+          userId: userId,
         );
 
   @override
@@ -76,7 +76,7 @@ class ProfilePicture extends StatelessWidget {
     return InkWell(
       borderRadius: AppColors.borderRadiusCircular,
       onTap: () {
-        context.read<GeneralProvider>().profile(userID);
+        context.read<GeneralProvider>().profile(userId);
       },
       child: Container(
         color: AppColors.transparent,

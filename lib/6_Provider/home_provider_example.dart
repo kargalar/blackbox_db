@@ -1,3 +1,4 @@
+import 'package:blackbox_db/2_General/accessible.dart';
 import 'package:blackbox_db/5_Service/migration_service.dart';
 import 'package:blackbox_db/7_Enum/content_type_enum.dart';
 import 'package:blackbox_db/8_Model/content_log_model.dart';
@@ -30,7 +31,7 @@ class HomeProviderExample extends ChangeNotifier {
         // Old: ServerManager().getRecommendedContents(...)
         // New: Use MigrationService with same method signature
         _migrationService.getRecommendedContents(
-          userId: 1, // This would be the current user ID
+          userId: loginUser!.id,
           contentType: ContentTypeEnum.MOVIE,
         ),
 
@@ -108,7 +109,7 @@ class HomeProviderExample extends ChangeNotifier {
     try {
       // Create content log model
       final contentLogModel = ContentLogModel(
-        userID: 1, // Current user ID
+        userId: loginUser!.id, // Current user ID
         contentID: contentId,
         contentType: contentType,
         rating: rating,
