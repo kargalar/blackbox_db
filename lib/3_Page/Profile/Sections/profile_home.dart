@@ -1,6 +1,6 @@
 import 'package:blackbox_db/3_Page/Explore/Widget/content_list.dart';
 import 'package:blackbox_db/3_Page/Profile/Widget/profile_statistics.dart';
-import 'package:blackbox_db/5_Service/server_manager.dart';
+import 'package:blackbox_db/5_Service/migration_service.dart';
 import 'package:blackbox_db/6_Provider/profile_provider.dart';
 import 'package:blackbox_db/7_Enum/content_type_enum.dart';
 import 'package:blackbox_db/7_Enum/showcase_type_enum.dart';
@@ -85,7 +85,7 @@ class _ProfileHomeState extends State<ProfileHome> {
       }
 
       // TODO: devam edilenlere ve önce çıkarıalnlara istek atılacak onlar getirliecek
-      final response = await ServerManager().getUserActivities(
+      final response = await MigrationService().getUserActivities(
         profileUserID: context.read<ProfileProvider>().user!.id,
         contentType: ContentTypeEnum.MOVIE,
       );
@@ -94,7 +94,7 @@ class _ProfileHomeState extends State<ProfileHome> {
       // sadece ilk 5 i al. burası normalde olmayacak. çünkü zaten buna istek atmayacağız
       lastMovieActivitiyContentList = lastMovieActivitiyContentList.length > 5 ? lastMovieActivitiyContentList.sublist(0, 5) : lastMovieActivitiyContentList;
 
-      final response2 = await ServerManager().getUserActivities(
+      final response2 = await MigrationService().getUserActivities(
         // ignore: use_build_context_synchronously
         profileUserID: context.read<ProfileProvider>().user!.id,
         contentType: ContentTypeEnum.GAME,

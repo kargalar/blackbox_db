@@ -3,10 +3,12 @@ import 'package:blackbox_db/3_Page/Explore/Widget/content_list.dart';
 import 'package:blackbox_db/3_Page/ManagerPanel/Widget/Statistics/content_types_statistics.dart';
 import 'package:blackbox_db/3_Page/ManagerPanel/Widget/Statistics/movie_genres_statistics.dart';
 import 'package:blackbox_db/3_Page/Profile/Sections/profile_reviews.dart';
-import 'package:blackbox_db/5_Service/server_manager.dart';
+import 'package:blackbox_db/5_Service/migration_service.dart';
+import 'package:blackbox_db/5_Service/external_api_service.dart';
 import 'package:blackbox_db/6_Provider/explore_provider.dart';
 import 'package:blackbox_db/7_Enum/content_type_enum.dart';
 import 'package:blackbox_db/7_Enum/showcase_type_enum.dart';
+import 'package:blackbox_db/7_Enum/content_status_enum.dart';
 import 'package:blackbox_db/8_Model/showcase_content_model.dart';
 import 'package:blackbox_db/8_Model/user_review_model.dart';
 import 'package:flutter/material.dart';
@@ -129,40 +131,35 @@ class _HomePageState extends State<HomePage> {
     try {
       ExploreProvider().currentPageIndex = 0;
 
-      // TODO: widget.showcaseType a göre farklı endpointlere istek atacak
-      // TODO: mesela trend ise sadece 5 tane getirecek. actviity ise contentlogmodel için de veri getirecek...
-      // TODO: contentType null ise farklı istek atacak
       if (!isLoading) {
         isLoading = true;
         setState(() {});
       }
 
+      // Recommendations için ExternalApiService kullan, diğerleri için MigrationService
       final results = await Future.wait([
-        ServerManager().getRecommendedContents(
-          contentType: ContentTypeEnum.MOVIE,
-          userId: loginUser!.id,
-        ),
-        ServerManager().getTrendContents(
+        _getRecommendationsFromExternalAPI(), // YENİ: ExternalApiService
+        MigrationService().getTrendContents(
           contentType: ContentTypeEnum.MOVIE,
         ),
-        ServerManager().getTrendContents(
+        MigrationService().getTrendContents(
           contentType: ContentTypeEnum.GAME,
         ),
-        ServerManager().getFriendActivities(
+        MigrationService().getFriendActivities(
           contentType: ContentTypeEnum.MOVIE,
         ),
-        ServerManager().getFriendActivities(
+        MigrationService().getFriendActivities(
           contentType: ContentTypeEnum.GAME,
         ),
-        ServerManager().getTopReviews(),
+        MigrationService().getTopReviews(),
       ]);
 
-      recommendedMovieList = results[0]['contentList'];
-      trendMovieList = results[1]['contentList'];
-      trendGameList = results[2]['contentList'];
-      friendsLastMovieActivities = results[3]['contentList'];
-      friendsLastGameActivities = results[4]['contentList'];
-      topReviews = results[5];
+      recommendedMovieList = results[0] as List<ShowcaseContentModel>;
+      trendMovieList = (results[1] as Map<String, dynamic>)['contentList'];
+      trendGameList = (results[2] as Map<String, dynamic>)['contentList'];
+      friendsLastMovieActivities = (results[3] as Map<String, dynamic>)['contentList'];
+      friendsLastGameActivities = (results[4] as Map<String, dynamic>)['contentList'];
+      topReviews = results[5] as List<UserReviewModel>;
 
       if (recommendedMovieList.length > 5) {
         recommendedMovieList = recommendedMovieList.sublist(0, 5);
@@ -171,7 +168,36 @@ class _HomePageState extends State<HomePage> {
       isLoading = false;
       setState(() {});
     } catch (e) {
-      debugPrint(e.toString());
+      debugPrint('Home page content error: $e');
+      isLoading = false;
+      setState(() {});
+    }
+  }
+
+  /// ExternalApiService ile film önerileri al
+  Future<List<ShowcaseContentModel>> _getRecommendationsFromExternalAPI() async {
+    try {
+      final recommendations = await ExternalApiService().getMovieRecommendations(
+        userId: loginUser!.id,
+      );
+
+      // External API response'unu ShowcaseContentModel'e çevir
+      return recommendations.map((movie) {
+        String? posterPath = movie['poster_path'] != null ? 'https://image.tmdb.org/t/p/w500${movie['poster_path']}' : null;
+
+        return ShowcaseContentModel(
+          contentId: movie['id'],
+          posterPath: posterPath,
+          contentType: ContentTypeEnum.MOVIE,
+          isFavorite: movie['user_is_favorite'] ?? false,
+          contentStatus: movie['user_content_status_id'] != null ? ContentStatusEnum.values[movie['user_content_status_id'] - 1] : null,
+          isConsumeLater: movie['user_is_consume_later'] ?? false,
+          rating: movie['user_rating']?.toDouble(),
+        );
+      }).toList();
+    } catch (e) {
+      debugPrint('Recommendations error: $e');
+      return [];
     }
   }
 }

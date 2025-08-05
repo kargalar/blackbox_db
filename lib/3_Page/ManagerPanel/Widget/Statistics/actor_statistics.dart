@@ -1,5 +1,5 @@
 import 'package:blackbox_db/3_Page/ManagerPanel/Widget/select_interval.dart';
-import 'package:blackbox_db/5_Service/server_manager.dart';
+import 'package:blackbox_db/5_Service/migration_service.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter/material.dart';
 
@@ -71,7 +71,7 @@ class _ActorStatisticsState extends State<ActorStatistics> {
   }
 
   Future getData({String? interval}) async {
-    topActorsByMovieCount = await ServerManager().getTopActorsByMovieCount(
+    topActorsByMovieCount = await MigrationService().getTopActorsByMovieCount(
       page: 1,
       limit: 10,
       interval: interval ?? "1 weeks",

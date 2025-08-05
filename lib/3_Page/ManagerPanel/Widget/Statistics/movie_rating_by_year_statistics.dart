@@ -1,5 +1,5 @@
 import 'package:blackbox_db/3_Page/ManagerPanel/Widget/select_interval.dart';
-import 'package:blackbox_db/5_Service/server_manager.dart';
+import '../../../../5_Service/migration_service.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter/material.dart';
 
@@ -67,7 +67,7 @@ class _MovieYearStatisticsState extends State<MovieYearStatistics> {
   }
 
   Future getData({String? interval}) async {
-    averageMovieRatingsByYear = await ServerManager().getAverageMovieRatingsByYear(
+    averageMovieRatingsByYear = await MigrationService().getAverageMovieRatingsByYear(
       page: 1,
       limit: 10,
       interval: interval ?? "1 weeks",

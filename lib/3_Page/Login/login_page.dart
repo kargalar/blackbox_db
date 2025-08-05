@@ -1,7 +1,7 @@
 import 'package:blackbox_db/2_General/accessible.dart';
 import 'package:blackbox_db/2_General/app_colors.dart';
 import 'package:blackbox_db/3_Page/appbar_manager.dart';
-import 'package:blackbox_db/5_Service/server_manager.dart';
+import 'package:blackbox_db/5_Service/migration_service.dart';
 import 'package:blackbox_db/6_Provider/general_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
@@ -108,13 +108,13 @@ class _LoginPageState extends State<LoginPage> {
                       if (!_formKey.currentState!.validate()) return;
 
                       if (isRegister) {
-                        loginUser = await ServerManager().register(
+                        loginUser = await MigrationService().register(
                           username: _usernameController.text,
                           email: _emailController.text,
                           password: _passwordController.text,
                         );
                       } else {
-                        loginUser = await ServerManager().login(
+                        loginUser = await MigrationService().login(
                           email: _emailController.text,
                           password: _passwordController.text,
                         );

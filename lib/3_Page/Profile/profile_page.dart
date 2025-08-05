@@ -8,7 +8,7 @@ import 'package:blackbox_db/3_Page/Profile/Sections/profile_networks.dart';
 import 'package:blackbox_db/3_Page/Profile/Sections/profile_reviews.dart';
 import 'package:blackbox_db/3_Page/Profile/Widget/profile_section.dart';
 import 'package:blackbox_db/3_Page/Profile/Widget/user_info.dart';
-import 'package:blackbox_db/5_Service/server_manager.dart';
+import 'package:blackbox_db/5_Service/migration_service.dart';
 import 'package:blackbox_db/6_Provider/explore_provider.dart';
 import 'package:blackbox_db/6_Provider/general_provider.dart';
 import 'package:blackbox_db/6_Provider/profile_provider.dart';
@@ -63,7 +63,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         if (context.watch<ProfileProvider>().user!.id != loginUser!.id)
                           TextButton(
                             onPressed: () async {
-                              await ServerManager().followUnfollow(
+                              await MigrationService().followUnfollow(
                                 userId: loginUser!.id,
                                 followingUserID: context.read<ProfileProvider>().user!.id,
                               );

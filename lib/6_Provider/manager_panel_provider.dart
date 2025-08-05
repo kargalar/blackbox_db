@@ -1,5 +1,5 @@
 import 'package:blackbox_db/1_Core/helper.dart';
-import 'package:blackbox_db/5_Service/server_manager.dart';
+import 'package:blackbox_db/5_Service/migration_service.dart';
 import 'package:blackbox_db/7_Enum/content_type_enum.dart';
 import 'package:blackbox_db/8_Model/content_model.dart';
 import 'package:blackbox_db/8_Model/user_model.dart';
@@ -27,7 +27,7 @@ class ManagerPanelProvider with ChangeNotifier {
       notifyListeners();
     }
 
-    final response = await ServerManager().searchContent(
+    final response = await MigrationService().searchContent(
       query: searchText ?? "",
       contentType: contentType,
       page: currentPageIndex,
@@ -55,7 +55,7 @@ class ManagerPanelProvider with ChangeNotifier {
   }
 
   Future addContent({required ContentModel contentModel}) async {
-    int newContentID = await ServerManager().addContent(contentModel: contentModel);
+    int newContentID = await MigrationService().addContent(contentModel: contentModel);
 
     int index = contentList.indexWhere((element) => element.id == contentModel.id);
 
@@ -78,7 +78,7 @@ class ManagerPanelProvider with ChangeNotifier {
     Helper().getDialog(
       message: "Are you sure? This content will be updated.",
       onAccept: () async {
-        await ServerManager().updateContent(contentModel: contentModel);
+        await MigrationService().updateContent(contentModel: contentModel);
 
         notifyListeners();
       },
@@ -89,7 +89,7 @@ class ManagerPanelProvider with ChangeNotifier {
     Helper().getDialog(
       message: "Are you sure? This content will be deleted.",
       onAccept: () async {
-        await ServerManager().deleteContent(contentID: contentID);
+        await MigrationService().deleteContent(contentID: contentID);
         contentList.removeWhere((element) => element.id == contentID);
 
         notifyListeners();
@@ -103,7 +103,7 @@ class ManagerPanelProvider with ChangeNotifier {
       notifyListeners();
     }
 
-    final response = await ServerManager().getAllUser();
+    final response = await MigrationService().getAllUser();
 
     userList = response;
 
@@ -116,7 +116,7 @@ class ManagerPanelProvider with ChangeNotifier {
     Helper().getDialog(
       message: "Are you sure? This user will be deleted.",
       onAccept: () async {
-        await ServerManager().deleteUser(userID: userID);
+        await MigrationService().deleteUser(userID: userID);
         userList.removeWhere((element) => element.id == userID);
 
         notifyListeners();

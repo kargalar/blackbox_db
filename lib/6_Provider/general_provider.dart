@@ -1,5 +1,5 @@
-import 'package:blackbox_db/5_Service/igdb_service.dart';
-import 'package:blackbox_db/5_Service/tmdb_service.dart';
+import 'package:blackbox_db/5_Service/external_api_service.dart';
+import 'package:blackbox_db/5_Service/migration_service.dart';
 import 'package:blackbox_db/6_Provider/explore_provider.dart';
 import 'package:blackbox_db/6_Provider/profile_provider.dart';
 import 'package:blackbox_db/7_Enum/content_type_enum.dart';
@@ -39,20 +39,104 @@ class GeneralProvider with ChangeNotifier {
     notifyListeners();
 
     try {
+      // Current user ID'sini al
+      int? currentUserId;
+      try {
+        final currentUser = await MigrationService().getCurrentUserProfile();
+        currentUserId = currentUser?.id;
+      } catch (e) {
+        debugPrint('Current user ID alınamadı: $e');
+      }
+
+      // ExternalApiService ile arama yap
       if (searchFilter == ContentTypeEnum.MOVIE) {
-        searchContentList = await TMDBService().search(searchText);
+        final result = await ExternalApiService().searchContent(
+          query: searchText,
+          contentTypeId: 1, // Movie
+          page: 1,
+          userId: currentUserId,
+        );
+
+        // Search result'ını SearchContentModel'e çevir
+        searchContentList = _convertToSearchContentModel(
+          result['contents'] ?? [],
+          true, // isMovie
+        );
       } else if (searchFilter == ContentTypeEnum.GAME) {
-        searchContentList = await IGDBService().search(searchText);
+        final result = await ExternalApiService().searchContent(
+          query: searchText,
+          contentTypeId: 2, // Game
+          page: 1,
+          userId: currentUserId,
+        );
+
+        // Search result'ını SearchContentModel'e çevir
+        searchContentList = _convertToSearchContentModel(
+          result['contents'] ?? [],
+          false, // isMovie
+        );
       } else {
-        // contentList = bookapi;
+        searchContentList = [];
       }
 
       searchIsLoading = false;
-
       notifyListeners();
     } catch (e) {
-      debugPrint(e.toString());
+      debugPrint('Search error: $e');
+      searchIsLoading = false;
+      notifyListeners();
     }
+  }
+
+  /// External API search response'unu SearchContentModel'e çevirir
+  List<SearchContentModel> _convertToSearchContentModel(
+    List<dynamic> apiContents,
+    bool isMovie,
+  ) {
+    return apiContents.map((content) {
+      String? posterPath;
+
+      if (isMovie) {
+        // TMDB movie format
+        posterPath = content['poster_path'] != null ? 'https://image.tmdb.org/t/p/w500${content['poster_path']}' : null;
+      } else {
+        // IGDB game format
+        final coverId = content['cover']?['image_id'];
+        posterPath = coverId != null ? 'https://images.igdb.com/igdb/image/upload/t_cover_big/$coverId.jpg' : null;
+      }
+
+      return SearchContentModel(
+        contentId: content['id'],
+        contentPosterPath: posterPath,
+        contentType: isMovie ? ContentTypeEnum.MOVIE : ContentTypeEnum.GAME,
+        isFavorite: content['user_is_favorite'] ?? false,
+        isConsumed: content['user_content_status_id'] != null,
+        isConsumeLater: content['user_is_consume_later'] ?? false,
+        rating: content['user_rating']?.toDouble(),
+        isReviewed: content['user_review_id'] != null,
+        title: content['title'] ?? content['name'] ?? 'No Title',
+        description: content['overview'] ?? content['summary'],
+        year: _extractYear(content, isMovie),
+        originalTitle: content['original_title'] ?? content['name'],
+      );
+    }).toList();
+  }
+
+  /// Release date'ten yıl çıkarır
+  String? _extractYear(Map<String, dynamic> content, bool isMovie) {
+    if (isMovie) {
+      final releaseDate = content['release_date'];
+      if (releaseDate != null && releaseDate.isNotEmpty) {
+        return releaseDate.substring(0, 4);
+      }
+    } else {
+      final releaseDate = content['first_release_date'];
+      if (releaseDate != null) {
+        final date = DateTime.fromMillisecondsSinceEpoch(releaseDate * 1000);
+        return date.year.toString();
+      }
+    }
+    return null;
   }
 
   void explore(ContentTypeEnum contentType, BuildContext context) {

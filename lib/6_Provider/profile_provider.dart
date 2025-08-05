@@ -1,4 +1,4 @@
-import 'package:blackbox_db/5_Service/server_manager.dart';
+import 'package:blackbox_db/5_Service/migration_service.dart';
 import 'package:blackbox_db/6_Provider/explore_provider.dart';
 import 'package:blackbox_db/7_Enum/content_type_enum.dart';
 import 'package:blackbox_db/8_Model/user_model.dart';
@@ -26,7 +26,7 @@ class ProfileProvider with ChangeNotifier {
     isLoading = true;
     notifyListeners();
 
-    user = await ServerManager().getUserInfo(userId: userID);
+    user = await MigrationService().getUserInfo(userId: userID);
 
     isLoading = false;
     notifyListeners();

@@ -2,7 +2,8 @@ import 'package:blackbox_db/3_Page/Content/Widget/content_cover.dart';
 import 'package:blackbox_db/3_Page/Content/Widget/content_informaton.dart';
 import 'package:blackbox_db/3_Page/Content/Widget/Review/content_reviews.dart';
 import 'package:blackbox_db/3_Page/Content/Widget/content_user_action.dart';
-import 'package:blackbox_db/5_Service/server_manager.dart';
+import 'package:blackbox_db/5_Service/external_api_service.dart';
+import 'package:blackbox_db/5_Service/migration_service.dart';
 import 'package:blackbox_db/6_Provider/content_page_provider.dart';
 import 'package:blackbox_db/6_Provider/general_provider.dart';
 import 'package:flutter/material.dart';
@@ -64,13 +65,37 @@ class _ContentPageState extends State<ContentPage> {
 
   void getContentDetail() async {
     try {
-      provider.contentModel = await ServerManager().getContentDetail(
-        contentId: context.read<GeneralProvider>().contentID,
-        contentType: context.read<GeneralProvider>().contentPageContentTpye,
+      final contentId = context.read<GeneralProvider>().contentID;
+      final contentType = context.read<GeneralProvider>().contentPageContentTpye;
+
+      // ContentTypeEnum'dan contentTypeId'ye çevir
+      int contentTypeId;
+      if (contentType.toString().contains('MOVIE')) {
+        contentTypeId = 1; // Movie
+      } else if (contentType.toString().contains('GAME')) {
+        contentTypeId = 2; // Game
+      } else {
+        contentTypeId = 1; // Default to movie
+      }
+
+      // Current user'ın integer ID'sini al
+      int? currentUserIntId;
+      try {
+        final currentUser = await MigrationService().getCurrentUserProfile();
+        currentUserIntId = currentUser?.id;
+      } catch (e) {
+        debugPrint('Current user ID alınamadı: $e');
+      }
+
+      // ExternalApiService ile veri çek (Smart caching: Supabase first, API fallback)
+      provider.contentModel = await ExternalApiService().getContentDetail(
+        contentId: contentId,
+        contentTypeId: contentTypeId,
+        userId: currentUserIntId, // User logs için gerekli
       );
     } catch (e) {
       provider.contentModel = null;
-      debugPrint(e.toString());
+      debugPrint('Content detail error: $e');
     }
 
     setState(() {

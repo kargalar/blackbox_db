@@ -1,6 +1,6 @@
 import 'package:blackbox_db/2_General/app_colors.dart';
 import 'package:blackbox_db/3_Page/Content/Widget/Review/review_item.dart';
-import 'package:blackbox_db/5_Service/server_manager.dart';
+import 'package:blackbox_db/5_Service/migration_service.dart';
 import 'package:blackbox_db/6_Provider/content_page_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -125,7 +125,7 @@ class _ContentReviewsState extends State<ContentReviews> {
   }
 
   void getReviews() async {
-    ContentPageProvider().reviewList = await ServerManager().getContentReviews(contentId: widget.contentId);
+    ContentPageProvider().reviewList = await MigrationService().getContentReviews(contentId: widget.contentId);
 
     setState(() {
       isLoading = false;

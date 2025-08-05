@@ -1,6 +1,6 @@
 import 'package:blackbox_db/2_General/Widget/Content/Widget/content_poster.dart';
 import 'package:blackbox_db/2_General/app_colors.dart';
-import 'package:blackbox_db/5_Service/server_manager.dart';
+import 'package:blackbox_db/5_Service/migration_service.dart';
 import 'package:blackbox_db/6_Provider/general_provider.dart';
 import 'package:blackbox_db/6_Provider/profile_provider.dart';
 import 'package:blackbox_db/8_Model/user_review_model.dart';
@@ -168,7 +168,7 @@ class _ProfileReviewsState extends State<ProfileReviews> {
   }
 
   void getReviews() async {
-    reviews = await ServerManager().getUserReviews(
+    reviews = await MigrationService().getUserReviews(
       userID: ProfileProvider().user!.id,
     );
 

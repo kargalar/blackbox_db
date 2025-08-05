@@ -1,5 +1,5 @@
 import 'package:blackbox_db/2_General/Widget/profile_picture.dart';
-import 'package:blackbox_db/5_Service/server_manager.dart';
+import 'package:blackbox_db/5_Service/migration_service.dart';
 import 'package:blackbox_db/6_Provider/profile_provider.dart';
 import 'package:flutter/material.dart';
 
@@ -99,8 +99,8 @@ class _ProfileNetworksState extends State<ProfileNetworks> {
   }
 
   void getData() async {
-    followers = await ServerManager().getFollowers(userId: ProfileProvider().user!.id);
-    following = await ServerManager().getFollowing(userId: ProfileProvider().user!.id);
+    followers = await MigrationService().getFollowers(userId: ProfileProvider().user!.id);
+    following = await MigrationService().getFollowing(userId: ProfileProvider().user!.id);
 
     setState(() {});
   }

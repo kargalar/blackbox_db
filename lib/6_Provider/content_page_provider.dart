@@ -1,5 +1,5 @@
 import 'package:blackbox_db/2_General/accessible.dart';
-import 'package:blackbox_db/5_Service/server_manager.dart';
+import 'package:blackbox_db/5_Service/migration_service.dart';
 import 'package:blackbox_db/7_Enum/content_status_enum.dart';
 import 'package:blackbox_db/7_Enum/content_type_enum.dart';
 import 'package:blackbox_db/8_Model/content_log_model.dart';
@@ -66,6 +66,6 @@ class ContentPageProvider with ChangeNotifier {
       notifyListeners();
     }
 
-    await ServerManager().contentUserAction(contentLogModel: userLog);
+    await MigrationService().contentUserAction(contentLogModel: userLog);
   }
 }

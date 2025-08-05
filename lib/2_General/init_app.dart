@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:blackbox_db/1_Core/supabase_config.dart';
 import 'package:blackbox_db/2_General/accessible.dart';
-import 'package:blackbox_db/5_Service/server_manager.dart';
+import 'package:blackbox_db/5_Service/migration_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,7 +25,13 @@ Future<void> initApp(List<String> args) async {
     throw Exception('Error loading .env file: $e'); // Print error if any
   }
 
+  // Initialize Supabase
+  await SupabaseConfig.initialize();
+
   Helper().registerAdapters();
+
+  // Auto login check
+  await _autoLogin();
 
   // SharedPreferences
   // SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -53,18 +60,6 @@ Future<void> initApp(List<String> args) async {
       await windowManager.show();
       await windowManager.focus();
     });
-  }
-
-  // auto login
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  final String? email = prefs.getString('email');
-  final String? password = prefs.getString('password');
-  if (email != null && password != null) {
-    loginUser = await ServerManager().login(
-      email: email,
-      password: password,
-      isAutoLogin: true,
-    );
   }
 
   // Custom Error
@@ -107,4 +102,30 @@ Future<void> initApp(List<String> args) async {
       ),
     );
   };
+}
+
+// Auto login function for Supabase
+Future<void> _autoLogin() async {
+  try {
+    // Check if user is already signed in with Supabase
+    final migrationService = MigrationService();
+    if (migrationService.currentUser != null) {
+      loginUser = await migrationService.getCurrentUserProfile();
+    } else {
+      // Try to get stored credentials for backward compatibility
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? email = prefs.getString('email');
+      final String? password = prefs.getString('password');
+
+      if (email != null && password != null) {
+        loginUser = await migrationService.login(
+          email: email,
+          password: password,
+          isAutoLogin: true,
+        );
+      }
+    }
+  } catch (e) {
+    debugPrint('Auto login failed: $e');
+  }
 }
