@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:blackbox_db/8_Model/content_model.dart';
@@ -15,12 +16,12 @@ class ExternalApiService {
 
   // TMDB Configuration
   static const String _tmdbBaseUrl = 'https://api.themoviedb.org/3';
-  static const String _tmdbToken = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlZTU0MDMxOWU1NTNhODYxZTJmOWQwYmQxMzdmMmY4MiIsIm5iZiI6MTczMjYxMTAwMi43NzI4MzkzLCJzdWIiOiI2NzEzYmI5Y2Q1Yjc5MjZlOTQ2ZmMxMmEiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.6Z1b1dtDfK4hYGkRM566MtpW4HKNpN-hGbYm1tecN4k';
+  static final String _tmdbToken = dotenv.env['TMDB_Token']!;
 
   // IGDB Configuration
   static const String _igdbBaseUrl = 'https://api.igdb.com/v4';
-  static const String _igdbClientId = 'bq60331ycb0t8lvffnmhwkoooqzecp';
-  static const String _igdbToken = 'Bearer pbac2y2iap5wlb8f49cpfmcmqal6lu';
+  static final String _igdbClientId = dotenv.env['IGDB_Client_id']!;
+  static final String _igdbToken = dotenv.env['IGDB_Authorization']!;
 
   final MigrationService _migrationService = MigrationService();
 
@@ -34,7 +35,7 @@ class ExternalApiService {
   Map<String, String> get _igdbHeaders => {
         'Accept': 'application/json',
         'Client-ID': _igdbClientId,
-        'Authorization': _igdbToken,
+        'Authorization': _igdbToken, // .env dosyasında zaten "Bearer " prefix'i var
       };
 
   // ********************************************
