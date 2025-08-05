@@ -7,13 +7,12 @@ class SupabaseConfig {
   static Future<void> initialize() async {
     await dotenv.load();
 
-    // Test için geçici - gerçek Supabase bilgilerinizi buraya ekleyin
-    const String supabaseUrl = 'https://oxqbvdienivjgkferaxh.supabase.co'; // https://xxx.supabase.co
-    const String supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im94cWJ2ZGllbml2amdrZmVyYXhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQyMzk5NjMsImV4cCI6MjA2OTgxNTk2M30.OzQPYe-3qm1eK-uvY2HlQd9HJw-Ujv-FvJeAp3-0Uas'; // eyJ... ile başlayan uzun key
+    String? supabaseUrl = dotenv.env['SUPABASE_URL'];
+    String? supabaseAnonKey = dotenv.env['SUPABASE_ANON_KEY'];
 
     await Supabase.initialize(
-      url: supabaseUrl.isNotEmpty ? supabaseUrl : dotenv.env['SUPABASE_URL']!,
-      anonKey: supabaseAnonKey.isNotEmpty ? supabaseAnonKey : dotenv.env['SUPABASE_ANON_KEY']!,
+      url: supabaseUrl!,
+      anonKey: supabaseAnonKey!,
       debug: kDebugMode,
     );
 
