@@ -69,7 +69,7 @@ DECLARE
     result JSON;
 BEGIN
     SELECT json_build_object(
-        'id', c.id,
+        'content_id', c.id,
         'title', c.title,
         'content_type_id', c.content_type_id,
         'release_date', c.release_date,
@@ -161,7 +161,7 @@ BEGIN
     -- Get contents
     SELECT json_agg(
         json_build_object(
-            'id', c.id,
+            'content_id', c.id,
             'title', c.title,
             'content_type_id', c.content_type_id,
             'release_date', c.release_date,
@@ -528,7 +528,7 @@ BEGIN
     
     SELECT json_agg(
         json_build_object(
-            'id', c.id,
+            'content_id', c.id,
             'title', c.title,
             'poster_path', c.poster_path,
             'watch_count', c.consume_count

@@ -52,7 +52,7 @@ class ContentModel {
 
   factory ContentModel.fromJson(Map<String, dynamic> json) {
     return ContentModel(
-      id: json['id'],
+      id: json['content_id'],
       posterPath: json['poster_path'],
       title: json['title'],
       contentType: ContentTypeEnum.values[json['content_type_id'] - 1],
