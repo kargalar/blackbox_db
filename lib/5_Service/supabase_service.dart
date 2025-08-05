@@ -484,7 +484,7 @@ class SupabaseService {
     try {
       final response = await _client.from('user_follow').select('''
             app_user:user_id (
-              id,
+              auth_user_id,
               username,
               picture_path
             )
@@ -492,7 +492,7 @@ class SupabaseService {
 
       return (response as List)
           .map((e) => {
-                'id': e['app_user']['id'],
+                'id': e['app_user']['auth_user_id'],
                 'username': e['app_user']['username'],
                 'picture_path': e['app_user']['picture_path'],
               })
@@ -509,7 +509,7 @@ class SupabaseService {
     try {
       final response = await _client.from('user_follow').select('''
             app_user:following_user_id (
-              id,
+              auth_user_id,
               username,
               picture_path
             )
@@ -517,7 +517,7 @@ class SupabaseService {
 
       return (response as List)
           .map((e) => {
-                'id': e['app_user']['id'],
+                'id': e['app_user']['auth_user_id'],
                 'username': e['app_user']['username'],
                 'picture_path': e['app_user']['picture_path'],
               })

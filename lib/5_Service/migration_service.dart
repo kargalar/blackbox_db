@@ -191,10 +191,10 @@ class MigrationService {
 
   Future<UserModel?> getUserInfo({required String userId}) async {
     try {
-      final response = await _client.from('app_user').select('*').eq('id', userId).single();
+      final response = await _client.from('app_user').select('*').eq('auth_user_id', userId).single();
 
       return UserModel(
-        id: response['id'],
+        id: response['auth_user_id'],
         picturePath: response['picture_path'],
         username: response['username'],
         password: null,
@@ -239,10 +239,13 @@ class MigrationService {
     String? userId,
   }) async {
     try {
+      // userId parametresini kullan, eğer null ise currentUserId'yi kullan
+      final userIdToUse = userId ?? currentUserId;
+      
       final response = await _client.rpc('get_content_detail', params: {
         'content_id_param': contentId,
         'content_type_param': contentType.index + 1,
-        'user_id_param': currentUserId,
+        'user_id_param': userIdToUse,
       });
 
       return ContentModel.fromJson(response);
@@ -391,7 +394,7 @@ class MigrationService {
       final response = await _client.from('review').select('''
             *,
             app_user:user_id (
-              id,
+              auth_user_id,
               username,
               picture_path
             )
@@ -401,7 +404,7 @@ class MigrationService {
           .map((e) => ReviewModel.fromJson({
                 'id': e['id'],
                 'picture_path': e['app_user']['picture_path'],
-                'user_id': e['app_user']['id'].hashCode, // Convert UUID to int
+                'user_id': e['app_user']['auth_user_id'].hashCode, // Convert UUID to int
                 'username': e['app_user']['username'],
                 'text': e['text'],
                 'created_at': e['created_at'],
@@ -635,7 +638,7 @@ class MigrationService {
       final response = await _client.from('user_follow').select('''
             user_id,
             app_user!user_follow_user_id_fkey (
-              id,
+              auth_user_id,
               username,
               picture_path
             )
@@ -643,7 +646,7 @@ class MigrationService {
 
       return (response as List)
           .map((e) => {
-                'id': e['app_user']['id'],
+                'id': e['app_user']['auth_user_id'],
                 'username': e['app_user']['username'],
                 'picture_path': e['app_user']['picture_path'],
               })

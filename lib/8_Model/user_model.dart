@@ -30,7 +30,7 @@ class UserModel {
   int? totalPlayedTime;
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-        id: json["id"].toString(),
+        id: json["auth_user_id"].toString(),
         username: json["username"],
         picturePath: json["picture_path"],
         password: json["user_password"],
@@ -45,7 +45,6 @@ class UserModel {
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
         "username": username,
         "user_password": password,
         "bio": bio,

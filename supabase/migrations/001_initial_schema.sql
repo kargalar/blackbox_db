@@ -21,8 +21,7 @@ CREATE TABLE public.content_status_lookup (
 
 -- Create main user table with Supabase auth integration
 CREATE TABLE public.app_user (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    auth_user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    auth_user_id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
     picture_path TEXT,
     username VARCHAR(255) UNIQUE NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
@@ -223,7 +222,7 @@ CREATE TABLE public.x_game_theme (
 -- Review table
 CREATE TABLE public.review (
     id SERIAL PRIMARY KEY,
-    user_id UUID NOT NULL REFERENCES public.app_user(id) ON DELETE CASCADE,
+    user_id UUID NOT NULL REFERENCES public.app_user(auth_user_id) ON DELETE CASCADE,
     content_id INTEGER NOT NULL REFERENCES public.content(id) ON DELETE CASCADE,
     text TEXT NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
@@ -233,7 +232,7 @@ CREATE TABLE public.review (
 -- User content log (tracks user interactions with content)
 CREATE TABLE public.user_content_log (
     id SERIAL PRIMARY KEY,
-    user_id UUID NOT NULL REFERENCES public.app_user(id) ON DELETE CASCADE,
+    user_id UUID NOT NULL REFERENCES public.app_user(auth_user_id) ON DELETE CASCADE,
     content_id INTEGER NOT NULL REFERENCES public.content(id) ON DELETE CASCADE,
     content_status_id INTEGER REFERENCES public.content_status_lookup(id),
     rating DECIMAL(3,2) CHECK (rating >= 0 AND rating <= 5),
@@ -249,7 +248,7 @@ CREATE TABLE public.user_content_log (
 CREATE TABLE public.review_comment (
     id SERIAL PRIMARY KEY,
     review_id INTEGER NOT NULL REFERENCES public.review(id) ON DELETE CASCADE,
-    user_id UUID NOT NULL REFERENCES public.app_user(id) ON DELETE CASCADE,
+    user_id UUID NOT NULL REFERENCES public.app_user(auth_user_id) ON DELETE CASCADE,
     text TEXT NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -257,7 +256,7 @@ CREATE TABLE public.review_comment (
 CREATE TABLE public.review_like (
     id SERIAL PRIMARY KEY,
     review_id INTEGER NOT NULL REFERENCES public.review(id) ON DELETE CASCADE,
-    user_id UUID NOT NULL REFERENCES public.app_user(id) ON DELETE CASCADE,
+    user_id UUID NOT NULL REFERENCES public.app_user(auth_user_id) ON DELETE CASCADE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     UNIQUE(review_id, user_id)
 );
@@ -265,8 +264,8 @@ CREATE TABLE public.review_like (
 -- User follow system
 CREATE TABLE public.user_follow (
     id SERIAL PRIMARY KEY,
-    user_id UUID NOT NULL REFERENCES public.app_user(id) ON DELETE CASCADE,
-    following_user_id UUID NOT NULL REFERENCES public.app_user(id) ON DELETE CASCADE,
+    user_id UUID NOT NULL REFERENCES public.app_user(auth_user_id) ON DELETE CASCADE,
+    following_user_id UUID NOT NULL REFERENCES public.app_user(auth_user_id) ON DELETE CASCADE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     UNIQUE(user_id, following_user_id),
     CHECK (user_id != following_user_id)
@@ -275,7 +274,7 @@ CREATE TABLE public.user_follow (
 -- Movie lists (for user-created lists)
 CREATE TABLE public.list_movie (
     id SERIAL PRIMARY KEY,
-    user_id UUID NOT NULL REFERENCES public.app_user(id) ON DELETE CASCADE,
+    user_id UUID NOT NULL REFERENCES public.app_user(auth_user_id) ON DELETE CASCADE,
     movie_id INTEGER NOT NULL REFERENCES public.content(id) ON DELETE CASCADE,
     list_name VARCHAR(255) NOT NULL,
     added_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
@@ -322,56 +321,59 @@ CREATE POLICY "Users can view own profile" ON public.app_user
 CREATE POLICY "Users can update own profile" ON public.app_user
     FOR UPDATE USING (auth.uid() = auth_user_id);
 
+CREATE POLICY "Users can insert own profile" ON public.app_user
+    FOR INSERT WITH CHECK (auth.uid() = auth_user_id);
+
 -- User content logs
 CREATE POLICY "Users can view own content logs" ON public.user_content_log
-    FOR SELECT USING (auth.uid() = (SELECT auth_user_id FROM public.app_user WHERE id = user_id));
+    FOR SELECT USING (auth.uid() = user_id);
 
 CREATE POLICY "Users can insert own content logs" ON public.user_content_log
-    FOR INSERT WITH CHECK (auth.uid() = (SELECT auth_user_id FROM public.app_user WHERE id = user_id));
+    FOR INSERT WITH CHECK (auth.uid() = user_id);
 
 CREATE POLICY "Users can update own content logs" ON public.user_content_log
-    FOR UPDATE USING (auth.uid() = (SELECT auth_user_id FROM public.app_user WHERE id = user_id));
+    FOR UPDATE USING (auth.uid() = user_id);
 
 -- Reviews
 CREATE POLICY "Anyone can view reviews" ON public.review
     FOR SELECT USING (true);
 
 CREATE POLICY "Users can insert own reviews" ON public.review
-    FOR INSERT WITH CHECK (auth.uid() = (SELECT auth_user_id FROM public.app_user WHERE id = user_id));
+    FOR INSERT WITH CHECK (auth.uid() = user_id);
 
 CREATE POLICY "Users can update own reviews" ON public.review
-    FOR UPDATE USING (auth.uid() = (SELECT auth_user_id FROM public.app_user WHERE id = user_id));
+    FOR UPDATE USING (auth.uid() = user_id);
 
 CREATE POLICY "Users can delete own reviews" ON public.review
-    FOR DELETE USING (auth.uid() = (SELECT auth_user_id FROM public.app_user WHERE id = user_id));
+    FOR DELETE USING (auth.uid() = user_id);
 
 -- Review comments
 CREATE POLICY "Anyone can view review comments" ON public.review_comment
     FOR SELECT USING (true);
 
 CREATE POLICY "Users can insert own review comments" ON public.review_comment
-    FOR INSERT WITH CHECK (auth.uid() = (SELECT auth_user_id FROM public.app_user WHERE id = user_id));
+    FOR INSERT WITH CHECK (auth.uid() = user_id);
 
 -- Review likes
 CREATE POLICY "Anyone can view review likes" ON public.review_like
     FOR SELECT USING (true);
 
 CREATE POLICY "Users can manage own review likes" ON public.review_like
-    FOR ALL USING (auth.uid() = (SELECT auth_user_id FROM public.app_user WHERE id = user_id));
+    FOR ALL USING (auth.uid() = user_id);
 
 -- User follows
 CREATE POLICY "Anyone can view follows" ON public.user_follow
     FOR SELECT USING (true);
 
 CREATE POLICY "Users can manage own follows" ON public.user_follow
-    FOR ALL USING (auth.uid() = (SELECT auth_user_id FROM public.app_user WHERE id = user_id));
+    FOR ALL USING (auth.uid() = user_id);
 
 -- Movie lists
 CREATE POLICY "Users can view own lists" ON public.list_movie
-    FOR SELECT USING (auth.uid() = (SELECT auth_user_id FROM public.app_user WHERE id = user_id));
+    FOR SELECT USING (auth.uid() = user_id);
 
 CREATE POLICY "Users can manage own lists" ON public.list_movie
-    FOR ALL USING (auth.uid() = (SELECT auth_user_id FROM public.app_user WHERE id = user_id));
+    FOR ALL USING (auth.uid() = user_id);
 
 -- Create function to handle user creation after signup
 CREATE OR REPLACE FUNCTION public.handle_new_user()
