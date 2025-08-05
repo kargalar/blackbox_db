@@ -240,8 +240,8 @@ CREATE TABLE public.user_content_log (
     is_consume_later BOOLEAN DEFAULT FALSE,
     review_id INTEGER REFERENCES public.review(id) ON DELETE SET NULL,
     date TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    UNIQUE(user_id, content_id)
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+    -- Removed UNIQUE(user_id, content_id) to allow multiple logs per user-content pair
 );
 
 -- Review interactions
@@ -299,6 +299,9 @@ CREATE INDEX idx_content_release_date ON public.content(release_date);
 CREATE INDEX idx_user_content_log_user ON public.user_content_log(user_id);
 CREATE INDEX idx_user_content_log_content ON public.user_content_log(content_id);
 CREATE INDEX idx_user_content_log_date ON public.user_content_log(date);
+-- Additional indexes for multiple logs support
+CREATE INDEX idx_user_content_log_user_content ON public.user_content_log(user_id, content_id);
+CREATE INDEX idx_user_content_log_date_desc ON public.user_content_log(user_id, content_id, date DESC);
 CREATE INDEX idx_review_content ON public.review(content_id);
 CREATE INDEX idx_review_user ON public.review(user_id);
 CREATE INDEX idx_user_follow_user ON public.user_follow(user_id);
@@ -412,3 +415,20 @@ CREATE TRIGGER update_review_updated_at BEFORE UPDATE ON public.review
 
 CREATE TRIGGER update_user_content_log_updated_at BEFORE UPDATE ON public.user_content_log
     FOR EACH ROW EXECUTE FUNCTION public.update_updated_at_column();
+
+-- Create a view to get the latest user content log for each user-content pair
+-- This is useful when we need only the most recent interaction
+CREATE OR REPLACE VIEW latest_user_content_log AS
+SELECT DISTINCT ON (user_id, content_id)
+    id,
+    user_id,
+    content_id,
+    content_status_id,
+    rating,
+    is_favorite,
+    is_consume_later,
+    review_id,
+    date,
+    updated_at
+FROM user_content_log
+ORDER BY user_id, content_id, date DESC;

@@ -20,6 +20,7 @@ class ContentReviews extends StatefulWidget {
 
 class _ContentReviewsState extends State<ContentReviews> {
   bool isLoading = true;
+  late final provider = context.read<ContentPageProvider>();
 
   @override
   void initState() {
@@ -112,10 +113,10 @@ class _ContentReviewsState extends State<ContentReviews> {
                     width: 0.4.sw,
                     child: ListView.builder(
                       shrinkWrap: true,
-                      itemCount: ContentPageProvider().reviewList.length,
+                      itemCount: provider.reviewList.length,
                       itemBuilder: (context, index) {
                         return ReviewItem(
-                          reviewModel: ContentPageProvider().reviewList[index],
+                          reviewModel: provider.reviewList[index],
                         );
                       },
                     ),
@@ -125,7 +126,7 @@ class _ContentReviewsState extends State<ContentReviews> {
   }
 
   void getReviews() async {
-    ContentPageProvider().reviewList = await MigrationService().getContentReviews(contentId: widget.contentId);
+    provider.reviewList = await MigrationService().getContentReviews(contentId: widget.contentId);
 
     setState(() {
       isLoading = false;

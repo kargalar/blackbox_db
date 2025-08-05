@@ -92,6 +92,16 @@ class _ContentPageState extends State<ContentPage> {
         contentTypeId: contentTypeId,
         userId: currentUserId, // User logs için gerekli
       );
+
+      // Debug: Kullanıcıya özel verileri kontrol et
+      if (provider.contentModel != null) {
+        debugPrint('🎬 Content loaded: ${provider.contentModel!.title}');
+        debugPrint('📊 User ID: $currentUserId');
+        debugPrint('⭐ Rating: ${provider.contentModel!.rating}');
+        debugPrint('❤️ Is Favorite: ${provider.contentModel!.isFavorite}');
+        debugPrint('📺 Content Status: ${provider.contentModel!.contentStatus}');
+        debugPrint('🔮 Consume Later: ${provider.contentModel!.isConsumeLater}');
+      }
     } catch (e) {
       provider.contentModel = null;
       debugPrint('Content detail error: $e');

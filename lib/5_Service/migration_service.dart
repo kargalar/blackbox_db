@@ -241,7 +241,7 @@ class MigrationService {
     try {
       // userId parametresini kullan, eğer null ise currentUserId'yi kullan
       final userIdToUse = userId ?? currentUserId;
-      
+
       final response = await _client.rpc('get_content_detail', params: {
         'content_id_param': contentId,
         'content_type_param': contentType.index + 1,
@@ -375,8 +375,8 @@ class MigrationService {
 
       data['review_id'] = reviewId;
 
-      // Upsert user content log
-      await _client.from('user_content_log').upsert(data);
+      // Insert new user content log (multiple logs allowed)
+      await _client.from('user_content_log').insert(data);
     } catch (e) {
       debugPrint('Error in content user action: $e');
       rethrow;

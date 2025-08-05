@@ -6,7 +6,6 @@ CREATE OR REPLACE FUNCTION get_user_info_with_stats(
     profile_user_uuid UUID
 )
 RETURNS TABLE (
-    id UUID,
     auth_user_id UUID,
     picture_path TEXT,
     username VARCHAR,
@@ -39,7 +38,6 @@ BEGIN
         WHERE uf.user_id = user_uuid AND uf.following_user_id = profile_user_uuid
     )
     SELECT
-        u.id,
         u.auth_user_id,
         u.picture_path,
         u.username,
@@ -54,7 +52,7 @@ BEGIN
     FROM app_user u
     LEFT JOIN user_stats us ON true
     LEFT JOIN follow_status fs ON true
-    WHERE u.id = profile_user_uuid;
+    WHERE u.auth_user_id = profile_user_uuid;
 END;
 $$;
 
@@ -93,7 +91,7 @@ BEGIN
         'cast_list', COALESCE(cast_array.cast, '[]'::json)
     ) INTO result
     FROM content c
-    LEFT JOIN user_content_log ucl ON c.id = ucl.content_id AND ucl.user_id = user_id_param
+    LEFT JOIN latest_user_content_log ucl ON c.id = ucl.content_id AND ucl.user_id = user_id_param
     LEFT JOIN LATERAL (
         SELECT json_agg(json_build_object('id', g.id, 'name', g.name)) as genres
         FROM (
@@ -218,7 +216,7 @@ BEGIN
         )
     ) INTO contents
     FROM content c
-    LEFT JOIN user_content_log ucl ON c.id = ucl.content_id AND ucl.user_id = user_id_param
+    LEFT JOIN latest_user_content_log ucl ON c.id = ucl.content_id AND ucl.user_id = user_id_param
     WHERE c.content_type_id = content_type_param
     ORDER BY c.consume_count DESC, c.favorite_count DESC
     LIMIT 20;
@@ -253,11 +251,11 @@ BEGIN
         )
     ) INTO contents
     FROM content c
-    LEFT JOIN user_content_log ucl ON c.id = ucl.content_id AND ucl.user_id = user_id_param
+    LEFT JOIN latest_user_content_log ucl ON c.id = ucl.content_id AND ucl.user_id = user_id_param
     WHERE c.content_type_id = content_type_param
     AND c.id NOT IN (
         SELECT DISTINCT content_id 
-        FROM user_content_log 
+        FROM latest_user_content_log 
         WHERE user_id = user_id_param
     )
     ORDER BY c.favorite_count DESC, c.consume_count DESC
@@ -305,7 +303,7 @@ BEGIN
     ) INTO contents
     FROM user_content_log ucl
     INNER JOIN content c ON c.id = ucl.content_id
-    INNER JOIN app_user u ON u.id = ucl.user_id
+    INNER JOIN app_user u ON u.auth_user_id = ucl.user_id
     LEFT JOIN review r ON r.id = ucl.review_id
     LEFT JOIN user_content_log my_ucl ON my_ucl.content_id = ucl.content_id AND my_ucl.user_id = user_id_param
     WHERE ucl.user_id IN (
@@ -377,7 +375,7 @@ BEGIN
     ) INTO contents
     FROM user_content_log ucl_log
     INNER JOIN content ON content.id = ucl_log.content_id
-    INNER JOIN app_user ON app_user.id = ucl_log.user_id
+    INNER JOIN app_user ON app_user.auth_user_id = ucl_log.user_id
     LEFT JOIN review r ON r.id = ucl_log.review_id
     LEFT JOIN user_content_log ucl_user ON ucl_user.content_id = ucl_log.content_id AND ucl_user.user_id = user_id_param
     WHERE ucl_log.user_id = log_user_id_param
@@ -414,14 +412,14 @@ BEGIN
             'content_type_id', c.content_type_id,
             'title', c.title,
             'poster_path', c.poster_path,
-            'user_id', u.id,
+            'user_id', u.auth_user_id,
             'username', u.username,
             'picture_path', u.picture_path
         )
     ) INTO reviews
     FROM review r
     INNER JOIN content c ON c.id = r.content_id
-    INNER JOIN app_user u ON u.id = r.user_id
+    INNER JOIN app_user u ON u.auth_user_id = r.user_id
     WHERE (content_type_param IS NULL OR c.content_type_id = content_type_param)
     ORDER BY r.created_at DESC
     LIMIT limit_param;
