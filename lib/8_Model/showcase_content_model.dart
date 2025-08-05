@@ -32,7 +32,7 @@ class ShowcaseContentModel {
   factory ShowcaseContentModel.fromJson(Map<String, dynamic> json) {
     return ShowcaseContentModel(
       userId: json['user_id'],
-      contentId: json['content_id'],
+      contentId: json['id'],
       posterPath: json['poster_path'],
       contentType: ContentTypeEnum.values[json['content_type_id'] - 1],
       isFavorite: json['is_favorite'] ?? false,

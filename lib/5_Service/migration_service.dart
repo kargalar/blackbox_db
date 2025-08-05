@@ -152,7 +152,7 @@ class MigrationService {
 
       // Convert UUID to int for compatibility
       return UserModel(
-        id: response['id'], // Use UUID directly as String
+        id: response['auth_user_id'], // Use UUID directly as String
         picturePath: response['picture_path'],
         username: response['username'],
         password: null, // Don't store password
