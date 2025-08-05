@@ -1,7 +1,6 @@
 import 'package:blackbox_db/7_Enum/content_status_enum.dart';
 import 'package:blackbox_db/7_Enum/content_type_enum.dart';
 import 'package:blackbox_db/8_Model/content_log_model.dart';
-import 'package:flutter/material.dart';
 
 class ShowcaseContentModel {
   ShowcaseContentModel({
@@ -31,10 +30,6 @@ class ShowcaseContentModel {
   int? trendIndex;
 
   factory ShowcaseContentModel.fromJson(Map<String, dynamic> json) {
-    debugPrint('''
-    ShowcaseContentModel.fromJson: $json
-    ''');
-
     return ShowcaseContentModel(
       userId: json['user_id'],
       contentId: json['content_id'] ?? json['id'],
