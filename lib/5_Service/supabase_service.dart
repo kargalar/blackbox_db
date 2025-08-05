@@ -392,8 +392,8 @@ class SupabaseService {
     try {
       final response = await _client.from('review').select('''
             *,
-            app_user:user_id (
-              id,
+            app_user:auth_user_id (
+              auth_user_id,
               username,
               picture_path
             )

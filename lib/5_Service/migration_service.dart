@@ -404,7 +404,7 @@ class MigrationService {
           .map((e) => ReviewModel.fromJson({
                 'id': e['id'],
                 'picture_path': e['app_user']['picture_path'],
-                'user_id': e['app_user']['auth_user_id'].hashCode, // Convert UUID to int
+                'user_id': e['app_user']['auth_user_id'], // Convert UUID to int
                 'username': e['app_user']['username'],
                 'text': e['text'],
                 'created_at': e['created_at'],
