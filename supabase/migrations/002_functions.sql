@@ -191,7 +191,7 @@ BEGIN
 END;
 $$;
 
--- Function to get trending content
+-- Function to get trending content (DÜZELTME)
 CREATE OR REPLACE FUNCTION get_trend_contents(
     content_type_param INTEGER,
     user_id_param UUID
@@ -200,28 +200,42 @@ RETURNS JSON
 LANGUAGE plpgsql
 AS $$
 DECLARE
-    contents JSON;
+    result JSON;
 BEGIN
-    SELECT json_agg(
+    WITH trending_data AS (
+        SELECT 
+            user_id_param as user_id,
+            c.id as content_id,
+            c.poster_path,
+            c.content_type_id,
+            ucl.content_status_id,
+            COALESCE(ucl.is_favorite, false) as is_favorite,
+            COALESCE(ucl.is_consume_later, false) as is_consume_later,
+            ucl.rating,
+            c.consume_count,
+            c.favorite_count
+        FROM content c
+        LEFT JOIN latest_user_content_log ucl ON c.id = ucl.content_id AND ucl.user_id = user_id_param
+        WHERE c.content_type_id = content_type_param
+        ORDER BY c.consume_count DESC, c.favorite_count DESC
+        LIMIT 20
+    )
+    SELECT COALESCE(json_agg(
         json_build_object(
-            'user_id', user_id_param,
-            'content_id', c.id,
-            'poster_path', c.poster_path,
-            'content_type_id', c.content_type_id,
-            'content_status_id', ucl.content_status_id,
-            'is_favorite', COALESCE(ucl.is_favorite, false),
-            'is_consume_later', COALESCE(ucl.is_consume_later, false),
-            'rating', ucl.rating,
+            'user_id', td.user_id,
+            'content_id', td.content_id,
+            'poster_path', td.poster_path,
+            'content_type_id', td.content_type_id,
+            'content_status_id', td.content_status_id,
+            'is_favorite', td.is_favorite,
+            'is_consume_later', td.is_consume_later,
+            'rating', td.rating,
             'userLog', NULL
         )
-    ) INTO contents
-    FROM content c
-    LEFT JOIN latest_user_content_log ucl ON c.id = ucl.content_id AND ucl.user_id = user_id_param
-    WHERE c.content_type_id = content_type_param
-    ORDER BY c.consume_count DESC, c.favorite_count DESC
-    LIMIT 20;
+    ), '[]'::json) INTO result
+    FROM trending_data td;
     
-    RETURN COALESCE(contents, '[]'::json);
+    RETURN result;
 END;
 $$;
 
@@ -265,7 +279,7 @@ BEGIN
 END;
 $$;
 
--- Function to get friend activities
+-- Function to get friend activities (DÜZELTME)
 CREATE OR REPLACE FUNCTION get_friend_activities(
     content_type_param INTEGER,
     user_id_param UUID
@@ -274,48 +288,69 @@ RETURNS JSON
 LANGUAGE plpgsql
 AS $$
 DECLARE
-    contents JSON;
+    result JSON;
 BEGIN
-    SELECT json_agg(
+    WITH friend_activity_data AS (
+        SELECT 
+            ucl.user_id,
+            c.id as content_id,
+            c.poster_path,
+            c.content_type_id,
+            my_ucl.content_status_id,
+            COALESCE(my_ucl.is_favorite, false) as is_favorite,
+            COALESCE(my_ucl.is_consume_later, false) as is_consume_later,
+            my_ucl.rating,
+            ucl.id as ucl_id,
+            u.picture_path,
+            ucl.content_id as ucl_content_id,
+            ucl.date,
+            ucl.content_status_id as ucl_content_status_id,
+            ucl.is_favorite as ucl_is_favorite,
+            ucl.is_consume_later as ucl_is_consume_later,
+            ucl.rating as ucl_rating,
+            r.text as review_text
+        FROM user_content_log ucl
+        INNER JOIN content c ON c.id = ucl.content_id
+        INNER JOIN app_user u ON u.auth_user_id = ucl.user_id
+        LEFT JOIN review r ON r.id = ucl.review_id
+        LEFT JOIN latest_user_content_log my_ucl ON my_ucl.content_id = ucl.content_id AND my_ucl.user_id = user_id_param
+        WHERE ucl.user_id IN (
+            SELECT following_user_id 
+            FROM user_follow 
+            WHERE user_id = user_id_param
+        )
+        AND c.content_type_id = content_type_param
+        ORDER BY ucl.date DESC
+        LIMIT 20
+    )
+    SELECT COALESCE(json_agg(
         json_build_object(
-            'user_id', ucl.user_id,
-            'content_id', c.id,
-            'poster_path', c.poster_path,
-            'content_type_id', c.content_type_id,
-            'content_status_id', my_ucl.content_status_id,
-            'is_favorite', COALESCE(my_ucl.is_favorite, false),
-            'is_consume_later', COALESCE(my_ucl.is_consume_later, false),
-            'rating', my_ucl.rating,
+            'user_id', fad.user_id,
+            'content_id', fad.content_id,
+            'poster_path', fad.poster_path,
+            'content_type_id', fad.content_type_id,
+            'content_status_id', fad.content_status_id,
+            'is_favorite', fad.is_favorite,
+            'is_consume_later', fad.is_consume_later,
+            'rating', fad.rating,
             'userLog', json_build_object(
-                'id', ucl.id,
-                'picture_path', u.picture_path,
-                'content_id', ucl.content_id,
-                'content_type_id', c.content_type_id,
-                'user_id', ucl.user_id,
-                'date', ucl.date,
-                'content_status_id', ucl.content_status_id,
-                'is_favorite', ucl.is_favorite,
-                'is_consume_later', ucl.is_consume_later,
-                'rating', ucl.rating,
-                'review_text', r.text
+                'id', fad.ucl_id,
+                'picture_path', fad.picture_path,
+                'content_id', fad.ucl_content_id,
+                'content_type_id', fad.content_type_id,
+                'user_id', fad.user_id,
+                'date', fad.date,
+                'content_status_id', fad.ucl_content_status_id,
+                'is_favorite', fad.ucl_is_favorite,
+                'is_consume_later', fad.ucl_is_consume_later,
+                'rating', fad.ucl_rating,
+                'review_text', fad.review_text
             )
         )
-    ) INTO contents
-    FROM user_content_log ucl
-    INNER JOIN content c ON c.id = ucl.content_id
-    INNER JOIN app_user u ON u.auth_user_id = ucl.user_id
-    LEFT JOIN review r ON r.id = ucl.review_id
-    LEFT JOIN user_content_log my_ucl ON my_ucl.content_id = ucl.content_id AND my_ucl.user_id = user_id_param
-    WHERE ucl.user_id IN (
-        SELECT following_user_id 
-        FROM user_follow 
-        WHERE user_id = user_id_param
-    )
-    AND c.content_type_id = content_type_param
-    ORDER BY ucl.date DESC
-    LIMIT 20;
+    ), '[]'::json) INTO result
+    FROM friend_activity_data fad;
     
-    RETURN COALESCE(contents, '[]'::json);
+    RETURN result;
 END;
 $$;
 
@@ -350,7 +385,7 @@ BEGIN
     -- Get contents
     SELECT json_agg(
         json_build_object(
-            'user_id', ucl_user.user_id,
+            'user_id', user_id_param,
             'content_id', content.id,
             'poster_path', content.poster_path,
             'content_type_id', content.content_type_id,
@@ -392,7 +427,7 @@ BEGIN
 END;
 $$;
 
--- Function to get top reviews
+-- Function to get top reviews (DÜZELTME)
 CREATE OR REPLACE FUNCTION get_top_reviews(
     content_type_param INTEGER DEFAULT NULL,
     limit_param INTEGER DEFAULT 5
@@ -401,30 +436,44 @@ RETURNS JSON
 LANGUAGE plpgsql
 AS $$
 DECLARE
-    reviews JSON;
+    result JSON;
 BEGIN
-    SELECT json_agg(
+    WITH review_data AS (
+        SELECT 
+            r.id,
+            r.text,
+            r.created_at,
+            c.id as content_id,
+            c.content_type_id,
+            c.title,
+            c.poster_path,
+            u.auth_user_id as user_id,
+            u.username,
+            u.picture_path
+        FROM review r
+        INNER JOIN content c ON c.id = r.content_id
+        INNER JOIN app_user u ON u.auth_user_id = r.user_id
+        WHERE (content_type_param IS NULL OR c.content_type_id = content_type_param)
+        ORDER BY r.created_at DESC
+        LIMIT limit_param
+    )
+    SELECT COALESCE(json_agg(
         json_build_object(
-            'id', r.id,
-            'text', r.text,
-            'created_at', r.created_at,
-            'content_id', c.id,
-            'content_type_id', c.content_type_id,
-            'title', c.title,
-            'poster_path', c.poster_path,
-            'user_id', u.auth_user_id,
-            'username', u.username,
-            'picture_path', u.picture_path
+            'id', rd.id,
+            'text', rd.text,
+            'created_at', rd.created_at,
+            'content_id', rd.content_id,
+            'content_type_id', rd.content_type_id,
+            'title', rd.title,
+            'poster_path', rd.poster_path,
+            'user_id', rd.user_id,
+            'username', rd.username,
+            'picture_path', rd.picture_path
         )
-    ) INTO reviews
-    FROM review r
-    INNER JOIN content c ON c.id = r.content_id
-    INNER JOIN app_user u ON u.auth_user_id = r.user_id
-    WHERE (content_type_param IS NULL OR c.content_type_id = content_type_param)
-    ORDER BY r.created_at DESC
-    LIMIT limit_param;
+    ), '[]'::json) INTO result
+    FROM review_data rd;
     
-    RETURN COALESCE(reviews, '[]'::json);
+    RETURN result;
 END;
 $$;
 
