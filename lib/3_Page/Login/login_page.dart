@@ -21,6 +21,42 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
 
   bool isRegister = false;
+  bool _loading = false; // yükleniyor flag
+
+  Future<void> _submit() async {
+    if (_loading) return; // Çift tıklama engelle
+    if (!_formKey.currentState!.validate()) return;
+    setState(() => _loading = true);
+    try {
+      if (isRegister) {
+        loginUser = await MigrationService().register(
+          username: _usernameController.text.trim(),
+          email: _emailController.text.trim(),
+          password: _passwordController.text,
+        );
+      } else {
+        loginUser = await MigrationService().login(
+          email: _emailController.text.trim(),
+          password: _passwordController.text,
+        );
+      }
+      if (loginUser != null && mounted) {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('email', _emailController.text.trim());
+        await prefs.setString('password', _passwordController.text);
+        GeneralProvider().currentIndex = 0;
+        await Get.offUntil(
+          GetPageRoute(
+            page: () => const AppbarManager(),
+            routeName: "/",
+          ),
+          (route) => false,
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _loading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                   if (isRegister) ...[
                     TextFormField(
                       style: const TextStyle(color: AppColors.white),
+                      enabled: !_loading,
                       controller: _usernameController,
                       keyboardType: TextInputType.name,
                       decoration: InputDecoration(
@@ -66,6 +103,7 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                   TextFormField(
                     style: const TextStyle(color: AppColors.white),
+                    enabled: !_loading,
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
@@ -79,10 +117,12 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     validator: _emailValidator,
+                    onFieldSubmitted: (_) => _submit(),
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
                     obscureText: true,
+                    enabled: !_loading,
                     controller: _passwordController,
                     keyboardType: null,
                     style: const TextStyle(color: AppColors.white),
@@ -95,48 +135,26 @@ class _LoginPageState extends State<LoginPage> {
                         borderRadius: BorderRadius.circular(8.0),
                         borderSide: BorderSide.none,
                       ),
-                      suffixIcon: const Icon(
-                        Icons.visibility_off,
-                        color: AppColors.grey,
-                      ),
+                      suffixIcon: _loading
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.grey),
+                              ),
+                            )
+                          : const Icon(
+                              Icons.visibility_off,
+                              color: AppColors.grey,
+                            ),
                     ),
                     validator: _passwordValidator,
+                    onFieldSubmitted: (_) => _submit(), // Enter ile gönder
                   ),
                   const SizedBox(height: 24),
                   ElevatedButton(
-                    onPressed: () async {
-                      if (!_formKey.currentState!.validate()) return;
-
-                      if (isRegister) {
-                        loginUser = await MigrationService().register(
-                          username: _usernameController.text,
-                          email: _emailController.text,
-                          password: _passwordController.text,
-                        );
-                      } else {
-                        loginUser = await MigrationService().login(
-                          email: _emailController.text,
-                          password: _passwordController.text,
-                        );
-                      }
-
-                      if (loginUser != null) {
-                        // SharedPreferences
-                        SharedPreferences prefs = await SharedPreferences.getInstance();
-                        prefs.setString('email', _emailController.text);
-                        prefs.setString('password', _passwordController.text);
-
-                        GeneralProvider().currentIndex = 0;
-
-                        await Get.offUntil(
-                          GetPageRoute(
-                            page: () => const AppbarManager(),
-                            routeName: "/",
-                          ),
-                          (route) => false,
-                        );
-                      }
-                    },
+                    onPressed: _loading ? null : _submit,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.blue,
                       minimumSize: const Size(double.infinity, 50),
@@ -144,21 +162,31 @@ class _LoginPageState extends State<LoginPage> {
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),
-                    child: Text(
-                      !isRegister ? 'Login' : "Register",
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.white),
-                    ),
+                    child: _loading
+                        ? const SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 3,
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                            ),
+                          )
+                        : Text(
+                            !isRegister ? 'Login' : "Register",
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.white),
+                          ),
                   ),
                   const SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       TextButton(
-                        onPressed: () {
-                          isRegister = !isRegister;
-
-                          setState(() {});
-                        },
+                        onPressed: _loading
+                            ? null
+                            : () {
+                                isRegister = !isRegister;
+                                setState(() {});
+                              },
                         child: Text(
                           isRegister ? "Login" : 'Register',
                           style: TextStyle(color: AppColors.white),

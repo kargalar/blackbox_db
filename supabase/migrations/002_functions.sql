@@ -364,6 +364,7 @@ CREATE OR REPLACE FUNCTION get_user_contents(
 )
 RETURNS JSON
 LANGUAGE plpgsql
+SECURITY DEFINER
 AS $$
 DECLARE
     offset_param INTEGER;
@@ -372,60 +373,81 @@ DECLARE
     contents JSON;
 BEGIN
     offset_param := (page_param - 1) * limit_param;
-    
-    -- Get total count
+
     SELECT COUNT(*) INTO total_count
     FROM user_content_log ucl_log
-    INNER JOIN content ON content.id = ucl_log.content_id
+    JOIN content c ON c.id = ucl_log.content_id
     WHERE ucl_log.user_id = log_user_id_param
-    AND content.content_type_id = content_type_param;
-    
-    total_pages := CEIL(total_count::DECIMAL / limit_param);
-    
-    -- Get contents
+      AND c.content_type_id = content_type_param;
+
+    total_pages := CEIL(GREATEST(total_count,0)::DECIMAL / NULLIF(limit_param,0));
+
+    WITH rows AS (
+        SELECT 
+            ucl_log.id AS log_id,
+            ucl_log.user_id AS log_user_id,
+            ucl_log.content_id,
+            ucl_log.content_status_id AS log_content_status_id,
+            ucl_log.is_favorite AS log_is_favorite,
+            ucl_log.is_consume_later AS log_is_consume_later,
+            ucl_log.rating AS log_rating,
+            ucl_log.date AS log_date,
+            r.text AS review_text,
+            c.id AS c_id,
+            c.poster_path,
+            c.content_type_id,
+            au.picture_path,
+            ucl_user.content_status_id AS viewer_content_status_id,
+            ucl_user.is_favorite AS viewer_is_favorite,
+            ucl_user.is_consume_later AS viewer_is_consume_later,
+            ucl_user.rating AS viewer_rating
+        FROM user_content_log ucl_log
+        JOIN content c ON c.id = ucl_log.content_id
+        JOIN app_user au ON au.auth_user_id = ucl_log.user_id
+        LEFT JOIN review r ON r.id = ucl_log.review_id
+        LEFT JOIN user_content_log ucl_user ON ucl_user.content_id = ucl_log.content_id AND ucl_user.user_id = user_id_param
+        WHERE ucl_log.user_id = log_user_id_param
+          AND c.content_type_id = content_type_param
+        ORDER BY ucl_log.date DESC
+        LIMIT limit_param OFFSET offset_param
+    )
     SELECT json_agg(
         json_build_object(
             'user_id', user_id_param,
-            'content_id', content.id,
-            'poster_path', content.poster_path,
-            'content_type_id', content.content_type_id,
-            'content_status_id', COALESCE(ucl_user.content_status_id, ucl_log.content_status_id),
-            'is_favorite', COALESCE(ucl_user.is_favorite, false),
-            'is_consume_later', COALESCE(ucl_user.is_consume_later, false),
-            'rating', ucl_user.rating,
+            'content_id', c_id,
+            'poster_path', poster_path,
+            'content_type_id', content_type_id,
+            'content_status_id', COALESCE(viewer_content_status_id, log_content_status_id),
+            'is_favorite', COALESCE(viewer_is_favorite, false),
+            'is_consume_later', COALESCE(viewer_is_consume_later, false),
+            'rating', viewer_rating,
             'userLog', json_build_object(
-                'id', ucl_log.id,
-                'picture_path', app_user.picture_path,
-                'content_id', ucl_log.content_id,
-                'content_type_id', content.content_type_id,
-                'user_id', ucl_log.user_id,
-                'date', ucl_log.date,
-                'content_status_id', ucl_log.content_status_id,
-                'is_favorite', ucl_log.is_favorite,
-                'is_consume_later', ucl_log.is_consume_later,
-                'rating', ucl_log.rating,
-                'review_text', r.text
+                'id', log_id,
+                'picture_path', picture_path,
+                'content_id', content_id,
+                'content_type_id', content_type_id,
+                'user_id', log_user_id,
+                'date', log_date,
+                'content_status_id', log_content_status_id,
+                'is_favorite', log_is_favorite,
+                'is_consume_later', log_is_consume_later,
+                'rating', log_rating,
+                'review_text', review_text
             )
         )
     ) INTO contents
-    FROM user_content_log ucl_log
-    INNER JOIN content ON content.id = ucl_log.content_id
-    INNER JOIN app_user ON app_user.auth_user_id = ucl_log.user_id
-    LEFT JOIN review r ON r.id = ucl_log.review_id
-    LEFT JOIN user_content_log ucl_user ON ucl_user.content_id = ucl_log.content_id AND ucl_user.user_id = user_id_param
-    WHERE ucl_log.user_id = log_user_id_param
-    AND content.content_type_id = content_type_param
-    ORDER BY ucl_log.date DESC
-    LIMIT limit_param OFFSET offset_param;
-    
+    FROM rows;
+
     RETURN json_build_object(
         'contents', COALESCE(contents, '[]'::json),
-        'total_pages', total_pages,
+        'total_pages', COALESCE(total_pages,1),
         'current_page', page_param,
         'total_count', total_count
     );
 END;
 $$;
+
+GRANT EXECUTE ON FUNCTION get_user_contents(UUID,UUID,INTEGER,INTEGER,INTEGER) TO authenticated;
 
 -- Function to get top reviews (DÜZELTME)
 CREATE OR REPLACE FUNCTION get_top_reviews(

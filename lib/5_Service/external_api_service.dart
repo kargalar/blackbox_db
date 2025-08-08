@@ -199,7 +199,7 @@ class ExternalApiService {
           'id': game['id'],
           'title': game['name'],
           'description': game['summary'] ?? game['storyline'],
-          'poster_path': game['cover']?['image_id'] != null ? 'https://images.igdb.com/igdb/image/upload/t_cover_big/${game['cover']['image_id']}.jpg' : null,
+          'poster_path': game['cover']?['image_id'] != null ? game['cover']['image_id'] : null,
           'release_date': game['first_release_date'] != null ? DateFormat('yyyy-MM-dd').format(DateTime.fromMillisecondsSinceEpoch(game['first_release_date'] * 1000)) : null,
           'content_type_id': 2, // Game
           // Complex fields skip edildi: cast_list, creator_list, genre_list
@@ -216,7 +216,7 @@ class ExternalApiService {
         id: game['id'],
         title: game['name'],
         description: game['summary'] ?? game['storyline'],
-        posterPath: game['cover']?['image_id'] != null ? 'https://images.igdb.com/igdb/image/upload/t_cover_big/${game['cover']['image_id']}.jpg' : null,
+        posterPath: game['cover']?['image_id'] != null ? game['cover']['image_id'] : null,
         releaseDate: game['first_release_date'] != null ? DateTime.fromMillisecondsSinceEpoch(game['first_release_date'] * 1000) : null,
         contentType: ContentTypeEnum.GAME,
         // Complex fields null
@@ -395,7 +395,8 @@ class ExternalApiService {
 
       // Random bir film seç
       final randomMovie = movieList[movieList.length ~/ 2];
-      final selectedContentId = randomMovie.id;
+      // ShowcaseContentModel 'id' değil 'contentId' alanına sahip
+      final selectedContentId = randomMovie.contentId;
 
       // TMDB'den benzer filmleri al
       final response = await http.get(

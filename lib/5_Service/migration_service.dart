@@ -8,6 +8,7 @@ import 'package:blackbox_db/8_Model/user_model.dart';
 import 'package:blackbox_db/8_Model/user_review_model.dart';
 import 'package:blackbox_db/8_Model/review_model.dart';
 import 'package:blackbox_db/8_Model/showcase_content_model.dart';
+import 'package:blackbox_db/5_Service/external_api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -95,33 +96,32 @@ class MigrationService {
     required String password,
   }) async {
     try {
-      // First, sign up the user
+      // Auth kaydı sırasında metadata ile username gönder
       final response = await _client.auth.signUp(
         email: email,
         password: password,
+        data: {"username": username},
       );
 
       if (response.user != null) {
-        // Try to create user profile in app_user table
         try {
-          await _client.from('app_user').insert({
+          // app_user tablosuna (varsa) kaydı oluştur / güncelle
+          await _client.from('app_user').upsert({
             'auth_user_id': response.user!.id,
             'username': username,
             'email': email,
             'bio': '',
             'picture_path': null,
-          });
+          }, onConflict: 'auth_user_id');
 
-          // Wait a bit for the data to be committed
-          await Future.delayed(const Duration(milliseconds: 500));
+          // Yazmanın tamamen işlenmesi için kısa bekleme (özellikle trigger/policy senaryolarında)
+          await Future.delayed(const Duration(milliseconds: 300));
           return await _getUserProfile(response.user!.id);
         } catch (insertError) {
           debugPrint('Error creating user profile: $insertError');
-
-          // If profile creation fails, return a UserModel from auth user data
-          // This handles RLS permission issues gracefully
+          // Yine de eldeki bilgilerle kullanıcı modeli dön
           return UserModel(
-            id: response.user!.id, // Use UUID directly as String
+            id: response.user!.id,
             picturePath: null,
             username: username,
             password: null,
@@ -148,30 +148,29 @@ class MigrationService {
   } // Convert Supabase user data to existing UserModel format
 
   Future<UserModel?> _getUserProfile(String authUserId) async {
+    // ...existing code before try...
     try {
       final response = await _client.from('app_user').select('*').eq('auth_user_id', authUserId).single();
-
-      // Convert UUID to int for compatibility
       return UserModel(
-        id: response['auth_user_id'], // Use UUID directly as String
+        id: response['auth_user_id'],
         picturePath: response['picture_path'],
         username: response['username'],
-        password: null, // Don't store password
+        password: null,
         bio: response['bio'],
         email: response['email'],
         createdAt: DateTime.parse(response['created_at']),
       );
     } catch (e) {
       debugPrint('Error getting user profile: $e');
-
-      // If app_user profile doesn't exist, try to get from auth user
       try {
         final authUser = _client.auth.currentUser;
         if (authUser != null && authUser.id == authUserId) {
+          final meta = authUser.userMetadata ?? {};
+          final metaUsername = meta['username'];
           return UserModel(
-            id: authUser.id, // Use UUID directly as String
+            id: authUser.id,
             picturePath: null,
-            username: authUser.email?.split('@')[0] ?? 'User', // Use email prefix as username
+            username: (metaUsername is String && metaUsername.trim().isNotEmpty) ? metaUsername : (authUser.email?.split('@').first ?? 'User'),
             password: null,
             bio: '',
             email: authUser.email ?? '',
@@ -181,7 +180,6 @@ class MigrationService {
       } catch (authError) {
         debugPrint('Error getting auth user: $authError');
       }
-
       return null;
     }
   }
@@ -349,6 +347,22 @@ class MigrationService {
     required ContentLogModel contentLogModel,
   }) async {
     try {
+      // Ensure the content row exists in Supabase before inserting a log.
+      // Discover/Explore listeleri external API'den geldiği için içerik daha önce kaydedilmemiş olabilir.
+      try {
+        final existing = await _client.from('content').select('id').eq('id', contentLogModel.contentID).maybeSingle();
+        if (existing == null) {
+          debugPrint('ℹ️ Content ${contentLogModel.contentID} not found in Supabase. Fetching & saving before logging.');
+          await ExternalApiService().getContentDetail(
+            contentId: contentLogModel.contentID,
+            contentTypeId: contentLogModel.contentType.index + 1,
+            userId: currentUserId,
+          );
+        }
+      } catch (e) {
+        debugPrint('⚠️ Ensure content exists check failed (continuing): $e');
+      }
+
       final data = {
         'user_id': currentUserId,
         'content_id': contentLogModel.contentID,
@@ -548,7 +562,29 @@ class MigrationService {
     required String logUserId,
   }) async {
     try {
-      // Use latest_user_content_log to avoid duplicates; only show if last status is CONSUMED
+      // 1) RPC fonksiyonunu dene (get_user_contents) -> SECURITY DEFINER ise diğer kullanıcı içerikleri gelebilir
+      try {
+        final rpc = await _client.rpc('get_user_contents', params: {
+          'user_id_param': currentUserId,
+          'log_user_id_param': logUserId,
+          'content_type_param': contentType.index + 1,
+          'page_param': 1,
+          'limit_param': 40,
+        });
+
+        if (rpc is Map && rpc['contents'] != null) {
+          final rawList = (rpc['contents'] as List);
+          final contentList = rawList.map((e) => ShowcaseContentModel.fromJson(e as Map<String, dynamic>)).toList();
+          return {
+            'contentList': contentList,
+            'totalPages': rpc['total_pages'] ?? 1,
+          };
+        }
+      } catch (e) {
+        debugPrint('RPC get_user_contents fallback: $e');
+      }
+
+      // 2) Fallback: kendi loglarına erişim (RLS kısıtı olabilir)
       final response = await _client.from('latest_user_content_log').select('''
             id,
             user_id,
@@ -598,10 +634,7 @@ class MigrationService {
               }))
           .toList();
 
-      return {
-        'contentList': contentList,
-        'totalPages': 1,
-      };
+      return {'contentList': contentList, 'totalPages': 1};
     } catch (e) {
       debugPrint('Error getting user contents: $e');
       return {'contentList': <ShowcaseContentModel>[], 'totalPages': 0};
@@ -731,7 +764,6 @@ class MigrationService {
   }) async {
     try {
       final response = await _client.from('content').select('*').eq('content_type_id', 1).order('consume_count', ascending: false).limit(limit);
-
       return (response as List).map((e) => e as Map<String, dynamic>).toList();
     } catch (e) {
       debugPrint('Error getting most watched movies: $e');
@@ -745,11 +777,11 @@ class MigrationService {
     required String interval,
   }) async {
     try {
-      final response = await _client.from('m_genre').select('*').limit(limit);
-
+      // Basit placeholder: genre tablosu. (Geliştirilebilir: content + user_content_log join ile ortalama hesaplama)
+      final response = await _client.from('m_genre').select('*').limit(limit).order('id');
       return (response as List).map((e) => e as Map<String, dynamic>).toList();
     } catch (e) {
-      debugPrint('Error getting average ratings by genre: $e');
+      debugPrint('Error getting average movie ratings by genre: $e');
       return [];
     }
   }
@@ -760,12 +792,11 @@ class MigrationService {
     required String interval,
   }) async {
     try {
-      // Simplified query - would need proper aggregation function in Supabase
-      final response = await _client.from('content').select('*').eq('content_type_id', 1).order('release_date', ascending: false).limit(limit);
-
+      // Basit placeholder: release_date'e göre film listesi. (Geliştirilebilir: yıl bazlı aggregation)
+      final response = await _client.from('content').select('id, title, release_date, consume_count').eq('content_type_id', 1).not('release_date', 'is', null).order('release_date', ascending: false).limit(limit);
       return (response as List).map((e) => e as Map<String, dynamic>).toList();
     } catch (e) {
-      debugPrint('Error getting average ratings by year: $e');
+      debugPrint('Error getting average movie ratings by year: $e');
       return [];
     }
   }
@@ -776,8 +807,8 @@ class MigrationService {
     required String interval,
   }) async {
     try {
+      // Placeholder: genre tablosu. (Geliştirilebilir: join ile kullanım sayısı)
       final response = await _client.from('m_genre').select('*').limit(limit);
-
       return (response as List).map((e) => e as Map<String, dynamic>).toList();
     } catch (e) {
       debugPrint('Error getting top movie genres: $e');
