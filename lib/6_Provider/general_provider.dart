@@ -146,6 +146,9 @@ class GeneralProvider with ChangeNotifier {
     Provider.of<ExploreProvider>(context, listen: false).genreFilteredList = [];
     Provider.of<ExploreProvider>(context, listen: false).currentPageIndex = 1;
     Provider.of<ExploreProvider>(context, listen: false).profileUserID = null;
+    Provider.of<ExploreProvider>(context, listen: false).minRatingFilter = null;
+    Provider.of<ExploreProvider>(context, listen: false).yearFromFilter = null;
+    Provider.of<ExploreProvider>(context, listen: false).yearToFilter = null;
     Provider.of<ExploreProvider>(context, listen: false).getContent(context: context);
 
     notifyListeners();

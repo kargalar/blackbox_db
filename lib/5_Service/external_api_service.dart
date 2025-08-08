@@ -265,7 +265,8 @@ class ExternalApiService {
   Future<Map<String, dynamic>> discoverMovies({
     String? withGenres,
     String? withOriginalLanguage,
-    String? year,
+    String? yearFrom, // yıl aralığı başlangıç (YYYY)
+    String? yearTo, // yıl aralığı bitiş (YYYY)
     int page = 1,
     String? userId,
   }) async {
@@ -273,8 +274,11 @@ class ExternalApiService {
       String url = '$_tmdbBaseUrl/discover/movie?include_adult=false&include_video=false&page=$page';
 
       if (withGenres != null) url += '&with_genres=$withGenres';
-      if (year != null) url += '&primary_release_year=$year';
+      // Aralık filtreleri: TMDB primary_release_date.gte/lte
+      if (yearFrom != null) url += '&primary_release_date.gte=$yearFrom-01-01';
+      if (yearTo != null) url += '&primary_release_date.lte=$yearTo-12-31';
       if (withOriginalLanguage != null) url += '&with_original_language=$withOriginalLanguage';
+      // Ortalama rating Supabase üzerinden filtrelenecek; TMDB vote_average kullanılmıyor.
 
       final response = await http.get(Uri.parse(url), headers: _tmdbHeaders);
 

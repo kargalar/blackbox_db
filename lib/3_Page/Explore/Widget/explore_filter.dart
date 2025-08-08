@@ -16,6 +16,37 @@ class ExploreFilter extends StatefulWidget {
 }
 
 class _ExploreFilterState extends State<ExploreFilter> {
+  final TextEditingController _yearFromController = TextEditingController();
+  final TextEditingController _yearToController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _yearFromController.text = ExploreProvider().yearFromFilter ?? '';
+    _yearToController.text = ExploreProvider().yearToFilter ?? '';
+  }
+
+  void _applyYearRange() {
+    final from = _yearFromController.text.trim();
+    final to = _yearToController.text.trim();
+    String? validFrom;
+    String? validTo;
+    if (from.isNotEmpty && RegExp(r'^\d{4}$').hasMatch(from)) validFrom = from;
+    if (to.isNotEmpty && RegExp(r'^\d{4}$').hasMatch(to)) validTo = to;
+    ExploreProvider().yearFromFilter = validFrom;
+    ExploreProvider().yearToFilter = validTo;
+    ExploreProvider().currentPageIndex = 1;
+    ExploreProvider().getContent(context: context);
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    _yearFromController.dispose();
+    _yearToController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -36,7 +67,7 @@ class _ExploreFilterState extends State<ExploreFilter> {
             MouseRegion(
               cursor: SystemMouseCursors.click,
               child: RatingBar.builder(
-                initialRating: 0,
+                initialRating: ExploreProvider().minRatingFilter != null ? (ExploreProvider().minRatingFilter! / 2).clamp(0, 5) : 0,
                 minRating: 0.5,
                 direction: Axis.horizontal,
                 glow: false,
@@ -48,19 +79,79 @@ class _ExploreFilterState extends State<ExploreFilter> {
                   color: AppColors.main,
                 ),
                 onRatingUpdate: (rating) {
-                  // if (rating == userRating) return;
-
-                  // userRating = rating;
-                  // contentPageProvider.contentUserAction(
-                  //   contentType: contentPageProvider.contentModel!.contentType,
-                  //   contentStatus: ContentStatusEnum.CONSUMED,
-                  //   rating: userRating,
-                  //   isFavorite: contentPageProvider.contentModel!.isFavorite,
-                  //   isConsumeLater: contentPageProvider.contentModel!.isConsumeLater,
-                  // );
+                  // UI yıldızı 0-5 gösterir, TMDB 0-10 ister
+                  ExploreProvider().minRatingFilter = (rating * 2).clamp(0, 10);
+                  ExploreProvider().currentPageIndex = 1; // filtre değişince başa dön
+                  ExploreProvider().getContent(context: context);
                 },
               ),
             ),
+            const SizedBox(height: 15),
+            // Yıl aralığı
+            Text(
+              'Year Range',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+            ),
+            const SizedBox(height: 5),
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _yearFromController,
+                    maxLength: 4,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      counterText: '',
+                      isDense: true,
+                      hintText: 'From',
+                      filled: true,
+                      fillColor: AppColors.panelBackground2,
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                    ),
+                    onSubmitted: (_) => _applyYearRange(),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: TextField(
+                    controller: _yearToController,
+                    maxLength: 4,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      counterText: '',
+                      isDense: true,
+                      hintText: 'To',
+                      filled: true,
+                      fillColor: AppColors.panelBackground2,
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                    ),
+                    onSubmitted: (_) => _applyYearRange(),
+                  ),
+                ),
+                IconButton(
+                  tooltip: 'Apply',
+                  onPressed: _applyYearRange,
+                  icon: const Icon(Icons.check, size: 20),
+                ),
+                if (ExploreProvider().yearFromFilter != null || ExploreProvider().yearToFilter != null)
+                  IconButton(
+                    tooltip: 'Clear',
+                    onPressed: () {
+                      _yearFromController.clear();
+                      _yearToController.clear();
+                      ExploreProvider().yearFromFilter = null;
+                      ExploreProvider().yearToFilter = null;
+                      ExploreProvider().currentPageIndex = 1;
+                      ExploreProvider().getContent(context: context);
+                      setState(() {});
+                    },
+                    icon: const Icon(Icons.close, size: 18),
+                  ),
+              ],
+            ),
+            const SizedBox(height: 15),
             if (GeneralProvider().exploreContentType == ContentTypeEnum.MOVIE ? ExploreProvider().allMovieGenres != null : ExploreProvider().allGameGenres != null)
               SelectFilter(
                 title: "Genre",

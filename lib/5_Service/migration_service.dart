@@ -846,6 +846,34 @@ class MigrationService {
     }
   }
 
+  // ********************************************
+  // RATING AGGREGATION HELPERS
+  // ********************************************
+
+  Future<Map<int, double>> getAverageRatingsForContentIds(List<int> contentIds) async {
+    if (contentIds.isEmpty) return {};
+    try {
+      final response = await _client.from('user_content_log').select('content_id, avg(rating)').inFilter('content_id', contentIds).not('rating', 'is', null);
+
+      final Map<int, double> map = {};
+      for (final row in response) {
+        final id = row['content_id'] as int?;
+        if (id != null) {
+          // PostgREST aggregator key could be 'avg' or 'avg_rating'; check both
+          final avgVal = row['avg'] ?? row['avg_rating'] ?? row['avg_rating_1'];
+          if (avgVal != null) {
+            final doubleAvg = avgVal is num ? avgVal.toDouble() : double.tryParse(avgVal.toString());
+            if (doubleAvg != null) map[id] = doubleAvg;
+          }
+        }
+      }
+      return map;
+    } catch (e) {
+      debugPrint('Error getting average ratings: $e');
+      return {};
+    }
+  }
+
   Future<Map<String, dynamic>> getUserActivities({
     required String profileUserID,
     required ContentTypeEnum contentType,
