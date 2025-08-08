@@ -25,7 +25,7 @@ class ContentPoster extends StatelessWidget {
     } else if (contentType == ContentTypeEnum.BOOK) {
       // imageURL =
     } else if (contentType == ContentTypeEnum.GAME) {
-      imageURL = "https://images.igdb.com/igdb/image/upload/t_720p/$posterPath.jpg";
+      imageURL = "https://images.igdb.com/igdb/image/upload/t_original/$posterPath.jpg";
     }
 
     return AspectRatio(

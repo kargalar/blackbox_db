@@ -42,6 +42,8 @@ class ProfileProvider with ChangeNotifier {
 
   void goMoviePage(BuildContext context) async {
     {
+      currentPageIndex = 1;
+
       contentType = ContentTypeEnum.MOVIE;
       Provider.of<ExploreProvider>(context, listen: false).currentPageIndex = 1;
 

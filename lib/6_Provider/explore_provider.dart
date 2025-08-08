@@ -115,12 +115,10 @@ class ExploreProvider with ChangeNotifier {
       String? posterPath;
 
       if (isMovie) {
-        // TMDB movie format
-        posterPath = content['poster_path'] != null ? 'https://image.tmdb.org/t/p/w500${content['poster_path']}' : null;
+        posterPath = content['poster_path'];
       } else {
-        // IGDB game format
         final coverId = content['cover']?['image_id'];
-        posterPath = coverId != null ? 'https://images.igdb.com/igdb/image/upload/t_cover_big/$coverId.jpg' : null;
+        posterPath = coverId; // raw id, ContentPoster will compose URL
       }
 
       return ShowcaseContentModel(
