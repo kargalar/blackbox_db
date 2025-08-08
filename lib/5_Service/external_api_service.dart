@@ -269,6 +269,7 @@ class ExternalApiService {
     String? yearTo, // yıl aralığı bitiş (YYYY)
     int page = 1,
     String? userId,
+    String? sortBy, // TMDB sort_by param (popularity.desc, vote_average.desc, primary_release_date.desc, etc.)
   }) async {
     try {
       String url = '$_tmdbBaseUrl/discover/movie?include_adult=false&include_video=false&page=$page';
@@ -278,6 +279,7 @@ class ExternalApiService {
       if (yearFrom != null) url += '&primary_release_date.gte=$yearFrom-01-01';
       if (yearTo != null) url += '&primary_release_date.lte=$yearTo-12-31';
       if (withOriginalLanguage != null) url += '&with_original_language=$withOriginalLanguage';
+      if (sortBy != null) url += '&sort_by=$sortBy';
       // Ortalama rating Supabase üzerinden filtrelenecek; TMDB vote_average kullanılmıyor.
 
       final response = await http.get(Uri.parse(url), headers: _tmdbHeaders);

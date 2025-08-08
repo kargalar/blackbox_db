@@ -14,6 +14,9 @@ class ShowcaseContentModel {
     this.rating,
     this.contentLog,
     this.trendIndex,
+    this.year,
+    this.popularity,
+    this.globalRating,
   });
 
   final String? userId;
@@ -24,6 +27,9 @@ class ShowcaseContentModel {
   ContentStatusEnum? contentStatus;
   bool isConsumeLater;
   double? rating;
+  int? year; // release year
+  double? popularity; // TMDB popularity or IGDB placeholder
+  double? globalRating; // TMDB vote_average or IGDB rating
 
   final ContentLogModel? contentLog;
 
@@ -46,6 +52,21 @@ class ShowcaseContentModel {
                   : json['rating'])
           : null,
       contentLog: json['userLog'] != null ? ContentLogModel.fromJson(json['userLog']) : null,
+      year: json['year'],
+      popularity: json['popularity'] != null
+          ? (json['popularity'] is int
+              ? (json['popularity'] as int).toDouble()
+              : json['popularity'] is String
+                  ? double.tryParse(json['popularity'])
+                  : json['popularity'])
+          : null,
+      globalRating: json['global_rating'] != null
+          ? (json['global_rating'] is int
+              ? (json['global_rating'] as int).toDouble()
+              : json['global_rating'] is String
+                  ? double.tryParse(json['global_rating'])
+                  : json['global_rating'])
+          : null,
     );
   }
 
