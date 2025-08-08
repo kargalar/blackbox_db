@@ -311,11 +311,20 @@ class SupabaseService {
         'limit_param': limit,
       });
 
-      final List<ShowcaseContentModel> contentList = (response['contents'] as List).map((e) => ShowcaseContentModel.fromJson(e)).toList();
+      if (response == null || response is! Map<String, dynamic>) {
+        return {'contentList': <ShowcaseContentModel>[], 'totalPages': 0};
+      }
+
+      final rawContents = response['contents'];
+      final List<dynamic> listDynamic = rawContents is List ? rawContents : <dynamic>[];
+
+      final contentList = listDynamic.whereType<Map<String, dynamic>>().map((e) => ShowcaseContentModel.fromJson(e)).toList();
+
+      final totalPages = (response['total_pages'] is int) ? response['total_pages'] as int : int.tryParse(response['total_pages']?.toString() ?? '0') ?? 0;
 
       return {
         'contentList': contentList,
-        'totalPages': response['total_pages'],
+        'totalPages': totalPages,
       };
     } catch (e) {
       debugPrint('Error getting user contents: $e');

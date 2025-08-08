@@ -547,10 +547,17 @@ class MigrationService {
     required String logUserId,
   }) async {
     try {
-      // This would need pagination logic similar to the original
+      // Force INNER JOIN so content cannot be null and allow filtering on nested table
       final response = await _client.from('user_content_log').select('''
-            *,
-            content:content_id (
+            id,
+            user_id,
+            content_id,
+            rating,
+            content_status_id,
+            is_favorite,
+            is_consume_later,
+            date,
+            content:content_id!inner (
               id,
               title,
               poster_path,
@@ -565,7 +572,10 @@ class MigrationService {
             )
           ''').eq('user_id', logUserId).eq('content.content_type_id', contentType.index + 1).order('date', ascending: false);
 
-      final contentList = (response as List)
+      // Filter out any rows where embedded content somehow missing (safety)
+      final rows = (response as List).where((e) => e['content'] != null).toList();
+
+      final contentList = rows
           .map((e) => ShowcaseContentModel.fromJson({
                 ...e['content'],
                 'user_rating': e['rating'],
