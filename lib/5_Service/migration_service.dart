@@ -1,6 +1,7 @@
 import 'package:blackbox_db/1_Core/Enums/status_enum.dart';
 import 'package:blackbox_db/1_Core/helper.dart';
 import 'package:blackbox_db/7_Enum/content_type_enum.dart';
+import 'package:blackbox_db/7_Enum/content_status_enum.dart';
 import 'package:blackbox_db/8_Model/content_log_model.dart';
 import 'package:blackbox_db/8_Model/content_model.dart';
 import 'package:blackbox_db/8_Model/user_model.dart';
@@ -547,7 +548,8 @@ class MigrationService {
     required String logUserId,
   }) async {
     try {
-      final response = await _client.from('user_content_log').select('''
+      // Use latest_user_content_log to avoid duplicates; only show if last status is CONSUMED
+      final response = await _client.from('latest_user_content_log').select('''
             id,
             user_id,
             content_id,
@@ -569,7 +571,7 @@ class MigrationService {
               review_count,
               rating_distribution
             )
-          ''').eq('user_id', logUserId).eq('content.content_type_id', contentType.index + 1).order('date', ascending: false);
+          ''').eq('user_id', logUserId).eq('content.content_type_id', contentType.index + 1).eq('content_status_id', ContentStatusEnum.CONSUMED.index + 1).order('date', ascending: false);
 
       final rows = (response as List).where((e) => e['content'] != null).toList();
 
@@ -583,7 +585,7 @@ class MigrationService {
                 'userLog': {
                   'id': e['id'],
                   'user_id': e['user_id'],
-                  'picture_path': null, // add join if needed
+                  'picture_path': null,
                   'content_id': e['content_id'],
                   'date': e['date'],
                   'content_status_id': e['content_status_id'],
@@ -818,7 +820,10 @@ class MigrationService {
     required ContentTypeEnum contentType,
   }) async {
     try {
-      final response = await _client.from('user_content_log').select('''
+      // Use latest_user_content_log view to ensure we only look at the real latest log per content
+      final response = await _client
+          .from('latest_user_content_log')
+          .select('''
             id,
             user_id,
             content_id,
@@ -840,7 +845,12 @@ class MigrationService {
               review_count,
               rating_distribution
             )
-          ''').eq('user_id', profileUserID).eq('content.content_type_id', contentType.index + 1).order('date', ascending: false).limit(20);
+          ''')
+          .eq('user_id', profileUserID)
+          .eq('content.content_type_id', contentType.index + 1)
+          // filter AFTER ensuring we are on the latest log so status reflects current state
+          .eq('content_status_id', ContentStatusEnum.CONSUMED.index + 1)
+          .order('date', ascending: false);
 
       final rows = (response as List).where((e) => e['content'] != null).toList();
 
