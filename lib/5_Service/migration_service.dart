@@ -547,7 +547,6 @@ class MigrationService {
     required String logUserId,
   }) async {
     try {
-      // Force INNER JOIN so content cannot be null and allow filtering on nested table
       final response = await _client.from('user_content_log').select('''
             id,
             user_id,
@@ -572,22 +571,34 @@ class MigrationService {
             )
           ''').eq('user_id', logUserId).eq('content.content_type_id', contentType.index + 1).order('date', ascending: false);
 
-      // Filter out any rows where embedded content somehow missing (safety)
       final rows = (response as List).where((e) => e['content'] != null).toList();
 
       final contentList = rows
           .map((e) => ShowcaseContentModel.fromJson({
                 ...e['content'],
-                'user_rating': e['rating'],
-                'user_status': e['content_status_id'],
+                'rating': e['rating'],
+                'content_status_id': e['content_status_id'],
                 'is_favorite': e['is_favorite'],
                 'is_consume_later': e['is_consume_later'],
+                'userLog': {
+                  'id': e['id'],
+                  'user_id': e['user_id'],
+                  'picture_path': null, // add join if needed
+                  'content_id': e['content_id'],
+                  'date': e['date'],
+                  'content_status_id': e['content_status_id'],
+                  'rating': e['rating'],
+                  'is_favorite': e['is_favorite'],
+                  'is_consume_later': e['is_consume_later'],
+                  'review_text': null,
+                  'content_type_id': e['content']?['content_type_id'],
+                }
               }))
           .toList();
 
       return {
         'contentList': contentList,
-        'totalPages': 1, // Simplified for now
+        'totalPages': 1,
       };
     } catch (e) {
       debugPrint('Error getting user contents: $e');
@@ -808,8 +819,15 @@ class MigrationService {
   }) async {
     try {
       final response = await _client.from('user_content_log').select('''
-            *,
-            content:content_id (
+            id,
+            user_id,
+            content_id,
+            rating,
+            content_status_id,
+            is_favorite,
+            is_consume_later,
+            date,
+            content:content_id!inner (
               id,
               title,
               poster_path,
@@ -824,13 +842,28 @@ class MigrationService {
             )
           ''').eq('user_id', profileUserID).eq('content.content_type_id', contentType.index + 1).order('date', ascending: false).limit(20);
 
-      final contentList = (response as List)
+      final rows = (response as List).where((e) => e['content'] != null).toList();
+
+      final contentList = rows
           .map((e) => ShowcaseContentModel.fromJson({
                 ...e['content'],
-                'user_rating': e['rating'],
-                'user_status': e['content_status_id'],
+                'rating': e['rating'],
+                'content_status_id': e['content_status_id'],
                 'is_favorite': e['is_favorite'],
                 'is_consume_later': e['is_consume_later'],
+                'userLog': {
+                  'id': e['id'],
+                  'user_id': e['user_id'],
+                  'picture_path': null,
+                  'content_id': e['content_id'],
+                  'date': e['date'],
+                  'content_status_id': e['content_status_id'],
+                  'rating': e['rating'],
+                  'is_favorite': e['is_favorite'],
+                  'is_consume_later': e['is_consume_later'],
+                  'review_text': null,
+                  'content_type_id': e['content']?['content_type_id'],
+                }
               }))
           .toList();
 
