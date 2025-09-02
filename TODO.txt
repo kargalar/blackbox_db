@@ -18,7 +18,8 @@ oyun detayla
 
 liste özelliği
 
-poster büyütülebilmeli ve yakınlaştırıla
-
+-
 içerik daha sonra izle olarak işaretliyken izlendi olarak işaretlenirse daha sonra izle işareti kaldırılsın.
+
+ğuan verdikçe raitng grafik oynuyor garip garip. galiba üzerine yazmak yerine ekliyor falan.
 

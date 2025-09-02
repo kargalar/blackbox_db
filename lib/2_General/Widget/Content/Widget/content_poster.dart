@@ -10,11 +10,15 @@ class ContentPoster extends StatelessWidget {
     required this.posterPath,
     required this.contentType,
     this.cacheSize = 300,
+    this.onTap,
+    this.heroTag,
   });
 
   final String? posterPath;
   final ContentTypeEnum contentType;
   final int cacheSize;
+  final VoidCallback? onTap;
+  final String? heroTag;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +32,60 @@ class ContentPoster extends StatelessWidget {
       imageURL = "https://images.igdb.com/igdb/image/upload/t_original/$posterPath.jpg";
     }
 
+    final imageWidget = posterPath != null
+        ? CachedNetworkImage(
+            imageUrl: imageURL,
+            fit: BoxFit.cover,
+            fadeInDuration: const Duration(milliseconds: 150),
+            fadeOutDuration: const Duration(milliseconds: 150),
+            memCacheHeight: cacheSize,
+            placeholder: (context, url) {
+              // shimmer
+              return Shimmer.fromColors(
+                baseColor: AppColors.deepBlack,
+                highlightColor: AppColors.panelBackground,
+                period: const Duration(seconds: 2),
+                child: Container(
+                  color: AppColors.transparantBlack,
+                ),
+              );
+            },
+            errorWidget: (context, url, error) => Container(
+              color: AppColors.panelBackground,
+              child: const Center(
+                child: Text(
+                  "Something",
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+            ),
+          )
+        : Container(
+            color: AppColors.panelBackground,
+            child: const Center(
+              child: Text(
+                "Not Found",
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+            ),
+          );
+
+    Widget content = ClipRRect(
+      borderRadius: AppColors.borderRadiusAll / 2,
+      child: heroTag != null ? Hero(tag: heroTag!, child: imageWidget) : imageWidget,
+    );
+
+    if (onTap != null) {
+      content = Material(
+        color: Colors.transparent,
+        child: InkWell(onTap: onTap, child: content),
+      );
+    }
+
     return AspectRatio(
       aspectRatio: 2 / 3,
       child: Container(
@@ -35,52 +93,7 @@ class ContentPoster extends StatelessWidget {
           borderRadius: AppColors.borderRadiusAll / 2,
           boxShadow: AppColors.bottomShadow,
         ),
-        child: ClipRRect(
-          borderRadius: AppColors.borderRadiusAll / 2,
-          child: posterPath != null
-              ? CachedNetworkImage(
-                  imageUrl: imageURL,
-                  fit: BoxFit.cover,
-                  fadeInDuration: const Duration(milliseconds: 150),
-                  fadeOutDuration: const Duration(milliseconds: 150),
-                  memCacheHeight: cacheSize,
-                  placeholder: (context, url) {
-                    // shimmer
-                    return Shimmer.fromColors(
-                      baseColor: AppColors.deepBlack,
-                      highlightColor: AppColors.panelBackground,
-                      period: const Duration(seconds: 2),
-                      child: Container(
-                        color: AppColors.transparantBlack,
-                      ),
-                    );
-                  },
-                  errorWidget: (context, url, error) => Container(
-                    color: AppColors.panelBackground,
-                    child: const Center(
-                      child: Text(
-                        "Something",
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                  ),
-                )
-              :
-              // not found
-              Container(
-                  color: AppColors.panelBackground,
-                  child: const Center(
-                    child: Text(
-                      "Not Found",
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
-                  ),
-                ),
-        ),
+        child: content,
       ),
     );
   }
