@@ -1,8 +1,9 @@
 dizileri
 
-kitaplar
+ana sayfaki reviewlerin yorum sayısı doğru değil ve oradaki tıklama özelliği kanabilir
+yorum yorumları için tümcontainer tıklanılabilir
 
-yoruma yorum özelliği
+kitaplar
 
 film rating dağılım grafiyği. O kısmın tasarımı genel olrak güncelle
 

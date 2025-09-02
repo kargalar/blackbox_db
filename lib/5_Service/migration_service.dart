@@ -7,6 +7,7 @@ import 'package:blackbox_db/8_Model/content_model.dart';
 import 'package:blackbox_db/8_Model/user_model.dart';
 import 'package:blackbox_db/8_Model/user_review_model.dart';
 import 'package:blackbox_db/8_Model/review_model.dart';
+import 'package:blackbox_db/8_Model/review_reply_model.dart';
 import 'package:blackbox_db/8_Model/showcase_content_model.dart';
 import 'package:blackbox_db/5_Service/external_api_service.dart';
 import 'package:flutter/material.dart';
@@ -430,6 +431,9 @@ class MigrationService {
         // Get like count for this review
         final likeCount = await getReviewLikeCount(e['id']);
 
+        // Get reply count for this review
+        final replyCount = await getReviewReplyCount(reviewId: e['id']);
+
         // Check if current user liked this review
         bool isLikedByCurrentUser = false;
         if (currentUserId != null) {
@@ -466,7 +470,7 @@ class MigrationService {
           'rating': userRating,
           'is_favorite': isFavorite,
           'like_count': likeCount,
-          'comment_count': 0, // We'll implement this later if needed
+          'comment_count': replyCount, // Now shows reply count
           'is_liked_by_current_user': isLikedByCurrentUser,
         }));
       }
@@ -1091,6 +1095,209 @@ class MigrationService {
       return response != null;
     } catch (e) {
       debugPrint('Error checking user liked review: $e');
+      return false;
+    }
+  }
+
+  // ********************************************
+  // REVIEW REPLY METHODS
+  // ********************************************
+
+  Future<List<ReviewReplyModel>> getReviewReplies({
+    required int reviewId,
+  }) async {
+    try {
+      final currentUser = await getCurrentUserProfile();
+      final currentUserId = currentUser?.id;
+
+      final response = await _client.from('review_replies').select('''
+            *,
+            app_user:user_id (
+              auth_user_id,
+              username,
+              picture_path
+            ),
+            parent_user:parent_reply_id (
+              app_user:user_id (
+                username
+              )
+            )
+          ''').eq('review_id', reviewId).order('created_at', ascending: true);
+
+      List<ReviewReplyModel> allReplies = [];
+      Map<int, ReviewReplyModel> replyMap = {};
+
+      // First pass: create all reply objects with like info
+      for (var e in response as List) {
+        // Get like count for this reply
+        final likeCount = await getReviewReplyLikeCount(e['id']);
+
+        // Check if current user liked this reply
+        bool isLikedByCurrentUser = false;
+        if (currentUserId != null) {
+          isLikedByCurrentUser = await isReviewReplyLikedByUser(
+            replyId: e['id'],
+            userId: currentUserId,
+          );
+        }
+
+        final reply = ReviewReplyModel.fromJson({
+          'id': e['id'],
+          'review_id': e['review_id'],
+          'user_id': e['app_user']?['auth_user_id'] ?? e['user_id'],
+          'username': e['app_user']?['username'] ?? 'Unknown User',
+          'picture_path': e['app_user']?['picture_path'],
+          'text': e['text'],
+          'created_at': e['created_at'],
+          'parent_reply_id': e['parent_reply_id'],
+          'parent_user_name': e['parent_user']?['app_user']?['username'],
+          'updated_at': e['updated_at'],
+          'replies': [],
+          'like_count': likeCount,
+          'is_liked_by_current_user': isLikedByCurrentUser,
+        });
+
+        replyMap[reply.id] = reply;
+        allReplies.add(reply);
+      }
+
+      // Second pass: organize nested structure
+      List<ReviewReplyModel> topLevelReplies = [];
+      for (var reply in allReplies) {
+        if (reply.parentReplyId == null) {
+          // Top level reply
+          topLevelReplies.add(reply);
+        } else {
+          // Nested reply - add to parent
+          final parent = replyMap[reply.parentReplyId!];
+          if (parent != null) {
+            parent.replies.add(reply);
+          }
+        }
+      }
+
+      return topLevelReplies;
+    } catch (e) {
+      debugPrint('Error getting review replies: $e');
+      return [];
+    }
+  }
+
+  Future<int> getReviewReplyCount({
+    required int reviewId,
+  }) async {
+    try {
+      final response = await _client.from('review_replies').select('id').eq('review_id', reviewId);
+
+      return (response as List).length;
+    } catch (e) {
+      debugPrint('Error getting review reply count: $e');
+      return 0;
+    }
+  }
+
+  Future<ReviewReplyModel?> addReviewReply({
+    required int reviewId,
+    required String userId,
+    required String text,
+    int? parentReplyId,
+  }) async {
+    try {
+      final response = await _client.from('review_replies').insert({
+        'review_id': reviewId,
+        'user_id': userId,
+        'text': text,
+        'parent_reply_id': parentReplyId,
+      }).select('''
+            *,
+            app_user:user_id (
+              auth_user_id,
+              username,
+              picture_path
+            )
+          ''').single();
+
+      return ReviewReplyModel.fromJson({
+        'id': response['id'],
+        'review_id': response['review_id'],
+        'user_id': response['app_user']['auth_user_id'],
+        'username': response['app_user']['username'],
+        'picture_path': response['app_user']['picture_path'],
+        'text': response['text'],
+        'created_at': response['created_at'],
+        'parent_reply_id': response['parent_reply_id'],
+        'updated_at': response['updated_at'],
+        'replies': [],
+      });
+    } catch (e) {
+      debugPrint('Error adding review reply: $e');
+      return null;
+    }
+  }
+
+  Future<bool> deleteReviewReply({
+    required int replyId,
+    required String userId,
+  }) async {
+    try {
+      await _client.from('review_replies').delete().eq('id', replyId).eq('user_id', userId);
+
+      return true;
+    } catch (e) {
+      debugPrint('Error deleting review reply: $e');
+      return false;
+    }
+  }
+
+  // Reply like management
+  Future<bool> toggleReviewReplyLike({
+    required int replyId,
+    required String userId,
+  }) async {
+    try {
+      // Check if the user has already liked this reply
+      final existingLike = await _client.from('review_reply_likes').select('id').eq('reply_id', replyId).eq('user_id', userId).maybeSingle();
+
+      if (existingLike != null) {
+        // Unlike - remove the like
+        await _client.from('review_reply_likes').delete().eq('reply_id', replyId).eq('user_id', userId);
+        return false;
+      } else {
+        // Like - add the like
+        await _client.from('review_reply_likes').insert({
+          'reply_id': replyId,
+          'user_id': userId,
+          'created_at': DateTime.now().toIso8601String(),
+        });
+        return true;
+      }
+    } catch (e) {
+      debugPrint('Error toggling reply like: $e');
+      return false;
+    }
+  }
+
+  Future<int> getReviewReplyLikeCount(int replyId) async {
+    try {
+      final response = await _client.from('review_reply_likes').select('id').eq('reply_id', replyId);
+
+      return response.length;
+    } catch (e) {
+      debugPrint('Error getting reply like count: $e');
+      return 0;
+    }
+  }
+
+  Future<bool> isReviewReplyLikedByUser({
+    required int replyId,
+    required String userId,
+  }) async {
+    try {
+      final like = await _client.from('review_reply_likes').select('id').eq('reply_id', replyId).eq('user_id', userId).maybeSingle();
+
+      return like != null;
+    } catch (e) {
+      debugPrint('Error checking reply like status: $e');
       return false;
     }
   }

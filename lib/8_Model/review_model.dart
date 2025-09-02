@@ -22,7 +22,7 @@ class ReviewModel {
   double? rating;
   bool isFavorite;
   int likeCount;
-  int commentCount;
+  int commentCount; // This will now be the reply count
   bool isLikedByCurrentUser;
 
   factory ReviewModel.fromJson(Map<String, dynamic> json) {

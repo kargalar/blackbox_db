@@ -1,9 +1,11 @@
 import 'package:blackbox_db/2_General/Widget/Content/Widget/content_poster.dart';
 import 'package:blackbox_db/2_General/app_colors.dart';
+import 'package:blackbox_db/3_Page/Content/Widget/Review/review_detail_dialog.dart';
 import 'package:blackbox_db/5_Service/migration_service.dart';
 import 'package:blackbox_db/6_Provider/general_provider.dart';
 import 'package:blackbox_db/6_Provider/profile_provider.dart';
 import 'package:blackbox_db/8_Model/user_review_model.dart';
+import 'package:blackbox_db/8_Model/review_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -171,57 +173,42 @@ class _ProfileReviewsState extends State<ProfileReviews> {
                         SizedBox(width: 10),
                         InkWell(
                           onTap: () {
-                            // TODO: Add note functionality instead of comments
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Not eklemek için tıklayın'),
-                                action: SnackBarAction(
-                                  label: 'Not Ekle',
-                                  onPressed: () {
-                                    // Open note dialog
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) => AlertDialog(
-                                        title: Text('Not Ekle'),
-                                        content: TextField(
-                                          decoration: InputDecoration(
-                                            hintText: 'Notunuzu yazın...',
-                                            border: OutlineInputBorder(),
-                                          ),
-                                          maxLines: 3,
-                                        ),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () => Navigator.pop(context),
-                                            child: Text('İptal'),
-                                          ),
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                              ScaffoldMessenger.of(context).showSnackBar(
-                                                SnackBar(content: Text('Not eklendi!')),
-                                              );
-                                            },
-                                            child: Text('Kaydet'),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
+                            // Convert UserReviewModel to ReviewModel for dialog
+                            final reviewModel = ReviewModel(
+                              id: review.id,
+                              picturePath: null, // Profile reviews don't need picture path
+                              userId: ProfileProvider().user!.id,
+                              userName: ProfileProvider().user!.username,
+                              text: review.text,
+                              createdAt: review.createdAt,
+                              rating: review.rating,
+                              isFavorite: review.isFavorite,
+                              likeCount: review.likeCount,
+                              commentCount: review.commentCount,
+                              isLikedByCurrentUser: review.isLikedByCurrentUser,
                             );
+
+                            // Open review detail dialog to show and add comments
+                            showDialog(
+                              context: context,
+                              builder: (context) => ReviewDetailDialog(
+                                reviewModel: reviewModel,
+                              ),
+                            ).then((_) {
+                              // Refresh the comment count after dialog closes
+                              setState(() {});
+                            });
                           },
                           child: Row(
                             children: [
                               Icon(
-                                Icons.note_add,
+                                Icons.comment,
                                 color: Colors.grey,
                                 size: 16,
                               ),
                               SizedBox(width: 3),
                               Text(
-                                'Not Ekle',
+                                review.commentCount.toString(),
                                 style: TextStyle(
                                   color: Colors.grey,
                                   fontSize: 12,
