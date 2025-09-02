@@ -67,11 +67,10 @@ class ContentUserAction extends StatelessWidget {
                 // watch
                 InkWell(
                   onTap: () {
-                    contentPageProvider.contentModel!.contentStatus = contentPageProvider.contentModel!.contentStatus != null ? null : ContentStatusEnum.CONSUMED;
-
+                    final nextStatus = contentPageProvider.contentModel!.contentStatus != null ? null : ContentStatusEnum.CONSUMED;
                     contentPageProvider.contentUserAction(
                       contentType: contentPageProvider.contentModel!.contentType,
-                      contentStatus: contentPageProvider.contentModel!.contentStatus,
+                      contentStatus: nextStatus,
                       rating: contentPageProvider.contentModel!.rating,
                       isFavorite: contentPageProvider.contentModel!.isFavorite ?? false,
                       isConsumeLater: contentPageProvider.contentModel!.isConsumeLater ?? false,
@@ -90,14 +89,13 @@ class ContentUserAction extends StatelessWidget {
                 // favori
                 InkWell(
                   onTap: () {
-                    bool currentFavorite = contentPageProvider.contentModel!.isFavorite ?? false;
-                    contentPageProvider.contentModel!.isFavorite = !currentFavorite;
-
+                    final currentFavorite = contentPageProvider.contentModel!.isFavorite ?? false;
+                    final nextFavorite = !currentFavorite;
                     contentPageProvider.contentUserAction(
                       contentType: contentPageProvider.contentModel!.contentType,
                       contentStatus: contentPageProvider.contentModel!.contentStatus,
                       rating: contentPageProvider.contentModel!.rating,
-                      isFavorite: contentPageProvider.contentModel!.isFavorite ?? false,
+                      isFavorite: nextFavorite,
                       isConsumeLater: contentPageProvider.contentModel!.isConsumeLater ?? false,
                     );
                   },
@@ -113,15 +111,14 @@ class ContentUserAction extends StatelessWidget {
                 // watchlater
                 InkWell(
                   onTap: () {
-                    bool currentConsumeLater = contentPageProvider.contentModel!.isConsumeLater ?? false;
-                    contentPageProvider.contentModel!.isConsumeLater = !currentConsumeLater;
-
+                    final currentConsumeLater = contentPageProvider.contentModel!.isConsumeLater ?? false;
+                    final nextConsumeLater = !currentConsumeLater;
                     contentPageProvider.contentUserAction(
                       contentType: contentPageProvider.contentModel!.contentType,
                       contentStatus: contentPageProvider.contentModel!.contentStatus,
                       rating: contentPageProvider.contentModel!.rating,
                       isFavorite: contentPageProvider.contentModel!.isFavorite ?? false,
-                      isConsumeLater: contentPageProvider.contentModel!.isConsumeLater ?? false,
+                      isConsumeLater: nextConsumeLater,
                     );
                   },
                   child: Padding(

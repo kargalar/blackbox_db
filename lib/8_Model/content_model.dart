@@ -65,7 +65,8 @@ class ContentModel {
       length: json['length'],
       cast: json['cast_list'] != null ? (json['cast_list'] as List).map((i) => CastModel.fromJson(i)).toList() : null,
       consumeCount: json['consume_count'] ?? 0,
-      favoriCount: json['favori_count'] ?? 0,
+      // Supabase returns favorite_count, keep backward compat with favori_count
+      favoriCount: json['favorite_count'] ?? json['favori_count'] ?? 0,
       listCount: json['list_count'] ?? 0,
       reviewCount: json['review_count'] ?? 0,
       ratingDistribution: json['rating_distribution'] != null ? (json['rating_distribution'] as List).map((i) => i as int).toList() : [],

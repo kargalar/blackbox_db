@@ -31,6 +31,7 @@ class ContentPageProvider with ChangeNotifier {
     required bool isConsumeLater,
     String? review,
   }) async {
+    // Build user log payload
     final ContentLogModel userLog = ContentLogModel(
       userId: loginUser!.id,
       contentID: contentId ?? contentModel!.id!,
@@ -44,12 +45,37 @@ class ContentPageProvider with ChangeNotifier {
 
     // eğer content page de ise değişiklikleri kullanıcıya göstermek için
     if (contentId == null) {
+      // Snapshot previous state to compute optimistic deltas
+      final bool wasFavorite = contentModel!.isFavorite ?? false;
+      final ContentStatusEnum? wasStatus = contentModel!.contentStatus;
+
+      // Apply user flags immediately (optimistic)
       contentModel!.isConsumeLater = isConsumeLater;
       contentModel!.isFavorite = isFavorite;
       contentModel!.contentStatus = contentStatus;
+      final double? previousRating = contentModel!.rating;
       contentModel!.rating = rating;
 
+      // Optimistically adjust counts
+      // Favorite count
+      final int favDelta = (isFavorite && !wasFavorite) ? 1 : ((!isFavorite && wasFavorite) ? -1 : 0);
+      if (favDelta != 0) {
+        final current = contentModel!.favoriCount ?? 0;
+        contentModel!.favoriCount = (current + favDelta).clamp(0, 1 << 30);
+      }
+
+      // Consume (watch) count: increment when status becomes CONSUMED, decrement if removed
+      final bool wasConsumed = wasStatus == ContentStatusEnum.CONSUMED;
+      final bool isConsumedNow = contentStatus == ContentStatusEnum.CONSUMED;
+      final int consumeDelta = (isConsumedNow && !wasConsumed) ? 1 : ((!isConsumedNow && wasConsumed) ? -1 : 0);
+      if (consumeDelta != 0) {
+        final current = contentModel!.consumeCount ?? 0;
+        contentModel!.consumeCount = (current + consumeDelta).clamp(0, 1 << 30);
+      }
+
       if (review != null) {
+        // Optimistically increment review count
+        contentModel!.reviewCount = (contentModel!.reviewCount ?? 0) + 1;
         reviewList.insert(
           0,
           ReviewModel(
@@ -68,9 +94,43 @@ class ContentPageProvider with ChangeNotifier {
         );
       }
 
+      // Optimistically update rating distribution buckets (1..5)
+      List<int> dist = (contentModel!.ratingDistribution == null || contentModel!.ratingDistribution!.length != 5) ? List<int>.filled(5, 0) : List<int>.from(contentModel!.ratingDistribution!);
+      // Decrement previous bucket if existed
+      if (previousRating != null && previousRating > 0) {
+        final prevIdx = previousRating.round().clamp(1, 5) - 1;
+        if (prevIdx >= 0 && prevIdx < 5 && dist[prevIdx] > 0) dist[prevIdx] -= 1;
+      }
+      // Increment new bucket
+      if (rating != null && rating > 0) {
+        final newIdx = rating.round().clamp(1, 5) - 1;
+        if (newIdx >= 0 && newIdx < 5) dist[newIdx] += 1;
+      }
+      contentModel!.ratingDistribution = dist;
+
       notifyListeners();
     }
 
+    // Persist to backend
     await MigrationService().contentUserAction(contentLogModel: userLog);
+
+    // Refresh content detail from Supabase for user-specific fields (keep optimistic aggregates)
+    try {
+      final refreshed = await MigrationService().getContentDetail(
+        contentId: userLog.contentID,
+        contentType: userLog.contentType,
+        // userId is optional; service falls back to currentUserId
+      );
+      if (contentId == null) {
+        // Merge user-specific fields
+        contentModel!.contentStatus = refreshed.contentStatus;
+        contentModel!.rating = refreshed.rating;
+        contentModel!.isFavorite = refreshed.isFavorite;
+        contentModel!.isConsumeLater = refreshed.isConsumeLater;
+        notifyListeners();
+      }
+    } catch (e) {
+      debugPrint('Failed to refresh content detail after action: $e');
+    }
   }
 }

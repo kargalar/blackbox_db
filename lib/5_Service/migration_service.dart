@@ -393,6 +393,15 @@ class MigrationService {
 
       // Insert new user content log (multiple logs allowed)
       await _client.from('user_content_log').insert(data);
+
+      // Force recompute aggregates (favorite_count, consume_count, review_count, rating_distribution)
+      try {
+        await _client.rpc('recompute_content_stats', params: {
+          'content_id_param': contentLogModel.contentID,
+        });
+      } catch (e) {
+        debugPrint('recompute_content_stats RPC failed (continuing): $e');
+      }
     } catch (e) {
       debugPrint('Error in content user action: $e');
       rethrow;
