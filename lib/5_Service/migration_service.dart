@@ -248,10 +248,82 @@ class MigrationService {
         'user_id_param': userIdToUse,
       });
 
-      return ContentModel.fromJson(response);
+      final model = ContentModel.fromJson(response);
+
+      // If aggregates look empty but we have user activity, recompute as fallback
+      final aggregatesEmpty = ((model.consumeCount ?? 0) == 0) && ((model.favoriCount ?? 0) == 0) && ((model.reviewCount ?? 0) == 0) && ((model.ratingDistribution == null || model.ratingDistribution!.every((e) => e == 0)));
+      final hasUserActivity = model.isFavorite == true || model.contentStatus != null || (model.rating != null && model.rating! > 0);
+      if (aggregatesEmpty && hasUserActivity) {
+        try {
+          final agg = await _computeAggregatesForContent(contentId);
+          if (agg != null) {
+            model.consumeCount = agg['consume_count'] as int? ?? model.consumeCount;
+            model.favoriCount = agg['favorite_count'] as int? ?? model.favoriCount;
+            model.reviewCount = agg['review_count'] as int? ?? model.reviewCount;
+            final dist = (agg['rating_distribution'] as List<dynamic>?)?.map((e) => (e as num).toInt()).toList();
+            if (dist != null) model.ratingDistribution = dist;
+
+            // Best-effort persist back to content table (ignore failures)
+            try {
+              await _client.from('content').update({
+                'consume_count': model.consumeCount,
+                'favorite_count': model.favoriCount,
+                'review_count': model.reviewCount,
+                'rating_distribution': model.ratingDistribution,
+              }).eq('id', contentId);
+            } catch (_) {}
+          }
+        } catch (e) {
+          debugPrint('Aggregate fallback failed: $e');
+        }
+      }
+
+      return model;
     } catch (e) {
       debugPrint('Error getting content detail: $e');
       rethrow;
+    }
+  }
+
+  // Compute global aggregates from latest logs + reviews for a content
+  Future<Map<String, dynamic>?> _computeAggregatesForContent(int contentId) async {
+    try {
+      // Fetch latest logs for this content across users
+      final logs = await _client.from('latest_user_content_log').select('content_status_id,is_favorite,rating').eq('content_id', contentId);
+
+      int consumeCount = 0;
+      int favoriteCount = 0;
+      final dist = List<int>.filled(5, 0);
+
+      for (final row in (logs as List)) {
+        final status = row['content_status_id'] as int?;
+        final isFav = row['is_favorite'] as bool? ?? false;
+        final rating = row['rating'];
+
+        if (status == ContentStatusEnum.CONSUMED.index + 1) consumeCount++;
+        if (isFav) favoriteCount++;
+        if (rating != null) {
+          final r = (rating is num) ? rating.toDouble() : double.tryParse(rating.toString());
+          if (r != null && r > 0) {
+            final idx = r.round().clamp(1, 5) - 1;
+            dist[idx]++;
+          }
+        }
+      }
+
+      // Reviews count (simple length of ids)
+      final rc = await _client.from('review').select('id').eq('content_id', contentId);
+      final reviewCount = (rc as List).length;
+
+      return {
+        'consume_count': consumeCount,
+        'favorite_count': favoriteCount,
+        'review_count': reviewCount,
+        'rating_distribution': dist,
+      };
+    } catch (e) {
+      debugPrint('Error computing aggregates: $e');
+      return null;
     }
   }
 
