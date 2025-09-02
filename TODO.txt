@@ -9,8 +9,6 @@ kitaplar
 filmin oyuncuları
 detaylar kısmı
 
-geçmiş logları düzleyebilme silebilme
-
 add review page tasarım update
 
 oyun detayla
@@ -20,3 +18,4 @@ liste özelliği
 
 ğuan verdikçe raitng grafik oynuyor garip garip. galiba üzerine yazmak yerine ekliyor falan.
 
+react site

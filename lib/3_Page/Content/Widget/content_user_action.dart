@@ -1,13 +1,12 @@
-import 'package:blackbox_db/2_General/accessible.dart';
 import 'package:blackbox_db/2_General/app_colors.dart';
 import 'package:blackbox_db/6_Provider/content_page_provider.dart';
 import 'package:blackbox_db/7_Enum/content_status_enum.dart';
-import 'package:blackbox_db/8_Model/content_log_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/route_manager.dart';
 import 'package:provider/provider.dart';
+import 'package:blackbox_db/3_Page/Content/Widget/edit_logs_dialog.dart';
 
 class ContentUserAction extends StatelessWidget {
   const ContentUserAction({
@@ -230,60 +229,7 @@ class ContentUserAction extends StatelessWidget {
             // edit or add log
             InkWell(
               onTap: () async {
-                // TODO: get backend
-                final log = ContentLogModel(
-                  userId: loginUser!.id,
-                  date: DateTime.now(),
-                  contentID: contentPageProvider.contentModel!.id!,
-                  contentType: contentPageProvider.contentModel!.contentType,
-                  contentStatus: contentPageProvider.contentModel!.contentStatus,
-                  rating: contentPageProvider.contentModel!.rating,
-                  isFavorite: contentPageProvider.contentModel!.isFavorite,
-                  isConsumeLater: contentPageProvider.contentModel!.isConsumeLater,
-                );
-                // add log
-                // open log dialog
-                await Get.dialog(
-                  Dialog(
-                    child:
-                        // show log histroey
-                        Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              // TODO:
-                              // Text(log.contentTitle!),
-                              // const SizedBox(width: 10),
-                              // Text("${log.contentStatus}"),
-                              // const SizedBox(width: 10),
-                              Text("${log.rating}"),
-                              const SizedBox(width: 10),
-                              Text("${log.isFavorite}"),
-                              const SizedBox(width: 10),
-                              Text("${log.isConsumeLater}"),
-                              const SizedBox(width: 10),
-                              // edit
-                              InkWell(
-                                borderRadius: AppColors.borderRadiusAll,
-                                onTap: () {
-                                  // edit log
-                                },
-                                child: const Padding(
-                                  padding: EdgeInsets.all(5),
-                                  child: Icon(Icons.edit),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
+                await Get.dialog(EditLogsDialog(contentId: contentPageProvider.contentModel!.id!));
               },
               child: const Row(
                 children: [

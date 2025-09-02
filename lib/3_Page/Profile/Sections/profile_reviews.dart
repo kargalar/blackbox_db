@@ -42,6 +42,19 @@ class _ProfileReviewsState extends State<ProfileReviews> {
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (reviews.isEmpty) {
+      return const Center(
+        child: Text(
+          'No reviews found',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        ),
+      );
+    }
+
     return ListView.separated(
         shrinkWrap: true,
         separatorBuilder: (context, index) => SizedBox(height: 20),

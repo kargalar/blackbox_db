@@ -19,6 +19,7 @@ class ContentPageProvider with ChangeNotifier {
   ContentModel? contentModel;
 
   List<ReviewModel> reviewList = [];
+  List<ContentLogModel> userLogs = [];
 
   // ? contentId null ise contentPage de demek
 
@@ -133,6 +134,78 @@ class ContentPageProvider with ChangeNotifier {
       }
     } catch (e) {
       debugPrint('Failed to refresh content detail after action: $e');
+    }
+  }
+
+  Future<void> fetchUserLogsForContent(int contentId) async {
+    try {
+      userLogs = await MigrationService().getUserLogsForContent(contentId: contentId);
+      notifyListeners();
+    } catch (e) {
+      debugPrint('Failed to fetch user logs: $e');
+    }
+  }
+
+  Future<void> updateUserLogEntry({
+    required int logId,
+    required int contentId,
+    ContentStatusEnum? contentStatus,
+    double? rating,
+    bool? isFavorite,
+    bool? isConsumeLater,
+    String? reviewText,
+  }) async {
+    try {
+      await MigrationService().updateUserLog(
+        logId: logId,
+        contentId: contentId,
+        contentStatus: contentStatus,
+        rating: rating,
+        isFavorite: isFavorite,
+        isConsumeLater: isConsumeLater,
+        reviewText: reviewText,
+      );
+
+      // Refresh lists and content detail after update
+      await fetchUserLogsForContent(contentId);
+      if (contentModel != null && contentModel!.id == contentId) {
+        final refreshed = await MigrationService().getContentDetail(
+          contentId: contentId,
+          contentType: contentModel!.contentType,
+        );
+        contentModel = refreshed;
+        // Also refresh reviews list for this content so duplicates/edits reflect
+        try {
+          reviewList = await MigrationService().getContentReviews(contentId: contentId);
+        } catch (_) {}
+      }
+      notifyListeners();
+    } catch (e) {
+      debugPrint('Failed to update user log: $e');
+    }
+  }
+
+  Future<void> deleteUserLogEntry({
+    required int logId,
+    required int contentId,
+  }) async {
+    try {
+      await MigrationService().deleteUserLog(logId: logId, contentId: contentId);
+      await fetchUserLogsForContent(contentId);
+      if (contentModel != null && contentModel!.id == contentId) {
+        final refreshed = await MigrationService().getContentDetail(
+          contentId: contentId,
+          contentType: contentModel!.contentType,
+        );
+        contentModel = refreshed;
+        // Refresh reviews as well
+        try {
+          reviewList = await MigrationService().getContentReviews(contentId: contentId);
+        } catch (_) {}
+      }
+      notifyListeners();
+    } catch (e) {
+      debugPrint('Failed to delete user log: $e');
     }
   }
 }

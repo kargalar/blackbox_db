@@ -753,7 +753,28 @@ class MigrationService {
 
         if (rpc is Map && rpc['contents'] != null) {
           final rawList = (rpc['contents'] as List);
-          final contentList = rawList.map((e) => ShowcaseContentModel.fromJson(e as Map<String, dynamic>)).toList();
+          // Deduplicate by content_id keeping the latest date
+          final Map<int, Map<String, dynamic>> best = {};
+          for (final item in rawList) {
+            final row = Map<String, dynamic>.from(item as Map);
+            final int cid = (row['content_id'] ?? row['id']) as int;
+            final String? dateStr = (row['date'] ?? (row['userLog'] != null ? row['userLog']['date'] : null)) as String?;
+            final DateTime dt = dateStr != null ? DateTime.tryParse(dateStr) ?? DateTime.fromMillisecondsSinceEpoch(0) : DateTime.fromMillisecondsSinceEpoch(0);
+            if (!best.containsKey(cid)) {
+              best[cid] = row..['__dt'] = dt;
+            } else {
+              final prev = best[cid]!;
+              final prevDt = prev['__dt'] as DateTime? ?? DateTime.fromMillisecondsSinceEpoch(0);
+              if (dt.isAfter(prevDt)) {
+                best[cid] = row..['__dt'] = dt;
+              }
+            }
+          }
+          // Remove helper field and map
+          final contentList = best.values.map((m) {
+            m.remove('__dt');
+            return ShowcaseContentModel.fromJson(m);
+          }).toList();
           return {
             'contentList': contentList,
             'totalPages': rpc['total_pages'] ?? 1,
@@ -789,8 +810,28 @@ class MigrationService {
           ''').eq('user_id', logUserId).eq('content.content_type_id', contentType.index + 1).eq('content_status_id', ContentStatusEnum.CONSUMED.index + 1).order('date', ascending: false);
 
       final rows = (response as List).where((e) => e['content'] != null).toList();
+      // Deduplicate by content_id keeping latest date
+      final Map<int, Map<String, dynamic>> best = {};
+      for (final e in rows) {
+        final int cid = e['content_id'] as int;
+        final String? dateStr = e['date'] as String?;
+        final DateTime dt = dateStr != null ? DateTime.tryParse(dateStr) ?? DateTime.fromMillisecondsSinceEpoch(0) : DateTime.fromMillisecondsSinceEpoch(0);
+        if (!best.containsKey(cid)) {
+          best[cid] = Map<String, dynamic>.from(e)..['__dt'] = dt;
+        } else {
+          final prev = best[cid]!;
+          final prevDt = prev['__dt'] as DateTime? ?? DateTime.fromMillisecondsSinceEpoch(0);
+          if (dt.isAfter(prevDt)) {
+            best[cid] = Map<String, dynamic>.from(e)..['__dt'] = dt;
+          }
+        }
+      }
+      final deduped = best.values.map((m) {
+        m.remove('__dt');
+        return m;
+      }).toList();
 
-      final contentList = rows
+      final contentList = deduped
           .map((e) => ShowcaseContentModel.fromJson({
                 ...e['content'],
                 'rating': e['rating'],
@@ -823,14 +864,14 @@ class MigrationService {
   Future<Map<String, dynamic>> getDiscoverMovie({required String userId}) async {
     try {
       // Simplified discovery - could be enhanced with recommendation logic
-      final response = await _client
+      final rows = await _client
           .from('content')
           .select('*')
           .eq('content_type_id', 1) // Movie
           .order('consume_count', ascending: false)
-          .limit(20);
+          .limit(5);
 
-      final contentList = (response as List).map((e) => ShowcaseContentModel.fromJson(e)).toList();
+      final contentList = (rows as List).map((e) => ShowcaseContentModel.fromJson(e)).toList();
 
       return {
         'contentList': contentList,
@@ -850,7 +891,7 @@ class MigrationService {
           .select('*')
           .eq('content_type_id', 2) // Game
           .order('consume_count', ascending: false)
-          .limit(20);
+          .limit(5);
 
       final contentList = (response as List).map((e) => ShowcaseContentModel.fromJson(e)).toList();
 
@@ -1121,6 +1162,176 @@ class MigrationService {
     } catch (e) {
       debugPrint('Error getting user activities: $e');
       return {'contentList': <ShowcaseContentModel>[]};
+    }
+  }
+
+  // ********************************************
+  // USER LOG MANAGEMENT (fetch/update/delete)
+  // ********************************************
+
+  Future<List<ContentLogModel>> getUserLogsForContent({required int contentId}) async {
+    try {
+      if (currentUserId == null) return [];
+      final rows = await _client.from('user_content_log').select('''
+            id,
+            user_id,
+            content_id,
+            content_status_id,
+            rating,
+            is_favorite,
+            is_consume_later,
+            date,
+            review:review_id ( id, text ),
+            content:content_id!inner ( content_type_id )
+          ''').eq('content_id', contentId).eq('user_id', currentUserId!).order('date', ascending: false).order('id', ascending: false);
+
+      final List<ContentLogModel> list = [];
+      for (final row in (rows as List)) {
+        final ctId = row['content']?['content_type_id'] as int?;
+        final contentType = ctId != null && ctId >= 1 && ctId <= ContentTypeEnum.values.length ? ContentTypeEnum.values[ctId - 1] : ContentTypeEnum.MOVIE;
+        list.add(ContentLogModel(
+          id: row['id'] as int?,
+          userId: row['user_id'] as String,
+          contentID: row['content_id'] as int,
+          date: row['date'] != null ? DateTime.parse(row['date']) : null,
+          contentStatus: row['content_status_id'] != null ? ContentStatusEnum.values[(row['content_status_id'] as int) - 1] : null,
+          rating: (row['rating'] is num) ? (row['rating'] as num).toDouble() : double.tryParse('${row['rating']}'),
+          isFavorite: row['is_favorite'] as bool?,
+          isConsumeLater: row['is_consume_later'] as bool?,
+          review: (row['review'] == null) ? null : (row['review'] as Map)['text'] as String?,
+          contentType: contentType,
+        ));
+      }
+      return list;
+    } catch (e) {
+      debugPrint('Error fetching user logs: $e');
+      return [];
+    }
+  }
+
+  Future<void> updateUserLog({
+    required int logId,
+    required int contentId,
+    ContentStatusEnum? contentStatus,
+    double? rating,
+    bool? isFavorite,
+    bool? isConsumeLater,
+    String? reviewText,
+  }) async {
+    try {
+      if (currentUserId == null) throw Exception('Not authenticated');
+      final Map<String, dynamic> data = {
+        'content_status_id': contentStatus != null ? contentStatus.index + 1 : null,
+        'rating': (rating == null || rating == 0) ? null : rating,
+        'is_favorite': isFavorite,
+        'is_consume_later': isConsumeLater,
+        // Update the log's date to now when edited
+        'date': DateTime.now().toIso8601String(),
+        'updated_at': DateTime.now().toIso8601String(),
+      }..removeWhere((key, value) => value == null);
+
+      // Fetch existing log to get current review_id and verify ownership
+      final existingLog = await _client.from('user_content_log').select('id, user_id, review_id').eq('id', logId).eq('user_id', currentUserId!).maybeSingle();
+      if (existingLog == null) throw Exception('Log not found or not owned by user');
+
+      int? existingReviewId = existingLog['review_id'] as int?;
+      if (reviewText != null) {
+        final trimmed = reviewText.trim();
+        if (trimmed.isEmpty) {
+          // Unlink and delete existing review if any
+          data['review_id'] = null;
+          if (existingReviewId != null) {
+            try {
+              await _client.from('review').delete().eq('id', existingReviewId).eq('user_id', currentUserId!).eq('content_id', contentId);
+            } catch (e) {
+              debugPrint('Review delete failed: $e');
+            }
+            existingReviewId = null;
+          }
+        } else {
+          if (existingReviewId != null) {
+            // Update existing review
+            try {
+              await _client.from('review').update({'text': trimmed}).eq('id', existingReviewId).eq('user_id', currentUserId!).eq('content_id', contentId);
+            } catch (e) {
+              debugPrint('Review update failed: $e');
+            }
+            data['review_id'] = existingReviewId;
+          } else {
+            // Try to reuse an existing review by this user for this content
+            try {
+              final maybeExisting = await _client.from('review').select('id').eq('user_id', currentUserId!).eq('content_id', contentId).maybeSingle();
+              if (maybeExisting != null && maybeExisting['id'] != null) {
+                final reuseId = maybeExisting['id'] as int;
+                await _client.from('review').update({'text': trimmed}).eq('id', reuseId);
+                data['review_id'] = reuseId;
+              } else {
+                // Create new review
+                final inserted = await _client
+                    .from('review')
+                    .insert({
+                      'user_id': currentUserId,
+                      'content_id': contentId,
+                      'text': trimmed,
+                    })
+                    .select('id')
+                    .single();
+                final newId = inserted['id'] as int?;
+                if (newId != null) data['review_id'] = newId;
+              }
+            } catch (e) {
+              debugPrint('Review upsert (reuse/insert) failed: $e');
+            }
+          }
+        }
+      }
+
+      await _client.from('user_content_log').update(data).eq('id', logId).eq('user_id', currentUserId!);
+
+      // Recompute aggregates
+      try {
+        await _client.rpc('recompute_content_stats', params: {'content_id_param': contentId});
+      } catch (e) {
+        debugPrint('recompute_content_stats RPC failed after update: $e');
+      }
+    } catch (e) {
+      debugPrint('Error updating user log: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> deleteUserLog({required int logId, required int contentId}) async {
+    try {
+      if (currentUserId == null) throw Exception('Not authenticated');
+      // Load existing to find attached review_id
+      final existingLog = await _client.from('user_content_log').select('id, user_id, review_id').eq('id', logId).eq('user_id', currentUserId!).maybeSingle();
+      int? reviewId = existingLog != null ? existingLog['review_id'] as int? : null;
+
+      // Delete the log row strictly by id + user_id and return deleted rows
+      final deleted = await _client.from('user_content_log').delete().eq('id', logId).eq('user_id', currentUserId!).select('id');
+
+      final bool logDeleted = deleted.isNotEmpty;
+
+      // Optionally delete the linked review if present
+      if (logDeleted && reviewId != null) {
+        try {
+          await _client.from('review').delete().eq('id', reviewId).eq('user_id', currentUserId!).eq('content_id', contentId);
+        } catch (e) {
+          debugPrint('Review delete after log delete failed: $e');
+        }
+      }
+      if (logDeleted) {
+        try {
+          await _client.rpc('recompute_content_stats', params: {'content_id_param': contentId});
+        } catch (e) {
+          debugPrint('recompute_content_stats RPC failed after delete: $e');
+        }
+      } else {
+        debugPrint('Log delete returned empty; nothing deleted for logId=$logId user=$currentUserId');
+      }
+    } catch (e) {
+      debugPrint('Error deleting user log: $e');
+      rethrow;
     }
   }
 
