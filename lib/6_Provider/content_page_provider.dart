@@ -59,6 +59,11 @@ class ContentPageProvider with ChangeNotifier {
             userId: loginUser!.id,
             text: review,
             createdAt: DateTime.now(),
+            rating: rating,
+            isFavorite: isFavorite,
+            likeCount: 0,
+            commentCount: 0,
+            isLikedByCurrentUser: false,
           ),
         );
       }

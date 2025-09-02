@@ -406,6 +406,15 @@ class MigrationService {
     required int contentId,
   }) async {
     try {
+      // First get current user ID for like checking
+      String? currentUserId;
+      try {
+        final currentUser = await getCurrentUserProfile();
+        currentUserId = currentUser?.id;
+      } catch (e) {
+        debugPrint('Could not get current user: $e');
+      }
+
       final response = await _client.from('review').select('''
             *,
             app_user:user_id (
@@ -415,16 +424,54 @@ class MigrationService {
             )
           ''').eq('content_id', contentId).order('created_at', ascending: false);
 
-      return (response as List)
-          .map((e) => ReviewModel.fromJson({
-                'id': e['id'],
-                'picture_path': e['app_user']['picture_path'],
-                'user_id': e['app_user']['auth_user_id'], // Convert UUID to int
-                'username': e['app_user']['username'],
-                'text': e['text'],
-                'created_at': e['created_at'],
-              }))
-          .toList();
+      List<ReviewModel> reviews = [];
+
+      for (var e in response as List) {
+        // Get like count for this review
+        final likeCount = await getReviewLikeCount(e['id']);
+
+        // Check if current user liked this review
+        bool isLikedByCurrentUser = false;
+        if (currentUserId != null) {
+          isLikedByCurrentUser = await checkUserLikedReview(
+            reviewId: e['id'],
+            userId: currentUserId,
+          );
+        }
+
+        // Get user's rating and favorite status for the content this review is about
+        double? userRating;
+        bool isFavorite = false;
+
+        if (e['user_id'] != null) {
+          try {
+            final userLog = await _client.from('user_content_log').select('rating, is_favorite').eq('user_id', e['user_id']).eq('content_id', contentId).maybeSingle();
+
+            if (userLog != null) {
+              userRating = userLog['rating']?.toDouble();
+              isFavorite = userLog['is_favorite'] ?? false;
+            }
+          } catch (logError) {
+            debugPrint('Error getting user log for review: $logError');
+          }
+        }
+
+        reviews.add(ReviewModel.fromJson({
+          'id': e['id'],
+          'picture_path': e['app_user']?['picture_path'],
+          'user_id': e['app_user']?['auth_user_id'] ?? e['user_id'],
+          'username': e['app_user']?['username'] ?? 'Unknown User',
+          'text': e['text'],
+          'created_at': e['created_at'],
+          'rating': userRating,
+          'is_favorite': isFavorite,
+          'like_count': likeCount,
+          'comment_count': 0, // We'll implement this later if needed
+          'is_liked_by_current_user': isLikedByCurrentUser,
+        }));
+      }
+
+      return reviews;
     } catch (e) {
       debugPrint('Error getting content reviews: $e');
       return [];
@@ -436,6 +483,15 @@ class MigrationService {
     ContentTypeEnum? contentType,
   }) async {
     try {
+      // Get current user ID for like checking
+      String? currentUserId;
+      try {
+        final currentUser = await getCurrentUserProfile();
+        currentUserId = currentUser?.id;
+      } catch (e) {
+        debugPrint('Could not get current user: $e');
+      }
+
       final response = await _client.from('review').select('''
             *,
             content:content_id (
@@ -444,19 +500,57 @@ class MigrationService {
               poster_path,
               content_type_id
             )
-          ''').eq('user_id', currentUserId!).order('created_at', ascending: false);
+          ''').eq('user_id', userId).order('created_at', ascending: false);
 
-      return (response as List)
-          .map((e) => UserReviewModel.fromJson({
-                'id': e['id'],
-                'text': e['text'],
-                'created_at': e['created_at'],
-                'content_id': e['content']['id'],
-                'content_type_id': e['content']['content_type_id'],
-                'title': e['content']['title'],
-                'poster_path': e['content']['poster_path'],
-              }))
-          .toList();
+      List<UserReviewModel> reviews = [];
+
+      for (var e in response as List) {
+        // Get like count for this review
+        final likeCount = await getReviewLikeCount(e['id']);
+
+        // Check if current user liked this review
+        bool isLikedByCurrentUser = false;
+        if (currentUserId != null) {
+          isLikedByCurrentUser = await checkUserLikedReview(
+            reviewId: e['id'],
+            userId: currentUserId,
+          );
+        }
+
+        // Get user's rating and favorite status for the content this review is about
+        double? userRating;
+        bool isFavorite = false;
+
+        if (e['content_id'] != null) {
+          try {
+            final userLog = await _client.from('user_content_log').select('rating, is_favorite').eq('user_id', userId).eq('content_id', e['content_id']).maybeSingle();
+
+            if (userLog != null) {
+              userRating = userLog['rating']?.toDouble();
+              isFavorite = userLog['is_favorite'] ?? false;
+            }
+          } catch (logError) {
+            debugPrint('Error getting user log for profile review: $logError');
+          }
+        }
+
+        reviews.add(UserReviewModel.fromJson({
+          'id': e['id'],
+          'text': e['text'],
+          'created_at': e['created_at'],
+          'content_id': e['content']?['id'] ?? e['content_id'],
+          'content_type_id': e['content']?['content_type_id'] ?? 1,
+          'title': e['content']?['title'] ?? 'Unknown Title',
+          'poster_path': e['content']?['poster_path'],
+          'rating': userRating,
+          'is_favorite': isFavorite,
+          'like_count': likeCount,
+          'comment_count': 0,
+          'is_liked_by_current_user': isLikedByCurrentUser,
+        }));
+      }
+
+      return reviews;
     } catch (e) {
       debugPrint('Error getting user reviews: $e');
       return [];
@@ -942,6 +1036,62 @@ class MigrationService {
     } catch (e) {
       debugPrint('Error getting user activities: $e');
       return {'contentList': <ShowcaseContentModel>[]};
+    }
+  }
+
+  // ********************************************
+  // REVIEW LIKE METHODS
+  // ********************************************
+
+  Future<bool> toggleReviewLike({
+    required int reviewId,
+    required String userId,
+  }) async {
+    try {
+      // Check if user already liked the review
+      final existingLike = await _client.from('review_likes').select('id').eq('review_id', reviewId).eq('user_id', userId).maybeSingle();
+
+      if (existingLike != null) {
+        // Unlike: Remove the like
+        await _client.from('review_likes').delete().eq('review_id', reviewId).eq('user_id', userId);
+        return false; // Not liked anymore
+      } else {
+        // Like: Add the like
+        await _client.from('review_likes').insert({
+          'review_id': reviewId,
+          'user_id': userId,
+          'created_at': DateTime.now().toIso8601String(),
+        });
+        return true; // Now liked
+      }
+    } catch (e) {
+      debugPrint('Error toggling review like: $e');
+      return false;
+    }
+  }
+
+  Future<int> getReviewLikeCount(int reviewId) async {
+    try {
+      final response = await _client.from('review_likes').select('id').eq('review_id', reviewId);
+
+      return (response as List).length;
+    } catch (e) {
+      debugPrint('Error getting review like count: $e');
+      return 0;
+    }
+  }
+
+  Future<bool> checkUserLikedReview({
+    required int reviewId,
+    required String userId,
+  }) async {
+    try {
+      final response = await _client.from('review_likes').select('id').eq('review_id', reviewId).eq('user_id', userId).maybeSingle();
+
+      return response != null;
+    } catch (e) {
+      debugPrint('Error checking user liked review: $e');
+      return false;
     }
   }
 

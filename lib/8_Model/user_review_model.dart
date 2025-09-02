@@ -9,6 +9,11 @@ class UserReviewModel {
     required this.contentType,
     required this.title,
     required this.posterPath,
+    this.rating,
+    this.isFavorite = false,
+    this.likeCount = 0,
+    this.commentCount = 0,
+    this.isLikedByCurrentUser = false,
   });
 
   int id;
@@ -18,6 +23,11 @@ class UserReviewModel {
   ContentTypeEnum contentType;
   String title;
   String posterPath;
+  double? rating;
+  bool isFavorite;
+  int likeCount;
+  int commentCount;
+  bool isLikedByCurrentUser;
 
   factory UserReviewModel.fromJson(Map<String, dynamic> json) {
     return UserReviewModel(
@@ -28,6 +38,11 @@ class UserReviewModel {
       contentType: ContentTypeEnum.values[json['content_type_id'] - 1],
       title: json['title'],
       posterPath: json['poster_path'],
+      rating: json['rating']?.toDouble(),
+      isFavorite: json['is_favorite'] ?? false,
+      likeCount: json['like_count'] ?? 0,
+      commentCount: json['comment_count'] ?? 0,
+      isLikedByCurrentUser: json['is_liked_by_current_user'] ?? false,
     );
   }
 

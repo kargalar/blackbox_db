@@ -87,22 +87,23 @@ class _ProfileReviewsState extends State<ProfileReviews> {
                         ),
                       ),
                       SizedBox(width: 10),
-                      // if (review.isFavorite)
-                      Icon(
-                        Icons.favorite,
-                        color: AppColors.red,
-                        size: 15,
-                      ),
-                      RatingBarIndicator(
-                        rating: 3,
-                        itemSize: 17,
-                        itemCount: 5,
-                        unratedColor: AppColors.transparent,
-                        itemBuilder: (context, _) => Icon(
-                          Icons.star,
-                          color: AppColors.main,
+                      if (review.isFavorite)
+                        Icon(
+                          Icons.favorite,
+                          color: AppColors.red,
+                          size: 15,
                         ),
-                      ),
+                      if (review.rating != null)
+                        RatingBarIndicator(
+                          rating: review.rating!,
+                          itemSize: 17,
+                          itemCount: 5,
+                          unratedColor: AppColors.transparent,
+                          itemBuilder: (context, _) => Icon(
+                            Icons.star,
+                            color: AppColors.main,
+                          ),
+                        ),
                     ],
                   ),
                   // TODO: 8 satırdan fazla ise  more butonu ile daha fazlası gösterilecek
@@ -121,31 +122,112 @@ class _ProfileReviewsState extends State<ProfileReviews> {
                     width: 0.36.sw,
                     child: Row(
                       children: [
-                        Icon(
-                          Icons.thumb_up,
-                          color: Colors.grey,
-                          size: 16,
-                        ),
-                        SizedBox(width: 3),
-                        Text(
-                          50.toString(),
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12,
+                        InkWell(
+                          onTap: () async {
+                            try {
+                              // Get current user
+                              final currentUser = await MigrationService().getCurrentUserProfile();
+                              if (currentUser != null) {
+                                // Toggle like in database
+                                final isLiked = await MigrationService().toggleReviewLike(
+                                  reviewId: review.id,
+                                  userId: currentUser.id,
+                                );
+
+                                // Get the actual like count from database to avoid sync issues
+                                final actualLikeCount = await MigrationService().getReviewLikeCount(review.id);
+
+                                // Update UI with actual data
+                                setState(() {
+                                  review.isLikedByCurrentUser = isLiked;
+                                  review.likeCount = actualLikeCount;
+                                });
+                              }
+                            } catch (e) {
+                              debugPrint('Error toggling like: $e');
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Beğeni işlemi başarısız oldu')),
+                              );
+                            }
+                          },
+                          child: Row(
+                            children: [
+                              Icon(
+                                review.isLikedByCurrentUser ? Icons.thumb_up : Icons.thumb_up_outlined,
+                                color: review.isLikedByCurrentUser ? AppColors.main : Colors.grey,
+                                size: 16,
+                              ),
+                              SizedBox(width: 3),
+                              Text(
+                                review.likeCount.toString(),
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         SizedBox(width: 10),
-                        Icon(
-                          Icons.comment,
-                          color: Colors.grey,
-                          size: 16,
-                        ),
-                        SizedBox(width: 3),
-                        Text(
-                          10.toString(),
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12,
+                        InkWell(
+                          onTap: () {
+                            // TODO: Add note functionality instead of comments
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Not eklemek için tıklayın'),
+                                action: SnackBarAction(
+                                  label: 'Not Ekle',
+                                  onPressed: () {
+                                    // Open note dialog
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                        title: Text('Not Ekle'),
+                                        content: TextField(
+                                          decoration: InputDecoration(
+                                            hintText: 'Notunuzu yazın...',
+                                            border: OutlineInputBorder(),
+                                          ),
+                                          maxLines: 3,
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () => Navigator.pop(context),
+                                            child: Text('İptal'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                SnackBar(content: Text('Not eklendi!')),
+                                              );
+                                            },
+                                            child: Text('Kaydet'),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            );
+                          },
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.note_add,
+                                color: Colors.grey,
+                                size: 16,
+                              ),
+                              SizedBox(width: 3),
+                              Text(
+                                'Not Ekle',
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         SizedBox(width: 10),
