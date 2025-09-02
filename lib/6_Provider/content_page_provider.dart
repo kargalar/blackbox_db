@@ -31,6 +31,8 @@ class ContentPageProvider with ChangeNotifier {
     required bool isConsumeLater,
     String? review,
   }) async {
+    // If marked as CONSUMED, auto-clear 'watch later'
+    final bool effectiveConsumeLater = (contentStatus == ContentStatusEnum.CONSUMED) ? false : isConsumeLater;
     // Build user log payload
     final ContentLogModel userLog = ContentLogModel(
       userId: loginUser!.id,
@@ -39,7 +41,7 @@ class ContentPageProvider with ChangeNotifier {
       contentStatus: contentStatus,
       rating: rating,
       isFavorite: isFavorite,
-      isConsumeLater: isConsumeLater,
+      isConsumeLater: effectiveConsumeLater,
       review: review,
     );
 
@@ -50,7 +52,7 @@ class ContentPageProvider with ChangeNotifier {
       final ContentStatusEnum? wasStatus = contentModel!.contentStatus;
 
       // Apply user flags immediately (optimistic)
-      contentModel!.isConsumeLater = isConsumeLater;
+      contentModel!.isConsumeLater = effectiveConsumeLater;
       contentModel!.isFavorite = isFavorite;
       contentModel!.contentStatus = contentStatus;
       final double? previousRating = contentModel!.rating;
