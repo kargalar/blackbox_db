@@ -17,4 +17,72 @@ liste özelliği
 
 ğuan verdikçe raitng grafik oynuyor garip garip. galiba üzerine yazmak yerine ekliyor falan.
 
-react site
+!!!!!!!!!!!!!!!!!!!! react site
+
+------------------------------
+DETAYLI YAPILACAKLAR
+------------------------------
+
+Profil Sayfası (lib/3_Page/Profile/**)
+- Header/Kart: profil resmi düzenleme (ProfilePicture.profile TODO), takip/çık butonu için debounce + optimistic UI + hata geri alma.
+- Sayaçlar: takipçi / takip edilen / inceleme / liste sayıları (MigrationService view/RPC ile).
+- Hakkında: bio, katılım tarihi, sosyal linkler (varsa), favori türler.
+- Sekmeler: Home, Movies, Games, Reviews, Lists, Networks, Activity – lazy-load + cache; boş durum bileşenleri.
+- Home (ProfileHome): özet istatistikler, yıl bazlı tüketim grafiği (manager panel istatistiklerinden yeniden kullanım).
+- Movies/Games: ExploreContentPage(isProfilePage: true) ile kullanıcıya özel içerik; filtre/sort/sayfalama; CSV/JSON dışa aktarım; paylaşılabilir link.
+- Reviews: liste, sıralama (en yeni/en beğenilen/en yüksek puan), detay diyalogu; beğeni/yanıtlar akışı.
+- Lists: liste oluştur/yeniden adlandır/sil; içerik ekle/çıkar; gizlilik ve paylaşım.
+- Networks: takipçi/takip edilen listesi; profil kartı ve hızlı takip/çık.
+- Activity: zaman çizgisi (tüketim, puan, favori, yorum); tarih aralığı/tür filtresi; infinite scroll.
+- Erişilebilirlik/Responsive: klavye odak, 600px altı düzen; hata/özel profil/404 durumları.
+
+Ana Sayfa (lib/3_Page/Home/home_page.dart)
+- Bölümler: Trending Movies/Games (MigrationService.getTrendContents), Friends’ Activities (getFriendActivities), Recommended Movies (ExternalApiService.getMovieRecommendations), Top Reviews (getTopReviews).
+- Bölüm bazlı loading/skeleton ve bağımsız hata mesajları; boş durum CTA’ları.
+- Navigasyon: kart tıklama → GeneralProvider.content(id,type) ile ContentPage; başlıklarda “Tümü” linki.
+- Performans: Future.wait paralel ama bölüm bazında try-catch; hafif bellek cache, yenile butonu.
+
+İçerik Sayfası (lib/3_Page/Content/**)
+- Üst blok: ContentCover (poster/arka plan, poster zoom), ContentInformation (başlık/yıl/tür/global puan/süre/platformlar), medya sekmesi (fragman/galeri).
+- Kullanıcı aksiyonları: durum (CONSUMED/izlenecek), favori, puan, inceleme; optimistic update + hata geri alma; log düzenleme (edit_logs_dialog).
+- Yorumlar: liste, sayfalama, beğeni/yanıtlar (REVIEW_REPLY_SYSTEM.md ile uyumlu), sıralama (en yeni/yararlı/beğenilen).
+- İstatistikler: puan dağılımı (1–5), izlenme sayıları; grafik bileşeni.
+- Benzer/Önerilen içerikler: TMDB similar/recommendations, IGDB benzerleri; kart liste.
+- Hata/boş/skeleton durumları ve login guard’ı.
+
+Explore Akışı (lib/3_Page/Explore/**, ExploreProvider)
+- Filtreler: tür, dil, yıl aralığı, min Supabase ort. puan; “Filtreleri temizle”.
+- Sıralama: TMDB remote (vote_average/popularity/release_date), kullanıcı puanı global (çoklu sayfa agregasyonu + Supabase average).
+- Profil modu: profileUserID aktifken MigrationService.getUserContents ile server-side sayfalama/sort; watchlistFirst sırası.
+- Statik veriler cache: film tür/dil ve oyun türleri; gerekirse oyun dilleri.
+- UI/UX: ContentList boş/skeleton; ExplorePagination; mobilde filtre çekmecesi.
+- Kenar durumlar: ilk/son sayfa devre dışı, hatada yeniden dene.
+
+Provider/Service İyileştirmeleri
+- ExploreProvider: `_aggregatedUserRatingList` reset politikası; `_aggregateMaxPages` konfigürü dışarı al; ileride BOOK tipi.
+- ContentPageProvider: optimistic update rollback; reviewList senkronizasyonu.
+- MigrationService: toplu id ile average, `getUserContents`, `getFriendActivities`, `getTopReviews`, `getContentReviews`, `getUserLogsForContent`, `updateUserLog`, `deleteUserLog` (N+1 azaltacak yardımcılar).
+- ExternalApiService: TMDB discover/search map’leri; IGDB discover’de offset/limit/filtre/sort; kapak URL oluşturma yardımcıları.
+
+Test/Kalite
+- Unit: API → model mapping (ShowcaseContentModel/SearchContentModel); ExploreProvider akışları; ContentPageProvider optimistic ve merge.
+- Widget: ExploreContentPage filtre/sort; ContentPage durumları; ProfilePage sekme akışı ve follow/unfollow.
+- Kenar durumlar: ağ hatası/boş veri/çok sayfa; login yokken aksiyon.
+- Analiz: `flutter analyze` temiz; public API değişikliklerinde derleme uyarılarını gider.
+
+Küçük İyileştirmeler
+- “Filtreleri temizle”, paylaş menüleri (profil/liste/içerik), bildirimler (yorum yanıtı/takip), Hive cache (statik sözlükler).
+
+React (Web) Port – react-app/
+- Explore: TMDB discover filtre/sort/paginasyon (mevcut iskeletin genişletilmesi), boş/skeleton durumları.
+- IGDB: oyun discover/search ve mapping; kapak URL oluşturma.
+- Supabase: kullanıcı ort. puanı, kullanıcı logları, profil modu; global user-rating sıralaması (çoklu sayfa agregasyon + ortalama).
+- Sayfalar: Home, Explore, Content, Profile; routing ve layout.
+- UI: Kartlar, filtre paneli, yorumlar/incelemeler; erişilebilirlik.
+- Test: unit (servis ve provider), component testleri; build/preview pipeline.
+
+Teslim Ölçütleri
+- Tüm sayfalarda boş/skeleton/hata durumları kapsanır.
+- Filtre/sort/sayfalama ve profil modu çakışmadan çalışır.
+- Kullanıcı aksiyonları optimistic + geriye alma ile tutarlı; backend ile senkron.
+- `flutter analyze` ve temel unit/widget testleri geçer.

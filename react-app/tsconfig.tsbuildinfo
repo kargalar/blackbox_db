@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/enums/exploresort.ts","./src/models/content.ts","./src/pages/explorepage.tsx","./src/providers/exploreprovider.tsx","./src/services/externalapiservice.ts"],"version":"5.9.2"}
