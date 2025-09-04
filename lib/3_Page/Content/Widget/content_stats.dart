@@ -77,24 +77,6 @@ class _StatChip extends StatelessWidget {
   }
 }
 
-class _AvgRatingChip extends StatelessWidget {
-  final double? average;
-  const _AvgRatingChip({required this.average});
-
-  @override
-  Widget build(BuildContext context) {
-    final avg = (average ?? 0).toStringAsFixed(1);
-    return Column(
-      children: [
-        const Icon(Icons.star, color: Colors.amber),
-        const SizedBox(height: 4),
-        Text(avg, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppColors.text)),
-        Text('Ortalama', style: TextStyle(fontSize: 12, color: AppColors.text.withValues(alpha: 0.7))),
-      ],
-    );
-  }
-}
-
 class _RatingBarsChart extends StatelessWidget {
   final List<int>? distribution; // index 0 => 1 star, ... index 4 => 5 stars
   final double? average;
