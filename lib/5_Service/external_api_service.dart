@@ -103,7 +103,7 @@ class ExternalApiService {
 
       final movieData = json.decode(movieResponse.body);
 
-      // ADIM 3: Supabase'e sadece temel alanları kaydet (cast_list, genre_list hariç)
+      // ADIM 3: Supabase'e temel alanları kaydet (cast_list, genre_list sonradan eklenecek)
       try {
         final basicMovieData = {
           'id': movieData['id'],
@@ -121,6 +121,85 @@ class ExternalApiService {
       } catch (e) {
         debugPrint('⚠️ Error saving movie to Supabase: $e');
         // Kaydetme hatası olsa bile content'i döndür
+      }
+
+      // TMDB Credits (cast & crew) ve genres -> upsert normalized tables
+      try {
+        // Genres
+        if (movieData['genres'] is List && (movieData['genres'] as List).isNotEmpty) {
+          final upsertGenres = (movieData['genres'] as List)
+              .where((g) => g is Map && g['id'] != null)
+              .map<Map<String, dynamic>>((g) => {
+                    'id': g['id'],
+                    'name': g['name'] ?? 'Unknown',
+                  })
+              .toList();
+          if (upsertGenres.isNotEmpty) {
+            await _migrationService.client.from('m_genre').upsert(upsertGenres, onConflict: 'id');
+            for (final g in upsertGenres) {
+              try {
+                await _migrationService.client.from('x_movie_genre').upsert({'movie_id': movieId, 'genre_id': g['id']}, onConflict: 'movie_id,genre_id');
+              } catch (_) {}
+            }
+          }
+        }
+
+        // Credits
+        final creditsRes = await http.get(
+          Uri.parse('$_tmdbBaseUrl/movie/$movieId/credits'),
+          headers: _tmdbHeaders,
+        );
+        if (creditsRes.statusCode == 200) {
+          final credits = json.decode(creditsRes.body);
+          // Cast: ilk 12 -> upsert m_cast + x_movie_cast
+          if (credits['cast'] is List) {
+            final cast = (credits['cast'] as List).take(12).toList();
+            final upsertCast = cast
+                .where((c) => c is Map && c['id'] != null)
+                .map<Map<String, dynamic>>((c) => {
+                      'id': c['id'],
+                      'name': c['name'] ?? 'Unknown',
+                      'profile_path': c['profile_path'],
+                    })
+                .toList();
+            if (upsertCast.isNotEmpty) {
+              await _migrationService.client.from('m_cast').upsert(upsertCast, onConflict: 'id');
+              for (final c in cast) {
+                try {
+                  await _migrationService.client.from('x_movie_cast').upsert({'movie_id': movieId, 'cast_id': c['id'], 'character_name': c['character']}, onConflict: 'movie_id,cast_id');
+                } catch (_) {}
+              }
+            }
+          }
+          // Crew → creatorList: Director & Writer ilk 6 -> upsert m_director + x_movie_director
+          if (credits['crew'] is List) {
+            final crew = (credits['crew'] as List)
+                .where((cr) {
+                  final job = (cr['job'] ?? '').toString().toLowerCase();
+                  return job.contains('director') || job.contains('writer');
+                })
+                .take(6)
+                .toList();
+            final upsertCrew = crew
+                .where((cr) => cr is Map && cr['id'] != null)
+                .map<Map<String, dynamic>>((cr) => {
+                      'id': cr['id'],
+                      'name': cr['name'] ?? 'Unknown',
+                      'profile_path': cr['profile_path'],
+                    })
+                .toList();
+            if (upsertCrew.isNotEmpty) {
+              await _migrationService.client.from('m_director').upsert(upsertCrew, onConflict: 'id');
+              for (final cr in crew) {
+                try {
+                  await _migrationService.client.from('x_movie_director').upsert({'movie_id': movieId, 'director_id': cr['id']}, onConflict: 'movie_id,director_id');
+                } catch (_) {}
+              }
+            }
+          }
+        }
+      } catch (e) {
+        debugPrint('⚠️ Error fetching/upserting movie credits/genres: $e');
       }
 
       // ADIM 4: ContentModel oluştur (response için)
@@ -178,7 +257,7 @@ class ExternalApiService {
       final response = await http.post(
         Uri.parse('$_igdbBaseUrl/games'),
         headers: _igdbHeaders,
-        body: 'fields id,name,summary,cover.image_id,first_release_date,storyline; where id = $gameId;',
+        body: 'fields id,name,summary,cover.image_id,first_release_date,storyline,genres.id,genres.name,platforms.id,platforms.name; where id = $gameId;',
       );
 
       if (response.statusCode != 200) {
@@ -209,6 +288,54 @@ class ExternalApiService {
         debugPrint('✅ Game saved to Supabase: ${game['id']}');
       } catch (e) {
         debugPrint('⚠️ Error saving game to Supabase: $e');
+      }
+
+      // IGDB genres and platforms -> upsert into normalized tables and cross refs
+      try {
+        // Genres
+        if (game['genres'] is List && (game['genres'] as List).isNotEmpty) {
+          final List<dynamic> genres = game['genres'] as List;
+          // Upsert base genre rows (use IGDB id as PK)
+          final upsertGenres = genres
+              .where((g) => g is Map && g['id'] != null)
+              .map<Map<String, dynamic>>((g) => {
+                    'id': g['id'],
+                    'name': g['name'] ?? 'Unknown',
+                  })
+              .toList();
+          if (upsertGenres.isNotEmpty) {
+            await _migrationService.client.from('g_genre').upsert(upsertGenres, onConflict: 'id');
+            // Link
+            for (final g in upsertGenres) {
+              try {
+                await _migrationService.client.from('x_game_genre').upsert({'game_id': gameId, 'genre_id': g['id']}, onConflict: 'game_id,genre_id');
+              } catch (_) {}
+            }
+          }
+        }
+
+        // Platforms
+        if (game['platforms'] is List && (game['platforms'] as List).isNotEmpty) {
+          final List<dynamic> platforms = game['platforms'] as List;
+          final upsertPlatforms = platforms
+              .where((p) => p is Map && p['id'] != null)
+              .map<Map<String, dynamic>>((p) => {
+                    'id': p['id'],
+                    'name': p['name'] ?? 'Unknown',
+                    // Optional: 'logo_path': null // could be mapped later
+                  })
+              .toList();
+          if (upsertPlatforms.isNotEmpty) {
+            await _migrationService.client.from('g_platform').upsert(upsertPlatforms, onConflict: 'id');
+            for (final p in upsertPlatforms) {
+              try {
+                await _migrationService.client.from('x_game_platform').upsert({'game_id': gameId, 'platform_id': p['id']}, onConflict: 'game_id,platform_id');
+              } catch (_) {}
+            }
+          }
+        }
+      } catch (e) {
+        debugPrint('⚠️ Error updating game genres/platforms: $e');
       }
 
       // ADIM 4: ContentModel oluştur (response için)

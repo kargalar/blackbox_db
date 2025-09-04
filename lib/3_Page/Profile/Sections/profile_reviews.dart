@@ -62,6 +62,7 @@ class _ProfileReviewsState extends State<ProfileReviews> {
         itemBuilder: (context, index) {
           final review = reviews[index];
 
+          // Make the entire right column clickable to open review detail
           return Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,162 +88,185 @@ class _ProfileReviewsState extends State<ProfileReviews> {
                 ),
               ),
               SizedBox(width: 10),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        review.title,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      if (review.isFavorite)
-                        Icon(
-                          Icons.favorite,
-                          color: AppColors.red,
-                          size: 15,
-                        ),
-                      if (review.rating != null)
-                        RatingBarIndicator(
-                          rating: review.rating!,
-                          itemSize: 17,
-                          itemCount: 5,
-                          unratedColor: AppColors.transparent,
-                          itemBuilder: (context, _) => Icon(
-                            Icons.star,
-                            color: AppColors.main,
-                          ),
-                        ),
-                    ],
-                  ),
-                  // TODO: 8 satırdan fazla ise  more butonu ile daha fazlası gösterilecek
-                  SizedBox(
-                    width: 0.36.sw,
-                    height: 150,
-                    child: Text(
-                      review.text,
-                      style: TextStyle(fontSize: 14),
-                      maxLines: 8,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  SizedBox(height: 5),
-                  SizedBox(
-                    width: 0.36.sw,
-                    child: Row(
+              GestureDetector(
+                onTap: () {
+                  final reviewModel = ReviewModel(
+                    id: review.id,
+                    picturePath: null,
+                    userId: ProfileProvider().user!.id,
+                    userName: ProfileProvider().user!.username,
+                    text: review.text,
+                    createdAt: review.createdAt,
+                    rating: review.rating,
+                    isFavorite: review.isFavorite,
+                    likeCount: review.likeCount,
+                    commentCount: review.commentCount,
+                    isLikedByCurrentUser: review.isLikedByCurrentUser,
+                  );
+
+                  showDialog(
+                    context: context,
+                    builder: (context) => ReviewDetailDialog(reviewModel: reviewModel),
+                  ).then((_) => setState(() {}));
+                },
+                behavior: HitTestBehavior.opaque,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        InkWell(
-                          onTap: () async {
-                            try {
-                              // Get current user
-                              final currentUser = await MigrationService().getCurrentUserProfile();
-                              if (currentUser != null) {
-                                // Toggle like in database
-                                final isLiked = await MigrationService().toggleReviewLike(
-                                  reviewId: review.id,
-                                  userId: currentUser.id,
-                                );
-
-                                // Get the actual like count from database to avoid sync issues
-                                final actualLikeCount = await MigrationService().getReviewLikeCount(review.id);
-
-                                // Update UI with actual data
-                                setState(() {
-                                  review.isLikedByCurrentUser = isLiked;
-                                  review.likeCount = actualLikeCount;
-                                });
-                              }
-                            } catch (e) {
-                              debugPrint('Error toggling like: $e');
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Beğeni işlemi başarısız oldu')),
-                              );
-                            }
-                          },
-                          child: Row(
-                            children: [
-                              Icon(
-                                review.isLikedByCurrentUser ? Icons.thumb_up : Icons.thumb_up_outlined,
-                                color: review.isLikedByCurrentUser ? AppColors.main : Colors.grey,
-                                size: 16,
-                              ),
-                              SizedBox(width: 3),
-                              Text(
-                                review.likeCount.toString(),
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        InkWell(
-                          onTap: () {
-                            // Convert UserReviewModel to ReviewModel for dialog
-                            final reviewModel = ReviewModel(
-                              id: review.id,
-                              picturePath: null, // Profile reviews don't need picture path
-                              userId: ProfileProvider().user!.id,
-                              userName: ProfileProvider().user!.username,
-                              text: review.text,
-                              createdAt: review.createdAt,
-                              rating: review.rating,
-                              isFavorite: review.isFavorite,
-                              likeCount: review.likeCount,
-                              commentCount: review.commentCount,
-                              isLikedByCurrentUser: review.isLikedByCurrentUser,
-                            );
-
-                            // Open review detail dialog to show and add comments
-                            showDialog(
-                              context: context,
-                              builder: (context) => ReviewDetailDialog(
-                                reviewModel: reviewModel,
-                              ),
-                            ).then((_) {
-                              // Refresh the comment count after dialog closes
-                              setState(() {});
-                            });
-                          },
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.comment,
-                                color: Colors.grey,
-                                size: 16,
-                              ),
-                              SizedBox(width: 3),
-                              Text(
-                                review.commentCount.toString(),
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(width: 10),
                         Text(
-                          DateFormat('dd MMMM yyyy').format(review.createdAt),
+                          review.title,
                           style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
                           ),
                         ),
+                        SizedBox(width: 10),
+                        if (review.isFavorite)
+                          Icon(
+                            Icons.favorite,
+                            color: AppColors.red,
+                            size: 15,
+                          ),
+                        if (review.rating != null)
+                          RatingBarIndicator(
+                            rating: review.rating!,
+                            itemSize: 17,
+                            itemCount: 5,
+                            unratedColor: AppColors.transparent,
+                            itemBuilder: (context, _) => Icon(
+                              Icons.star,
+                              color: AppColors.main,
+                            ),
+                          ),
                       ],
                     ),
-                  ),
-                  SizedBox(height: 10),
-                ],
+                    // TODO: 8 satırdan fazla ise  more butonu ile daha fazlası gösterilecek
+                    SizedBox(
+                      width: 0.36.sw,
+                      height: 150,
+                      child: Text(
+                        review.text,
+                        style: TextStyle(fontSize: 14),
+                        maxLines: 8,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    SizedBox(height: 5),
+                    SizedBox(
+                      width: 0.36.sw,
+                      child: Row(
+                        children: [
+                          InkWell(
+                            onTap: () async {
+                              try {
+                                // Get current user
+                                final currentUser = await MigrationService().getCurrentUserProfile();
+                                if (currentUser != null) {
+                                  // Toggle like in database
+                                  final isLiked = await MigrationService().toggleReviewLike(
+                                    reviewId: review.id,
+                                    userId: currentUser.id,
+                                  );
+
+                                  // Get the actual like count from database to avoid sync issues
+                                  final actualLikeCount = await MigrationService().getReviewLikeCount(review.id);
+
+                                  // Update UI with actual data
+                                  setState(() {
+                                    review.isLikedByCurrentUser = isLiked;
+                                    review.likeCount = actualLikeCount;
+                                  });
+                                }
+                              } catch (e) {
+                                debugPrint('Error toggling like: $e');
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text('Beğeni işlemi başarısız oldu')),
+                                );
+                              }
+                            },
+                            child: Row(
+                              children: [
+                                Icon(
+                                  review.isLikedByCurrentUser ? Icons.thumb_up : Icons.thumb_up_outlined,
+                                  color: review.isLikedByCurrentUser ? AppColors.main : Colors.grey,
+                                  size: 16,
+                                ),
+                                SizedBox(width: 3),
+                                Text(
+                                  review.likeCount.toString(),
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          InkWell(
+                            onTap: () {
+                              // Convert UserReviewModel to ReviewModel for dialog
+                              final reviewModel = ReviewModel(
+                                id: review.id,
+                                picturePath: null, // Profile reviews don't need picture path
+                                userId: ProfileProvider().user!.id,
+                                userName: ProfileProvider().user!.username,
+                                text: review.text,
+                                createdAt: review.createdAt,
+                                rating: review.rating,
+                                isFavorite: review.isFavorite,
+                                likeCount: review.likeCount,
+                                commentCount: review.commentCount,
+                                isLikedByCurrentUser: review.isLikedByCurrentUser,
+                              );
+
+                              // Open review detail dialog to show and add comments
+                              showDialog(
+                                context: context,
+                                builder: (context) => ReviewDetailDialog(
+                                  reviewModel: reviewModel,
+                                ),
+                              ).then((_) {
+                                // Refresh the comment count after dialog closes
+                                setState(() {});
+                              });
+                            },
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.comment,
+                                  color: Colors.grey,
+                                  size: 16,
+                                ),
+                                SizedBox(width: 3),
+                                Text(
+                                  review.commentCount.toString(),
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          Text(
+                            DateFormat('dd MMMM yyyy').format(review.createdAt),
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                  ],
+                ),
               ),
             ],
           );

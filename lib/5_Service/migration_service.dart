@@ -5,6 +5,7 @@ import 'package:blackbox_db/7_Enum/content_status_enum.dart';
 import 'package:blackbox_db/8_Model/content_log_model.dart';
 import 'package:blackbox_db/8_Model/content_model.dart';
 import 'package:blackbox_db/8_Model/user_model.dart';
+import 'package:blackbox_db/8_Model/genre_model.dart';
 import 'package:blackbox_db/8_Model/user_review_model.dart';
 import 'package:blackbox_db/8_Model/review_model.dart';
 import 'package:blackbox_db/8_Model/review_reply_model.dart';
@@ -248,7 +249,24 @@ class MigrationService {
         'user_id_param': userIdToUse,
       });
 
-      final model = ContentModel.fromJson(response);
+      var model = ContentModel.fromJson(response);
+
+      // Enrich with platforms for games (RPC currently doesn't include them)
+      if (contentType == ContentTypeEnum.GAME) {
+        try {
+          final xrows = await _client.from('x_game_platform').select('platform_id').eq('game_id', contentId);
+          final ids = (xrows as List).map((e) => e['platform_id'] as int).toList();
+          if (ids.isNotEmpty) {
+            final plats = await _client.from('g_platform').select('id,name').inFilter('id', ids);
+            final list = (plats as List).map<GenreModel>((p) => GenreModel(id: p['id'] as int, name: (p['name'] ?? 'Unknown').toString())).toList();
+            model = model.copyWith(platformList: list);
+          } else {
+            model = model.copyWith(platformList: <GenreModel>[]);
+          }
+        } catch (e) {
+          debugPrint('Error loading platforms for game $contentId: $e');
+        }
+      }
 
       // If aggregates look empty but we have user activity, recompute as fallback
       final aggregatesEmpty = ((model.consumeCount ?? 0) == 0) && ((model.favoriCount ?? 0) == 0) && ((model.reviewCount ?? 0) == 0) && ((model.ratingDistribution == null || model.ratingDistribution!.every((e) => e == 0)));
@@ -619,6 +637,9 @@ class MigrationService {
           }
         }
 
+        // Get reply count for this review
+        final replyCount = await getReviewReplyCount(reviewId: e['id']);
+
         reviews.add(UserReviewModel.fromJson({
           'id': e['id'],
           'text': e['text'],
@@ -630,7 +651,7 @@ class MigrationService {
           'rating': userRating,
           'is_favorite': isFavorite,
           'like_count': likeCount,
-          'comment_count': 0,
+          'comment_count': replyCount,
           'is_liked_by_current_user': isLikedByCurrentUser,
         }));
       }
@@ -651,7 +672,27 @@ class MigrationService {
         'limit_param': 5,
       });
 
-      return (response as List).map((e) => UserReviewModel.fromJson(e)).toList();
+      // Map base fields from RPC
+      final list = (response as List).map((e) => UserReviewModel.fromJson(e)).toList();
+
+      // Enrich with accurate like/comment counts and liked-by-current-user
+      String? currentUserId;
+      try {
+        final currentUser = await getCurrentUserProfile();
+        currentUserId = currentUser?.id;
+      } catch (_) {}
+
+      await Future.wait(list.map((r) async {
+        try {
+          r.likeCount = await getReviewLikeCount(r.id);
+          r.commentCount = await getReviewReplyCount(reviewId: r.id);
+          if (currentUserId != null) {
+            r.isLikedByCurrentUser = await checkUserLikedReview(reviewId: r.id, userId: currentUserId);
+          }
+        } catch (_) {}
+      }));
+
+      return list;
     } catch (e) {
       debugPrint('Error getting top reviews: $e');
       return [];

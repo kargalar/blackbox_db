@@ -81,6 +81,23 @@ class ContentInformation extends StatelessWidget {
                 ),
               ],
             ),
+          if (contentModel.platformList != null && contentModel.platformList!.isNotEmpty) ...[
+            const SizedBox(height: 8),
+            Wrap(
+              spacing: 6,
+              runSpacing: 6,
+              children: [
+                ...contentModel.platformList!.map((p) => Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: AppColors.text.withValues(alpha: 0.06),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(p.name, style: const TextStyle(fontSize: 13)),
+                    )),
+              ],
+            ),
+          ],
           const SizedBox(height: 20),
           if (contentModel.length != null)
             Text(

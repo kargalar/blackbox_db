@@ -20,18 +20,19 @@ class CastItem extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // TODO:
-            // Container(
-            //   color: AppColors.transparent,
-            //   padding: const EdgeInsets.all(2),
-            //   child: ClipRRect(
-            //     borderRadius: AppColors.borderRadiusAll,
-            //     child: Image.network(
-            //       "https://image.tmdb.org/t/p/w200${crewModel.profilePath}",
-            //       fit: BoxFit.cover,
-            //     ),
-            //   ),
-            // ),
+            if (crewModel.profilePath != null)
+              Container(
+                color: AppColors.transparent,
+                padding: const EdgeInsets.all(2),
+                child: ClipRRect(
+                  borderRadius: AppColors.borderRadiusAll,
+                  child: Image.network(
+                    "https://image.tmdb.org/t/p/w200${crewModel.profilePath}",
+                    fit: BoxFit.cover,
+                    height: 120,
+                  ),
+                ),
+              ),
             Text(
               crewModel.name,
               maxLines: 1,

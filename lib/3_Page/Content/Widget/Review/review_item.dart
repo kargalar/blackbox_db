@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:blackbox_db/3_Page/Content/Widget/Review/review_detail_dialog.dart';
 
 class ReviewItem extends StatefulWidget {
   const ReviewItem({
@@ -188,161 +189,179 @@ class _ReviewItemState extends State<ReviewItem> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Main review
-          Container(
-            padding: EdgeInsets.all(15),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.3)),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ProfilePicture.review(
-                  imageUrl: widget.reviewModel.picturePath,
-                  userId: widget.reviewModel.userId,
-                ),
-                SizedBox(width: 10),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            widget.reviewModel.userName,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                          SizedBox(width: 5),
-                          if (widget.reviewModel.isFavorite)
-                            Icon(
-                              Icons.favorite,
-                              color: AppColors.red,
-                              size: 15,
-                            ),
-                          if (widget.reviewModel.rating != null)
-                            RatingBarIndicator(
-                              rating: widget.reviewModel.rating!,
-                              itemSize: 17,
-                              itemCount: 5,
-                              unratedColor: AppColors.transparent,
-                              itemBuilder: (context, _) => Icon(
-                                Icons.star,
-                                color: AppColors.main,
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              // Toggle replies when tapping anywhere on the review container (except interactive controls)
+              if (showReplies) {
+                setState(() => showReplies = false);
+              } else {
+                loadReplies();
+              }
+            },
+            onLongPress: () async {
+              // Long press to open detail dialog
+              await showDialog(
+                context: context,
+                builder: (context) => ReviewDetailDialog(reviewModel: widget.reviewModel),
+              );
+            },
+            child: Container(
+              padding: EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey.withOpacity(0.3)),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ProfilePicture.review(
+                    imageUrl: widget.reviewModel.picturePath,
+                    userId: widget.reviewModel.userId,
+                  ),
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              widget.reviewModel.userName,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
                               ),
                             ),
-                        ],
-                      ),
-                      SizedBox(height: 5),
-                      Text(
-                        widget.reviewModel.text,
-                        style: TextStyle(fontSize: 14),
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        children: [
-                          // Like button
-                          InkWell(
-                            onTap: () async {
-                              try {
-                                final currentUser = await MigrationService().getCurrentUserProfile();
-                                if (currentUser != null) {
-                                  // Optimistic update
+                            SizedBox(width: 5),
+                            if (widget.reviewModel.isFavorite)
+                              Icon(
+                                Icons.favorite,
+                                color: AppColors.red,
+                                size: 15,
+                              ),
+                            if (widget.reviewModel.rating != null)
+                              RatingBarIndicator(
+                                rating: widget.reviewModel.rating!,
+                                itemSize: 17,
+                                itemCount: 5,
+                                unratedColor: AppColors.transparent,
+                                itemBuilder: (context, _) => Icon(
+                                  Icons.star,
+                                  color: AppColors.main,
+                                ),
+                              ),
+                          ],
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          widget.reviewModel.text,
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        SizedBox(height: 10),
+                        Row(
+                          children: [
+                            // Like button
+                            InkWell(
+                              onTap: () async {
+                                try {
+                                  final currentUser = await MigrationService().getCurrentUserProfile();
+                                  if (currentUser != null) {
+                                    // Optimistic update
+                                    setState(() {
+                                      widget.reviewModel.isLikedByCurrentUser = !widget.reviewModel.isLikedByCurrentUser;
+                                      widget.reviewModel.likeCount += widget.reviewModel.isLikedByCurrentUser ? 1 : -1;
+                                    });
+
+                                    // Database update
+                                    final isLiked = await MigrationService().toggleReviewLike(
+                                      reviewId: widget.reviewModel.id,
+                                      userId: currentUser.id,
+                                    );
+
+                                    final actualLikeCount = await MigrationService().getReviewLikeCount(widget.reviewModel.id);
+
+                                    // Update with actual values
+                                    setState(() {
+                                      widget.reviewModel.isLikedByCurrentUser = isLiked;
+                                      widget.reviewModel.likeCount = actualLikeCount;
+                                    });
+                                  }
+                                } catch (e) {
+                                  debugPrint('Error toggling like: $e');
+                                  // Revert optimistic update on error
                                   setState(() {
                                     widget.reviewModel.isLikedByCurrentUser = !widget.reviewModel.isLikedByCurrentUser;
                                     widget.reviewModel.likeCount += widget.reviewModel.isLikedByCurrentUser ? 1 : -1;
                                   });
-
-                                  // Database update
-                                  final isLiked = await MigrationService().toggleReviewLike(
-                                    reviewId: widget.reviewModel.id,
-                                    userId: currentUser.id,
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text('Beğeni işlemi başarısız oldu')),
                                   );
-
-                                  final actualLikeCount = await MigrationService().getReviewLikeCount(widget.reviewModel.id);
-
-                                  // Update with actual values
-                                  setState(() {
-                                    widget.reviewModel.isLikedByCurrentUser = isLiked;
-                                    widget.reviewModel.likeCount = actualLikeCount;
-                                  });
                                 }
-                              } catch (e) {
-                                debugPrint('Error toggling like: $e');
-                                // Revert optimistic update on error
-                                setState(() {
-                                  widget.reviewModel.isLikedByCurrentUser = !widget.reviewModel.isLikedByCurrentUser;
-                                  widget.reviewModel.likeCount += widget.reviewModel.isLikedByCurrentUser ? 1 : -1;
-                                });
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text('Beğeni işlemi başarısız oldu')),
-                                );
-                              }
-                            },
-                            child: Row(
-                              children: [
-                                Icon(
-                                  widget.reviewModel.isLikedByCurrentUser ? Icons.thumb_up : Icons.thumb_up_outlined,
-                                  color: widget.reviewModel.isLikedByCurrentUser ? AppColors.main : Colors.grey,
-                                  size: 16,
-                                ),
-                                SizedBox(width: 3),
-                                Text(
-                                  widget.reviewModel.likeCount.toString(),
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 12,
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    widget.reviewModel.isLikedByCurrentUser ? Icons.thumb_up : Icons.thumb_up_outlined,
+                                    color: widget.reviewModel.isLikedByCurrentUser ? AppColors.main : Colors.grey,
+                                    size: 16,
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(width: 15),
-                          // Comment toggle button
-                          InkWell(
-                            onTap: () {
-                              if (showReplies) {
-                                setState(() {
-                                  showReplies = false;
-                                });
-                              } else {
-                                loadReplies();
-                              }
-                            },
-                            child: Row(
-                              children: [
-                                Icon(
-                                  showReplies ? Icons.expand_less : Icons.expand_more,
-                                  color: Colors.grey,
-                                  size: 16,
-                                ),
-                                SizedBox(width: 3),
-                                Text(
-                                  '${widget.reviewModel.commentCount} yorum',
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 12,
+                                  SizedBox(width: 3),
+                                  Text(
+                                    widget.reviewModel.likeCount.toString(),
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 12,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                          Spacer(),
-                          Text(
-                            DateFormat('dd MMMM yyyy').format(widget.reviewModel.createdAt),
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 12,
+                            SizedBox(width: 15),
+                            // Comment toggle button
+                            InkWell(
+                              onTap: () {
+                                if (showReplies) {
+                                  setState(() {
+                                    showReplies = false;
+                                  });
+                                } else {
+                                  loadReplies();
+                                }
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    showReplies ? Icons.expand_less : Icons.expand_more,
+                                    color: Colors.grey,
+                                    size: 16,
+                                  ),
+                                  SizedBox(width: 3),
+                                  Text(
+                                    '${widget.reviewModel.commentCount} yorum',
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                            Spacer(),
+                            Text(
+                              DateFormat('dd MMMM yyyy').format(widget.reviewModel.createdAt),
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
 

@@ -14,6 +14,7 @@ class ContentModel {
     this.creatorList,
     this.description,
     this.genreList,
+    this.platformList,
     this.length,
     this.cast,
     this.consumeCount,
@@ -35,6 +36,8 @@ class ContentModel {
   final DateTime? releaseDate;
   final List<CastModel>? creatorList;
   final List<GenreModel>? genreList;
+  // Platforms for games (and optionally movies if ever used). Reuse GenreModel shape {id,name}.
+  final List<GenreModel>? platformList;
   final int? length;
   final List<CastModel>? cast;
 
@@ -61,6 +64,7 @@ class ContentModel {
       creatorList: json['creator_list'] != null ? (json['creator_list'] as List).map((i) => CastModel.fromJson(i)).toList() : null,
       description: json['description'],
       genreList: json['genre_list'] != null ? (json['genre_list'] as List).map((i) => GenreModel.fromJson(i)).toList() : null,
+      platformList: json['platform_list'] != null ? (json['platform_list'] as List).map((i) => GenreModel.fromJson(i)).toList() : null,
       // TODO: game timestamp fix
       length: json['length'],
       cast: json['cast_list'] != null ? (json['cast_list'] as List).map((i) => CastModel.fromJson(i)).toList() : null,
@@ -109,5 +113,52 @@ class ContentModel {
       'is_favorite': isFavorite,
       'is_consume_later': isConsumeLater,
     };
+  }
+
+  ContentModel copyWith({
+    int? id,
+    String? posterPath,
+    ContentTypeEnum? contentType,
+    String? title,
+    String? description,
+    DateTime? releaseDate,
+    List<CastModel>? creatorList,
+    List<GenreModel>? genreList,
+    List<GenreModel>? platformList,
+    int? length,
+    List<CastModel>? cast,
+    int? consumeCount,
+    int? favoriCount,
+    int? listCount,
+    int? reviewCount,
+    List<int>? ratingDistribution,
+    double? rating,
+    ContentStatusEnum? contentStatus,
+    bool? isFavorite,
+    bool? isConsumeLater,
+  }) {
+    final copy = ContentModel(
+      id: id ?? this.id,
+      posterPath: posterPath ?? this.posterPath,
+      title: title ?? this.title,
+      contentType: contentType ?? this.contentType,
+      releaseDate: releaseDate ?? this.releaseDate,
+      creatorList: creatorList ?? this.creatorList,
+      description: description ?? this.description,
+      genreList: genreList ?? this.genreList,
+      platformList: platformList ?? this.platformList,
+      length: length ?? this.length,
+      cast: cast ?? this.cast,
+      consumeCount: consumeCount ?? this.consumeCount,
+      favoriCount: favoriCount ?? this.favoriCount,
+      listCount: listCount ?? this.listCount,
+      reviewCount: reviewCount ?? this.reviewCount,
+      ratingDistribution: ratingDistribution ?? this.ratingDistribution,
+      contentStatus: contentStatus ?? this.contentStatus,
+      rating: rating ?? this.rating,
+      isFavorite: isFavorite ?? this.isFavorite,
+      isConsumeLater: isConsumeLater ?? this.isConsumeLater,
+    );
+    return copy;
   }
 }

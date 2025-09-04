@@ -117,7 +117,7 @@ class ContentPageProvider with ChangeNotifier {
     // Persist to backend
     await MigrationService().contentUserAction(contentLogModel: userLog);
 
-    // Refresh content detail from Supabase for user-specific fields (keep optimistic aggregates)
+    // Refresh content detail from Supabase and aggregates to ensure consistency
     try {
       final refreshed = await MigrationService().getContentDetail(
         contentId: userLog.contentID,
@@ -125,11 +125,8 @@ class ContentPageProvider with ChangeNotifier {
         // userId is optional; service falls back to currentUserId
       );
       if (contentId == null) {
-        // Merge user-specific fields
-        contentModel!.contentStatus = refreshed.contentStatus;
-        contentModel!.rating = refreshed.rating;
-        contentModel!.isFavorite = refreshed.isFavorite;
-        contentModel!.isConsumeLater = refreshed.isConsumeLater;
+        // Replace with refreshed server state (keep UI stable)
+        contentModel = refreshed;
         notifyListeners();
       }
     } catch (e) {
